@@ -100,8 +100,7 @@ The solution to the LLM's statelessness is to make the state explicit and persis
 The structure of the <GAME_STATE> JSON object is designed to be comprehensive, tracking every dynamic element of the world:
 
 JSON
-
-
+`
 {
   "player": {
     "location": "field_west_of_house",
@@ -154,7 +153,7 @@ JSON
     }
   }
 }
-
+`
 
 The core mechanic of the game loop is that for every turn, the LLM's primary task is to generate a new, updated version of this entire JSON object that reflects the outcome of the player's action. This forces the model to maintain a persistent and holistic view of the world state. By instructing the LLM that the narrative it writes must be a direct and faithful representation of the changes between the old JSON and the new JSON, we create a powerful link that grounds its creative output in a verifiable, consistent data model, effectively solving the state management problem.37
 
