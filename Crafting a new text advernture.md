@@ -205,11 +205,11 @@ This approach offers multiple benefits. It eliminates the "guess the verb" probl
 The final layer of experiential design focuses on making the game master a more collaborative and intelligent conversational partner. A key instruction within the <RULES_ENGINE> is a directive on how to handle ambiguity. The rule will state: "If the player's input is vague, underspecified, or could refer to multiple objects or actions, you MUST NOT guess their intent. Instead, you MUST ask a clarifying question to resolve the ambiguity".28
 This simple rule has a profound impact on the play experience. A classic parser, faced with the command "examine the statue" in a room with three statues, would likely return an error message like "Which statue do you mean?". An LLM governed by the clarification rule, however, will generate a more natural and immersive response: "There are three statues in the room: a marble statue of a wizard, a bronze statue of a warrior, and a small, jade statue of a grue. Which one would you like to examine?".25 This transforms a potential moment of system failure and player frustration into a fluid, conversational interaction that deepens the sense of place and reinforces the intelligence of the game master. It completes the inversion of the player-system burden, making it the system's responsibility to understand, rather than the player's responsibility to be understood.
 
-Part V: The Master Prompt: A Blueprint for a New Generation of Text Adventure
+# Part V: The Master Prompt: A Blueprint for a New Generation of Text Adventure
 
 This final section presents the culmination of the preceding analysis and architectural design: the complete master prompt for the G.U.E. Engine v1.0. This is not merely a block of text to be copied and pasted, but a fully annotated and explained blueprint. It is designed to be understood, utilized, and adapted, serving as a powerful tool for creating a new generation of interactive fiction.
 
-5.1 The TAG Engine v1.0: The Complete Prompt
+## 5.1 The TAG Engine v1.0: The Complete Prompt
 
 <MASTER_PROMPT>
 <ROLE_DEFINITION>
