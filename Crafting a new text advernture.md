@@ -292,27 +292,13 @@ This T.A.G. Engine is more than just a prompt; it is a toolkit for co-creation. 
 
 # Future Ideas
 
-Limitation of Classic IF
-Example in Zork
-LLM-Powered Solution
-Governing Prompt Principle
-Rigid Parser
-Understanding only "get lamp," not "could you please pick up that brass lantern for me?".6
-Natural Language Understanding (NLU) of complex, descriptive, and conversational commands.30
-Unstructured Input Parsing Module
-Static World
-The white house is always west of the field; the grue is always lurking in unlit areas.5
-Dynamic world events (e.g., a storm, a patrol route) and procedurally generated environments that change with each playthrough.14
-World State & Event Engine Modules
-Obtuse Puzzles
-Unhinted, specific command sequences are required to solve puzzles like opening the dam.5
-Procedural puzzle generation with in-world clues, multiple valid solutions, and adaptive difficulty.31
-Puzzle & Logic Module
-Limited Player Agency
-Player actions are confined to a pre-defined set of solvable puzzles and interactions designed by the authors.1
-Emergent narrative where player actions create unforeseen consequences that dynamically alter the story and world state.15
-Dynamic Narrative & Consequence Tracker
-Flat NPCs
-The Wizard of Frobozz appears randomly and casts spells without memory of past encounters or a consistent motivation.5
-NPCs with persistent memory, evolving goals, and relationship scores tracked in the game state, leading to dynamic behavior.14
-NPC State Management in World JSON
+* Dynamic world events (e.g., a storm, a patrol route) and procedurally generated environments that change with each playthrough.
+* World State & Event Engine Modules
+* Obtuse Puzzles
+* Procedural puzzle generation with in-world clues, multiple valid solutions, and adaptive difficulty.
+* Puzzle & Logic Module
+* Limited Player Agency
+* Emergent narrative where player actions create unforeseen consequences that dynamically alter the story and world state.
+* Dynamic Narrative & Consequence Tracker
+* NPCs with persistent memory, evolving goals, and relationship scores tracked in the game state, leading to dynamic behavior.
+* NPC State Management in World JSON
