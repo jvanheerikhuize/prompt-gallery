@@ -1,7 +1,6 @@
 # Text Adventure Generator T.A.G. 🐉
 
-Welcome to the Text Adventure Generator, a single, powerful prompt designed to turn any advanced Large Language Model (LLM) into a dynamic, next-generation text adventure game master.
-Forget predefined paths and limited commands. This prompt creates a living, breathing world that reacts to your every decision, description, and crazy idea. Your story is not pre-written; it's generated in real-time, just for you.
+Welcome to T.A.G. the Text Adventure Generator. TAG is a single, powerful prompt designed to turn any advanced Large Language Model (LLM) into a dynamic, next-generation text adventure game master. Forget predefined paths and a limited set of commands. This prompt creates a living, breathing world that reacts to your every decision, description, and crazy idea. Your story is not pre-written; it's generated in real-time, just for you.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -9,14 +8,17 @@ Forget predefined paths and limited commands. This prompt creates a living, brea
 
 ## ✨ What Makes This "Next-Gen"?
 
-This isn't your parents' Zork. By leveraging the power of a modern LLM's, this prompt creates an experience with:
+This isn't your parents' Zork or 80 Days. By leveraging the power of a modern LLM's, this prompt creates an experience with:
 
-* **Unbound Freedom:** The only limit is your imagination.
-* **Dynamic World:** The world is generated as you explore it. No two playthroughs will ever be the same.
-* **Rich, Immersive Narration:** Experience procedurally generated descriptions that bring your unique world to life with stunning detail.
+* **Unbound Freedom:** The only limit is your own imagination.
+* **Dynamic World:** The world is procedurally generated as you explore it. No two playthroughs will ever be the same.
+* **Immersive Narration:** Experience procedurally generated descriptions that bring your unique world to life with stunning detail.
 * **Intelligent NPCs:** Interact with characters who have memories, motivations (sometimes), and respond realistically to your dialogue and actions.
 * **Persistent State:** The game master will track your inventory, location, and key story events, providing a continuous and coherent narrative. Type `JSON` anytime during the game to get a compete overview of the <GAMESTATE>
-* **Customizable:** Add your own rules or gamelogic.
+* **Customizable:** Add your own rules or gamelogic to your own wishes:
+  * you want the AI to generate a picture of every new location or item? just ask for it in the <GAMELOOP>.
+  * you want to have a gameover state? Add health as a parameter to the <GAMESTATE> json, there's the action
+  * you want to have a specific event mentioned or charachter? Add a description to the 2nd question of the initilization about the key lore. 
 ---
 
 ## 🚀 How to Play
