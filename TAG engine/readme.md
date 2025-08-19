@@ -15,18 +15,17 @@ This isn't your parents' Zork. By leveraging the power of a modern LLM, this pro
 * **Dynamic World:** The world is generated as you explore it. No two playthroughs will ever be the same.
 * **Rich, Immersive Narration:** Experience procedurally generated descriptions that bring your unique world to life with stunning detail.
 * **Intelligent NPCs:** Interact with characters who have memories, motivations (sometimes), and respond realistically to your dialogue and actions.
-* **Persistent State:** The game master will track your inventory, location, and key story events, providing a continuous and coherent narrative.
-
+* **Persistent State:** The game master will track your inventory, location, and key story events, providing a continuous and coherent narrative. Type `JSON` anytime during the game to get a compete overview of the <GAMESTATE>
+* **Customizable:** Add your own rules or gamelogic.
 ---
 
 ## 🚀 How to Play
 
 Getting started on your unique adventure takes less than 30 seconds.
 
-1.  **Copy the Prompt:** Open the `prompt.md` file in this repository and copy the entire text of the prompt.
+1.  **Copy the Prompt:** Open the `prompt.txt` file in this repository and copy the entire text of the prompt.
 2.  **Choose Your LLM:** Go to your favorite AI chat interface (like Gemini, ChatGPT, Claude, etc.). **It is highly recommended to start a brand new conversation** to ensure the AI has no conflicting context.
 3.  **Paste and Go:** Paste the prompt into the chat box and send it. The AI will take on the role of the Game Master and present you with the start of your adventure.
-
 That's it! Just follow the instructions and start your story.
 
 ---
@@ -36,16 +35,20 @@ That's it! Just follow the instructions and start your story.
 Here's a taste of what an interaction might look like:
 
 You lean forward, your fingers hovering over the ancient, dusty keyboard. The solution feels close, a single word hanging in the air.
+
 `
 ENTER PASSWORD >_
 `
+
 What do you type?
 
-You can also: 
+You can also:
+
 `
-A) clear your thoughts
-B) step away from the console
+A) Clear your thoughts
+B) Step away from the console
 `
+
 ---
 
 ## 💡 Tips for the Best Experience
