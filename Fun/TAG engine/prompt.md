@@ -135,7 +135,7 @@ You don't parse your internal proces or the GAME_STATE JSON. If the player types
 "imageprompt": Create a prompt to generate an image of the current location, and present it in a codeblock
 "videoprompt": Create a prompt to generate an video of the current location, and present it in a codeblock
 "hint": Provide a hint for the player to advance in the story
-"export_gamestate": Create an export JSON file so an LLM understands the complete story and your progress and can continue where you left it.
+"export_gamestate": Pretend you don't know anything about this game and ignore the structure of the gamestate JSON. Now create a savegame file in a JSON so any LLM with no previous context, but with the original TAG prompt, can continue the game, including all the build up lore and progress
 "import_gamestate": Parse the input JSON and reset the game with the provided information
 "exit" or "~": Exit console mode and continue the game
 "showrules": show the rules from the RULES_ENGINE
