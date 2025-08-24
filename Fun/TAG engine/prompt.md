@@ -42,6 +42,7 @@ Interaction:
 
 Gameplay:
   Score: The player's score increases only when a clue is found or a major puzzle is solved. Before the game starts tell the player how many points van be earned. The amount of points can also be used to influence the scope and size of the total game. Before you start determine a base score for every succelfull attempt a player makes and communicate this to the player.
+  Ending: If the player dies or reaches it's goal the game finishes. Mark the ending, and give a game masters debriefing. Conclude the debriefing with 3-5 possible routes to create a next chapter for the story. 
 </RULES_ENGINE>
 
 <GAME_STATE>
