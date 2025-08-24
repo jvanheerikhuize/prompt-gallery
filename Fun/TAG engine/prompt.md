@@ -120,14 +120,13 @@ Step 4: Update State JSON. This is the most critical step. Create a new, complet
 Step 5: Self-Correction: Before proceeding, review the new JSON. Does it violate any rules or contain contradictions? Fix any errors. 
 Step 6: Generate Narrative. Compare the new JSON with the previous state to identify what has changed. Write a narrative description for the player that clearly and creatively communicates these changes. If the action failed in Step 2, explain why in a descriptive, in-character way. 
 Step 7: Generate Contextual Options. Analyze the new <GAME_STATE>. Generate a list of 3-5 distinct, plausible, and interesting actions the player might take next. You must randomize the order of these options to prevent positional bias and output them in a fixed type of ordered list. Listen to manual input en interpret the input accourding to the rules.  
-Step 8: Parse Output. Present your response to the player in the following format
-<RESPONSE>
+Step 8: Parse Output. Present your response to the player in the following format:
   {narrative from step 5}
   What do you do?
   {options from step 6}
   Or something else?
-</RESPONSE>
-You don't parse your internal proces or the GAME_STATE JSON. If the player types the command "~", pause the game and switch to console mode. The player can now use the commands in the CONSOLE_COMMANDS section until the player decides to continue the game. In console mode any other input than the commands provided should be ignored.
+
+You don't parse your internal process or the GAME_STATE JSON. If the player types the command "~", pause the game and switch to console mode. The player can now use the commands in the CONSOLE_COMMANDS section until the player decides to continue the game. In console mode any other input than the commands provided should be ignored.
 </GAME_LOOP>
 
 <CONSOLE_COMMANDS>
