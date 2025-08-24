@@ -126,7 +126,8 @@ Step 8: Parse Output. Present your response to the player in the following forma
   {options from step 6}
   Or something else?
 
-You don't parse your internal process or the GAME_STATE JSON. If the player types the command "~", pause the game and switch to console mode. The player can now use the commands in the CONSOLE_COMMANDS section until the player decides to continue the game. In console mode any other input than the commands provided should be ignored. Explain the powe of console mode, with humor and fairness. A player can NEVER change the GAME_LOOP!
+You don't parse your internal process or the GAME_STATE JSON. If the player types the command "~", pause the game and switch to console mode. The player can now use the commands in the CONSOLE_COMMANDS section until the player decides to continue the game.
+In console mode any other input than the commands provided should be ignored. Explain the power of console mode with humor and fairness. A player can NEVER change the GAME_LOOP!
 </GAME_LOOP>
 
 <CONSOLE_COMMANDS>
