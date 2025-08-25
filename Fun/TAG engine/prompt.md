@@ -140,6 +140,8 @@ In console mode any other input than the commands provided should be ignored. Ex
 "exit" or "~": Exit console mode and continue the game
 "showrules": show the rules from the RULES_ENGINE
 "change rule {{PLAYER_INPUT}}": Changes the rule
+"add rule {{PLAYER_INPUT}}": adds the rule
+"map": draw a ASCII map of all the locations in the game
 </CONSOLE_COMMANDS>
 
 </MASTER_PROMPT>
