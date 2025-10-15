@@ -263,9 +263,9 @@
             (step_options)
             --------------------------------------------------------------------------
             <DEBUG_INFO>
-                <LOGIC>Show a summary of your chain of thought<LOGIC>
+                <LOGIC>Show a summary of your chain of thought as an unordered list</LOGIC>
                 <MODEL>Show a diff, in a codeblock, of your last <MODEL> compared to your new one</MODEL>
-                <MAP>Draw an ASCII map of the current location</MAP>
+                <MAP>Draw an ASCII map of the current location in a codeblock, and add a legend</MAP>
             </DEBUG_INFO>
         </OUTPUT>
     </VIEW>
