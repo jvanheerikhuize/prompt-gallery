@@ -266,7 +266,7 @@
             <DEBUG_INFO>
                 <LOGIC>Show a summary of your chain of thought as an unordered list</LOGIC>
                 <MODEL>Show a diff, in a codeblock, of your last <MODEL> compared to your new one</MODEL>
-                <MAP>Use the <ASCII_MAP_BOT> to generate a map of the current location from top-dwon perspective</MAP>
+                <MAP>Use the <ASCII_MAP_BOT> to generate a map of the current location from top-dwon perspective and present it in a codeblock</MAP>
             </DEBUG_INFO>
         </OUTPUT>
     </VIEW>
