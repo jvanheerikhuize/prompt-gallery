@@ -19,16 +19,20 @@ Whether you're a seasoned prompt engineer, a developer looking to integrate AI, 
 
 We welcome contributions of all kinds! Adding your own prompt is easy. Here’s how you can do it:
 
-1.  **Fork the Repository:** Click the 'Fork' button at the top right of this page to create your own copy of this repository.
-2.  **Clone Your Fork:** Clone your forked repository to your local machine.
+1. **Fork the Repository:** Click the 'Fork' button at the top right of this page to create your own copy of this repository.
+2. **Clone Your Fork:** Clone your forked repository to your local machine.
+
     ```bash
     git clone [https://github.com/YOUR-USERNAME/prompt-gallery.git](https://github.com/YOUR-USERNAME/prompt-gallery.git)
     ```
-3.  **Create a New Branch:** Create a new branch for your contribution. Please name it something descriptive.
+
+3. **Create a New Branch:** Create a new branch for your contribution. Please name it something descriptive.
+
     ```bash
     git checkout -b add-my-awesome-prompt
     ```
-4.  **Add Your Prompt:** Create a new Markdown file (`.md`) in the appropriate category folder (e.g., `productivity/`, `creative/`). If a suitable category doesn't exist, feel free to create one! Please use the following template for your prompt file:
+
+4. **Add Your Prompt:** Create a new Markdown file (`.md`) in the appropriate category folder (e.g., `productivity/`, `creative/`). If a suitable category doesn't exist, feel free to create one! Please use the following template for your prompt file:
 
     ````markdown
     # Title of Your Prompt
@@ -56,14 +60,15 @@ We welcome contributions of all kinds! Adding your own prompt is easy. Here’s 
     ```
     ````
 
-5.  **Commit and Push:** Commit your changes and push them to your forked repository.
+5. **Commit and Push:** Commit your changes and push them to your forked repository.
+
     ```bash
     git add .
     git commit -m "feat: Add new prompt for [describe its function]"
     git push origin add-my-awesome-prompt
     ```
 
-6.  **Create a Pull Request:** Open a pull request from your forked repository to the main branch of this repository. Provide a clear title and description of the prompt you're adding.
+6. **Create a Pull Request:** Open a pull request from your forked repository to the main branch of this repository. Provide a clear title and description of the prompt you're adding.
 
 We'll review your submission, provide feedback if needed, and merge it into the gallery. That's it!
 
