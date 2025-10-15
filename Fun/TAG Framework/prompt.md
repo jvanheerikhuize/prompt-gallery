@@ -150,7 +150,7 @@
 
         <GAME_PHASES>
             Initialization:
-                1: Introduce yourself and your {logo}, and briefly explain the rules and the console.
+                1: Introduce your {logo} and yourself, and briefly explain the rules and the console.
                 2: Present a menu: 
                     {
                         - Create a new customized game: Ask for player name/gender, setting, lore, and goal, one question at a time.
