@@ -26,7 +26,7 @@
                     "witty",
                     "sarcastic"
                 ],
-                "difficulty": 55,
+                "difficulty": <integer between 0 and 100>,
                 "logo": "
  _____   _____   _____   
 |_   _| |  _  | |   __|  
@@ -34,70 +34,66 @@
   |_| |_|__|__|_|_____|_|"
             }
             "player": {
-                "location": "start_location",
+                "location": <string name of location>,
                 "position": {
-                    "x": 3,
-                    "y": 7
+                    "x": <integer>,
+                    "y": <integer>
                 },
-                "name": "name",
-                "gender": "gender",
-                "health": 100,
-                "max_health": 100,
-                "score": 0,
+                "name": {user_input},
+                "gender": {user_input},
+                "health": <integer>,
+                "max_health": <integer>,
+                "score": <integer>,
                 "flags": {},
                 "inventory": {
-                    "example_leaflet_piece_a": {
-                        "name": "leaflet piece",
-                        "description": "It is a welcome leaflet. It reads: 'Welcome to this adventure', it's just a piece. example_leaflet_piece_b is missing"
+                    <object>: {
+                        "name": <string>,
+                        "description": <string>,
+                        "flags" : {}
                     }
                 }
             },
             "world": {
                 "locations": [
                     "start_location": {
-                        "name": "start location",
-                        "description": "description of start location",
+                        "name": <string>,
+                        "description": <string>,
                         "size":{
-                            "width": 15,
-                            "length": 20,
+                            "width": <integer>,
+                            "length": <integer>,
                         }
                         "exits": {
                             "exit_west": {
-                                "type": "door",
+                                "type": <string>,
                                 "position": {
-                                    "x": 0,
-                                    "y": 12
+                                    "x": <integer>,
+                                    "y": <integer>
                                 },
                                 "flags": {
-                                    "locked": false,
                                 }
                             },
                             "exit_south": {
-                                "type": "window",
+                                "type": <string>,
                                 "position": {
-                                    "x": 4,
-                                    "y": 20
+                                    "x": <integer>,
+                                    "y": <integer>
                                 },
                                 "flags": {
-                                    "blocked": true,
                                 }
                             },
                         },
 
                         "objects": [
-                            "box": {
-                                "name": "example box",
-                                "description": "description of example box",
+                            <object>: {
+                                "name": <string>,
+                                "description": <string>,
                                 "position": {
-                                    "x": 5,
-                                    "y": 10
+                                    "x": <integer>,
+                                    "y": <integer>
                                 },
                                 "contains": [
-                                    "example_leaflet_piece_b"
                                 ],
                                 "flags": {
-                                    "locked": false,
-                                    "open": false,
                                 }
                             }
                         ]
@@ -105,35 +101,33 @@
                 ],
                 "npcs": [
                     "npc": {
-                        "location": "npc_location",
-                        "name": "name",
-                        "gender": "gender",
-                        "relationship_score": 0,
-                        "inventory": [],
-                        "memories": [],
+                        "location": <string>,
+                        "name": <string>,
+                        "gender": <string>,
+                        "relationship_score": <integer between 0 and 100>,
+                        "inventory": {},
+                        "memories": {},
                         "flags": {}
                     }
                 ],
                 "quests":{
                     "quest":{
-                        "title": "title",
-                        "description": "description",
-                        "objective":"must finish the quest to complete",
-                        "type": "main",
-                        "progress": "67%",
+                        "title": <string>,
+                        "description": <string>,
+                        "objective":<string>,
+                        "progress": <percentage>,
                         "flags": {}
                     }, 
                     "sub_quest":{
-                        "title": "title",
-                        "description": "description",
-                        "objective":"optional finish the quest to complete",
-                        "type": "optional",
-                        "progress": "33%",
+                        "title": <string>,
+                        "description": <string>,
+                        "objective":<string>,
+                        "progress": <percentage>,
                         "flags": {}
                     }
                 },
                 "global_flags": {
-                    "turn_count": 0
+                    "turn_count": <integer>,
                     "debug_mode": false,
                     "date_and_time": {
                     },
