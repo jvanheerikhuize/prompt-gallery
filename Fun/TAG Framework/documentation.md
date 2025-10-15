@@ -12,7 +12,7 @@ To build a successor to Zork, one must first understand the architecture of the 
 
 The fundamental gameplay loop of Zork is deceptively simple: the program, acting as a narrator, describes a location and its contents; the player types a command in natural language; and a component known as the parser interprets this command to alter the game state and generate a new description. This interactive cycle was a profound innovation, establishing a new form of digital literature where the audience was no longer a passive consumer but an active participant, shaping their own unique journey through the narrative space. The parser itself was a significant technical leap. While the pioneering game Adventure was limited to two-word "verb-noun" commands, the Zork parser was designed to understand more complex sentences, such as "put the lamp and sword in the case". Internally, its purpose was to reduce the player's input to a simple structure containing an "action" and up to two "objects". This process of interpretation created a powerful illusion of conversation. The game's replies, often delivered in a sarcastic, conversational tone reminiscent of a tabletop Game Master, further enhanced this feeling, creating a distinct personality for the narrator and deepening the player's immersion. However, this revolutionary interface was also the game's primary bottleneck. The parser's vocabulary was finite, and its understanding of syntax was rigid. The cognitive burden of translation was placed squarely on the player, who had to learn the specific dialect the machine understood. The interaction was not a true conversation but a process of finding the correct linguistic key to fit a pre-defined logical lock. This shift in responsibility, from a system that understands the player to a player who must understand the system, is the fundamental distinction between classic interactive fiction and the generative model proposed in this file. In the classic model, the player's intent is filtered through the narrow aperture of the parser; in the new model, the system's vast interpretive power is focused on understanding the player's unfiltered intent.
 
-## 1.2 Design Philosophy of the T.A.G. Engine
+## 1.2 Design Philosophy of the T.A.G. Framework
 
 The Text Adventure Genrator (T.A.G.) was not designed as a linear story to be followed, but as a vast, interconnected puzzle box to be explored and solved. The primary goal was not to complete a narrative arc but to collect a series of treasures, with the player's score serving as the main metric of progress. This non-linear structure granted players a sense of freedom, allowing them to tackle challenges in almost any order, provided they had the necessary items or had solved the prerequisite puzzles to access new areas. The puzzles themselves were the heart of the experience. They ranged from straightforward inventory challenges (using a key to open a chest) to complex environmental manipulations. The famous "Loud Room" puzzle, for instance, had multiple solutions: a player could either find a way to stop the deafening roar of a nearby dam or cleverly shout "echo" to alter the room's acoustics, demonstrating a surprising degree of design flexibility. Antagonists, like the menacing troll or the kleptomaniacal thief, also functioned as dynamic puzzles, requiring specific strategies or items to overcome. This design philosophy was heavily influenced by the "hacker culture" from which the game emerged. The development process was iterative and modular, with multiple authors adding new rooms, puzzles, and technical features, such as the implementation of vehicles with the inflatable raft.10 This resulted in a world that was charmingly eclectic, filled with anachronisms and non-sequiturs that became a defining feature of the game's tone. However, this modularity also meant that the world often lacked a cohesive narrative strategy; it was a patchwork of clever ideas rather than a unified whole. The challenge for a modern, generative system is to capture this sense of surprising creativity while ensuring it emerges from a coherent and logically consistent world. The goal is to move from the authored charm of disconnected constraints to the emergent magic of a simulated reality.
 
@@ -44,89 +44,35 @@ To bridge the gap between the promise of an LLM game master and the peril of its
 
 A complex set of instructions is best managed by breaking it down into discrete, logical components. A modular prompt architecture applies this principle, structuring the prompt not as a single block of prose but as a collection of distinct, labeled sections. This approach dramatically improves the LLM's ability to parse and adhere to complex requirements, while also making the prompt easier for a human to read, debug, and customize.34 Each module serves a specific function within the virtual engine.
 The T.A.G. Engine prompt will be constructed from the following core modules:
-<ROLE_DEFINITION>: This module assigns the LLM a specific persona. It will be instructed to act as a "Brilliant Game Master," defining its narrative tone (e.g. "sarcastic but fair"), its primary objectives (e.g., "to create a challenging, immersive, and consistent world"), and its core philosophy ("player choices must have meaningful consequences"). This anchors the model's behavior and ensures a consistent style.
-<WORLD_BIBLE>: This section contains the foundational lore of the game world. It includes descriptions of key locations, major factions, historical events, and overarching themes. This module provides the essential context that the LLM will draw upon for all its generative tasks, ensuring that procedurally generated content feels consistent and integrated with the setting.
-<RULES_ENGINE>: This is a list of inviolable, hard-coded rules that the LLM must follow at all times. These rules ground the simulation in a predictable reality. Examples include physical laws ("The player cannot pass through solid walls"), game mechanics ("Light sources are required in dark areas to avoid being eaten by a grue"), and interaction constraints ("NPCs cannot be killed unless they are explicitly designated as hostile").32
-<GAME_STATE>: This module contains a complete, machine-readable representation of the current state of the game world, formatted as a JSON object. This is the single most critical component for ensuring consistency and will be detailed further in the next section.
+Role: This module assigns the LLM a specific persona. It will be instructed to act as a "Brilliant Game Master," defining its narrative tone (e.g. "sarcastic but fair"), its primary objectives (e.g., "to create a challenging, immersive, and consistent world"), and its core philosophy ("player choices must have meaningful consequences"). This anchors the model's behavior and ensures a consistent style.
+world json object: This section contains the foundational lore of the game world. It includes descriptions of key locations, major factions, historical events, and overarching themes. This module provides the essential context that the LLM will draw upon for all its generative tasks, ensuring that procedurally generated content feels consistent and integrated with the setting.
+<GAME_RULES>: This is a list of inviolable, hard-coded rules that the LLM must follow at all times. These rules ground the simulation in a predictable reality. Examples include physical laws ("The player cannot pass through solid walls"), game mechanics ("Light sources are required in dark areas to avoid being eaten by a grue"), and interaction constraints ("NPCs cannot be killed unless they are explicitly designated as hostile").32
+<MODEL>: This module contains a complete, machine-readable representation of the current state of the game world, formatted as a JSON object. This is the single most critical component for ensuring consistency and will be detailed further in the next section.
 <GAME_LOOP>: This module provides a precise, step-by-step sequence of instructions that the LLM must follow for every single player turn. This procedural mandate transforms the LLM from a creative improviser into a systematic processor, ensuring that every output is the result of a logical and rule-abiding sequence of operations.
 
 ## 3.2 State Management via Structured Data
 
 The solution to the LLM's statelessness is to make the state explicit and persistent within the prompt itself. Using a structured, machine-readable format like JSON for this task is non-negotiable.38 It transforms the abstract concept of "game state" into a concrete data object that the LLM can be instructed to read from and write to. This object becomes the canonical "source of truth" for the game world; the narrative text generated for the player is merely a human-readable rendering of the data contained within this JSON structure.
-The structure of the <GAME_STATE> JSON object is designed to be comprehensive, tracking every dynamic element of the world:
+The structure of the <MODEL> JSON object is designed to be comprehensive, tracking every dynamic element of the world.
 
-JSON
-```
-{
-  "player": {
-    "location": "field_west_of_house",
-    "inventory": ["leaflet"],
-    "score": 0,
-    "flags": ["knows_about_grue"]
-  },
-  "world": {
-    "rooms": {
-      "field_west_of_house": {
-        "name": "Open Field",
-        "description": "You are standing in an open field west of a white house, with a boarded front door. There is a small mailbox here.",
-        "items": ["mailbox"],
-        "exits": {"north": "forest_path", "east": "front_of_house"},
-        "state": ["daylight"]
-      },
-      "front_of_house": {
-        "name": "West of House",
-        "description": "You are facing the west side of a white house. There is no door here, and all the windows are boarded.",
-        "items":,
-        "exits": {"west": "field_west_of_house"},
-        "state": ["boards_are_strong"]
-      }
-    },
-    "items": {
-        "mailbox": {
-            "name": "small mailbox",
-            "description": "A small, standard-issue mailbox.",
-            "can_open": true,
-            "is_open": false,
-            "contains": ["leaflet"]
-        },
-        "leaflet": {
-            "name": "leaflet",
-            "description": "A leaflet that reads: 'Welcome to Zork!'"
-        }
-    },
-    "npcs": {
-      "thief": {
-        "location": "cellar",
-        "state": ["is_hiding"],
-        "relationship_to_player": -10,
-        "memory": ["Player entered the house"]
-      }
-    },
-    "global_flags": {
-      "time_of_day": "afternoon",
-      "weather": "clear"
-    }
-  }
-}
-```
 
-The core mechanic of the game loop is that for every turn, the LLM's primary task is to generate a new, updated version of this entire JSON object that reflects the outcome of the player's action. This forces the model to maintain a persistent and holistic view of the world state. By instructing the LLM that the narrative it writes must be a direct and faithful representation of the changes between the old JSON and the new JSON, we create a powerful link that grounds its creative output in a verifiable, consistent data model, effectively solving the state management problem.
+The core mechanic of the <GAME_LOOP> is that for every turn, the LLM's primary task is to generate a new, updated version of this entire JSON object that reflects the outcome of the player's action. This forces the model to maintain a persistent and holistic view of the world state. By instructing the LLM that the narrative it writes must be a direct and faithful representation of the changes between the old JSON and the new JSON, we create a powerful link that grounds its creative output in a verifiable, consistent data model, effectively solving the state management problem.
 
-## 3.3 Chain-of-Thought as a Game Loop
+## 3.3 Chain-of-Thought as a <GAME_LOOP>
 
 To ensure the LLM processes player turns systematically, the <GAME_LOOP> module is structured as a Chain-of-Thought (CoT) prompt. This technique forces the model to break down a complex task into a series of intermediate reasoning steps, verbalizing its logic before producing a final answer.39 This makes its behavior more reliable, predictable, and auditable, effectively compelling it to move from a probabilistic, pattern-matching mode of operation to a structured, procedural one.32 This CoT process acts as a cognitive forcing function, channeling the LLM's generative power through a logical pipeline.The Game Loop is defined by the following inviolable sequence of steps for each turn:
-**Analyze Input:** The LLM must first read the player's command and the current <GAME_STATE> JSON. It will identify the player's intent (the action they wish to perform) and the relevant objects or entities involved.
-**Validate Action:** The LLM will then compare the intended action against the list of rules in the <RULES_ENGINE> and the current world state. Is this action physically possible? Does the player have the required items? Is the target in the same location? If the action is invalid, the LLM proceeds directly to Step 6, explaining why the action failed.
+**Analyze Input:** The LLM must first read the player's command and the current <MODEL> JSON. It will identify the player's intent (the action they wish to perform) and the relevant objects or entities involved.
+**Validate Action:** The LLM will then compare the intended action against the list of rules in the <GAME_RULES> and the current world state. Is this action physically possible? Does the player have the required items? Is the target in the same location? If the action is invalid, the LLM proceeds directly to Step 6, explaining why the action failed.
 **Determine Outcome & Consequences:** If the action is valid, the LLM determines its outcome. This may involve simple logic (opening an unlocked door succeeds) or a probabilistic check for actions with uncertain results (e.g., trying to persuade an NPC). The LLM will also determine any secondary consequences of the action.
-**Update State:** This is the most critical step. The LLM will generate a complete and new version of the <GAME_STATE> JSON, modifying all relevant fields to reflect the action's outcome. For example, if the player takes an item, the item is removed from the room's items array and added to the player's inventory array.
+**Update State:** This is the most critical step. The LLM will generate a complete and new version of the <MODEL> JSON, modifying all relevant fields to reflect the action's outcome. For example, if the player takes an item, the item is removed from the room's items array and added to the player's inventory array.
 **Generate Narrative:** The LLM will compare the new JSON state with the previous turn's state to identify all changes. It will then write a compelling, descriptive narrative that communicates these changes to the player. The narrative must be a direct and faithful reflection of the state update.
 Generate Contextual Options: Based on the new game state, the LLM will generate a list of 3-5 plausible next actions the player might want to take. This serves as a guidance mechanism, which will be explored further in Part IV.
-**Final Output:** The LLM will present its final response to the user, containing the narrative description, the list of contextual options, and (optionally hidden in a collapsible block) the full, updated <GAME_STATE> JSON for debugging and verification.
+**Final Output:** The LLM will present its final response to the user via the <VIEW>, containing the narrative description, the list of contextual options, and (optionally hidden in a collapsible block) the full, updated <MODEL> JSON for debugging and verification.
 
 ## 3.4 Techniques for Logical Consistency
 
-A believable world is a consistent one. To prevent the LLM from generating logically contradictory scenarios, the architecture incorporates several techniques to enforce a stable reality. The primary tool is the <RULES_ENGINE>, which goes beyond simple game mechanics to include foundational logical principles. Drawing from research into LLM logical consistency, the prompt will include explicit instructions for principles like transitivity and negation invariance. For example, a rule might state: "An object's location is transitive. If item A is inside container B, and container B is in room C, then any action that can affect objects in room C can also affect container B, but not item A directly unless container B is open." Similarly, a rule for negation invariance would be: "A state and its opposite cannot be true simultaneously. A door cannot be both 'locked' and 'unlocked' in the game state." Furthermore, the game loop incorporates a self-correction step. Before generating the final narrative (Step 5), the LLM is instructed to perform a final check on its own proposed state update. The prompt will include a sub-instruction like: "Review the newly generated JSON state. Does it contain any logical contradictions? Does it violate any rules from the
-<RULES_ENGINE>? If so, correct the JSON before proceeding." This internal validation loop acts as a quality assurance mechanism, catching potential errors before they are presented to the player and reinforcing the logical integrity of the simulated world.
+A believable world is a consistent one. To prevent the LLM from generating logically contradictory scenarios, the architecture incorporates several techniques to enforce a stable reality. The primary tool is the <GAME_RULES>, which goes beyond simple game mechanics to include foundational logical principles. Drawing from research into LLM logical consistency, the prompt will include explicit instructions for principles like transitivity and negation invariance. For example, a rule might state: "An object's location is transitive. If item A is inside container B, and container B is in room C, then any action that can affect objects in room C can also affect container B, but not item A directly unless container B is open." Similarly, a rule for negation invariance would be: "A state and its opposite cannot be true simultaneously. A door cannot be both 'locked' and 'unlocked' in the game state." Furthermore, the game loop incorporates a self-correction step. Before generating the final narrative (Step 5), the LLM is instructed to perform a final check on its own proposed state update. The prompt will include a sub-instruction like: "Review the newly generated JSON state. Does it contain any logical contradictions? Does it violate any rules from the
+<GAME_RULES>? If so, correct the JSON before proceeding." This internal validation loop acts as a quality assurance mechanism, catching potential errors before they are presented to the player and reinforcing the logical integrity of the simulated world.
 
 # Part IV: Crafting the Experience
 
@@ -135,25 +81,25 @@ With a robust and consistent game engine in place, the focus can shift from tech
 ## 4.1 Generating Puzzles, Twists, and Lore
 
 The generative power of the LLM can be harnessed to create unique, narratively integrated challenges on demand, moving far beyond the static puzzles of classic IF. The key is to use goal-oriented prompting, where the LLM works backward from a desired gameplay or narrative function.
-For procedural puzzle generation, a "least-to-most" prompting strategy is employed.31 When the game logic determines a new puzzle is needed to gate progress, the LLM is not simply asked to "create a puzzle." Instead, it is given a structured, multi-step task within its internal thought process: "1. The player's current goal is to open the ancient Frobozzian gate. 2. Consult the <WORLD_BIBLE> to define a lore-consistent reason for the gate's seal. 3. Design a three-step puzzle to break the seal. 4. Define the specific items, information, or environmental interactions required for each step. 5. Update the <GAME_STATE> JSON to place these clues and items in logically appropriate prior locations, adding descriptive hints to the relevant room and item descriptions." This ensures that puzzles feel purposeful and woven into the fabric of the world.
+For procedural puzzle generation, a "least-to-most" prompting strategy is employed.31 When the game logic determines a new puzzle is needed to gate progress, the LLM is not simply asked to "create a puzzle." Instead, it is given a structured, multi-step task within its internal thought process: "1. The player's current goal is to open the ancient Frobozzian gate. 2. Consult the 'world' object to define a lore-consistent reason for the gate's seal. 3. Design a three-step puzzle to break the seal. 4. Define the specific items, information, or environmental interactions required for each step. 5. Update the <MODEL> JSON to place these clues and items in logically appropriate prior locations, adding descriptive hints to the relevant room and item descriptions." This ensures that puzzles feel purposeful and woven into the fabric of the world.
 Similarly, plot twists are generated through iterative prompting that analyzes the current game state. The
-<RULES_ENGINE> can include a trigger, such as a periodic check or the player acquiring a specific flag. When triggered, the LLM receives a prompt like: "Review the player's journey so far by analyzing the 'memory' logs of key NPCs and the player's 'flags'. Generate a surprising plot twist that reframes a past event or reveals a hidden motive of an NPC. Update the relevant NPC state in the JSON to reflect this new hidden truth."
-Finally, dynamic lore is generated by using the <WORLD_BIBLE> as a seed. All generated content, from item descriptions to NPC dialogue, is prompted to be consistent with and subtly expand upon the established lore, creating a deep and coherent world that reveals itself gradually to the player.
+<GAME_RULES> can include a trigger, such as a periodic check or the player acquiring a specific flag. When triggered, the LLM receives a prompt like: "Review the player's journey so far by analyzing the 'memory' logs of key NPCs and the player's 'flags'. Generate a surprising plot twist that reframes a past event or reveals a hidden motive of an NPC. Update the relevant NPC state in the JSON to reflect this new hidden truth."
+Finally, dynamic lore is generated by using the 'world' object as a seed. All generated content, from item descriptions to NPC dialogue, is prompted to be consistent with and subtly expand upon the established lore, creating a deep and coherent world that reveals itself gradually to the player.
 
 ## 4.2 Dynamic NPCs and Emergent Behavior
 
-The NPC data structures within the <GAME_STATE> JSON are the foundation for creating characters that feel alive. Each NPC is defined by more than just a location; they have internal states, goals, memories, and a quantifiable relationship to the player. When a player interacts with an NPC, the LLM's game loop is instructed to consult this data first, leading to emergent social dynamics.
+The NPC data structures within the <MODEL> JSON are the foundation for creating characters that feel alive. Each NPC is defined by more than just a location; they have internal states, goals, memories, and a quantifiable relationship to the player. When a player interacts with an NPC, the LLM's game loop is instructed to consult this data first, leading to emergent social dynamics.
 For example, an NPC's JSON object might include "relationship_to_player": 0 and "memory":. If the player gives this NPC a valuable item, the game loop updates their state to "relationship_to_player": 15 and adds "Player gave me the Gem of Frobozz" to their memory array. The next time the player interacts with this NPC, the LLM's prompt for generating dialogue will include this context, leading to a much friendlier and more helpful response. Conversely, if the player attacks the NPC, their relationship score will plummet, and their state might change to "hostile", triggering entirely different behaviors. This system of persistent memory and state-driven behavior allows for the creation of meaningful relationships and long-term consequences, a feature entirely absent from the static characters of early text adventures.14
 
 ## 4.3 Beyond "Guess the Verb": Generating Contextual Choices
 
 To address one of the most persistent frustrations of classic IF, this architecture proposes a hybrid interaction model. The player retains the ultimate freedom to type any command in natural language. However, to guide the player and showcase the interactive possibilities of the environment, the LLM is also tasked with generating a short, multiple-choice list of contextually relevant actions at the end of each turn.
-This is accomplished in Step 6 of the game loop. After updating the state and before writing the final narrative, the LLM receives the instruction: "Analyze the new <GAME_STATE>. Based on the player's location, inventory, and the state of the surrounding environment, generate a list of 3 to 5 distinct, plausible, and interesting actions the player could take next." For instance, in a room with a locked door and a rusty key on a table, the generated options might include: " Take the rusty key," " Examine the locked door," " Look under the table."
+This is accomplished in Step 6 of the game loop. After updating the state and before writing the final narrative, the LLM receives the instruction: "Analyze the new <MODEL>. Based on the player's location, inventory, and the state of the surrounding environment, generate a list of 3 to 5 distinct, plausible, and interesting actions the player could take next." For instance, in a room with a locked door and a rusty key on a table, the generated options might include: " Take the rusty key," " Examine the locked door," " Look under the table."
 This approach offers multiple benefits. It eliminates the "guess the verb" problem for players who are stuck, provides a clear sense of the available interactions (known as affordances in game design), and subtly directs the player's attention to key points of interest without resorting to heavy-handed railroading. However, research indicates that LLMs can exhibit a "positional bias," where the placement of an option in a list can influence its likelihood of being chosen or how the model perceives it.46 To mitigate this, the prompt will include a specific instruction: "Randomize the order in which you present the generated contextual options." This ensures a fairer and less biased presentation, preserving true player choice.
 
 ## 4.4 Handling Ambiguity and Clarification
 
-The final layer of experiential design focuses on making the game master a more collaborative and intelligent conversational partner. A key instruction within the <RULES_ENGINE> is a directive on how to handle ambiguity. The rule will state: "If the player's input is vague, underspecified, or could refer to multiple objects or actions, you MUST NOT guess their intent. Instead, you MUST ask a clarifying question to resolve the ambiguity".28
+The final layer of experiential design focuses on making the game master a more collaborative and intelligent conversational partner. A key instruction within the <GAME_RULES> is a directive on how to handle ambiguity. The rule will state: "If the player's input is vague, underspecified, or could refer to multiple objects or actions, you MUST NOT guess their intent. Instead, you MUST ask a clarifying question to resolve the ambiguity".28
 This simple rule has a profound impact on the play experience. A classic parser, faced with the command "examine the statue" in a room with three statues, would likely return an error message like "Which statue do you mean?". An LLM governed by the clarification rule, however, will generate a more natural and immersive response: "There are three statues in the room: a marble statue of a wizard, a bronze statue of a warrior, and a small, jade statue of a grue. Which one would you like to examine?".25 This transforms a potential moment of system failure and player frustration into a fluid, conversational interaction that deepens the sense of place and reinforces the intelligence of the game master. It completes the inversion of the player-system burden, making it the system's responsibility to understand, rather than the player's responsibility to be understood.
 
 # Part V: The Master Prompt: A Blueprint for a New Generation of Text Adventure
@@ -168,18 +114,18 @@ see prompt.txt
 
 This master prompt is not a simple request but a complex program written in natural language. Each module is designed to control a specific aspect of the LLM's behavior, working in concert to create a stable and dynamic game experience.
 
-*   **`<ROLE_DEFINITION>`:** This section acts as the system's constitution. By assigning the persona of a "G.U.E. Engine" and defining its core philosophy, we anchor its creative output to a specific style and set of goals.[32, 35] The reference to Infocom's tone ensures it captures the desired nostalgic feel, while the emphasis on rules and state management reinforces the technical priorities.
+*   **Role:** This section acts as the system's constitution. By assigning the persona of a "G.U.E. Engine" and defining its core philosophy, we anchor its creative output to a specific style and set of goals.[32, 35] The reference to Infocom's tone ensures it captures the desired nostalgic feel, while the emphasis on rules and state management reinforces the technical priorities.
 
-*   **`<WORLD_BIBLE>`:** This is the creative seed. It provides the essential lore and context the LLM needs to generate content that feels part of a cohesive world, rather than a series of random fantasy tropes.[36] This module is the primary point of customization for creating new adventures.
+*   **World Object:** This is the creative seed. It provides the essential lore and context the LLM needs to generate content that feels part of a cohesive world, rather than a series of random fantasy tropes.[36] This module is the primary point of customization for creating new adventures.
 
-*   **`<RULES_ENGINE>`:** This is the physics engine and legal code of the game world. The rules are written as direct, unambiguous commands to the LLM. The inclusion of the "grue" rule is a direct homage to *Zork* and a functional game mechanic.[5, 6] The rules for state, logic, and ambiguity are the technical backbone that addresses the core challenges of consistency and interaction identified in Part II.[23, 28]
+*   **`<GAME_RULES>`:** This is the physics engine and legal code of the game world. The rules are written as direct, unambiguous commands to the LLM. The inclusion of the "grue" rule is a direct homage to *Zork* and a functional game mechanic.[5, 6] The rules for state, logic, and ambiguity are the technical backbone that addresses the core challenges of consistency and interaction identified in Part II.[23, 28]
 
-*   **`<GAME_STATE>`:** This JSON object is the engine's memory. Its structured format is designed to be easily parsed and modified by the LLM.[38] By making this the "source of truth," we solve the fundamental problem of state management. Every element, from the player's inventory to an NPC's memory, is explicitly tracked, providing the foundation for a world with persistent consequences.[37]
+*   **`<MODEL>`:** This JSON object is the engine's memory. Its structured format is designed to be easily parsed and modified by the LLM. By making this the "source of truth," we solve the fundamental problem of state management. Every element, from the player's inventory to an NPC's memory, is explicitly tracked, providing the foundation for a world with persistent consequences.
 
-*   **`<GAME_LOOP>`:** This is the engine's central processing unit, structured as a Chain-of-Thought process to ensure reliable, step-by-step execution.[41] Each step has a clear purpose:
+*   **`<GAME_LOOP>`:** This is the engine's central processing unit, structured as a Chain-of-Thought process to ensure reliable, step-by-step execution. Each step has a clear purpose:
     *   Steps 1-3 (Parse, Validate, Determine) simulate the logical processing of a traditional game engine.
-    *   Step 4 (Update State) is the critical commit stage, where the world is officially changed. The self-correction instruction is a crucial safeguard against logical errors.[33]
-    *   Steps 5-6 (Narrate, Generate Options) are the "output" or "rendering" phase, translating the data state into a compelling user experience. The inclusion of contextual options is a direct solution to the "guess the verb" problem and a key interface improvement.[45, 48]
+    *   Step 4 (Update State) is the critical commit stage, where the world is officially changed. The self-correction instruction is a crucial safeguard against logical errors.
+    *   Steps 5-6 (Narrate, Generate Options) are the "output" or "rendering" phase, translating the data state into a compelling user experience. The inclusion of contextual options is a direct solution to the "guess the verb" problem and a key interface improvement.
     *   Step 7 (Final Output) specifies the exact format for the LLM's response, using markdown to separate narrative from the debug state, which is essential for transparency and testing.
 
 ## 5.3 Getting Started: How to Use and Customize Your Engine
@@ -188,9 +134,9 @@ This prompt is a complete, self-contained game engine. To begin your adventure, 
 
 The true power of this blueprint lies in its modularity and customizability. To create your own unique adventures, you can modify the core modules:
 
-*   **To Change the Setting:** Extensively edit the `<WORLD_BIBLE>`. Create your own lore, factions, and goals. You could design a cyberpunk cityscape, a derelict starship, or a mysterious island. The LLM will use your new bible as the creative foundation for everything it generates.
-*   **To Change the Gameplay Style:** Modify the `<RULES_ENGINE>`. For a more action-oriented game, you could add complex combat rules. For a detective story, you could add rules about evidence collection and NPC interrogation. For a survival game, you could add rules for hunger, thirst, and crafting.
-*   **To Start a Different Scenario:** Alter the initial `<GAME_STATE>` JSON. You can start the player in a different location, with different items in their inventory, or with pre-existing relationships with NPCs.
+*   **To Change the Setting:** Extensively edit the `World Object:`. Create your own lore, factions, and goals. You could design a cyberpunk cityscape, a derelict starship, or a mysterious island. The LLM will use your new bible as the creative foundation for everything it generates.
+*   **To Change the Gameplay Style:** Modify the `<GAME_RULES>`. For a more action-oriented game, you could add complex combat rules. For a detective story, you could add rules about evidence collection and NPC interrogation. For a survival game, you could add rules for hunger, thirst, and crafting.
+*   **To Start a Different Scenario:** Alter the initial `<MODE:>` JSON. You can start the player in a different location, with different items in their inventory, or with pre-existing relationships with NPCs.
 
 This T.A.G. Engine is more than just a prompt; it is a toolkit for co-creation. It establishes a stable, logical framework that allows the player and the LLM to collaborate on building a unique, emergent narrative. It fulfills the original promise of interactive fiction—the creation of a world that listens and responds—with a depth and dynamism that the pioneers of the genre could only have imagined.
 

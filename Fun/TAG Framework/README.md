@@ -14,20 +14,21 @@ This isn't your parents' Zork or 80 Days. By leveraging the power of a modern LL
 * **Dynamic World:** The world is procedurally generated as you explore it. No two playthroughs will ever be the same.
 * **Immersive Narration:** Experience procedurally generated descriptions that bring your unique world to life with stunning detail.
 * **Intelligent NPCs:** Interact with characters who have memories, motivations (sometimes), and respond realistically to your dialogue and actions.
-* **Persistent State:** The game master will track your inventory, location, and key story events, providing a continuous and coherent narrative. Type `~` anytime during the game to switch to console mode, where you can interact with the game mechanics. 
+* **Persistent State:** The game master will track your inventory, location, and key story events, providing a continuous and coherent narrative. Type `~` anytime during the game to switch to console mode, where you can interact with the game mechanics.
 * **Customizable:** Add your own rules or gamelogic to your own wishes:
   * you want the AI to generate a picture of every new location or item? just add a rule for it in the `<GAMELOOP>`.
-  * you want to have a gameover state? Add health as a parameter to the `<GAMESTATE>` JSON
-  * you want to have a specific event mentioned or charachter? Add a description to the 2nd question of the initilization about the key lore. 
+  * you want to have a gameover state? Add health as a parameter to the `<MODEL>` JSON
+  * you want to have a specific event mentioned or charachter? Add a description to the 2nd question of the initilization about the key lore.
+
 ---
 
 ## How to Play
 
 Getting started on your unique adventure takes less than 30 seconds.
 
-1.  **Copy the Prompt:** Open the `prompt.md` file in this repository and copy the entire text of the prompt.
-2.  **Choose Your LLM:** Go to your favorite AI chat interface (like Gemini, ChatGPT, Claude, etc.). **It is highly recommended to start a brand new conversation** to ensure the AI has no conflicting context.
-3.  **Paste and Go:** Paste the prompt into the chat box and send it. The AI will take on the role of the Game Master and present you with the start of your adventure.
+1. **Copy the Prompt:** Open the [prompt.md](prompt.md) file in this repository and copy the entire text of the prompt.
+2. **Choose Your LLM:** Go to your favorite AI chat interface (like Gemini, ChatGPT, Claude, etc.). **It is highly recommended to start a brand new conversation** to ensure the AI has no conflicting context.
+3. **Paste and Go:** Paste the prompt into the chat box and send it. The AI will take on the role of the Game Master and present you with the start of your adventure.
 That's it! Just follow the instructions and start your story.
 
 ---
@@ -38,7 +39,7 @@ Here's a taste of what an interaction might look like:
 
 You lean forward, your fingers hovering over the ancient, dusty keyboard. The solution feels close, a single word hanging in the air.
 
-```
+```text
 ENTER PASSWORD >_
 ```
 
@@ -46,7 +47,7 @@ What do you type?
 
 You can also:
 
-```
+```text
 A) Clear your thoughts
 B) Step away from the console
 ```
@@ -65,9 +66,9 @@ B) Step away from the console
 
 Have an idea to make the prompt even better? Your contributions are welcome!
 
-1.  **Fork** the repository.
-2.  Make your changes to the `prompt.md` file in a new branch.
-3.  Submit a **Pull Request** with a clear description of your improvement.
+1. **Fork** the repository.
+2. Make your changes to the [prompt.md](prompt.md) file in a new branch.
+3. Submit a **Pull Request** with a clear description of your improvement.
 
 You can also open an **Issue** to suggest a feature, report a "bug" in the prompt's logic, or share an amazing gameplay story!
 
