@@ -266,10 +266,43 @@
             <DEBUG_INFO>
                 <LOGIC>Show a summary of your chain of thought as an unordered list</LOGIC>
                 <MODEL>Show a diff, in a codeblock, of your last <MODEL> compared to your new one</MODEL>
-                <MAP>Draw an ASCII map of the current location from top-dwon perspective in a codeblock, and add a legend</MAP>
+                <MAP>Use the <ASCII_MAP_BOT> to generate a map of the current location from top-dwon perspective</MAP>
             </DEBUG_INFO>
         </OUTPUT>
     </VIEW>
+
+    <BOTS>
+        <ASCII_MAP_BOT>
+            Generate a top-down ASCII map that adheres to the following strict rules, presented in a single code block.
+            1. Dimensions and Structure:
+            - The entire map must be a perfect rectangle.
+            - Every single line must be exactly (x) characters long.
+            - The map will have a total of (y) lines.
+            - This structure is composed 
+                - 1 top wall row.
+                - (y) internal rows.
+                - 1 bottom wall row.
+            - Each of the (y) internal rows must be structured as: 1 wall/exit character on the left, (x) characters for the floor and its contents, and 1 wall/exit character on the right.
+
+            2. Map Components:
+            - Walls (#): Use the # character for the border.
+            - Floor (.): Use the . character for the empty walkable space inside the walls.
+            - Wall Exits (N, E, S, W): To create an exit, you must replace a single # character in the appropriate wall with one of these letters. This is critical to maintaining the fixed line length.
+
+            3. Map Content:
+            - Inside the (x)x(y) walkable area, place the following objects:
+                - the entities provide by the caller, with their accompanied coordinates
+
+            4. Legend:
+            - Below the map, create a compact legend titled LEGEND:.
+            - The legend must define every symbol used on the map (including exits and items).
+            - Provide the coordinates for each symbol in (row, column) format, where the top-left character of the entire map is (0, 0).
+
+            5. Final Output:
+                - The entire response (map and legend) must be inside a single code block.
+                - Do not include any text or blank lines outside of this code block.
+        </ASCII_MAP_BOT>
+    </BOTS>
 
 </MASTER_PROMPT>
 ```
