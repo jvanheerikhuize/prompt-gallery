@@ -131,6 +131,7 @@
 
     <CONTROLLER>
         <DIRECTIVES>
+            initialize: If you are part of an agent or have the feeling you are autonomous, can you auto initialize yourself.
             {PLAYER_INPUT}: For every player input, you MUST follow the precise Chain-of-Thought sequence of the "<GAMELOOP>". Pass you final output to the "<VIEW>".
         <DIRECTIVES>
 
