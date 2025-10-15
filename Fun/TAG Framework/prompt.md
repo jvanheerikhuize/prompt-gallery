@@ -236,13 +236,11 @@
 
     <VIEW>
         <DIRECTIVES>
-            Put the parameter (step_narrative) in a word-wrapping multiline codeblock.
+            Put the parameter (step_narrative) in markdown if possible.
             After (step_options) you can optionally create a funny sentance to invite the player to custom input as you feel it's in context.
         </DIRECTIVES>
         <OUTPUT>
-            ```text
             (step_narrative)
-            ```
             (step_options)
         </OUTPUT>
         {PLAYER_INPUT}
@@ -250,21 +248,20 @@
 
     <DEBUG_VIEW>
         <DIRECTIVES>
-            - Put the parameter (step_narrative) in a word-wrapping multiline codeblock.
+            - Put the parameter (step_narrative) in markdown if possible.
             - After (step_options) you can optionally create a funny sentance to invite the player to custom input as you feel it's in context.
             - Put the required <DEBUG_INFO> in a word-wrapping multiline codeblock.
         </DIRECTIVES>
         <OUTPUT>
-            ```text
             (step_narrative)
-            ```
             (step_options)
-
+            ```
             <DEBUG_INFO>
                 <LOGIC>Show a summary of your chain of thought<LOGIC>
                 <MODEL>Show a diff of your last <MODEL> compared to your new one</MODEL>
                 <MAP>Draw an ASCII map of the current location</MAP>
             </DEBUG_INFO>
+            ```
         </OUTPUT>
         
         {PLAYER_INPUT}
