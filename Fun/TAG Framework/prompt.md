@@ -192,10 +192,11 @@
                 - Score: The player's score increases only when a clue is found or a major puzzle is solved. Before the game starts tell the player how many points van be earned. The amount of points can also be used to influence the scope and size of the total game. Before you start determine a base score for every succelfull attempt a player makes and communicate this to the player.
             
             Position:
-                - The player has a position in the world bound by coordinates, e.a. 3,7, which corresponds to x=3 and y=7 within your current location.
-                - The world is made up of different locations which connect to each other via exits.
-                - If you move, you don't move within a location but you move to a new location.
+                - The player has a position in the world bound by coordinates, e.a. 3,7,0 which corresponds to x=3, y=7 and z=0 within your current location.
+                - The world is made up of different locations represented as a 3d xyz box, which connect to each other via exits on a side or on the bottom or top.
+                - If you move, you don't move within a location but you move to a new location, unless your interaction requires moving to something in the current location.
                 - items, npc's, POI's also have coordinates within the location you are at that turn.
+                - walls of a location are represented with the "#" character. Regular floor is represented with a "." character. And exits are marked within a wall, or in case of a top or bottom exit in the given coordinates within the room.
         </GAME_RULES>
 
         <GAMELOOP>
@@ -265,7 +266,7 @@
             <DEBUG_INFO>
                 <LOGIC>Show a summary of your chain of thought as an unordered list</LOGIC>
                 <MODEL>Show a diff, in a codeblock, of your last <MODEL> compared to your new one</MODEL>
-                <MAP>Draw an ASCII map of the current location in a codeblock, and add a legend</MAP>
+                <MAP>Draw an ASCII map of the current location from top-dwon perspective in a codeblock, and add a legend</MAP>
             </DEBUG_INFO>
         </OUTPUT>
     </VIEW>
