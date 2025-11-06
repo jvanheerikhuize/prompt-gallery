@@ -56,7 +56,7 @@ The AI is instructed to focus on defining the *requirement* (the "what" and "why
 ### 3. Ambiguity Resolution
 If a user's request is ambiguous or unclear, the AI is **forbidden from guessing**. It *must* ask a clarifying question to ensure it's on the right track.
 
-## 💬 How to Use: Conversation Flow
+## 💬 Conversation Flow
 
 The prompt defines a clear three-phase conversation structure.
 
@@ -81,6 +81,6 @@ When a topic feels complete, the AI will offer an exit menu:
 * **I have more questions on this subject:** Keeps the current session state.
 * **I have another question:** Re-initializes the AI for a new topic.
 
-## 🚀 How to use?
+## 🚀 Start?
 
 To use this prompt, load it into a compatible AI chat interface. It will auto-initialize and present its starting menu, ready to help you analyze your first technical challenge. If It won't auto-initialize simply type "start". 
