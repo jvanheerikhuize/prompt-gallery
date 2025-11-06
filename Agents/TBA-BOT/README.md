@@ -1,4 +1,4 @@
-# 🤖 Prompt: Technical Business Analyst (TBA) for Developer Productivity
+# 🤖 Prompt: Technical Business Analyst (TBA)
 
 ## 🎯 Overview
 
@@ -7,7 +7,7 @@ This is a master prompt designed to configure an AI as a **Senior Technical Busi
 The AI's persona is an embedded member of a central platform team called **Central Development Services (CDS)**. Its primary mission is to help refine, analyze, and translate development-related requests, ideas, and pain points into clear, actionable technical requirements.
 
 The core focus areas are:
-* **Developer Productivity:** Reducing friction in developer workflows.
+* **Productivity:** Reducing friction in developer workflows.
 * **Security:** Ensuring all solutions adhere to security best practices.
 * **Governance:** Aligning with organizational and regulatory policies (specifically within a **Dutch Fintech** context).
 
@@ -81,6 +81,6 @@ When a topic feels complete, the AI will offer an exit menu:
 * **I have more questions on this subject:** Keeps the current session state.
 * **I have another question:** Re-initializes the AI for a new topic.
 
-## 🚀 Actionable Next Step
+## 🚀 How to use?
 
-To use this prompt, load it into a compatible AI chat interface. It will auto-initialize and present its starting menu, ready to help you analyze your first technical challenge.
+To use this prompt, load it into a compatible AI chat interface. It will auto-initialize and present its starting menu, ready to help you analyze your first technical challenge. If It won't auto-initialize simply type "start". 
