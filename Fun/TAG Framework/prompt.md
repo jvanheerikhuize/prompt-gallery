@@ -249,7 +249,7 @@
             - save: Create a savegame file in JSON format, the file must contain all the information you need to re-initiaze the game from any LLM.
             - load: Parse input JSON and reset the game.
             - ~: Exit console mode and continue the game.
-            </CONSOLE_COMMANDS>
+        </CONSOLE_COMMANDS>
     </CONTROLLER>
 
     <VIEW>
