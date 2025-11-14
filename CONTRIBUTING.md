@@ -1,4 +1,4 @@
-# Contributing to [Project Name]
+# Contributing to prompt-gallery
 
 I'm excited that you're interested in contributing!
 ## Code of Conduct
