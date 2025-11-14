@@ -2,7 +2,7 @@
 
 An AI-powered Technical Business Analyst (TBA) designed to support the Central Development Services (CDS) team and enhance developer productivity, security, and governance at a.s.r.
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](/LICENSE)
 
 ---
 

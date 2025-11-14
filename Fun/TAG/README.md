@@ -2,7 +2,7 @@
 
 Welcome to T.A.G. the Text Adventure Generator. T.A.G. is a single, powerful prompt designed to turn any advanced Large Language Model (LLM) into a dynamic, next-generation text adventure game master. Forget predefined paths and a limited set of commands. This prompt creates a living, breathing world that reacts to your every decision, description, and crazy idea. Your story is not pre-written; it's procedurally generated in real-time, just for you.
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](/LICENSE)
 
 ---
 
