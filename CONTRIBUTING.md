@@ -9,7 +9,7 @@ All contributors are expected to follow my [Code of Conduct](CODE_OF_CONDUCT.md)
 
 We welcome contributions of all types, from fixing bugs to adding new features or improving documentation.
 
-If you're unsure where to start, check the [open issues]([LINK_TO_ISSUES_PAGE]) for items tagged `good first issue` or `help wanted`.
+If you're unsure where to start, check the [open issues]([/issues]) for items tagged `bug` or `help wanted`.
 
 ### 1. Before You Start
 
@@ -20,33 +20,21 @@ If you're unsure where to start, check the [open issues]([LINK_TO_ISSUES_PAGE]) 
 ### 2. The Contribution Workflow
 
 1.  **Fork the Repository:** Create your own fork of the project.
-2.  **Clone Your Fork:** `git clone https://github.com/[YOUR_USERNAME]/[PROJECT_NAME].git`
-3.  **Set Upstream Remote:** `git remote add upstream https://github.com/[ORIGINAL_ORGANIZATION]/[PROJECT_NAME].git`
-4.  **Install Dependencies:** Run `[DEPENDENCY_INSTALL_COMMAND]` (e.g., `npm install`, `pip install -r requirements.txt`).
-5.  **Create a Branch:** Create a new branch for your changes.
+2.  **Clone Your Fork:** `git clone https://github.com/jvanheerikhuize/prompt-gallery.git`
+3.  **Create a Branch:** Create a new branch for your changes.
     * We use the following naming convention:
         * `feature/[issue-id]-short-description` (e.g., `feature/123-add-auth-endpoint`)
         * `fix/[issue-id]-fix-typo` (e.g., `fix/456-fix-login-bug`)
         * `docs/[issue-id]-update-readme`
     * **Example:** `git checkout -b feature/123-add-auth-endpoint`
-6.  **Make Your Changes:** Write your code and tests!
-7.  **Run Tests:** Ensure all tests pass. `[TEST_COMMAND]` (e.g., `npm test`).
+4.  **Make Your Changes:** Write your code and tests!
 
 ### 3. Development Standards
 
 To maintain code quality and streamline reviews, we enforce the following standards.
 
-#### 🧪 Testing
-* All new features **must** include corresponding unit or integration tests.
-* Bug fixes **should** include a regression test to prevent the issue from recurring.
-* All existing tests **must** pass before submitting a pull request.
-
-#### 💅 Coding Style
-* This project uses `[LINTER_OR_FORMATTER_NAME]` (e.g., ESLint, Prettier, Black) to enforce code style.
-* Please run `[FORMATTING_COMMAND]` (e.g., `npm run lint -- --fix`) before committing your changes.
-
 #### 💬 Commit Messages
-We use **[Conventional Commits](https://www.conventionalcommits.org/)** to maintain a clear and automated version history. This is crucial for our changelogs and release process.
+I use **[Conventional Commits](https://www.conventionalcommits.org/)** to maintain a clear and automated version history. This is crucial for our changelogs and release process.
 
 Your commit message header (the first line) should follow this format:
 
@@ -68,23 +56,17 @@ Your commit message header (the first line) should follow this format:
 
 ### 4. Submitting Your Pull Request (PR)
 
-1.  **Sync with Upstream:** Before pushing, rebase your branch on the latest `main` (or `master`) from the `upstream` remote to incorporate any recent changes.
-    ```bash
-    git fetch upstream
-    git rebase upstream/main
-    ```
-2.  **Push Your Branch:** `git push origin feature/123-add-auth-endpoint`
-3.  **Open a Pull Request:** Go to the original repository on GitHub and open a new Pull Request.
-4.  **Fill Out the Template:** Our PR template will appear. **Please fill it out completely.** This is vital for providing context to the reviewers.
+1.  **Push Your Branch:** `git push origin feature/123-add-auth-endpoint`
+2.  **Open a Pull Request:** Go to the original repository on GitHub and open a new Pull Request.
+3.  **Fill Out the Template:** Our PR template will appear. **Please fill it out completely.** This is vital for providing context to the reviewers.
     * Link the issue(s) your PR resolves (e.g., "Closes #123").
     * Describe *what* you changed and *why*.
-    * Include screenshots or GIFS for any UI changes.
 
 ### 5. The Review Process
 
-* The platform team (maintainers) will review your PR.
-* We aim to provide an initial review within `[X business days]`.
+* The maintainers will review your PR.
+* We aim to provide an initial review within `[2 business days]`.
 * A maintainer may request changes. Please be open to feedback!
-* Once your PR is approved and all CI checks pass, a maintainer will merge it.
+* Once your PR is approved, a maintainer will merge it.
 
 Thank you for contributing!
