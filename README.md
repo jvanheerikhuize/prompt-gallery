@@ -4,6 +4,8 @@ Welcome to my Prompt Gallery! This is a curated collection of advanced and effec
 
 Whether you're a seasoned prompt engineer, a developer looking to integrate AI, or just a curious enthusiast, this gallery is for you. My goal is to create a powerful, community-driven resource for everyone working with large language models and other generative AI.
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 ---
 
 ## 🌟 Why Contribute?
