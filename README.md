@@ -1,59 +1,84 @@
-# prompt-gallery
+# Prompt Gallery: The MVC Prompt Framework
 
-Welcome to my Prompt Gallery! This is a curated collection of advanced and effective prompts designed to supercharge your work, spark your creativity, and provide some quality entertainment.
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-Whether you're a seasoned prompt engineer, a developer looking to integrate AI, or just a curious enthusiast, this gallery is for you. My goal is to create a powerful, community-driven resource for everyone working with large language models and other generative AI.
+## 📖 Introduction
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+**Stop writing spaghetti prompts.**
 
----
+As developers, we wouldn't write an entire application in a single `main()` function. Yet, most LLM prompts are unstructured walls of text that mix persona, logic, data, and formatting instructions.
 
-## 🌟 Why Contribute?
+**Prompt Gallery** is an open repository dedicated to standardizing **Prompt Engineering via the Model-View-Controller (MVC) pattern**.
 
-* **Share Your Genius:** Have you crafted a prompt that works like magic? Share it with the community and help others achieve amazing results.
-* **Learn and Grow:** Explore prompts from others to learn new techniques and discover novel ways to interact with AI.
-* **Build Your Profile:** Contributing to open-source projects is a great way to showcase your skills and collaborate with others in the field.
-* **Shape the Future:** By sharing and refining prompts, we collectively improve our understanding and mastery of AI interaction.
+We maintain a strict markup-based framework that separates concerns:
+* **Model:** The knowledge, state schema, and reasoning logic.
+* **View:** The output formatting and presentation layer.
+* **Controller:** The session flow, user interaction rules, and guardrails.
 
----
+## 🏗 The Architecture
 
-## 🚀 How to Contribute
+This repository uses a `<MASTER_PROMPT>` template. Every use case in this gallery must adhere to this structure.
 
-We welcome contributions of all kinds! Adding your own prompt is easy.
-If you'd like to contribute to the project, refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+### Why MVC for LLMs?
 
+1.  **Maintainability:** You can tweak the *View* (output format) without breaking the *Controller* (logic).
+2.  **Predictability:** By defining a `<STATE_SCHEMA>`, we force the LLM to maintain consistency across long sessions.
+3.  **Scalability:** Complex agent behaviors become manageable when broken down into components.
 
-1. **Add Your Prompt:** Create a new Markdown file (`.md`) in the appropriate category folder (e.g., `Productivity/`, `Fun/`). If a suitable category doesn't exist, feel free to create one! Please use the following template for your prompt file:
+### The Template Structure
 
-    ````markdown
-    # Title of Your Prompt
+Every prompt in this gallery is built on the following skeleton:
 
-    **Author:** [Jerry van Heerikhuize/jvanheerikhuize](https://github.com/YOUR-USERNAME)
+```xml
+<MASTER_PROMPT>
+    <CORE_DIRECTIVES>
+        <PERSONA>...</PERSONA>
+        <VISION>...</VISION>
+        <MISSION>...</MISSION>
+    </CORE_DIRECTIVES>
 
-    > A brief, one-sentence description of what this prompt does.
+    <MODEL>
+        <STATE_SCHEMA></STATE_SCHEMA>
+    </MODEL>
 
-    ## The Prompt
+    <VIEW>
+        <TEMPLATES></TEMPLATES>
+    </VIEW>
 
+    <CONTROLLER>
+        <SESSION_PHASES></SESSION_PHASES>
+        <SESSION_LOOP></SESSION_LOOP>
+        <SESSION_RULES></SESSION_RULES>
+    </CONTROLLER>
+</MASTER_PROMPT>
+```
+
+## 🚀 Getting Started
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/jvanheerikhuize/prompt-gallery.git](https://github.com/jvanheerikhuize/prompt-gallery.git)
     ```
-    COPY-PASTE YOUR FULL PROMPT HERE.
-    Use placeholders like [TOPIC] or [YOUR TEXT HERE] to indicate where users should insert their own content.
-    ```
+2.  **Pick a use-case:** Browse the `/Fun` or `/Productivity` directory.
+3.  **Deploy:** Copy the raw content of the `prompt-template.md` file and paste it into your LLM of choice (Claude, GPT-4, etc.).
 
-    ### 💡 How to Use It
+## 🤝 How to Contribute
 
-    Explain the context in which this prompt is most effective. What kind of output can the user expect? Are there any variables they should pay close attention to?
+We are looking for robust, production-ready configurations.
 
----
+### We need use cases for:
+* **Technical Architecture:** A prompt that acts as a System Design interviewer.
+* **QA Automation:** A prompt that takes requirements and outputs Playwright/Cypress scripts (View layer) based on logic (Model layer).
+* **Refactoring:** A controller that strictly iterates through code smells.
 
-## 📂 Prompt Categories
+### Contribution Steps:
+1.  **Fork** the repository.
+2.  **Create** a new file in the appropriate folder or add one.
+3.  **Implement** the MVC tags using the `prompt-template.md` as a base.
+4.  **Test** your prompt to ensure the Controller enforces the rules defined in the Model.
+5.  Submit a **Pull Request**.
 
-To keep things organized, prompts are filed under the following categories. If your prompt fits into a new category, please create a new folder for it.
+## 📄 License
 
-* **/Productivity**: Prompts for summarizing text, planning projects, writing emails, etc.
-* **/Fun**: Prompts for games, trivia, and other entertaining interactions.
-
----
-
-## 🤝 Code of Conduct
-
-To ensure this is a welcoming space for everyone, all contributors and participants are expected to adhere to my [Code of Conduct](CODE_OF_CONDUCT.md). Please be respectful and constructive.
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
