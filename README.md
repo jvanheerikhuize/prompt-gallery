@@ -5,7 +5,7 @@
 
 ## 📖 Introduction
 
-**Stop writing spaghetti prompts.**
+**Stop writing spaghetti prompts!**
 
 As developers, we wouldn't write an entire application in a single `main()` function. Yet, most LLM prompts are unstructured walls of text that mix persona, logic, data, and formatting instructions.
 
@@ -18,7 +18,7 @@ We maintain a strict markup-based framework that separates concerns:
 
 ## 🏗 The Architecture
 
-This repository uses a `<MASTER_PROMPT>` template. Every use case in this gallery must adhere to this structure.
+This repository uses a `<MASTER_PROMPT>` template the `prompt-template.md` file. Every use case in this gallery must adhere to this structure.
 
 ### Why MVC for LLMs?
 
@@ -145,10 +145,10 @@ Every prompt in this gallery is built on the following skeleton:
 
 We are looking for robust, production-ready configurations.
 
-### We need use cases for:
-* **Technical Architecture:** A prompt that acts as a System Design interviewer.
-* **QA Automation:** A prompt that takes requirements and outputs Playwright/Cypress scripts (View layer) based on logic (Model layer).
-* **Refactoring:** A controller that strictly iterates through code smells.
+### I need use cases for:
+* **Drawing in ASCII:** A prompt that acts as a text based designer.
+* **Performance Abstraction:** A prompt that takes a prompt and compresses it for performance without quality loss.
+* **LLM Benchmarker:** A prompt that is able to scan its'model for features. 
 
 ### Contribution Steps:
 1.  **Fork** the repository.
