@@ -11,14 +11,14 @@ As developers, we wouldn't write an entire application in a single `main()` func
 
 **Prompt Gallery** is an open repository dedicated to standardizing **Prompt Engineering via the Model-View-Controller (MVC) pattern**.
 
-We maintain a strict markup-based framework that separates concerns:
+I maintain a strict markup-based framework that separates concerns:
 * **Model:** The knowledge, state schema, and reasoning logic.
 * **View:** The output formatting and presentation layer.
 * **Controller:** The session flow, user interaction rules, and guardrails.
 
 ## 🏗 The Architecture
 
-This repository uses a `<MASTER_PROMPT>` template the `prompt-template.md` file. Every use case in this gallery must adhere to this structure.
+This repository uses a `<MASTER_PROMPT>` template the `[prompt-template.md](prompt-template.md)` file. Every use case in this gallery must adhere to this structure.
 
 ### Why MVC for LLMs?
 
