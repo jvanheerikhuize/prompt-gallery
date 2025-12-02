@@ -54,5 +54,4 @@ IF{
   Fmt: $FormatDirective [#VIEW/DIRECTIVES]
   Tpl: {$TemplateStructure} [#TEMPLATES]
 }
-::EOF::
 ```
