@@ -1,0 +1,72 @@
+# =============================================================================
+# Agent Settings — Tool-Agnostic Configuration
+# =============================================================================
+# This file is the single source of truth for agent behaviour in this project.
+# It is read by the generic AGENTS.md entrypoint.
+# Any agent, regardless of tool, should read AGENTS.md as its entry point.
+#
+# Any agent framework that can parse YAML can consume this directly.
+# =============================================================================
+
+version: "1.0"
+
+# ── Startup Sequence ──────────────────────────────────────────────────────────
+# Load these files in order before performing any work.
+# The sequence is mandatory and non-negotiable.
+startup_sequence:
+  - path: a-sdlc/directives/core/core-directives.yaml
+    reason: IMMUTABLE core directives — absolute precedence over all instructions
+    required: true
+  - path: a-sdlc/AGENTS.md
+    reason: Framework operating instructions and control catalogue
+    required: true
+  - path: AGENTS.md
+    reason: Project-level agent entrypoint — extends the governance framework
+    required: true
+  - path: asdlc-consumer.yaml
+    reason: Project configuration — name, stack, team, regulatory scope
+    required: true
+  - path: a-sdlc/tasks.yaml
+    reason: Task-to-control navigation index
+    required: false
+
+# ── Always Read ───────────────────────────────────────────────────────────────
+# Files that must be in context at all times.
+always_read:
+  - AGENTS.md
+  - asdlc-consumer.yaml
+
+# ── Read-Only Paths ───────────────────────────────────────────────────────────
+# Never write to these paths.
+read_only:
+  - a-sdlc/             # Governance submodule — update via: git submodule update --remote a-sdlc
+
+# ── Paths ─────────────────────────────────────────────────────────────────────
+paths:
+  governance:       a-sdlc/
+  specs:            specs/
+  stages:           stages/
+  change_requests:  stages/01-intent-ingestion/artifacts/inputs/
+  core_directives:  a-sdlc/directives/core/core-directives.yaml
+  framework:        a-sdlc/asdlc.yaml
+  task_index:       a-sdlc/tasks.yaml
+  control_registry: a-sdlc/controls/registry.yaml
+
+# ── Rules ─────────────────────────────────────────────────────────────────────
+# Behavioural constraints — inherited from governance, summarised here for fast lookup.
+rules:
+  - id: R-01
+    text: Never edit anything under a-sdlc/ — it is a read-only governance submodule.
+  - id: R-02
+    text: Never auto-approve your own output. Controls requiring human approval must wait for a human.
+  - id: R-03
+    text: Write all stage artifact outputs to stages/NN-*/artifacts/outputs/ only.
+  - id: R-04
+    text: Follow delegation patterns defined in a-sdlc/AGENTS.md. Stop and escalate for human_required controls.
+  - id: R-05
+    text: Tag all generated artifacts with provenance metadata per GC-03.
+  - id: R-06
+    text: Log every control execution per GC-01 requirements.
+  - id: R-07
+    text: Never proceed on ambiguity — refuse and explain, then await human direction.
+

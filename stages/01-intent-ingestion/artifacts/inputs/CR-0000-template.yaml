@@ -1,0 +1,47 @@
+# =============================================================================
+# Change Request Template
+# =============================================================================
+# A Change Request (CR) is the raw input to Stage 1 (Intent Ingestion).
+# The agent transforms this into a Feature Specification (FEAT-XXXX) in QC-01.
+#
+# Usage:
+#   1. Copy: cp CR-0000-template.yaml CR-XXXX-short-title.yaml
+#   2. Increment next_cr_id in asdlc-consumer.yaml
+#   3. Fill in all required fields
+#   4. Hand to agent — it will execute Stage 1 controls
+# =============================================================================
+
+id: "CR-0000"              # Unique change request ID — from asdlc-consumer.yaml cr_prefix + next_cr_id
+title: ""                  # One-line title of the requested change
+type: feature              # feature | bug | improvement | spike | security | compliance
+urgency: routine           # routine | urgent | emergency
+                           # emergency: triggers SA pre-notification and SC-03 fast-path
+
+requester:
+  name: ""
+  team: ""
+  contact: ""              # Email or Slack handle
+
+description: |
+  # What do you want? Describe the change in plain language.
+
+problem_statement: |
+  # What problem does this solve?
+  # - What pain points exist?
+  # - Who is affected?
+  # - What is the impact of not solving this?
+
+desired_outcome: |
+  # What does success look like? What will be different after this change?
+
+context: |
+  # Background, related decisions, or prior work the team should know about.
+
+constraints:
+  - ""                     # Known constraints, deadlines, or non-negotiables
+
+known_dependencies:
+  - ""                     # Other changes, systems, or teams this depends on
+
+ai_component_involved: null  # true | false | unknown
+                             # If true or unknown: AC-01 will run during Stage 1

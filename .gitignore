@@ -1,0 +1,27 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python (for a-sdlc scripts)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Secrets — never commit
+*.env
+.env*
+secrets/
+credentials/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/

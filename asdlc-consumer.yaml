@@ -1,0 +1,74 @@
+# =============================================================================
+# A-SDLC Consumer Project Manifest
+# =============================================================================
+# Edit this file to configure your project.
+# Agents load this file at session start to understand project context.
+# =============================================================================
+
+project:
+  id: ""                           # Unique project identifier (e.g. PRJ-0001)
+  name: ""                         # Human-readable project name
+  description: |
+    # Describe what this project builds and its purpose.
+  status: active                   # active | paused | archived
+
+  # ── Team ──────────────────────────────────────────────────────────────────
+  team:
+    product_owner: ""              # Name or contact
+    security_architect: ""
+    tech_lead: ""
+    contact: ""                    # Primary contact (email or Slack)
+
+  # ── Stack ─────────────────────────────────────────────────────────────────
+  # Describe the technology stack — agents use this for language-specific guidance
+  stack:
+    languages: []                  # e.g. [python, typescript]
+    frameworks: []                 # e.g. [fastapi, react]
+    runtime: []                    # e.g. [docker, kubernetes]
+    databases: []                  # e.g. [postgresql, redis]
+    cloud: []                      # e.g. [aws, azure, gcp]
+    ci_cd: []                      # e.g. [github-actions, gitlab-ci]
+
+  # ── AI Components ─────────────────────────────────────────────────────────
+  # Required for AC-01 (AI Risk Classification) in Stage 1
+  ai_component_involved: unknown   # true | false | unknown
+  ai_risk_tier: unknown            # minimal | limited | high | unacceptable | unknown
+                                   # Determined during Stage 1 → AC-01
+
+  # ── Regulatory Scope ──────────────────────────────────────────────────────
+  regulatory_scope:
+    dora_applicable: unknown       # true | false | unknown
+    eu_ai_act_applicable: unknown  # true | false | unknown
+    other: []                      # Other applicable frameworks
+
+# ── Governance ──────────────────────────────────────────────────────────────
+governance:
+  framework: a-sdlc
+  framework_version: "1.0"
+  framework_path: a-sdlc/         # Relative path to submodule
+  framework_repo: https://github.com/jvanheerikhuize/a-sdlc
+
+  # Controls to skip (requires justification — subject to audit)
+  skipped_controls: []
+  # Example:
+  # skipped_controls:
+  #   - id: SC-15
+  #     reason: "No AI/ML model in scope for this release"
+  #     approved_by: ""
+  #     approved_date: ""
+
+  # Artifact retention (inherited from DORA Art. 8(6) unless overridden)
+  artifact_retention_years: 7
+
+# ── Feature Tracking ─────────────────────────────────────────────────────────
+features:
+  id_prefix: FEAT                  # Prefix for feature specification IDs
+  next_id: 1                       # Increment after each new feature spec is created
+  cr_prefix: CR                    # Prefix for change request IDs
+  next_cr_id: 1                    # Increment after each new change request
+
+# ── Paths ────────────────────────────────────────────────────────────────────
+paths:
+  specs: specs/
+  stages: stages/
+  governance: a-sdlc/
