@@ -1,0 +1,83 @@
+# =============================================================================
+# SC-12 — SAST Scan Report
+# Control:   SC-12 SAST
+# Stage:     4 — Testing & Documentation
+# Feature:   FEAT-0001
+# =============================================================================
+# TEST-04 NOTE: T.A.G. deliverables are plain Markdown text files with no
+# compiled code. Traditional SAST tooling (SAST for Python, JS, etc.) does not
+# apply. This report documents a genuine static content security analysis of the
+# prompt text, which is the only meaningful static analysis possible for this
+# artefact type.
+# =============================================================================
+
+meta:
+  id: "SC-12-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-12"
+  date: "2026-03-11"
+  analysis_method: "Manual static content analysis (no SAST tooling applicable)"
+
+files_analysed:
+  - prompt.md
+  - prompt-compressed.md
+
+cwe_checks:
+
+  - cwe: "CWE-77 (Command Injection)"
+    applicable: true
+    finding: none
+    detail: >
+      The prompt explicitly frames all user input as game data (ABSOLUTE_RULES, SESSION_LOOP
+      step 1). No mechanism exists to pass user input as a system command. The prompt
+      operates entirely within the LLM's context window — no shell, no OS, no execution layer.
+
+  - cwe: "CWE-20 (Improper Input Validation)"
+    applicable: true
+    finding: none
+    detail: >
+      SESSION_LOOP step 2 mandates validation of all inputs against SESSION_RULES before
+      any state change. CONSOLE_COMMANDS explicitly restricts operations to a defined
+      allow-list. Load validation clause added in Stage 3 hardening.
+
+  - cwe: "CWE-693 (Protection Mechanism Failure)"
+    applicable: true
+    finding: none
+    detail: >
+      ABSOLUTE_RULES and CONTROLLER RESTRICTION explicitly enforce protection mechanisms.
+      Stage 3 hardening (T-01, T-05, T-07) strengthened these. No mechanism for bypassing
+      the rules engine is present in the prompt.
+
+  - cwe: "CWE-345 (Insufficient Verification of Data Authenticity — savegame)"
+    applicable: true
+    finding: low_residual
+    detail: >
+      Load command validation clause added (Stage 3, T-07). LLM is instructed to validate
+      plausibility of loaded stats. However, this relies on LLM interpretation — there is
+      no cryptographic verification of savegame integrity. This is an accepted residual
+      risk (T-07, STRIDE record) given single-player entertainment context.
+    severity: low
+    remediation: accepted_risk
+    accepted_by: "Jerry van Heerikhuize (Security Architect)"
+
+  - cwe: "CWE-116 (Improper Encoding — output injection)"
+    applicable: true
+    finding: none
+    detail: >
+      FINAL_OUTPUT_ASSEMBLY (step 7) explicitly prohibits exposing internal reasoning or
+      STATE_SCHEMA in output. VIEW templates define structured output boundaries.
+
+  - cwe: "CWE-284 (Improper Access Control — console elevation)"
+    applicable: true
+    finding: none
+    detail: >
+      CONSOLE_COMMANDS RESTRICTION clause explicitly denies CONTROLLER/SESSION_RULES
+      modification. Commands are an explicit allow-list. No privilege escalation path.
+
+summary:
+  critical: 0
+  high: 0
+  medium: 0
+  low: 1    # CWE-345 savegame authenticity — accepted
+  stage_blocked: false
+  status: pass

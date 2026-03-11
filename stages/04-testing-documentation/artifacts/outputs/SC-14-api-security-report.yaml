@@ -1,0 +1,22 @@
+# =============================================================================
+# SC-14 — API Security Test Report
+# Control:   SC-14 API Security Testing
+# Stage:     4 — Testing & Documentation
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "SC-14-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-14"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  T.A.G. exposes no APIs. There are no REST, GraphQL, WebSocket, or RPC endpoints.
+  The prompt is consumed directly via an LLM chat interface. OWASP API Security Top 10
+  testing is not applicable.
+
+status: not_applicable

@@ -1,0 +1,61 @@
+# =============================================================================
+# AC-05 — Bias & Fairness Report
+# Control:   AC-05 Bias & Fairness Testing
+# Stage:     4 — Testing & Documentation
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "AC-05-FEAT-0001"
+  feature: "FEAT-0001"
+  ai_tier: minimal
+  produced_by: "Claude Sonnet 4.6 / AC-05"
+  date: "2026-03-11"
+
+scope_note: |
+  T.A.G. is a minimal-risk entertainment prompt. It generates fictional narrative content
+  in response to user-defined settings. The AI component (the prompt) does not make
+  decisions affecting real people's rights, employment, credit, healthcare, or legal status.
+  Bias analysis is proportionate to the minimal-risk classification.
+
+content_bias_analysis:
+
+  - characteristic: Gender
+    finding: none
+    detail: >
+      The prompt collects player_gender as a user-supplied input with no constraints or
+      defaults. NPCs have gender stored in STATE_SCHEMA as user-defined strings. No
+      gendered stereotypes are encoded in the prompt's instructions.
+
+  - characteristic: Ethnicity / Race
+    finding: none
+    detail: >
+      The prompt contains no ethnicity-specific content. Setting, lore, and world are
+      entirely user-defined. No racial or ethnic defaults are encoded.
+
+  - characteristic: Age
+    finding: none
+    detail: "No age-related content or defaults in the prompt."
+
+  - characteristic: Disability
+    finding: none
+    detail: "No disability-related content or defaults in the prompt."
+
+  - characteristic: Socioeconomic status
+    finding: none
+    detail: "Difficulty scaling is game-mechanical, not socioeconomic."
+
+  - characteristic: "Narrative bias (adversarial NPC framing)"
+    finding: low_noted
+    detail: >
+      NPCs can become hostile based on relationship_score reductions. This is a game
+      mechanic (consequence of player actions) not a bias. The mechanic applies equally
+      regardless of player or NPC characteristics.
+    severity: none
+    accepted: true
+
+overall_assessment: no_discriminatory_outcomes_detected
+eu_ai_act_art10_compliance: >
+  Art. 10(2)(f): No training data involved. Content review shows no encoded biases.
+  Proportionate to minimal-risk classification.
+blocker: false

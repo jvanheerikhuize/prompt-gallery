@@ -1,0 +1,71 @@
+# =============================================================================
+# QC-07 — AI Output Validation Report
+# Control:   QC-07 AI Output Validation
+# Stage:     4 — Testing & Documentation
+# Feature:   FEAT-0001
+# =============================================================================
+# TEST-04 NOTE: QC-07 requires execution in an LLM environment. Full automated
+# validation is not possible without running the prompt. This report documents
+# content-level analysis where possible and flags what requires LLM execution.
+# =============================================================================
+
+meta:
+  id: "QC-07-FEAT-0001"
+  feature: "FEAT-0001"
+  ai_tier: minimal
+  produced_by: "Claude Sonnet 4.6 / QC-07"
+  date: "2026-03-11"
+
+note: |
+  For minimal-risk AI classification, QC-07 obligations are proportionate. The EU AI Act
+  does not impose mandatory accuracy thresholds for minimal-risk systems. This assessment
+  focuses on the aspects verifiable through content analysis.
+
+content_level_checks:
+
+  - check: "SESSION_LOOP determinism — step sequence is unambiguous"
+    method: content_verified
+    result: pass
+    detail: "Steps 1–7 are numbered and sequential. No branching or ambiguous ordering."
+
+  - check: "STATE_SCHEMA completeness — all game state tracked"
+    method: content_verified
+    result: pass
+    detail: "All player, world, NPC, quest, and flag fields defined. No orphaned references."
+
+  - check: "Output template consistency — VIEW templates cover all phases"
+    method: content_verified
+    result: pass
+    detail: "INTRODUCTION, SESSION_LOOP, ENDING, CONSOLE templates all defined."
+
+  - check: "Rules consistency — no contradictions in SESSION_RULES"
+    method: content_verified
+    result: pass
+    detail: >
+      Reviewed all 9 rule categories. No contradictions found. State invariance rules
+      (negation invariance, transitivity) are internally consistent. Combat math
+      (d20+atk-def=dmg min1) is unambiguous.
+
+  - check: "Auto-init instruction present and unambiguous"
+    method: content_verified
+    result: pass
+    detail: "ABSOLUTE_RULES and CONTROLLER DIRECTIVES both use MUST. Unambiguous."
+
+lm_execution_tests:
+  status: deferred_to_developer
+  rationale: >
+    The following tests require actual LLM execution and cannot be performed by the agent
+    without an LLM session:
+    - Hallucination rate: does the LLM invent exits/items not in STATE_SCHEMA?
+    - Output consistency: does the same input produce logically consistent outputs?
+    - Boundary conditions: does the LLM correctly handle edge cases (empty inventory, 0 health)?
+    - Cross-LLM consistency: does behaviour match across Claude/GPT-4/Gemini?
+  developer_action: >
+    Jerry van Heerikhuize should perform a playtest session (minimum 20 turns) and verify:
+    1. LLM does not hallucinate items/exits not in STATE_SCHEMA
+    2. Save/load cycle preserves full game state
+    3. Death triggers correctly at health ≤ 0
+    4. Console RESTRICTION prevents rules modification
+
+overall_assessment: pass_with_deferred_lm_tests
+blocker: false

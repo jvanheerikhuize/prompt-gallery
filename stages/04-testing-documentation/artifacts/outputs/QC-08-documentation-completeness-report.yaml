@@ -1,0 +1,94 @@
+# =============================================================================
+# QC-08 — Documentation Completeness Report
+# Control:   QC-08 Documentation Completeness
+# Stage:     4 — Testing & Documentation
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "QC-08-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / QC-08"
+  date: "2026-03-11"
+
+documentation_checks:
+
+  - doc: "README.md — User quick-start"
+    required: true
+    status: present
+    location: "README.md (top section)"
+    content: "Project overview, Quick Start (3 steps), feature list, governance info"
+
+  - doc: "prompt.md — Canonical prompt with inline documentation"
+    required: true
+    status: present
+    location: "prompt.md"
+    content: "How to Play, full prompt, Tips, Contributing section"
+
+  - doc: "prompt-compressed.md — Compressed variant with sync note"
+    required: true
+    status: present
+    location: "prompt-compressed.md"
+    content: "How to Play, compressed prompt, Sync Note"
+
+  - doc: "Feature Specification (FEAT-0001)"
+    required: true
+    status: present
+    location: "specs/FEAT-0001-tag-dungeonmaster-masterprompt.yaml"
+
+  - doc: "Change Request (CR-0001)"
+    required: true
+    status: present
+    location: "stages/01-intent-ingestion/artifacts/inputs/CR-0001-tag-dungeonmaster-masterprompt.yaml"
+
+  - doc: "Stage 1 artefacts (QC-01, QC-02, RC-01, AC-01, SC-04, GC-05)"
+    required: true
+    status: present
+    location: "stages/01-intent-ingestion/artifacts/outputs/"
+
+  - doc: "Stage 2 artefacts (QC-03, SC-05, SC-06, RC-02, RC-03, AC-03, AC-04, SC-02)"
+    required: true
+    status: present
+    location: "stages/02-system-design/artifacts/outputs/"
+
+  - doc: "Stage 3 artefacts (QC-04, QC-05, SC-07–11, RC-04, GC-03)"
+    required: true
+    status: present
+    location: "stages/03-coding-implementation/artifacts/outputs/"
+
+  - doc: "Decision log (RC-04)"
+    required: true
+    status: present
+    location: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
+    content: "6 decisions documented with rationale and alternatives"
+
+  - doc: "Runbook"
+    required: false
+    status: not_applicable
+    rationale: "No deployment infrastructure; prompt is copy-paste only. No runbook required."
+
+  - doc: "API documentation"
+    required: false
+    status: not_applicable
+    rationale: "No APIs exposed."
+
+  - doc: "Architecture Decision Records (ADRs)"
+    required: false
+    status: covered_by_rc04
+    rationale: "RC-04 decision log covers all significant architectural decisions."
+
+  - doc: "EU AI Act Annex IV technical documentation"
+    required: false
+    status: not_applicable
+    rationale: "Annex IV required for high-risk AI only. T.A.G. is minimal-risk."
+
+  - doc: "CONTRIBUTING.md"
+    required: true
+    status: present
+    location: "CONTRIBUTING.md"
+
+gaps: []
+
+overall_status: complete
+approved_by: "Jerry van Heerikhuize"
+approval_date: "2026-03-11"
