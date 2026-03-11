@@ -1,0 +1,229 @@
+# =============================================================================
+# QC-09 — Release Readiness Checklist
+# Control:   QC-09 Release Readiness Checklist
+# Stage:     5 — Deployment & Release
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "QC-09-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / QC-09"
+  date: "2026-03-11"
+  release_version: "v2.1"
+  release_commit: "b5f3941b6fd5b25f8d1c7034f4550d9bb4cf481c"
+
+# -----------------------------------------------------------------------------
+# Prior stage control evidence roll-up
+# -----------------------------------------------------------------------------
+stage_1_controls:
+  - control: QC-01
+    name: Feature Specification
+    status: approved
+    evidence: "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
+    approved_by: "Jerry van Heerikhuize"
+
+  - control: QC-02
+    name: Conflict Resolution
+    status: resolved
+    evidence: "stages/01-intent-ingestion/artifacts/outputs/QC-02-conflict-resolution-record.yaml"
+    conflicts_resolved: 3
+
+  - control: RC-01
+    name: Risk Classification
+    status: pass
+    evidence: "stages/01-intent-ingestion/artifacts/outputs/RC-01-risk-classification.yaml"
+    risk_level: LOW
+
+  - control: AC-01
+    name: AI Tier Classification
+    status: pass
+    evidence: "stages/01-intent-ingestion/artifacts/outputs/AC-01-ai-tier-classification.yaml"
+    ai_tier: MINIMAL
+
+  - control: SC-04
+    name: Data Classification
+    status: not_applicable
+    rationale: "No personal data processed."
+
+  - control: GC-05
+    name: Intent Audit Record
+    status: sealed
+    evidence: "stages/01-intent-ingestion/artifacts/outputs/GC-05-intent-audit-record.yaml"
+
+stage_2_controls:
+  - control: QC-03
+    name: Design Document
+    status: approved
+    evidence: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
+    approved_by: "Jerry van Heerikhuize"
+
+  - control: SC-05
+    name: STRIDE Threat Model
+    status: validated
+    evidence: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
+    threats_identified: 9
+    high_blockers: 0
+
+  - control: RC-02
+    name: Design Approval
+    status: approved
+    evidence: "stages/02-system-design/artifacts/outputs/RC-02-design-approval-decision.yaml"
+    approved_by: "Jerry van Heerikhuize"
+
+  - control: SC-06
+    name: Zero-Trust Validation
+    status: not_applicable
+    rationale: "No network infrastructure."
+
+  - control: RC-03
+    name: Privacy Impact Assessment
+    status: not_applicable
+    rationale: "No personal data."
+
+  - control: AC-03
+    name: AI Component Design Review
+    status: approved
+    evidence: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
+
+  - control: AC-04
+    name: AI Model Governance
+    status: not_applicable
+    rationale: "Model-agnostic design — no proprietary model dependency."
+
+  - control: SC-02
+    name: Stage 2 Directive Injection
+    status: acknowledged
+    evidence: "stages/02-system-design/artifacts/outputs/SC-02-directive-injection-confirmation.yaml"
+
+stage_3_controls:
+  - control: SC-07
+    name: Least Privilege / Permissions
+    status: pass
+    evidence: "stages/03-coding-implementation/artifacts/outputs/SC-07-permissions-review.yaml"
+
+  - control: QC-05
+    name: Quality Gates
+    status: pass
+    evidence: "stages/03-coding-implementation/artifacts/outputs/QC-05-quality-gate-report.yaml"
+
+  - control: SC-09
+    name: Secrets Scan
+    status: pass
+    evidence: "stages/03-coding-implementation/artifacts/outputs/SC-09-secrets-scan-report.yaml"
+    secrets_found: 0
+
+  - control: SC-10
+    name: SCA (Dependency Scan)
+    status: not_applicable
+    rationale: "No third-party code dependencies."
+
+  - control: SC-11
+    name: Container / IaC Security
+    status: not_applicable
+    rationale: "No containers or IaC."
+
+  - control: SC-08
+    name: Post-Implementation Guardrail Review
+    status: pass
+    evidence: "stages/03-coding-implementation/artifacts/outputs/SC-08-post-guardrail-review.yaml"
+
+  - control: RC-04
+    name: Decision Log
+    status: reviewed
+    evidence: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
+    decisions: 6
+
+  - control: GC-03
+    name: Code Provenance
+    status: reviewed
+    evidence: "stages/03-coding-implementation/artifacts/outputs/GC-03-code-provenance-record.yaml"
+
+  - control: QC-04
+    name: PR Review (Stage 3 exit gate)
+    status: approved
+    evidence: "stages/03-coding-implementation/artifacts/outputs/QC-04-pull-request-record.yaml"
+    approved_by: "Jerry van Heerikhuize"
+    stage_3_exit_clear: true
+
+stage_4_controls:
+  - control: SC-12
+    name: SAST
+    status: pass
+    evidence: "stages/04-testing-documentation/artifacts/outputs/SC-12-sast-scan-report.yaml"
+    residuals: 1
+    residuals_accepted: true
+
+  - control: QC-06
+    name: Functional & NFR Tests
+    status: pass
+    evidence: "stages/04-testing-documentation/artifacts/outputs/QC-06-test-results-report.yaml"
+    tests_pass: 13
+    tests_deferred: 2
+
+  - control: SC-13
+    name: DAST
+    status: not_applicable
+    rationale: "No runtime deployment."
+
+  - control: SC-14
+    name: API Security
+    status: not_applicable
+    rationale: "No APIs."
+
+  - control: SC-15
+    name: Adversarial Robustness
+    status: pass
+    evidence: "stages/04-testing-documentation/artifacts/outputs/SC-15-adversarial-robustness-report.yaml"
+    blockers: 0
+
+  - control: QC-07
+    name: AI Output Validation
+    status: pass_with_deferred_lm_tests
+    evidence: "stages/04-testing-documentation/artifacts/outputs/QC-07-ai-output-validation-report.yaml"
+    blockers: 0
+
+  - control: AC-05
+    name: Bias & Fairness
+    status: pass
+    evidence: "stages/04-testing-documentation/artifacts/outputs/AC-05-bias-fairness-report.yaml"
+
+  - control: QC-08
+    name: Documentation Completeness
+    status: complete
+    evidence: "stages/04-testing-documentation/artifacts/outputs/QC-08-documentation-completeness-report.yaml"
+    approved_by: "Jerry van Heerikhuize"
+
+  - control: RC-05
+    name: Go / No-Go Gate
+    status: conditional_pass
+    evidence: "stages/04-testing-documentation/artifacts/outputs/RC-05-risk-threshold-evaluation.yaml"
+    approved_by: "Jerry van Heerikhuize"
+    stage_4_exit_clear: true
+
+# -----------------------------------------------------------------------------
+# Release package completeness
+# -----------------------------------------------------------------------------
+release_artefacts:
+  - file: "prompt.md"
+    version: "v2.1"
+    sha256: "1a373f45f7fa3263af7710e0bb046d39aa2c3da2f75d0ae3de9bda18924aa01a"
+    tested_commit: "34697d7b5a6ea78bf01ea4dbafbfd79cce6465a0"
+
+  - file: "prompt-compressed.md"
+    version: "v2.1"
+    sha256: "0fafd3690fed81a40ffaf0e36de659345c31560bb72efcdce5f6cf22ae10cdd3"
+    tested_commit: "34697d7b5a6ea78bf01ea4dbafbfd79cce6465a0"
+
+  - file: "README.md"
+    sha256: "6d8ac9c3bdfc4c62a73f464ad2eae0f0d2e6d9ce0734d85e4771919b2f0efaa0"
+    tested_commit: "34697d7b5a6ea78bf01ea4dbafbfd79cce6465a0"
+
+gaps: []
+
+# -----------------------------------------------------------------------------
+# Release Manager sign-off
+# -----------------------------------------------------------------------------
+overall_status: approved
+release_manager_approved_by: "Jerry van Heerikhuize"
+release_manager_approval_date: "2026-03-11"

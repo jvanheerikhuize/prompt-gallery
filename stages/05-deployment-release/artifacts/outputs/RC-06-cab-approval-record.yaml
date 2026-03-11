@@ -1,0 +1,50 @@
+# =============================================================================
+# RC-06 — CAB Approval Record
+# Control:   RC-06 CAB Approval
+# Stage:     5 — Deployment & Release
+# Feature:   FEAT-0001
+# =============================================================================
+#
+# NOTE: RC-06 is a MUST control. Human approval is required.
+#       Risk classification: LOW → line management approval is the required authority.
+#       Full Change Advisory Board is not required for LOW-risk changes.
+#
+# ← Jerry van Heerikhuize (Tech Lead / Risk Officer) to complete this record.
+# =============================================================================
+
+meta:
+  id: "RC-06-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / RC-06 (template)"
+  date: "2026-03-11"
+
+change_summary:
+  feature: "FEAT-0001 — T.A.G. v2.1 Text Adventure Generator masterprompt"
+  change_type: "new_feature"
+  risk_level: "LOW"              # per RC-01
+  release_artefacts:
+    - "prompt.md (v2.1)"
+    - "prompt-compressed.md (v2.1)"
+    - "README.md (updated)"
+  deployment_method: "GitHub repository — main branch (copy-paste distribution)"
+  deployment_impact: "No infrastructure. Users access prompt via public repository."
+
+evidence_package:
+  qc09_release_readiness: "stages/05-deployment-release/artifacts/outputs/QC-09-release-readiness-checklist.yaml"
+  rc05_go_nogo: "stages/04-testing-documentation/artifacts/outputs/RC-05-risk-threshold-evaluation.yaml"
+  sc17_integrity: "stages/05-deployment-release/artifacts/outputs/SC-17-deployment-integrity-report.yaml"
+  rc07_rollback: "stages/05-deployment-release/artifacts/outputs/RC-07-rollback-plan-validation.yaml"
+
+required_approver:
+  authority: "Line Management"   # LOW risk classification
+  role: "Tech Lead / Risk Officer"
+  name: "Jerry van Heerikhuize"
+
+# ── Human decision required ────────────────────────────────────────────────
+decision: "approved"
+approver_name: "Jerry van Heerikhuize"
+approver_role: "Tech Lead / Risk Officer"
+approval_date: "2026-03-11"
+conditions: []
+rejection_reason: ""
+stage_5_exit_clear: true

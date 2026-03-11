@@ -1,0 +1,63 @@
+# =============================================================================
+# RC-07 — Rollback Plan Validation Report
+# Control:   RC-07 Rollback Plan Validation
+# Stage:     5 — Deployment & Release
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "RC-07-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / RC-07"
+  date: "2026-03-11"
+
+scope_note: |
+  T.A.G. is a prompt-only deliverable published via git. There is no deployment
+  pipeline, server, or infrastructure to roll back. "Rollback" is defined as
+  reverting the git repository to the last known-good commit and users accessing
+  the prior version of the prompt file.
+
+rollback_strategy:
+  type: git_revert
+  mechanism: |
+    git revert <commit-sha> or git reset --hard <prior-sha> on main branch.
+    Users who have already copied the prompt are unaffected; any user accessing
+    the repository after the revert will receive the prior version.
+  prior_good_commit:
+    sha: "5c6c344"
+    description: "chore(stage-3): seal QC-04 PR approval, close Stage 3 for FEAT-0001"
+    prompt_version: "v2.1 (same)"
+
+rollback_triggers:
+  - trigger: "Critical security vulnerability discovered in prompt post-release"
+    threshold: "Any SC finding rated HIGH or CRITICAL that cannot be mitigated by advisory"
+  - trigger: "Prompt causes consistent harmful outputs across multiple LLMs"
+    threshold: "Confirmed by Tech Lead after review of ≥3 independent reports"
+  - trigger: "Integrity compromise — evidence that repository content was tampered with"
+    threshold: "Any mismatch in SC-17 checksums detected post-deployment"
+
+rollback_decision_authority: "Jerry van Heerikhuize (Tech Lead / Risk Officer)"
+
+rollback_execution_steps:
+  1: "Tech Lead confirms trigger condition is met"
+  2: "Execute: git revert HEAD or git reset --hard <prior-sha>"
+  3: "Force push to main (requires explicit authorisation from Tech Lead)"
+  4: "Post GitHub security advisory if applicable"
+  5: "Log rollback event in RC-04 decision log with rationale"
+
+rollback_time_objective: "<15 minutes from decision to completion (single git command)"
+
+pre_production_test: |
+  T.A.G. has no pre-production environment distinct from the repository. The
+  rollback procedure was validated logically:
+  - git revert is an atomic, well-understood operation on a plain-text repository
+  - No database migrations, container images, or infrastructure state to unwind
+  - Prior prompt version (v2.0 tag or prior commit) is immediately accessible
+  Formal pre-production environment test is not applicable.
+
+# -----------------------------------------------------------------------------
+# Release Manager / Tech Lead approval
+# -----------------------------------------------------------------------------
+approved_by: "Jerry van Heerikhuize"
+approval_date: "2026-03-11"
+rollback_plan_validated: true

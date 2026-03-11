@@ -1,0 +1,58 @@
+# =============================================================================
+# SC-17 — Deployment Integrity Verification Report
+# Control:   SC-17 Deployment Integrity
+# Stage:     5 — Deployment & Release
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "SC-17-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-17"
+  date: "2026-03-11"
+
+scope_note: |
+  T.A.G. has no traditional deployment pipeline. "Deployment" is defined as the
+  publication of prompt.md and prompt-compressed.md in the main branch of the
+  public GitHub repository, where users access them directly. Integrity verification
+  is performed by comparing SHA-256 checksums of the tested artefacts (at the
+  Stage 3 implementation commit) against the current HEAD.
+
+  This is a genuine integrity check: any modification between test and release
+  would be detectable as a checksum mismatch.
+
+# -----------------------------------------------------------------------------
+# Artefact integrity verification
+# -----------------------------------------------------------------------------
+tested_at_commit: "34697d7b5a6ea78bf01ea4dbafbfd79cce6465a0"
+release_commit:   "b5f3941b6fd5b25f8d1c7034f4550d9bb4cf481c"
+
+note: |
+  The release commit (b5f3941) adds Stage 4 governance artefacts only.
+  The prompt artefacts (prompt.md, prompt-compressed.md, README.md) are unchanged
+  since the tested commit (34697d7). SHA-256 checksums confirm byte-for-byte
+  identity with what was tested.
+
+artefact_checks:
+
+  - file: "prompt.md"
+    sha256_at_test:    "1a373f45f7fa3263af7710e0bb046d39aa2c3da2f75d0ae3de9bda18924aa01a"
+    sha256_at_release: "1a373f45f7fa3263af7710e0bb046d39aa2c3da2f75d0ae3de9bda18924aa01a"
+    match: true
+    result: pass
+
+  - file: "prompt-compressed.md"
+    sha256_at_test:    "0fafd3690fed81a40ffaf0e36de659345c31560bb72efcdce5f6cf22ae10cdd3"
+    sha256_at_release: "0fafd3690fed81a40ffaf0e36de659345c31560bb72efcdce5f6cf22ae10cdd3"
+    match: true
+    result: pass
+
+  - file: "README.md"
+    sha256_at_test:    "6d8ac9c3bdfc4c62a73f464ad2eae0f0d2e6d9ce0734d85e4771919b2f0efaa0"
+    sha256_at_release: "6d8ac9c3bdfc4c62a73f464ad2eae0f0d2e6d9ce0734d85e4771919b2f0efaa0"
+    match: true
+    result: pass
+
+integrity_failures: 0
+overall_result: pass
+blocker: false

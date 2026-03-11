@@ -1,0 +1,26 @@
+# =============================================================================
+# SC-02 — Stage Directive Injection Confirmation (Stage 5)
+# Control:   SC-02 Directive Injection
+# Stage:     5 — Deployment & Release
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "SC-02-STAGE5-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-02"
+  date: "2026-03-11"
+
+directives_loaded:
+  - source: "a-sdlc/directives/core/core-directives.yaml"
+    status: active
+  - source: "a-sdlc/directives/stages/05-deployment-release.yaml"
+    status: active
+
+stage5_directives_acknowledged:
+  DEPLOY-01: "No deployment without all Stage 4 exit criteria confirmed — RC-05 stage_4_exit_clear: true. Confirmed."
+  DEPLOY-02: "CAB gate (RC-06) will not be bypassed. Risk: LOW → line management approval is required authority."
+  DEPLOY-03: "Rollback plan (RC-07) will be documented before deployment execution."
+  DEPLOY-04: "T.A.G. has no production infrastructure systems. Deployment is prompt file publication via git. No direct production system access required."
+
+stage5_entry_clear: true
