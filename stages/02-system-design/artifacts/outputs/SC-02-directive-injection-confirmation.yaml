@@ -1,0 +1,51 @@
+# =============================================================================
+# SC-02 — Stage Directive Injection Confirmation
+# Control:   SC-02 Stage Directive Injection
+# Stage:     2 — System Design (injecting Stage 2 + Stage 3 directives)
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "SC-02-FEAT-0001-stage2"
+  feature: "FEAT-0001"
+  agent: "Claude Sonnet 4.6"
+  timestamp: "2026-03-11"
+
+acknowledgement: |
+  I, Claude Sonnet 4.6, acknowledge receipt and active enforcement of the following
+  stage directive payloads for Stage 2 work and Stage 3 preparation:
+
+payloads_received:
+  - id: stage-02-system-design
+    path: "a-sdlc/directives/stages/02-system-design.yaml"
+    version: "1.0"
+    directives_active:
+      - DESIGN-01: All requirements must map to an architectural component
+      - DESIGN-02: No intentional weaknesses or insecure patterns in design
+      - DESIGN-03: Approved cryptographic algorithms only (no MD5/SHA-1/DES/RC4)
+      - THREAT-01: STRIDE analysis on every trust boundary — none left unanalysed
+      - THREAT-02: All CRITICAL/HIGH threats must have mitigations before SC-05 submission
+
+  - id: stage-03-coding-implementation
+    path: "a-sdlc/directives/stages/03-coding-implementation.yaml"
+    version: "1.0"
+    directives_active:
+      - CODE-01: No deliberate vulnerabilities, backdoors, or exploitable patterns
+      - CODE-02: No disabling of security controls
+      - CODE-03: No hardcoded secrets or credentials
+      - CODE-04: No arbitrary user-supplied input execution without validation
+      - CODE-05: Approved cryptographic algorithms and libraries only
+      - CODE-06: All dependencies from approved sources, pinned to verified versions
+      - PERM-01: Operate within permission boundary (SC-07)
+      - PERM-02: Tag all agent-generated code with provenance metadata (GC-03)
+
+compliance_note: |
+  Stage 3 directives are pre-loaded here per the SC-02 workflow (Step 2.7) to ensure
+  they are active before implementation begins. These directives layer on top of the
+  core directives (SC-01 / core-directives.yaml) which remain in full effect.
+
+  Note on CODE-06 (dependency pinning): T.A.G. has no software dependencies. This
+  directive is acknowledged but vacuously satisfied for this project.
+
+  Note on DESIGN-03 and CODE-05 (cryptography): T.A.G. uses no cryptographic operations.
+  These directives are acknowledged but vacuously satisfied for this project.

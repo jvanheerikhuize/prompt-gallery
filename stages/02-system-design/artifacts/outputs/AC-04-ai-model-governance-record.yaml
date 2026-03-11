@@ -1,0 +1,41 @@
+# =============================================================================
+# AC-04 — AI Model Governance Record
+# Control:   AC-04 AI Model Governance & Version Control
+# Stage:     2 — System Design
+# Feature:   FEAT-0001
+# Status:    not_applicable (documented)
+# =============================================================================
+
+meta:
+  id: "AC-04-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / AC-04"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  AC-04 is NOT APPLICABLE to this change.
+
+  AC-04 applies "when the change introduces or modifies use of a GPAI or foundation model."
+  T.A.G. does NOT introduce, train, or pin a specific AI model. The prompt is
+  model-agnostic by design (NFR-02): users run it on whichever LLM they choose.
+
+  The LLMs that T.A.G. runs on (Claude, GPT-4, Gemini) are:
+  - Third-party models chosen and operated by end users
+  - Not introduced, modified, or version-pinned by this project
+  - Outside the project's supply chain and control plane
+
+  Therefore, no model registry entry, no version pinning, and no model update approval
+  process is applicable to T.A.G. itself.
+
+  EU AI Act Arts. 51–56 (GPAI model documentation): not applicable — T.A.G. is not
+  a GPAI model or a provider of a GPAI model.
+
+  DORA Art. 28 (third-party ICT risk management for AI model providers): not applicable
+  at the project level — users independently select and operate their LLM provider.
+
+note: |
+  If a future version of T.A.G. is deployed as a pre-configured agent on a specific
+  LLM API (e.g., as a Claude API integration), AC-04 would become applicable at that
+  point and a model registry entry would be required. This is out of scope for FEAT-0001.

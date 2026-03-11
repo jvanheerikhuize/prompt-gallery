@@ -1,0 +1,66 @@
+# =============================================================================
+# RC-02 — Design Approval Decision
+# Control:   RC-02 Design Approval (HUMAN REQUIRED)
+# Stage:     2 — System Design
+# Feature:   FEAT-0001
+# Status:    pending — awaiting Lead Architect / Risk Officer approval
+# =============================================================================
+# CTRL-03: This control cannot be delegated to an agent. Agent has prepared the
+# approval package below. Human must make the formal approval decision.
+# =============================================================================
+
+meta:
+  id: "RC-02-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 (approval package prepared)"
+  date: "2026-03-11"
+  status: pending
+
+# ── Approval Package ──────────────────────────────────────────────────────────
+approval_package:
+  risk_tier: low                         # from RC-01-FEAT-0001
+  required_authority: "Lead Architect"   # low risk → Lead Architect sign-off
+
+  artefacts:
+    - path: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
+      summary: >
+        12-component MVC architecture. All 15 requirements mapped. No unmapped requirements.
+        4 trust boundaries identified. Technology decisions documented.
+
+    - path: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
+      summary: >
+        9 threats analysed across 4 trust boundaries. 0 CRITICAL. 1 HIGH (T-07:
+        crafted savegame — low real-world impact, single-player, no blocking design change).
+        3 MEDIUM (T-01, T-02, T-05 — Stage 3 hardening noted). No stage blockers.
+
+    - path: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
+      summary: >
+        AI component confirmed (minimal-risk prompt). Model-agnostic by design. No data
+        pipeline. Full explainability via open-source. Human oversight via console mode.
+        Art. 52 transparency satisfied.
+
+    - path: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
+      summary: RC-03 NOT APPLICABLE — no personal data processed.
+
+    - path: "stages/02-system-design/artifacts/outputs/SC-06-zero-trust-validation.yaml"
+      summary: Network zero-trust NOT APPLICABLE. Logical trust posture COMPLIANT.
+
+    - path: "stages/02-system-design/artifacts/outputs/AC-04-ai-model-governance-record.yaml"
+      summary: AC-04 NOT APPLICABLE — no specific model introduced or pinned.
+
+  agent_recommendation: approve
+  agent_recommendation_rationale: >
+    All design requirements are mapped. No unmitigated blocking threats. Applicable
+    controls completed with no gaps. Not-applicable controls documented with rationale.
+    Stage 3 hardening actions identified for T-01, T-05, T-07 (prompt wording improvements
+    — not design changes). Design is implementation-ready.
+
+# ── Human Decision ────────────────────────────────────────────────────────────
+# CTRL-03: Agent cannot fill these fields. Human must decide.
+decision: approved
+decided_by: "Jerry van Heerikhuize (Lead Architect / Risk Officer)"
+decision_date: "2026-03-11"
+conditions: ""
+rejection_reason: ""
+
+stage_2_exit_clear: true

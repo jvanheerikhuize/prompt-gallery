@@ -1,0 +1,311 @@
+# =============================================================================
+# QC-03 — System Design Document
+# Control:   QC-03 Design Completeness & Standards
+# Stage:     2 — System Design
+# Feature:   FEAT-0001
+# Status:    draft — awaiting Lead Architect approval (RC-02)
+# =============================================================================
+
+meta:
+  id: "QC-03-FEAT-0001"
+  feature: "FEAT-0001"
+  source_spec: "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
+  produced_by: "Claude Sonnet 4.6 (Solution Architect / QC-03)"
+  date: "2026-03-11"
+  status: draft
+
+# ── System Overview ───────────────────────────────────────────────────────────
+overview: |
+  T.A.G. (Text Adventure Generator) is a self-contained LLM system prompt. The entire
+  system is a single text file that, when loaded into an LLM's context, transforms the
+  LLM into a deterministic text adventure game master.
+
+  There is no backend, no database, no network, no external API. The prompt IS the system.
+  All state is maintained within the LLM's active conversation context via a JSON object
+  (STATE_SCHEMA). The "deployment target" is any advanced LLM chat interface.
+
+  Architecture pattern: MVC (Model-View-Controller) implemented entirely within the prompt.
+
+# ── Architectural Components ──────────────────────────────────────────────────
+components:
+
+  - id: COMP-01
+    name: CORE_DIRECTIVES
+    type: prompt-section
+    description: >
+      Establishes the T.A.G. agent persona, tone, vision, mission, and absolute rules.
+      Injected once at prompt load. Governs all subsequent LLM behaviour.
+    sub_components:
+      - PERSONA (role, tone: brilliant/witty/sarcastic/Infocom-style)
+      - VISION (player-mind as graphics engine)
+      - MISSION (challenging, immersive, consistent world)
+      - ABSOLUTE_RULES (state adherence, MVC, player agency, ambiguity handling, auto-init)
+    maps_to_requirements: [FR-01, FR-10]
+
+  - id: COMP-02
+    name: IN_PROMPT_CONTEXT
+    type: prompt-section
+    description: >
+      Declares the input contract for initialization. Defines required and optional inputs
+      the LLM must collect from the user before the game can start.
+    inputs:
+      - player_name (string, required)
+      - player_gender (string, required)
+      - setting (string, required)
+      - lore (string, required)
+      - goal (string, required)
+      - savegame (json, optional)
+    maps_to_requirements: [FR-02]
+
+  - id: COMP-03
+    name: MODEL / STATE_SCHEMA
+    type: prompt-section (MVC Model)
+    description: >
+      The JSON STATE_SCHEMA is the single source of truth for all game state. It is
+      maintained in-context by the LLM between turns. The schema covers:
+        - gamesettings: difficulty (0–100), ASCII logo
+        - setting / lore[] / goal: world definition
+        - player: location, position (xyz), stats (health, attack, defense, score),
+          inventory with item flags, scoring_ledger[]
+        - world.locations: named location entries with dimensions (w/l/h), exits
+          (N/E/S/W/up/down with type and flags), objects with coordinates and flags
+        - world.npcs: per-NPC state (location, xyz, stats, is_alive, is_hostile,
+          relationship_score, inventory, memories, objectives, faction flags)
+        - world.quests: main_quest + sub_quests[]
+        - world.global_flags: turn_count, debug_mode, date_and_time (day/hour/period/tph),
+          difficulty_history (consecutive_failures, consecutive_successes)
+    maps_to_requirements: [FR-03, NFR-04]
+
+  - id: COMP-04
+    name: VIEW / OUTPUT_TEMPLATES
+    type: prompt-section (MVC View)
+    description: >
+      Defines four output templates the LLM renders into:
+        - INTRODUCTION: logo + introduction text + start menu
+        - SESSION_LOOP: narrative (markdown) + options list + optional witty prompt
+        - ENDING: death/victory scene + score/turns + end menu
+        - CONSOLE: mode header + command output + available commands list
+    maps_to_requirements: [FR-09]
+
+  - id: COMP-05
+    name: CONTROLLER / SESSION_PHASES
+    type: prompt-section (MVC Controller — Phase Manager)
+    description: >
+      Defines the three top-level game phases:
+        - Introduction: persona intro → menu (new customized / new random / load)
+        - Sessionloop: active game turns
+        - Ending: goal met or death → debrief / different choice / next chapter
+    maps_to_requirements: [FR-02, FR-09]
+
+  - id: COMP-06
+    name: CONTROLLER / SESSION_LOOP
+    type: prompt-section (MVC Controller — Turn Engine)
+    description: >
+      The deterministic 7-step turn engine executed on every player input:
+        1. Parse user input: extract intent (verbs) and targets (nouns)
+        2. Validate/resolve: check against SESSION_RULES and current STATE_SCHEMA
+        3. Determine position: calculate xyz for player, items, NPCs
+        4. Update MODEL: write new complete STATE_SCHEMA (state + lore + time + score + diff history)
+        5. Generate narrative: diff old vs new STATE_SCHEMA → creative description
+        6. Generate options: 3–5 distinct contextual actions from new STATE_SCHEMA
+        7. Assemble output: pass narrative + options to VIEW (no internal reasoning exposed)
+    maps_to_requirements: [FR-04]
+
+  - id: COMP-07
+    name: CONTROLLER / SESSION_RULES
+    type: prompt-section (MVC Controller — Rules Engine)
+    description: >
+      The complete rules engine enforced during step 2 (validate/resolve) of every turn:
+        - Physics: solid object collision, dark room light requirement
+        - Inventory: pickup/drop/use requires item at location or in inventory; transitivity
+        - State/Logic: STATE_SCHEMA as absolute truth; negation invariance; object transitivity
+        - NPC: memories, relationship scores, faction reactions, same-location interaction
+        - Navigation: xyz coordinates, explicit exit definitions, wind directions
+        - Time/World Clock: tph advancement, 24h day cycle, period effects (shops/NPCs/darkness)
+        - Difficulty: 0–100 scale; auto-adjust (3 fails → -10; 3 successes → +5)
+        - Scoring: max_score at world gen; ledger for meaningful milestones; display in Ending
+        - Combat: d20 resolution, player-first, flee mechanic, NPC death/drop inventory
+        - Death: hp≤0 → death scene → Ending phase; permadeath; 1-turn rewind from end menu
+    maps_to_requirements: [FR-05]
+
+  - id: COMP-08
+    name: CONTROLLER / CONSOLE_COMMANDS
+    type: prompt-section (MVC Controller — Meta Interface)
+    description: >
+      Console mode triggered by typing `~`. Provides 9 meta-commands:
+        - gamesettings: adjust difficulty and game settings
+        - gamestate: dump full STATE_SCHEMA JSON
+        - imageprompt: generate image prompt for current location (codeblock)
+        - videoprompt: generate video prompt for current location (codeblock)
+        - hint: subtle contextual hint
+        - skiptoend: skip to final scene
+        - map: invoke ASCII_MAP_BOT
+        - save: export full STATE_SCHEMA as savegame JSON
+        - load: parse JSON savegame and reset game state
+        - ~: exit console mode
+      RESTRICTION: players cannot modify CONTROLLER or SESSION_RULES via console.
+    maps_to_requirements: [FR-06, NFR-04]
+
+  - id: COMP-09
+    name: CONTROLLER / ASCII_MAP_BOT
+    type: prompt-section (MVC Controller — Sub-Agent)
+    description: >
+      Sub-agent invoked by the map console command. Generates a top-down ASCII map of
+      the current location with strict rules: perfect rectangle, fixed line width,
+      walls (#), floor (.), cardinal exit characters (N/E/S/W replacing wall chars),
+      entity coordinates placed at their xyz positions, LEGEND block — all in one
+      code block.
+    maps_to_requirements: [FR-07]
+
+  - id: COMP-10
+    name: REPOSITORY / verbose-prompt
+    type: file
+    path: "prompt.md"
+    description: >
+      The canonical source of truth for the T.A.G. prompt. Human-readable, full XML-tagged
+      structure. All changes to prompt behaviour originate here.
+    maps_to_requirements: [FR-01 through FR-10, NFR-01, NFR-02, NFR-04]
+
+  - id: COMP-11
+    name: REPOSITORY / compressed-prompt
+    type: file
+    path: "prompt-compressed.md"   # TBD — name to be confirmed in Stage 3
+    description: >
+      Derived artefact: a functionally equivalent, token-efficient shorthand of COMP-10.
+      Must not be edited directly — derived from COMP-10 on each change.
+      An equivalence verification step in Stage 3 confirms parity before changes are closed.
+    maps_to_requirements: [FR-08, NFR-03]
+
+  - id: COMP-12
+    name: REPOSITORY / documentation
+    type: file
+    path: "README.md"
+    description: >
+      User-facing documentation. Contents: project overview, how-to-play (copy/paste
+      instructions), usage example, tips section, contributing guide.
+    maps_to_requirements: [NFR-05]
+
+# ── Data Flow ─────────────────────────────────────────────────────────────────
+data_flows:
+
+  - id: DF-01
+    name: Game initialization
+    description: >
+      User pastes prompt into LLM → LLM loads COMP-01 through COMP-09 into context →
+      LLM enters Introduction phase (COMP-05) → collects inputs per COMP-02 →
+      generates initial STATE_SCHEMA (COMP-03) → renders INTRODUCTION template (COMP-04)
+    components: [COMP-01, COMP-02, COMP-03, COMP-04, COMP-05]
+
+  - id: DF-02
+    name: Game turn
+    description: >
+      User types action → LLM executes SESSION_LOOP (COMP-06) steps 1–7 →
+      STATE_SCHEMA (COMP-03) updated in-context → output rendered via SESSION_LOOP
+      template (COMP-04)
+    components: [COMP-03, COMP-04, COMP-06, COMP-07]
+
+  - id: DF-03
+    name: Save game
+    description: >
+      User types ~ → console mode (COMP-08) → user types save →
+      LLM serializes current STATE_SCHEMA to JSON → outputs to user → user copies JSON
+    components: [COMP-03, COMP-08]
+
+  - id: DF-04
+    name: Load game
+    description: >
+      User provides savegame JSON → LLM parses JSON via load command (COMP-08) →
+      STATE_SCHEMA (COMP-03) replaced with loaded state → game resumes
+    components: [COMP-02, COMP-03, COMP-08]
+
+  - id: DF-05
+    name: Compressed variant derivation
+    description: >
+      Developer modifies COMP-10 (verbose prompt) → derives COMP-11 (compressed prompt) →
+      Stage 3 equivalence check confirms parity → both committed together
+    components: [COMP-10, COMP-11]
+
+# ── Trust Boundaries ──────────────────────────────────────────────────────────
+# (used as input to SC-05 STRIDE analysis)
+trust_boundaries:
+
+  - id: TB-01
+    name: User ↔ LLM (primary input boundary)
+    description: >
+      All user text input crosses this boundary. The prompt is the enforcement mechanism —
+      it validates user input against SESSION_RULES. User input is data, not commands.
+
+  - id: TB-02
+    name: User ↔ Console Mode
+    description: >
+      Console mode exposes meta-commands. The RESTRICTION clause prevents CONTROLLER and
+      SESSION_RULES modification. Trust: user is trusted within console command scope only.
+
+  - id: TB-03
+    name: Savegame JSON → Prompt (load boundary)
+    description: >
+      User-supplied JSON is loaded as the new STATE_SCHEMA. This is the highest-trust
+      input path: a crafted JSON could set unrealistic player stats, unlock areas, or
+      inject unexpected state.
+
+  - id: TB-04
+    name: LLM context ↔ External (none)
+    description: >
+      No external boundaries exist. The prompt has no network calls, no external APIs,
+      no file system access beyond user clipboard. This boundary is vacuous by design.
+
+# ── Requirement Coverage Map ──────────────────────────────────────────────────
+requirement_coverage:
+  - req: FR-01  | component: COMP-01  | status: covered
+  - req: FR-02  | component: COMP-02, COMP-05 | status: covered
+  - req: FR-03  | component: COMP-03  | status: covered
+  - req: FR-04  | component: COMP-06  | status: covered
+  - req: FR-05  | component: COMP-07  | status: covered
+  - req: FR-06  | component: COMP-08  | status: covered
+  - req: FR-07  | component: COMP-09  | status: covered
+  - req: FR-08  | component: COMP-10, COMP-11 | status: covered
+  - req: FR-09  | component: COMP-04, COMP-05 | status: covered
+  - req: FR-10  | component: COMP-01 (ABSOLUTE_RULES) | status: covered
+  - req: NFR-01 | component: COMP-10 (no external deps) | status: covered
+  - req: NFR-02 | component: COMP-10 (standard NL, no model-specific APIs) | status: covered
+  - req: NFR-03 | component: COMP-11 (derived compressed variant) | status: covered
+  - req: NFR-04 | component: COMP-03, COMP-08 (save/load) | status: covered
+  - req: NFR-05 | component: COMP-12 | status: covered
+
+unmapped_requirements: []    # DESIGN-01: all requirements are mapped ✅
+
+# ── Technology Decisions ──────────────────────────────────────────────────────
+technology_decisions:
+  - decision: "Prompt format: XML-tagged structure for verbose variant"
+    rationale: >
+      XML tags provide unambiguous section boundaries that LLMs parse reliably.
+      Human-readable and self-documenting. Consistent with v2.0 baseline.
+    alternatives_considered: ["JSON-structured prompt", "markdown-only", "plain prose"]
+
+  - decision: "Compressed variant: shorthand notation (::SYS notation with K{}/OP{}/IF{} blocks)"
+    rationale: >
+      The existing v2.0 compressed variant already uses this notation and has been
+      validated against the verbose prompt. Retaining it avoids re-deriving from scratch.
+    alternatives_considered: ["Remove compressed variant entirely", "Auto-generate via script"]
+
+  - decision: "STATE_SCHEMA: in-context JSON (no external storage)"
+    rationale: >
+      The core constraint (NFR-01) requires self-containment. In-context JSON is the only
+      viable persistent state mechanism without external infrastructure.
+    alternatives_considered: ["External database", "File system", "LLM memory APIs"]
+
+  - decision: "No model pinning — LLM-agnostic by design"
+    rationale: >
+      NFR-02 requires compatibility across Claude 3+, GPT-4+, Gemini 1.5+. Pinning to
+      a specific model would violate this requirement. The prompt uses only standard
+      natural language and structured reasoning instructions available in all target models.
+
+# ── Gaps and Standards Deviations ────────────────────────────────────────────
+gaps: []
+standards_deviations: []
+
+# ── Approval ─────────────────────────────────────────────────────────────────
+approval:
+  status: approved
+  approved_by: "Jerry van Heerikhuize (Lead Architect)"
+  approval_date: "2026-03-11"

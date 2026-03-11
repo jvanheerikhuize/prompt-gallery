@@ -1,0 +1,36 @@
+# =============================================================================
+# RC-03 — Privacy Impact Assessment
+# Control:   RC-03 Privacy Impact Assessment Gate
+# Stage:     2 — System Design
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "RC-03-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / RC-03"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  RC-03 is NOT APPLICABLE. This determination is consistent with SC-04 (Stage 1).
+
+  T.A.G. processes no personal data:
+  - The prompt file contains no personal data.
+  - Game session data (player character name, attributes, events) is entirely fictional
+    and voluntarily entered as part of gameplay.
+  - A player-chosen character name is not PII under GDPR — it is a fictional character
+    name, not necessarily the user's real name, and is not collected, stored, transmitted,
+    or processed outside the user's own LLM chat session.
+  - No profiling, tracking, aggregation, or data sharing occurs.
+  - No personal data crosses any system boundary.
+
+  AI Act Art. 9(2)(a) (risk to fundamental rights including privacy): not triggered
+  because T.A.G. is minimal-risk and processes no personal data.
+
+  GDPR DPIA trigger conditions (Art. 35): none met.
+    - Systematic and extensive profiling: NO
+    - Processing of special categories at scale: NO
+    - Systematic monitoring of a publicly accessible area: NO

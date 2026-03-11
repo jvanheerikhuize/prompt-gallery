@@ -1,0 +1,90 @@
+# =============================================================================
+# AC-03 — AI Component Design Review
+# Control:   AC-03 AI Component Design Review
+# Stage:     2 — System Design
+# Feature:   FEAT-0001
+# Status:    draft — awaiting AI Governance Lead approval
+# =============================================================================
+
+meta:
+  id: "AC-03-FEAT-0001"
+  feature: "FEAT-0001"
+  ai_tier: minimal      # from AC-01-FEAT-0001
+  produced_by: "Claude Sonnet 4.6 (AI Governance Analyst / AC-03)"
+  date: "2026-03-11"
+  status: draft
+
+ai_component_description: |
+  T.A.G. is itself an AI system: a system prompt that governs LLM behaviour to act as a
+  text adventure game master. The AI component is the prompt + the LLM it runs on. The
+  prompt is the "model" in terms of AI Act obligations — it defines the system's behaviour.
+
+# ── Model Selection ───────────────────────────────────────────────────────────
+model_selection:
+  approach: LLM-agnostic (user-selected)
+  rationale: >
+    T.A.G. is deliberately model-agnostic (NFR-02). The user chooses the LLM (Claude,
+    ChatGPT, Gemini, etc.). T.A.G. does not introduce, train, or pin a specific model.
+  supported_models: [Claude 3+, GPT-4+, Gemini 1.5+]
+  model_pinning: false
+  model_pinning_rationale: >
+    Pinning a specific model would violate NFR-02. Users run the prompt on whichever
+    LLM they choose. This is an accepted design decision documented in QC-03.
+
+# ── Data Pipeline ─────────────────────────────────────────────────────────────
+data_pipeline:
+  exists: false
+  rationale: >
+    No data pipeline. The system processes only the in-session conversation context.
+    No training data, no fine-tuning, no vector databases, no retrieval systems.
+
+# ── Explainability ────────────────────────────────────────────────────────────
+explainability:
+  mechanism: >
+    Full transparency by design:
+    1. The prompt is open-source — anyone can read the full MASTER_PROMPT.
+    2. The gamestate console command exposes the full STATE_SCHEMA at any time.
+    3. The SESSION_LOOP is documented step-by-step in the prompt itself.
+    4. The CONTROLLER explicitly forbids exposing internal reasoning in output (step 7),
+       but this is a UX choice, not a transparency restriction — the full logic is visible
+       in the prompt source.
+  eu_ai_act_art13_compliance: >
+    Art. 13 (transparency): Satisfied. The prompt self-identifies as T.A.G. (AI game master)
+    in its introduction. The system is open-source. Users know they are interacting with AI.
+
+# ── Human Oversight ───────────────────────────────────────────────────────────
+human_oversight:
+  mechanisms:
+    - "Console mode (~): user can inspect full game state at any time (gamestate command)"
+    - "hint command: user can request guidance, preventing complete loss of agency"
+    - "skiptoend: user can terminate the game at will"
+    - "save/load: user retains full control of game state via JSON portability"
+    - "Different Choice end-menu option: user can rewind one turn"
+    - "Open-source prompt: full system behaviour is auditable by anyone"
+  eu_ai_act_art14_compliance: >
+    Art. 14 (human oversight): Satisfied for minimal-risk classification. Users have full
+    visibility into and control over the system at all times via console mode.
+
+# ── EU AI Act Compliance (Minimal Risk) ──────────────────────────────────────
+eu_ai_act_compliance:
+  tier: minimal
+  mandatory_obligations:
+    - id: "Art. 52"
+      obligation: Transparency for certain AI systems (chatbots/conversational AI)
+      status: compliant
+      evidence: >
+        The prompt introduction explicitly identifies the system as T.A.G. (AI game master).
+        No user could reasonably mistake this for a human interaction.
+  additional_voluntary_measures:
+    - Open-source publication (full prompt visible)
+    - Console gamestate command (full state visibility)
+    - README documentation
+
+# ── Gaps ──────────────────────────────────────────────────────────────────────
+gaps: []
+
+# ── Approval ─────────────────────────────────────────────────────────────────
+approval:
+  approved_by: "Jerry van Heerikhuize (AI Governance Lead)"
+  approval_date: "2026-03-11"
+  revisions_required: false

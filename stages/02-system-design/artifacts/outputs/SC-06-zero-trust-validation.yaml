@@ -1,0 +1,58 @@
+# =============================================================================
+# SC-06 — Zero-Trust Architecture Validation
+# Control:   SC-06 Zero-Trust Architecture Validation
+# Stage:     2 — System Design
+# Feature:   FEAT-0001
+# Status:    complete — not_applicable (documented)
+# =============================================================================
+
+meta:
+  id: "SC-06-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-06"
+  date: "2026-03-11"
+
+network_zero_trust_applicable: false
+
+rationale: |
+  T.A.G. is a self-contained text prompt with no network architecture. Zero-trust
+  network-level principles (mutual TLS, micro-segmentation, network deny-by-default,
+  lateral movement controls) are structurally not applicable: there are no network
+  segments, no service-to-service communication, no authentication infrastructure,
+  and no data in transit outside the user's own LLM chat session.
+
+  SC-06 is assessed as NOT APPLICABLE at the network architecture level.
+
+logical_trust_posture_assessment: |
+  While network-level zero-trust does not apply, the equivalent logical trust posture
+  within the prompt is assessed here:
+
+  Criterion: No implicit trust for inputs
+  Status: COMPLIANT
+  Evidence: SESSION_LOOP step 2 validates all user input against SESSION_RULES before
+  any state change. ABSOLUTE_RULES frame user input as data, not commands.
+
+  Criterion: Explicit allow-listing of operations
+  Status: COMPLIANT
+  Evidence: Console commands are an explicit, enumerated allow-list. The RESTRICTION
+  clause explicitly denies CONTROLLER/SESSION_RULES modification.
+
+  Criterion: Least privilege
+  Status: COMPLIANT
+  Evidence: Users can only interact within the game world as defined by SESSION_RULES.
+  Console commands are limited to defined operations. No escalation path exists.
+
+  Criterion: State integrity verification each turn
+  Status: COMPLIANT
+  Evidence: STATE_SCHEMA is the absolute source of truth. SESSION_LOOP step 4 produces
+  a complete new STATE_SCHEMA each turn, validated against previous state.
+
+overall_assessment: compliant_at_logical_level
+exception_accepted: true
+exception_rationale: >
+  Network-level zero-trust principles are not applicable to a text prompt with no
+  network architecture. Logical trust posture assessed as compliant. No design changes
+  required. Accepted by SA.
+
+accepted_by: "Jerry van Heerikhuize (Security Architect)"
+acceptance_date: "2026-03-11"
