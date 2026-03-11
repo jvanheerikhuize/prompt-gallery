@@ -1,0 +1,110 @@
+# =============================================================================
+# QC-02 — Conflict Resolution Record
+# Control:   QC-02 Coherence & Conflict Resolution
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0001
+# Status:    draft — awaiting Product Owner decisions on flagged items
+# =============================================================================
+
+meta:
+  id: "QC-02-FEAT-0001"
+  feature: "FEAT-0001"
+  source_cr: "CR-0001"
+  produced_by: "Claude Sonnet 4.6 (Conflict Analyst / QC-02)"
+  date: "2026-03-11"
+  status: resolved
+
+summary:
+  blocking_conflicts: 0
+  significant_conflicts: 1
+  minor_conflicts: 2
+  stage_blocked: false
+
+conflicts:
+
+  - id: CONF-01
+    severity: significant
+    requirements_involved:
+      - "asdlc-consumer.yaml: dora_applicable = true"
+      - "RC-01 risk classification: low"
+    description: |
+      DORA (Digital Operational Resilience Act) was declared applicable in the project
+      manifest. DORA Art. 8 imposes ICT change management obligations on financial sector
+      entities (credit institutions, payment institutions, investment firms, etc.).
+
+      This project is a text file prompt hosted on GitHub by an individual developer.
+      Unless the requester operates within the EU financial sector and this prompt is
+      used within an ICT system subject to DORA, the declaration may be over-scoped and
+      would impose disproportionate governance overhead for a minimal-risk entertainment
+      prompt.
+    options:
+      - id: OPT-A
+        description: >
+          Confirm DORA applies (requester operates in DORA scope). Governance overhead
+          is accepted. All DORA-mapped controls apply with full 7-year retention.
+      - id: OPT-B
+        description: >
+          Revise dora_applicable to false with documented justification. DORA-specific
+          obligations are removed. EU AI Act compliance remains.
+    resolution: "OPT-A — DORA applicability confirmed. Requester accepts full DORA-mapped
+      governance obligations including 7-year retention and all DORA-mapped controls."
+    resolved_by: "Jerry van Heerikhuize (Product Owner)"
+    resolution_date: "2026-03-11"
+
+  - id: CONF-02
+    severity: minor
+    requirements_involved:
+      - "FR-08: Both prompt variants must remain in sync"
+      - "FR-04, FR-05: SESSION_LOOP and SESSION_RULES are the most complex areas"
+    description: |
+      Requiring both verbose and compressed variants to remain functionally in sync
+      introduces maintenance friction. Any change to the SESSION_LOOP, SESSION_RULES,
+      or STATE_SCHEMA must be propagated to both files. The risk is divergence over time
+      — a change applied to one variant but not the other, resulting in different behaviour.
+
+      This is not a blocking conflict but should be acknowledged and mitigated in Stage 3
+      (e.g. with a diff-check step or shared source-of-truth notation).
+    options:
+      - id: OPT-A
+        description: >
+          Accept the risk and rely on developer discipline. Document the sync requirement
+          in CONTRIBUTING.md.
+      - id: OPT-B
+        description: >
+          Designate the verbose variant as the canonical source and treat the compressed
+          variant as a derived artefact. Stage 3 includes a check step confirming equivalence.
+    resolution: "OPT-B — Verbose prompt.md designated as canonical source of truth. Compressed
+      variant is a derived artefact. Stage 3 must include an explicit equivalence verification
+      step before any change is considered complete."
+    resolved_by: "Jerry van Heerikhuize (Product Owner, advised by agent)"
+    resolution_date: "2026-03-11"
+
+  - id: CONF-03
+    severity: minor
+    requirements_involved:
+      - "FR-10: auto-initialize for autonomous agents (should)"
+      - "Existing v2.0 ABSOLUTE_RULES: AutoInit -> True"
+    description: |
+      The existing v2.0 prompt lists auto-initialization as an ABSOLUTE_RULE, making it
+      mandatory behaviour. The feature spec draft (FR-10) lists it as 'should' (not must).
+      This creates a potential regression: if the spec is the source of truth for Stage 3
+      implementation, a future version could drop auto-init without violating the spec.
+    options:
+      - id: OPT-A
+        description: >
+          Promote FR-10 to 'must' priority, aligning with the existing prompt's
+          ABSOLUTE_RULES. No regression possible.
+      - id: OPT-B
+        description: >
+          Retain 'should' — auto-init is desirable but not safety-critical. Accept
+          that it could be deprioritised in a constrained prompt variant.
+    resolution: "OPT-A — FR-10 promoted to 'must'. Auto-initialization for autonomous agents
+      is mandatory, consistent with the existing v2.0 ABSOLUTE_RULES. No regression permitted."
+    resolved_by: "Jerry van Heerikhuize (Product Owner)"
+    resolution_date: "2026-03-11"
+
+stage_gate:
+  blocking_unresolved: false
+  all_conflicts_resolved: true
+  note: >
+    All conflicts resolved by PO on 2026-03-11. No blocking conflicts. QC-02 complete.

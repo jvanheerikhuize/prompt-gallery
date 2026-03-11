@@ -1,0 +1,109 @@
+# =============================================================================
+# Change Request CR-0001
+# =============================================================================
+
+id: "CR-0001"
+title: "Build T.A.G. v2 masterprompt — Text Adventure Generator dungeonmaster"
+type: feature
+urgency: routine
+
+requester:
+  name: "Jerry van Heerikhuize"
+  team: "Solo"
+  contact: "jvanheerikhuize@gmail.com"
+
+description: |
+  Build and refine the T.A.G. (Text Adventure Generator) masterprompt — a single,
+  self-contained prompt that turns any advanced LLM into a fully-featured, next-generation
+  text adventure dungeonmaster (DM).
+
+  The prompt implements a strict MVC architecture:
+  - MODEL: A structured JSON STATE_SCHEMA that acts as the single source of truth for all
+    game state (player, world, NPCs, quests, inventory, time, difficulty, scoring).
+  - VIEW: Templated output formats (Introduction, Session Loop, Ending, Console).
+  - CONTROLLER: A deterministic SESSION_LOOP (parse → validate → position → update model
+    → generate narrative → generate options → assemble output) plus a full SESSION_RULES
+    engine covering physics, inventory, NPC behaviour, combat, time, difficulty scaling,
+    scoring, and death.
+
+  Two prompt variants are maintained:
+  1. Full verbose XML-tagged prompt (prompt.md) — human-readable, maximum clarity.
+  2. Compressed/optimised prompt — token-efficient shorthand for production use.
+
+  Key features:
+  - Procedurally generated, fully open-ended world (no predefined paths).
+  - Persistent game state with save/load via JSON.
+  - Dynamic difficulty adjustment (0–100 scale, auto-scales on player performance).
+  - Intelligent NPCs with memories, relationship scores, faction flags, and hostile behaviour.
+  - In-game console mode (`~`) for meta-commands: gamesettings, gamestate, imageprompt,
+    videoprompt, hint, skiptoend, map, save, load.
+  - ASCII map generation bot with strict coordinate-based layout.
+  - Full combat system (d20 resolution, flee mechanic, permadeath with one-turn rewind).
+  - Time/world-clock system (turns-per-hour, day/night cycle, period-based NPC/world effects).
+  - Scoring ledger tracking meaningful narrative milestones.
+
+problem_statement: |
+  There is no single, portable, LLM-agnostic prompt that delivers a fully-featured,
+  stateful text adventure experience without requiring external tooling, a database, or
+  custom code. Existing approaches either:
+  - Depend on hardcoded paths and predefined story trees.
+  - Lack persistent state, making them incoherent over longer sessions.
+  - Require external infrastructure (APIs, vector stores) unavailable in a standard chat UI.
+
+  Players who want an immersive, logically consistent, open-world text adventure with a
+  single paste-and-play prompt currently have no good option. The cost of not solving this
+  is that LLMs remain underutilised as game masters and the format stays inaccessible.
+
+desired_outcome: |
+  A single prompt file (prompt.md) that any user can copy-paste into any advanced LLM chat
+  interface (Claude, ChatGPT, Gemini, etc.) and immediately begin a fully-featured,
+  procedurally generated text adventure game — with no additional setup.
+
+  Success criteria:
+  - The LLM correctly assumes the T.A.G. DM persona and tone (brilliant, witty, sarcastic,
+    Infocom-style) on first invocation.
+  - The SESSION_LOOP executes deterministically: parse → validate → update state → narrate
+    → offer options, every turn.
+  - Game state is fully self-contained in the JSON STATE_SCHEMA; a saved JSON can be loaded
+    in a new session on a different LLM and resume correctly.
+  - All SESSION_RULES are respected (physics, inventory transitivity, NPC memory/faction,
+    combat d20, dynamic difficulty, scoring ledger, death/permadeath).
+  - Console mode (`~`) is functional with all listed commands.
+  - A compressed/token-efficient variant of the prompt is maintained alongside the full one.
+  - The prompt is documented in README.md with quick-start instructions and an example.
+
+context: |
+  An initial working version of the prompt (v2.0) already exists at:
+    https://github.com/jvanheerikhuize/prompt-gallery/blob/main/Fun/TAG/prompt.md
+
+  The prompt is part of the broader prompt-gallery repository. This project (tag-role-test)
+  is the dedicated A-SDLC-governed workspace for iterating on the prompt through a structured
+  SDLC — capturing requirements, designing improvements, implementing and testing changes,
+  and releasing versioned prompt artefacts.
+
+  The existing prompt uses:
+  - XML-style tags for structure (<MASTER_PROMPT>, <CORE_DIRECTIVES>, <MODEL>, <VIEW>,
+    <CONTROLLER>, etc.).
+  - A verbose STATE_SCHEMA JSON template embedded in the prompt.
+  - A SESSION_LOOP numbered 1–7 with explicit chain-of-thought steps.
+  - A CONSOLE_COMMANDS block and an ASCII_MAP_BOT sub-agent.
+
+  Known areas for potential improvement identified from the README:
+  - Customisation hooks (image generation per location, health as a game-over parameter,
+    injecting specific lore/characters via the GAMELOOP).
+  - The compressed variant should remain functionally equivalent to the verbose version.
+
+constraints:
+  - "The prompt must be self-contained: no external APIs, tools, or infrastructure required."
+  - "Must run in a standard LLM chat interface with a single copy-paste."
+  - "Both prompt variants (verbose and compressed) must remain in sync after each change."
+  - "The a-sdlc/ governance submodule is read-only — no edits to framework files."
+
+known_dependencies:
+  - "Existing prompt v2.0 at github.com/jvanheerikhuize/prompt-gallery (reference baseline)"
+  - "LLM capability: target models must support long context and instruction-following
+    (Claude 3+, GPT-4+, Gemini 1.5+)"
+
+ai_component_involved: true
+  # AC-01 applies: this project IS an AI component (a system prompt governing LLM behaviour).
+  # Risk tier: minimal — entertainment/creative use, no safety-critical decisions.

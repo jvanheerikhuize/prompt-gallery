@@ -1,0 +1,72 @@
+# =============================================================================
+# AC-01 — AI Risk Tier Classification
+# Control:   AC-01 AI Risk Tier Classification
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0001
+# Status:    draft — awaiting AI Governance Lead confirmation
+# =============================================================================
+
+meta:
+  id: "AC-01-FEAT-0001"
+  feature: "FEAT-0001"
+  source_cr: "CR-0001"
+  produced_by: "Claude Sonnet 4.6 (AI Governance Analyst / AC-01)"
+  date: "2026-03-11"
+  status: draft
+
+ai_component_involved: true
+component_description: |
+  T.A.G. is a system prompt that governs LLM behaviour. When deployed, it transforms
+  an LLM into a text adventure game master. The prompt itself is the AI component:
+  it defines the persona, decision logic, state management rules, and output format
+  for the LLM's responses.
+
+proposed_tier: minimal    # minimal | limited | high | unacceptable
+
+eu_ai_act_analysis:
+  article_6_assessment: |
+    Art. 6(1): Is this a safety component of a product covered by EU harmonisation
+    legislation listed in Annex I? → NO.
+    Art. 6(2): Is this listed in Annex III (high-risk AI systems)? → NO.
+    Assessment: Does not qualify as high-risk under Art. 6.
+
+  annex_iii_screening:
+    - domain: "Biometric identification and categorisation" → NOT APPLICABLE
+    - domain: "Critical infrastructure" → NOT APPLICABLE
+    - domain: "Education and vocational training" → NOT APPLICABLE
+    - domain: "Employment and workers management" → NOT APPLICABLE
+    - domain: "Essential private/public services (credit, social benefits)" → NOT APPLICABLE
+    - domain: "Law enforcement" → NOT APPLICABLE
+    - domain: "Migration and border control" → NOT APPLICABLE
+    - domain: "Administration of justice and democratic processes" → NOT APPLICABLE
+    conclusion: No Annex III domains apply.
+
+  unacceptable_risk_check:
+    - "Social scoring by public authorities" → NOT APPLICABLE
+    - "Real-time remote biometric surveillance in public spaces" → NOT APPLICABLE
+    - "Subliminal manipulation causing harm" → NOT APPLICABLE
+    - "Exploitation of vulnerabilities of specific groups" → NOT APPLICABLE
+    conclusion: Not an unacceptable-risk system.
+
+  minimal_risk_rationale: |
+    T.A.G. is an entertainment/creative tool. It produces fictional narrative content
+    in response to user input. It makes no decisions affecting real people's rights,
+    opportunities, or safety. It processes no personal data. It has no integration with
+    real-world systems. It is open-source and fully transparent in its operation.
+
+    Under EU AI Act Art. 52 (transparency obligations for certain AI systems):
+    - Chatbot/conversational AI disclosure: The prompt identifies itself as an AI game
+      master in its introduction — this satisfies any applicable transparency requirement.
+
+    Proposed tier: MINIMAL — no mandatory EU AI Act compliance obligations beyond
+    the voluntary transparency already provided by the prompt's design and README.
+
+triggered_compliance_obligations:
+  - "Art. 52 transparency: satisfied by prompt self-identification and open-source README"
+  - "No further mandatory obligations under minimal-risk classification"
+
+confirmation:
+  confirmed_by: "Jerry van Heerikhuize (AI Governance Lead)"
+  confirmation_date: "2026-03-11"
+  override_tier: ""
+  override_rationale: ""

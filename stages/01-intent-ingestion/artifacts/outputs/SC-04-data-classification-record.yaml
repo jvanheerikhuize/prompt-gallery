@@ -1,0 +1,32 @@
+# =============================================================================
+# SC-04 — Data Classification Record
+# Control:   SC-04 Data Classification Screening
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "SC-04-FEAT-0001"
+  feature: "FEAT-0001"
+  source_cr: "CR-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-04"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  SC-04 is NOT APPLICABLE to this change.
+
+  The T.A.G. prompt does not introduce, modify, or interact with personal data processing:
+  - The prompt file itself contains no personal data.
+  - Game session data (player character name, attributes, in-game events) is entirely
+    fictional and voluntarily entered by the user as part of gameplay.
+  - A player-chosen character name entered during game initialization is not PII in the
+    GDPR sense: it is a fictional character name, not necessarily the user's real name,
+    and it is not collected, stored, transmitted, or processed outside the user's own
+    LLM chat session.
+  - No profiling, tracking, or data aggregation occurs.
+  - No personal data leaves the user's chat session.
+
+  Data classification: PUBLIC (the prompt file is open-source).

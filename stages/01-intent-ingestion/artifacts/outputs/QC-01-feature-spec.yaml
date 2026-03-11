@@ -1,0 +1,272 @@
+# =============================================================================
+# QC-01 — Feature Specification (Draft)
+# Control:   QC-01 Specification Validation
+# Stage:     1 — Intent Ingestion
+# Source CR: CR-0001
+# Status:    draft — awaiting Product Owner approval (GC-05)
+# =============================================================================
+
+meta:
+  id: "FEAT-0001"
+  title: "T.A.G. v2 — Text Adventure Generator dungeonmaster masterprompt"
+  status: approved
+  created: "2026-03-11"
+  last_updated: "2026-03-11"
+  source_cr: "CR-0001"
+  stage_reached: 1
+
+provenance:
+  created_by: "Claude Sonnet 4.6 (Intake Analyst / QC-01)"
+  reviewed_by: "Jerry van Heerikhuize (Product Owner)"
+  approved_by: "Jerry van Heerikhuize (Product Owner)"
+  approval_date: "2026-03-11"
+
+# ── Intent ────────────────────────────────────────────────────────────────────
+intent:
+  problem_statement: |
+    There is no single, self-contained, LLM-agnostic prompt that delivers a fully-featured,
+    stateful text adventure game experience without requiring external tooling, a database,
+    or custom code. Existing approaches either rely on hardcoded story paths, lose coherence
+    over longer sessions due to absent state management, or require external infrastructure
+    unavailable in a standard chat UI.
+
+    Players who want an immersive, open-world text adventure with a single paste-and-play
+    prompt have no good option. LLMs remain underutilised as game masters and the format
+    stays inaccessible.
+
+  desired_outcome: |
+    A single prompt file (prompt.md) that any user can copy-paste into any advanced LLM
+    chat interface and immediately begin a fully-featured, procedurally generated text
+    adventure — with no additional setup.
+
+    Measurable success criteria:
+    1. LLM correctly assumes T.A.G. DM persona (brilliant, witty, sarcastic, Infocom-style)
+       on first invocation without additional instructions.
+    2. SESSION_LOOP executes deterministically every turn:
+       parse → validate → position → update state → narrate → offer options → output.
+    3. Game state is fully self-contained in the JSON STATE_SCHEMA; a saved JSON can be
+       loaded in a new session on a different LLM and resume correctly.
+    4. All SESSION_RULES are respected: physics, inventory transitivity, NPC memory/faction,
+       combat d20, dynamic difficulty (0–100), scoring ledger, death/permadeath.
+    5. Console mode (`~`) is functional with all 9 listed commands.
+    6. A compressed/token-efficient variant is maintained in sync with the verbose prompt.
+    7. README.md documents the prompt with quick-start instructions and an example.
+
+  out_of_scope:
+    - External APIs, server infrastructure, or database backends
+    - Web frontend or GUI
+    - Native mobile or desktop application
+    - Multi-player or networked play
+    - Automatic image/video generation (imageprompt/videoprompt console commands produce
+      prompts only — generation itself is out of scope)
+
+# ── Requirements ──────────────────────────────────────────────────────────────
+requirements:
+  functional:
+    - id: FR-01
+      title: DM Persona
+      description: >
+        The prompt MUST establish the T.A.G. persona: Senior Dungeon Master, storyteller,
+        arbiter; tone brilliant, witty, sarcastic in the style of classic Infocom adventures.
+      priority: must
+
+    - id: FR-02
+      title: Initialization Flow
+      description: >
+        The prompt MUST support three start modes: (a) new customized game — collect
+        player name, gender, setting, lore, goal one at a time; (b) new random game —
+        collect name/gender and generate setting/lore/goal; (c) load — accept a JSON
+        savegame and resume.
+      priority: must
+
+    - id: FR-03
+      title: STATE_SCHEMA (MVC Model)
+      description: >
+        The prompt MUST define a JSON STATE_SCHEMA covering: game settings (difficulty,
+        logo), setting, lore[], goal, player (location, position xyz, stats, inventory
+        with flags, scoring ledger), world (locations with dimensions/exits/objects,
+        NPCs with memories/relationship scores/faction, quests, global flags including
+        turn count and world clock).
+      priority: must
+
+    - id: FR-04
+      title: SESSION_LOOP (MVC Controller)
+      description: >
+        Every player turn MUST execute the 7-step loop in strict order:
+        1. Parse user input (intent + nouns).
+        2. Validate/resolve against SESSION_RULES and STATE_SCHEMA.
+        3. Calculate position (xyz).
+        4. Update STATE_SCHEMA (state, lore, time, score, difficulty history).
+        5. Generate narrative from state diff.
+        6. Generate 3–5 contextual options.
+        7. Assemble output — no internal reasoning or raw JSON in final output.
+      priority: must
+
+    - id: FR-05
+      title: SESSION_RULES Engine
+      description: >
+        The prompt MUST enforce the full rules engine covering: physics/dark rooms,
+        inventory transitivity, state/logic invariants, NPC memory and relationship scores,
+        xyz navigation, world clock (turns-per-hour, day/night periods with NPC/world effects),
+        dynamic difficulty scaling (0–100, auto-adjust on 3 consecutive fails/successes),
+        scoring ledger (max_score at init, meaningful milestones only), combat (d20 resolution,
+        player-first, flee mechanic, NPC death/drop inventory), and death/permadeath
+        (one-turn rewind from end menu).
+      priority: must
+
+    - id: FR-06
+      title: Console Mode
+      description: >
+        Typing `~` MUST switch to console mode. Available commands: gamesettings,
+        gamestate (full JSON dump), imageprompt (codeblock), videoprompt (codeblock),
+        hint, skiptoend, map (ASCII_MAP_BOT), save (JSON savegame), load (parse JSON),
+        ~ (exit console). Players MUST NOT be able to modify the CONTROLLER or SESSION_RULES
+        via the console.
+      priority: must
+
+    - id: FR-07
+      title: ASCII Map Bot
+      description: >
+        The map console command MUST invoke the ASCII_MAP_BOT sub-agent which generates a
+        top-down map of the current location: perfect rectangle, fixed line width, walls (#),
+        floor (.), exits (NESW replacing wall char), entity coordinates placed correctly,
+        and a LEGEND block — all in a single code block.
+      priority: must
+
+    - id: FR-08
+      title: Compressed Prompt Variant
+      description: >
+        A functionally equivalent compressed/token-efficient variant of the full prompt MUST
+        be maintained. It MUST produce identical game behaviour. Both variants reside in the
+        same repository and are updated together on every change.
+      priority: must
+
+    - id: FR-09
+      title: Ending Phase
+      description: >
+        When the goal is met or the player dies, the game MUST transition to the Ending phase:
+        death/victory scene, score/max_score, turn count, and an end menu with three options:
+        Debriefing (DM summary), Different Choice (rewind one turn), Create a Next Chapter
+        (re-initialize with current state + 3–5 follow-up storylines).
+      priority: must
+
+    - id: FR-10
+      title: Auto-initialize for Autonomous Agents
+      description: >
+        If the prompt detects it is running inside an autonomous agent or agentic framework,
+        it MUST auto-initialize without waiting for user interaction.
+      priority: must      # promoted from 'should' per CONF-03 PO decision 2026-03-11
+
+  non_functional:
+    - id: NFR-01
+      title: Self-contained
+      description: >
+        The prompt MUST work with no external APIs, tools, databases, or infrastructure.
+        A user must only need to copy-paste the prompt into a chat UI.
+      priority: must
+
+    - id: NFR-02
+      title: LLM-agnostic compatibility
+      description: >
+        The prompt MUST produce correct behaviour on Claude 3+, GPT-4+, and Gemini 1.5+.
+        No model-specific features or APIs may be used.
+      priority: must
+
+    - id: NFR-03
+      title: Token efficiency (compressed variant)
+      description: >
+        The compressed variant SHOULD reduce token count by at least 50% versus the verbose
+        variant while maintaining full functional equivalence.
+      priority: should
+
+    - id: NFR-04
+      title: Savegame portability
+      description: >
+        A savegame JSON produced in one LLM session MUST be loadable in a new session on
+        a different LLM and resume the game with full state integrity.
+      priority: must
+
+    - id: NFR-05
+      title: Documentation
+      description: >
+        README.md MUST include: project description, how-to-play (copy/paste instructions),
+        a usage example snippet, and a tips section.
+      priority: should
+
+  constraints:
+    - "Prompt must be a single copy-pasteable text file — no multi-file or multi-step setup"
+    - "Both prompt variants (verbose and compressed) must remain functionally in sync after every change"
+    - "a-sdlc/ governance submodule is read-only"
+    - "No LLM-specific API calls, tool use, or system prompt injection beyond the prompt itself"
+
+  dependencies:
+    - "Existing v2.0 baseline: github.com/jvanheerikhuize/prompt-gallery/blob/main/Fun/TAG/prompt.md"
+    - "Target LLMs must support long-context instruction following (Claude 3+, GPT-4+, Gemini 1.5+)"
+
+# ── Risk Classification (RC-01) ───────────────────────────────────────────────
+risk:
+  initial_classification: low
+  rationale: |
+    Classified LOW based on RC-01 criteria:
+    - Data sensitivity: nil — no personal data processed; game state is fictional
+    - Blast radius: minimal — standalone text file, no production systems, no integrations
+    - Reversibility: fully reversible — text file changes are trivially undone via git
+    - Regulatory exposure: DORA and EU AI Act declared applicable in project manifest,
+      but practical ICT risk is negligible for a standalone text prompt
+    - External dependencies: one read-only reference (existing baseline); no runtime deps
+    - Team size: solo project, single approver across all roles
+    Conservative note: classified at low (not minimal) to acknowledge declared DORA/EU AI Act
+    scope; Risk Officer may revise to minimal with documented justification.
+
+# ── AI Classification (AC-01) ─────────────────────────────────────────────────
+ai:
+  component_involved: true
+  risk_tier: minimal
+  eu_ai_act_applicable: true
+  rationale: |
+    This project is itself an AI system prompt — it governs LLM behaviour as a game master.
+    Under EU AI Act Art. 6 and Annex III analysis:
+    - Not listed in Annex III (high-risk AI systems): no safety-critical, biometric,
+      education/employment/credit/health/law enforcement/migration/justice use cases.
+    - Not an unacceptable-risk system: no social scoring, real-time biometric surveillance,
+      subliminal manipulation, or exploitation of vulnerabilities.
+    - Qualifies as minimal-risk (entertainment/creative tool).
+    EU AI Act applicable = true because declared in project manifest, but minimal-risk
+    classification means no mandatory compliance obligations beyond transparency (Art. 52)
+    which is satisfied by the project's open-source nature and README documentation.
+    Proposed tier: minimal. AI Governance Lead (Jerry van Heerikhuize) to confirm.
+
+# ── Data Classification (SC-04) ───────────────────────────────────────────────
+data:
+  classification: public
+  pii_involved: false
+  special_category_data: false
+  sc04_applicable: false
+  sc04_rationale: |
+    The prompt itself processes no personal data. Game session data (player name, character
+    attributes, in-game events) is entirely fictional and user-controlled. Savegame JSONs
+    may contain a user-chosen player name, but this is voluntarily entered fictional data,
+    not PII in the GDPR sense. SC-04 is NOT APPLICABLE to this change.
+
+# ── Gaps Flagged for Product Owner Review ─────────────────────────────────────
+gaps:
+  - id: GAP-01
+    field: "requirements.non_functional.NFR-03"
+    severity: minor
+    description: >
+      The 50% token reduction target for the compressed variant is an agent estimate.
+      No empirical baseline token count for v2.0 has been measured. PO should confirm
+      whether this is an acceptable threshold or if a specific token budget applies.
+
+  - id: GAP-02
+    field: "requirements.functional.FR-10 (auto-initialize)"
+    severity: minor
+    description: >
+      The auto-initialize behaviour for autonomous agents is listed as 'should' priority.
+      The existing v2.0 prompt includes this as an ABSOLUTE_RULE. PO to confirm whether
+      this should be promoted to 'must' in this spec.
+
+# ── Audit Trail ───────────────────────────────────────────────────────────────
+audit:
+  gc01_entry: "GC-01-FEAT-0001-2026-03-11"
+  intent_audit_record: "GC-05-FEAT-0001-2026-03-11"

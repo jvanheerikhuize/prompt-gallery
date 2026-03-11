@@ -1,0 +1,139 @@
+# =============================================================================
+# GC-05 — Intent Audit Record
+# Control:   GC-05 Intent Traceability
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0001
+# Status:    draft — PO sign-off pending
+# =============================================================================
+
+meta:
+  id: "GC-05-FEAT-0001-2026-03-11"
+  feature: "FEAT-0001"
+  source_cr: "CR-0001"
+  produced_by: "Claude Sonnet 4.6 (GC-05)"
+  date: "2026-03-11T00:00:00Z"
+  retention: "7 years (DORA Art. 8(6))"
+
+# ── Event Log ─────────────────────────────────────────────────────────────────
+events:
+
+  - timestamp: "2026-03-11"
+    event: SC-03_PASS
+    actor: "Claude Sonnet 4.6"
+    description: >
+      Pre-guardrail scan of CR-0001 completed. No prompt injection patterns, adversarial
+      framing, or manipulation attempts detected. Request cleared for processing.
+
+  - timestamp: "2026-03-11"
+    event: QC-01_DRAFT_PRODUCED
+    actor: "Claude Sonnet 4.6"
+    description: >
+      Feature specification FEAT-0001 drafted from CR-0001. 10 functional requirements,
+      5 non-functional requirements, 4 constraints, 2 dependencies identified.
+      2 gaps flagged for PO review (GAP-01: NFR-03 token reduction threshold;
+      GAP-02: FR-10 auto-init priority).
+    artefact: "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
+
+  - timestamp: "2026-03-11"
+    event: QC-02_COMPLETE
+    actor: "Claude Sonnet 4.6"
+    description: >
+      Conflict analysis complete. 0 blocking, 1 significant (CONF-01: DORA scope),
+      2 minor (CONF-02: variant sync risk; CONF-03: auto-init priority). No stage block.
+      PO decisions required on all three conflicts at sign-off.
+    artefact: "stages/01-intent-ingestion/artifacts/outputs/QC-02-conflict-resolution-record.yaml"
+
+  - timestamp: "2026-03-11"
+    event: RC-01_CLASSIFIED
+    actor: "Claude Sonnet 4.6"
+    description: >
+      Risk classified as LOW. Rationale: minimal data sensitivity, negligible blast radius,
+      fully reversible, low regulatory exposure, no runtime dependencies, solo project.
+      Risk Officer validation pending.
+    artefact: "stages/01-intent-ingestion/artifacts/outputs/RC-01-risk-classification.yaml"
+
+  - timestamp: "2026-03-11"
+    event: AC-01_CLASSIFIED
+    actor: "Claude Sonnet 4.6"
+    description: >
+      AI component confirmed present (T.A.G. is a system prompt governing LLM behaviour).
+      EU AI Act risk tier proposed: MINIMAL. Annex III screening: no domains applicable.
+      Unacceptable-risk check: clear. Triggered obligations: Art. 52 transparency only —
+      satisfied by existing prompt design and README. AGL confirmation pending.
+    artefact: "stages/01-intent-ingestion/artifacts/outputs/AC-01-ai-tier-classification.yaml"
+
+  - timestamp: "2026-03-11"
+    event: SC-04_NOT_APPLICABLE
+    actor: "Claude Sonnet 4.6"
+    description: >
+      SC-04 data classification: NOT APPLICABLE. No personal data processed. Data
+      classification: PUBLIC.
+    artefact: "stages/01-intent-ingestion/artifacts/outputs/SC-04-data-classification-record.yaml"
+
+  - timestamp: "2026-03-11"
+    event: QC-02_CONFLICTS_RESOLVED
+    actor: "Jerry van Heerikhuize (Product Owner)"
+    description: >
+      All QC-02 conflicts resolved by PO. CONF-01: DORA applicability confirmed (OPT-A).
+      CONF-02: Verbose prompt designated canonical source, compressed is derived artefact,
+      equivalence check required in Stage 3 (OPT-B). CONF-03: FR-10 auto-init promoted
+      to 'must' (OPT-A). QC-01 feature spec updated accordingly.
+
+  - timestamp: "2026-03-11"
+    event: RC-01_VALIDATED
+    actor: "Jerry van Heerikhuize (Risk Officer)"
+    description: >
+      Risk classification LOW validated. No override. Rationale accepted: minimal blast
+      radius, no PII, fully reversible, low regulatory exposure despite DORA scope.
+
+  - timestamp: "2026-03-11"
+    event: AC-01_CONFIRMED
+    actor: "Jerry van Heerikhuize (AI Governance Lead)"
+    description: >
+      AI risk tier MINIMAL confirmed. Annex III screening clear. No mandatory EU AI Act
+      obligations beyond Art. 52 transparency, which is satisfied. No override.
+
+  - timestamp: "2026-03-11"
+    event: GC-05_PO_SIGNOFF
+    actor: "Jerry van Heerikhuize (Product Owner)"
+    description: >
+      Stage 1 complete. All controls executed, all conflicts resolved, risk and AI tiers
+      confirmed. Feature specification FEAT-0001 approved. Stage 1 exit criteria met.
+      Proceeding to Stage 2 (System Design).
+    decision: approved
+    rejection_reason: ""
+
+# ── Artefact Index ────────────────────────────────────────────────────────────
+artefacts:
+  - path: "stages/01-intent-ingestion/artifacts/inputs/CR-0001-tag-dungeonmaster-masterprompt.yaml"
+    type: input
+    description: Original change request
+  - path: "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
+    type: output
+    description: Draft feature specification (FEAT-0001)
+  - path: "stages/01-intent-ingestion/artifacts/outputs/QC-02-conflict-resolution-record.yaml"
+    type: output
+    description: Conflict resolution record
+  - path: "stages/01-intent-ingestion/artifacts/outputs/RC-01-risk-classification.yaml"
+    type: output
+    description: Risk classification
+  - path: "stages/01-intent-ingestion/artifacts/outputs/AC-01-ai-tier-classification.yaml"
+    type: output
+    description: AI tier classification
+  - path: "stages/01-intent-ingestion/artifacts/outputs/SC-04-data-classification-record.yaml"
+    type: output
+    description: Data classification record (not applicable)
+  - path: "specs/FEAT-0001-tag-dungeonmaster-masterprompt.yaml"
+    type: output
+    description: Canonical feature spec (promoted from draft on PO approval)
+
+# ── Stage Gate ────────────────────────────────────────────────────────────────
+stage_gate:
+  sc03_passed: true
+  sc04_complete: true
+  qc01_approved: true
+  qc02_complete: true
+  rc01_validated: true
+  ac01_confirmed: true
+  gc05_logged: true
+  stage_1_exit_clear: true

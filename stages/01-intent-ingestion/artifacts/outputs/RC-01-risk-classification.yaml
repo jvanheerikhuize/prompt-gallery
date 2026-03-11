@@ -1,0 +1,79 @@
+# =============================================================================
+# RC-01 — Risk Classification
+# Control:   RC-01 Risk Classification
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0001
+# Status:    draft — awaiting Risk Officer validation
+# =============================================================================
+
+meta:
+  id: "RC-01-FEAT-0001"
+  feature: "FEAT-0001"
+  source_cr: "CR-0001"
+  produced_by: "Claude Sonnet 4.6 (Risk Assessor / RC-01)"
+  date: "2026-03-11"
+  status: draft
+
+proposed_tier: low    # low | medium | high | critical
+
+governance_intensity:
+  enhanced_scrutiny: false
+  approval_authority: "Product Owner (solo project — Jerry van Heerikhuize)"
+  testing_depth: standard
+
+dimensions:
+  data_sensitivity:
+    score: minimal
+    rationale: >
+      No personal data is processed by the prompt. Game session data (player character
+      name, fictional attributes, in-game events) is entirely user-controlled fiction.
+      Savegame JSON may contain a voluntarily entered player name, which is not PII
+      under GDPR. Data classification: PUBLIC.
+
+  blast_radius:
+    score: minimal
+    rationale: >
+      The deliverable is a standalone text file (prompt.md). It has no integrations,
+      no API calls, no database writes, no infrastructure footprint. A defective prompt
+      version causes no data loss, no system impact, and no downstream failures beyond
+      a suboptimal game experience.
+
+  reversibility:
+    score: fully_reversible
+    rationale: >
+      All changes are tracked in git. Any version can be reverted instantly.
+      No deployments, no migrations, no external state to roll back.
+
+  regulatory_exposure:
+    score: low
+    rationale: >
+      DORA and EU AI Act declared applicable in project manifest. However:
+      - EU AI Act minimal-risk classification imposes no mandatory obligations beyond
+        voluntary transparency (Art. 52), which is satisfied by open-source publication.
+      - DORA applicability is contested (see CONF-01 in QC-02). If confirmed, DORA
+        imposes documentation and retention requirements (already met by this framework).
+      Regulatory exposure is low even with both frameworks in scope.
+
+  dependency_count:
+    score: minimal
+    rationale: >
+      Single read-only reference dependency (existing v2.0 baseline). No runtime
+      dependencies. No third-party libraries or services.
+
+  team_complexity:
+    score: minimal
+    rationale: >
+      Solo project. All roles (PO, SA, AGL, RO, Tech Lead) held by one person.
+      No coordination overhead, no handoff risk.
+
+classification_boundary_note: |
+  This change sits at the boundary of minimal and low. Conservative classification
+  applied (low) to acknowledge the declared DORA/EU AI Act scope. Risk Officer may
+  revise to minimal with documented justification if DORA applicability is resolved
+  as false (see CONF-01).
+
+validation:
+  validated_by: "Jerry van Heerikhuize (Risk Officer)"
+  validation_date: "2026-03-11"
+  override_tier: ""
+  override_rationale: ""

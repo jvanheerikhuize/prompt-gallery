@@ -6,39 +6,39 @@
 # =============================================================================
 
 project:
-  id: ""                           # Unique project identifier (e.g. PRJ-0001)
-  name: ""                         # Human-readable project name
+  id: "PRJ-0001-test"              # Unique project identifier (e.g. PRJ-0001)
+  name: "tag-role-test"            # Human-readable project name
   description: |
-    # Describe what this project builds and its purpose.
+    Builds a masterprompt for agents to behave as a text adventure dungeonmaster.
   status: active                   # active | paused | archived
 
   # ── Team ──────────────────────────────────────────────────────────────────
   team:
-    product_owner: ""              # Name or contact
-    security_architect: ""
-    tech_lead: ""
-    contact: ""                    # Primary contact (email or Slack)
+    product_owner: "Jerry van Heerikhuize"
+    security_architect: "Jerry van Heerikhuize"
+    tech_lead: "Jerry van Heerikhuize"
+    contact: "jvanheerikhuize@gmail.com"
 
   # ── Stack ─────────────────────────────────────────────────────────────────
   # Describe the technology stack — agents use this for language-specific guidance
   stack:
-    languages: []                  # e.g. [python, typescript]
-    frameworks: []                 # e.g. [fastapi, react]
-    runtime: []                    # e.g. [docker, kubernetes]
-    databases: []                  # e.g. [postgresql, redis]
-    cloud: []                      # e.g. [aws, azure, gcp]
-    ci_cd: []                      # e.g. [github-actions, gitlab-ci]
+    languages: [prompt, markdown]
+    frameworks: []
+    runtime: [agent-prompt]
+    databases: []
+    cloud: []
+    ci_cd: []
 
   # ── AI Components ─────────────────────────────────────────────────────────
   # Required for AC-01 (AI Risk Classification) in Stage 1
-  ai_component_involved: unknown   # true | false | unknown
-  ai_risk_tier: unknown            # minimal | limited | high | unacceptable | unknown
+  ai_component_involved: true
+  ai_risk_tier: minimal
                                    # Determined during Stage 1 → AC-01
 
   # ── Regulatory Scope ──────────────────────────────────────────────────────
   regulatory_scope:
-    dora_applicable: unknown       # true | false | unknown
-    eu_ai_act_applicable: unknown  # true | false | unknown
+    dora_applicable: true
+    eu_ai_act_applicable: true
     other: []                      # Other applicable frameworks
 
 # ── Governance ──────────────────────────────────────────────────────────────
@@ -65,7 +65,7 @@ features:
   id_prefix: FEAT                  # Prefix for feature specification IDs
   next_id: 1                       # Increment after each new feature spec is created
   cr_prefix: CR                    # Prefix for change request IDs
-  next_cr_id: 1                    # Increment after each new change request
+  next_cr_id: 2                    # Increment after each new change request
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 paths:

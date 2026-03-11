@@ -1,0 +1,199 @@
+# =============================================================================
+# Feature Specification: FEAT-0001
+# T.A.G. v2 — Text Adventure Generator dungeonmaster masterprompt
+# =============================================================================
+# Source:  CR-0001
+# Stage:   1 — Intent Ingestion (draft — awaiting PO approval)
+# Schema:  a-sdlc/schema/feature-spec.schema.json
+# =============================================================================
+
+meta:
+  id: "FEAT-0001"
+  title: "T.A.G. v2 — Text Adventure Generator dungeonmaster masterprompt"
+  status: approved           # draft | approved | in-progress | complete | cancelled
+  created: "2026-03-11"
+  last_updated: "2026-03-11"
+  source_cr: "CR-0001"
+  stage_reached: 1
+
+provenance:
+  created_by: "Claude Sonnet 4.6 (QC-01 / Stage 1)"
+  reviewed_by: "Jerry van Heerikhuize (Product Owner)"
+  approved_by: "Jerry van Heerikhuize (Product Owner)"
+  approval_date: "2026-03-11"
+
+# ── Intent ────────────────────────────────────────────────────────────────────
+intent:
+  problem_statement: |
+    There is no single, self-contained, LLM-agnostic prompt that delivers a fully-featured,
+    stateful text adventure game without external tooling or infrastructure. Existing
+    approaches lack persistent state, rely on hardcoded paths, or require infrastructure
+    unavailable in a standard chat UI.
+
+  desired_outcome: |
+    A paste-and-play prompt.md that works in any advanced LLM (Claude 3+, GPT-4+, Gemini 1.5+)
+    delivering: T.A.G. DM persona, deterministic SESSION_LOOP, full STATE_SCHEMA game state,
+    SESSION_RULES engine (physics, NPC, combat, time, difficulty, scoring, death), console mode,
+    ASCII map bot, savegame portability, and a compressed variant — all from a single file.
+
+  out_of_scope:
+    - External APIs, server infrastructure, databases
+    - Web frontend or GUI
+    - Multi-player / networked play
+    - Automatic image/video generation (console commands produce prompts only)
+
+# ── Requirements ──────────────────────────────────────────────────────────────
+requirements:
+  functional:
+    - id: FR-01
+      title: DM Persona
+      priority: must
+      description: >
+        Establish T.A.G. persona: Senior DM, storyteller, arbiter; tone brilliant/witty/sarcastic,
+        Infocom-style (intellectual + dry humor).
+
+    - id: FR-02
+      title: Initialization Flow
+      priority: must
+      description: >
+        Three start modes: (a) customized — collect name, gender, setting, lore, goal one at a
+        time; (b) random — collect name/gender, generate setting/lore/goal; (c) load — accept
+        JSON savegame and resume.
+
+    - id: FR-03
+      title: STATE_SCHEMA (MVC Model)
+      priority: must
+      description: >
+        JSON STATE_SCHEMA covering: game settings (difficulty 0–100, logo), setting, lore[],
+        goal, player (location, pos xyz, health/atk/def/score stats, inventory with flags,
+        scoring ledger), world (locations with dimensions/exits/objects, NPCs with
+        memories/relationship scores/faction, quests, global flags incl. turn count and world clock).
+
+    - id: FR-04
+      title: SESSION_LOOP (MVC Controller)
+      priority: must
+      description: >
+        Every turn: 1.Parse intent/nouns → 2.Validate/resolve vs rules+state →
+        3.Calculate xyz → 4.Update STATE_SCHEMA (state, lore, time, score, diff history) →
+        5.Generate narrative from state diff → 6.Generate 3–5 options →
+        7.Output narrative+options (no internal reasoning or raw JSON).
+
+    - id: FR-05
+      title: SESSION_RULES Engine
+      priority: must
+      description: >
+        Full rules: physics (no pass-through solids, dark rooms need light), inventory
+        transitivity, state invariants (no negation), NPC memory/relationship/faction,
+        xyz navigation, world clock (turns-per-hour, periods: dawn/morning/afternoon/
+        evening/night with NPC+world effects), dynamic difficulty (0–100; fails×3→-10,
+        successes×3→+5), scoring ledger (max_score at init, milestone-only), combat
+        (d20+atk-def=dmg min1, player-first, flee d20>diff, NPC death→drop inv),
+        death/permadeath (hp≤0→death scene→end; rewind 1 turn from end menu).
+
+    - id: FR-06
+      title: Console Mode
+      priority: must
+      description: >
+        `~` triggers console. Commands: gamesettings, gamestate (full JSON), imageprompt
+        (codeblock), videoprompt (codeblock), hint, skiptoend, map (ASCII_MAP_BOT),
+        save (JSON), load (parse JSON), ~ (exit). Players cannot modify CONTROLLER or
+        SESSION_RULES via console.
+
+    - id: FR-07
+      title: ASCII Map Bot
+      priority: must
+      description: >
+        map command invokes ASCII_MAP_BOT: perfect rectangle, fixed line width, walls (#),
+        floor (.), exits (NESW replacing wall char), entities at coordinates, LEGEND block —
+        all in one code block.
+
+    - id: FR-08
+      title: Compressed Prompt Variant
+      priority: must
+      description: >
+        Functionally equivalent token-efficient variant maintained in sync with verbose prompt.
+        Both variants in the same repository, updated together on every change.
+
+    - id: FR-09
+      title: Ending Phase
+      priority: must
+      description: >
+        On goal completion or death: death/victory scene → score/max_score + turn count →
+        end menu: Debriefing (DM summary) | Different Choice (rewind 1 turn) |
+        Create Next Chapter (re-init + 3–5 follow-up storylines).
+
+    - id: FR-10
+      title: Auto-initialize for Autonomous Agents
+      priority: must      # promoted from 'should' per CONF-03 PO decision 2026-03-11
+      description: >
+        If running in an autonomous agent or agentic framework, auto-initialize without
+        waiting for user interaction.
+
+  non_functional:
+    - id: NFR-01
+      title: Self-contained
+      priority: must
+      description: No external APIs, tools, databases, or infrastructure. Copy-paste only.
+
+    - id: NFR-02
+      title: LLM-agnostic compatibility
+      priority: must
+      description: Correct behaviour on Claude 3+, GPT-4+, Gemini 1.5+. No model-specific features.
+
+    - id: NFR-03
+      title: Token efficiency (compressed variant)
+      priority: should
+      description: >
+        Compressed variant reduces token count by ≥50% vs verbose while maintaining full
+        functional equivalence. [GAP-01: baseline token count not yet measured — threshold TBC by PO]
+
+    - id: NFR-04
+      title: Savegame portability
+      priority: must
+      description: Save JSON produced in one LLM session must be loadable in a new session on a
+        different LLM with full state integrity.
+
+    - id: NFR-05
+      title: Documentation
+      priority: should
+      description: README.md includes project description, how-to-play, usage example, and tips.
+
+  constraints:
+    - "Prompt must be a single copy-pasteable text file — no multi-file or multi-step setup"
+    - "Both variants (verbose and compressed) must remain functionally in sync after every change"
+    - "a-sdlc/ governance submodule is read-only"
+    - "No LLM-specific API calls or system prompt injection beyond the prompt itself"
+
+  dependencies:
+    - "Existing v2.0 baseline: github.com/jvanheerikhuize/prompt-gallery — Fun/TAG/prompt.md"
+    - "Target LLMs: Claude 3+, GPT-4+, Gemini 1.5+ (long-context instruction following required)"
+
+# ── Risk Classification (RC-01) ───────────────────────────────────────────────
+risk:
+  initial_classification: low
+  rationale: |
+    Low: minimal data sensitivity (no PII), negligible blast radius (standalone text file),
+    fully reversible (git), low regulatory exposure (minimal AI Act obligations, DORA scope
+    contested — see CONF-01), no runtime dependencies, solo project.
+
+# ── AI Classification (AC-01) ─────────────────────────────────────────────────
+ai:
+  component_involved: true
+  risk_tier: minimal
+  eu_ai_act_applicable: true
+  rationale: |
+    T.A.G. is a system prompt governing LLM behaviour — AI component confirmed.
+    Annex III screening: no applicable domains. Unacceptable-risk check: clear.
+    Minimal-risk: entertainment/creative tool. Art. 52 transparency satisfied by
+    prompt self-identification and open-source README.
+
+# ── Data Classification (SC-04) ───────────────────────────────────────────────
+data:
+  classification: public
+  pii_involved: false
+  special_category_data: false
+
+# ── Audit Trail ───────────────────────────────────────────────────────────────
+audit:
+  gc01_entry: "GC-01-FEAT-0001-2026-03-11"
+  intent_audit_record: "GC-05-FEAT-0001-2026-03-11"
