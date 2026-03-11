@@ -1,0 +1,30 @@
+# =============================================================================
+# RC-09 — Third-Party Continuous Risk Monitoring Record
+# Control:   RC-09 Third-Party Continuous Risk Monitoring
+# Stage:     6 — Observability & Maintenance
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "RC-09-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / RC-09"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  T.A.G. has no ICT third-party provider dependencies. It is a self-contained
+  plain-text prompt with no SaaS vendors, cloud services, APIs, licensed
+  libraries, or contractual ICT arrangements. DORA Art. 28 third-party continuous
+  monitoring is not applicable.
+
+  The only external dependency is the user's choice of LLM provider (Claude,
+  GPT-4, Gemini, etc.). This dependency is:
+  - User-chosen, not contractually bound by this project
+  - Addressed proportionately in RC-08 (model-agnostic design noted)
+  - Not a concentration risk owned by this project
+
+status: not_applicable
+blocker: false

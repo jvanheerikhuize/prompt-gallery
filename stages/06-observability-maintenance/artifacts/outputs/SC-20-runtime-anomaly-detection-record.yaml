@@ -1,0 +1,33 @@
+# =============================================================================
+# SC-20 — Runtime Anomaly Detection Record
+# Control:   SC-20 Runtime Anomaly Detection
+# Stage:     6 — Observability & Maintenance
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "SC-20-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-20"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  T.A.G. has no runtime system to instrument. There are no servers, containers,
+  model inference endpoints, or application processes. Statistical baseline
+  monitoring and behavioural anomaly detection require observable runtime
+  telemetry — none exists for a copy-paste prompt deliverable.
+
+  AI model drift detection is not applicable: T.A.G. does not own or host a
+  model; users run the prompt against their chosen LLM. Model drift in those
+  third-party LLMs is outside the scope of this system.
+
+proportionate_alternative: |
+  Adversarial input patterns reported by users (e.g., successful prompt injection
+  bypasses) are captured via GitHub issues and reviewed by Jerry van Heerikhuize.
+  Confirmed bypasses are treated as SC findings and enter Stage 1 as a CR.
+
+status: not_applicable
+blocker: false

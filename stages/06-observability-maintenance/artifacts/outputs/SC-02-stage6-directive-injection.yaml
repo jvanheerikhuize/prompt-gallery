@@ -1,0 +1,32 @@
+# =============================================================================
+# SC-02 — Stage Directive Injection Confirmation (Stage 6)
+# Control:   SC-02 Directive Injection
+# Stage:     6 — Observability & Maintenance
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "SC-02-STAGE6-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-02"
+  date: "2026-03-11"
+
+directives_loaded:
+  - source: "a-sdlc/directives/core/core-directives.yaml"
+    status: active
+  - source: "a-sdlc/directives/stages/06-observability-maintenance.yaml"
+    status: active
+    note: "Stage 6 is continuous. Directives re-injected at the start of each monitoring session."
+
+stage6_directives_acknowledged:
+  OBS-01: >
+    Monitoring configuration (defined in this stage) will not be suppressed or
+    degraded. Any changes must go through a full A-SDLC change process from Stage 1.
+  OBS-02: >
+    Any anomalies, user-reported issues, or security events surfaced via GitHub
+    issues or direct reports will be escalated immediately to Jerry van Heerikhuize.
+  OBS-03: >
+    Feedback loop triggers (Path A — autofix; Path B — quickfix/feature) will be
+    accurately recorded and attributed. No false-positive or false-negative triggers.
+
+stage6_entry_clear: true

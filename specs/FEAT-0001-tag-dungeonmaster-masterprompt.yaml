@@ -10,11 +10,11 @@
 meta:
   id: "FEAT-0001"
   title: "T.A.G. v2 — Text Adventure Generator dungeonmaster masterprompt"
-  status: in-progress        # draft | approved | in-progress | complete | cancelled
+  status: complete           # draft | approved | in-progress | complete | cancelled
   created: "2026-03-11"
   last_updated: "2026-03-11"
   source_cr: "CR-0001"
-  stage_reached: 5
+  stage_reached: 6
 
 provenance:
   created_by: "Claude Sonnet 4.6 (QC-01 / Stage 1)"

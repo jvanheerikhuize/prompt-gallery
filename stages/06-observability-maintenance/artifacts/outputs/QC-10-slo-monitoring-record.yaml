@@ -1,0 +1,29 @@
+# =============================================================================
+# QC-10 — SLA/SLO Monitoring Record
+# Control:   QC-10 SLA/SLO Monitoring
+# Stage:     6 — Observability & Maintenance
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "QC-10-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / QC-10"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  T.A.G. is a plain-text prompt with no runtime service, no API endpoints, no
+  servers, and no infrastructure. There are no SLIs (latency, availability,
+  error rate, throughput) to measure and no error budget to track. Traditional
+  SLA/SLO monitoring is not applicable.
+
+proportionate_alternative: |
+  Quality is monitored through user feedback (GitHub issues) and the scheduled
+  annual review defined in RC-08. Any reported functional regression is treated
+  as a feedback loop trigger (Path B) and enters Stage 1 as a new change request.
+
+status: not_applicable
+blocker: false

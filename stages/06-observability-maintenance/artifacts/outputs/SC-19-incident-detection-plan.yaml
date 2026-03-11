@@ -1,0 +1,72 @@
+# =============================================================================
+# SC-19 — Incident Scanning & Detection Plan
+# Control:   SC-19 Incident Scanning & Detection
+# Stage:     6 — Observability & Maintenance
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "SC-19-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-19"
+  date: "2026-03-11"
+
+scope_note: |
+  T.A.G. has no SIEM infrastructure, no log streams, and no runtime telemetry.
+  Traditional MITRE ATT&CK pattern-based automated detection is not applicable.
+  This plan defines a proportionate incident detection procedure consistent with
+  minimal-risk classification and DORA Art. 17–19 obligations.
+
+  T.A.G. is classified as minimal-risk and is an entertainment prompt. The
+  probability of a DORA Art. 18 "major ICT incident" is extremely low. This plan
+  documents the detection and response process for completeness and audit trail.
+
+incident_classification:
+  framework: "DORA Art. 18"
+  applicable_categories:
+    - "Unauthorised modification of prompt artefacts in the repository"
+    - "Confirmed prompt injection bypass enabling real-world harm"
+    - "Repository compromise (GitHub account / credentials)"
+  non_applicable_categories:
+    - "Service unavailability (no service)"
+    - "Data breach (no personal data)"
+    - "Ransomware / malware on infrastructure (no infrastructure)"
+
+detection_channels:
+  - channel: "GitHub repository audit log"
+    monitors: "Unauthorised commits, branch force-pushes, permission changes"
+    owner: "Jerry van Heerikhuize"
+    frequency: "Passive — review on any suspicious notification"
+
+  - channel: "GitHub Issues / community reports"
+    monitors: "User-reported security concerns, prompt injection bypasses"
+    owner: "Jerry van Heerikhuize"
+    frequency: "Weekly review of open issues"
+
+  - channel: "Direct report"
+    monitors: "Email reports to jvanheerikhuize@gmail.com"
+    owner: "Jerry van Heerikhuize"
+    frequency: "As received"
+
+incident_response_procedure:
+  1: "Confirm incident classification per DORA Art. 18"
+  2: "Assess severity (critical / high / medium / low)"
+  3: "If HIGH or CRITICAL: initiate rollback procedure (RC-07) within 1 hour"
+  4: "Document in SC-19 incident log (append to this record)"
+  5: "If DORA Art. 19 major incident threshold met: notify competent authority within 4 hours"
+  6: "Post-incident: raise CR → Stage 1 for root cause fix"
+
+dora_art19_major_incident_threshold: |
+  For T.A.G. (minimal-risk, no financial services infrastructure, no personal data):
+  DORA Art. 19 mandatory reporting thresholds (e.g., >100k users affected,
+  >EUR 100k financial impact, critical services unavailable) are not expected to be
+  met. No mandatory reporting obligations are anticipated.
+
+  In the unlikely event of a security incident involving repository compromise or
+  confirmed malicious use of T.A.G. at scale, Jerry van Heerikhuize will assess
+  against DORA Art. 18 criteria and report if thresholds are met.
+
+incident_log: []   # Append incident records here as they occur
+
+status: active
+owner: "Jerry van Heerikhuize"
