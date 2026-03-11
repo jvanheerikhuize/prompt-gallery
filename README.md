@@ -1,8 +1,34 @@
-# A-SDLC Consumer Template
+# T.A.G. — Text Adventure Generator
 
-A language- and platform-agnostic project template for agentic, spec-driven software development.
+A single, powerful prompt that turns any advanced LLM into a dynamic, next-generation text adventure game master.
 
-Governed by the [A-SDLC framework](https://github.com/jvanheerikhuize/a-sdlc) — an Agentic Software
+**[→ Get the prompt](prompt.md)** | **[→ Compressed variant](prompt-compressed.md)**
+
+---
+
+## Quick Start
+
+1. Open [prompt.md](prompt.md) and copy the entire content of the code block.
+2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
+3. Paste and send. Follow the game master's instructions.
+
+---
+
+## What Makes T.A.G. Different
+
+- **Procedurally generated world** — no predefined paths; every playthrough is unique
+- **Persistent state** — full game state tracked in a JSON schema across the session
+- **Intelligent NPCs** — memories, relationship scores, faction behaviour
+- **Dynamic difficulty** — auto-adjusts based on player performance (0–100 scale)
+- **Full rules engine** — physics, inventory, combat (d20), world clock, scoring
+- **Console mode** — type `~` for meta-commands: save, load, map, hints, and more
+- **Savegame portability** — save as JSON, load in any LLM session
+
+---
+
+## Governance
+
+This project is built using the [A-SDLC framework](https://github.com/jvanheerikhuize/a-sdlc) — an Agentic Software
 Development Life Cycle defining how software is built, tested, and released when AI agents work
 alongside human developers. Compliant with DORA and the EU AI Act out of the box.
 

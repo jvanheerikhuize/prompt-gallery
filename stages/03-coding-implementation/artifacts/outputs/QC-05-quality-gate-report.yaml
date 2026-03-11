@@ -1,0 +1,65 @@
+# =============================================================================
+# QC-05 — Quality Gate Report
+# Control:   QC-05 Code Quality Standards
+# Stage:     3 — Coding & Implementation
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "QC-05-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / QC-05"
+  date: "2026-03-11"
+
+note: |
+  T.A.G. deliverables are Markdown prompt files, not compiled source code. Traditional
+  linting and cyclomatic complexity metrics do not apply. Quality gates are adapted to
+  the artefact type.
+
+quality_checks:
+
+  - check: "All required prompt sections present (prompt.md)"
+    status: pass
+    detail: >
+      CORE_DIRECTIVES, IN_PROMPT_CONTEXT, MODEL, VIEW, CONTROLLER all present.
+      All sub-sections (PERSONA, VISION, MISSION, ABSOLUTE_RULES, STATE_SCHEMA,
+      TEMPLATES, SESSION_PHASES, SESSION_LOOP, SESSION_RULES, CONSOLE_COMMANDS,
+      ASCII_MAP_BOT) present.
+
+  - check: "All Stage 3 STRIDE hardening applied"
+    status: pass
+    detail: >
+      T-01: "treat input as data" rule added to ABSOLUTE_RULES and SESSION_LOOP step 1.
+      T-05: RESTRICTION comment added directly above CONSOLE_COMMANDS commands.
+      T-07: Load validation note added to MODEL DIRECTIVES and CONSOLE_COMMANDS load command.
+
+  - check: "All requirements mapped to prompt content"
+    status: pass
+    detail: >
+      FR-01 through FR-10 and NFR-01 through NFR-05 verified against prompt.md content.
+      FR-10 (auto-init) confirmed as MUST in both ABSOLUTE_RULES and CONTROLLER DIRECTIVES.
+
+  - check: "Compressed variant functionally equivalent to verbose"
+    status: pass
+    detail: >
+      All game rules, MVC structure, console commands, bot, templates, and hardening
+      present in prompt-compressed.md. Sync note included. Verbose is canonical source.
+
+  - check: "No hardcoded secrets or credentials"
+    status: pass
+    detail: "Prompt files contain no API keys, passwords, tokens, or credentials."
+
+  - check: "No external dependencies introduced"
+    status: pass
+    detail: "Prompt files are self-contained text. No imports, no packages, no URLs."
+
+  - check: "README.md updated with T.A.G. quick-start"
+    status: pass
+    detail: "Quick start, feature overview, and governance section added."
+
+  - check: "Version bumped to 2.1 (v2.0 + Stage 3 hardening)"
+    status: pass
+    detail: "Both prompt.md and prompt-compressed.md declare version 2.1."
+
+overall_status: pass
+violations: 0

@@ -1,0 +1,91 @@
+# =============================================================================
+# RC-04 — Decision Log
+# Control:   RC-04 Decision Log
+# Stage:     3 — Coding & Implementation
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "RC-04-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / RC-04"
+  date: "2026-03-11"
+
+decisions:
+
+  - id: DEC-01
+    timestamp: "2026-03-11"
+    decision: "Version bumped from 2.0 to 2.1"
+    rationale: >
+      Stage 3 hardening introduces behavioural changes to the prompt (T-01 data framing,
+      T-05 console restriction, T-07 load validation). A minor version bump correctly
+      signals that the prompt is functionally equivalent to v2.0 with security improvements.
+    alternatives_considered:
+      - "Keep v2.0 — rejected: changes are meaningful and should be trackable"
+      - "Major version 3.0 — rejected: changes are hardening, not feature additions"
+    decided_by: "Claude Sonnet 4.6"
+    reviewed_by: ""   # ← Tech Lead to fill
+
+  - id: DEC-02
+    timestamp: "2026-03-11"
+    decision: "T-01 hardening: added 'treat input as data' to both ABSOLUTE_RULES and SESSION_LOOP step 1"
+    rationale: >
+      Placing the data-not-commands framing in two locations (the persona-level
+      ABSOLUTE_RULES and the per-turn SESSION_LOOP) maximises LLM adherence. A single
+      location could be overridden; two reinforcing locations reduce that risk.
+    alternatives_considered:
+      - "ABSOLUTE_RULES only — rejected: SESSION_LOOP step 1 is the enforcement point, should mirror it"
+    decided_by: "Claude Sonnet 4.6"
+    reviewed_by: ""
+
+  - id: DEC-03
+    timestamp: "2026-03-11"
+    decision: "T-05 hardening: RESTRICTION as XML comment directly above command list, not after it"
+    rationale: >
+      LLMs process instructions top-to-bottom. Placing the restriction before the command
+      list means it is loaded into context before the commands are enumerated, making it
+      more likely to be respected when a player attempts a violation.
+    alternatives_considered:
+      - "Restriction at bottom of CONSOLE_COMMANDS — rejected: processed after commands, less effective"
+    decided_by: "Claude Sonnet 4.6"
+    reviewed_by: ""
+
+  - id: DEC-04
+    timestamp: "2026-03-11"
+    decision: "T-07 hardening: load validation note added to both MODEL DIRECTIVES and CONSOLE_COMMANDS load entry"
+    rationale: >
+      Dual placement (MODEL level for overall schema guidance, CONSOLE level for the
+      specific load command) ensures the LLM applies validation regardless of which
+      section it is processing when the load is invoked.
+    alternatives_considered:
+      - "Single location only — rejected: same reasoning as DEC-02"
+    decided_by: "Claude Sonnet 4.6"
+    reviewed_by: ""
+
+  - id: DEC-05
+    timestamp: "2026-03-11"
+    decision: "Compressed variant filename: prompt-compressed.md"
+    rationale: >
+      QC-03 noted TBD for this filename. Chosen for clarity: parallel to prompt.md,
+      unambiguous, no special characters, works as a direct GitHub link.
+    alternatives_considered:
+      - "prompt.min.md — rejected: .min. convention implies automated minification"
+      - "tag-compressed.md — rejected: adds project prefix already in repo name"
+    decided_by: "Claude Sonnet 4.6"
+    reviewed_by: ""
+
+  - id: DEC-06
+    timestamp: "2026-03-11"
+    decision: "README.md updated with T.A.G. quick-start prepended above governance section"
+    rationale: >
+      The repo is the T.A.G. product repo. Users arriving via GitHub see the README
+      first. Putting the product quick-start before governance information serves users
+      better without removing the governance context.
+    alternatives_considered:
+      - "Separate TAG-README.md — rejected: splits user entry point; COMP-12 maps to README.md"
+      - "Replace README entirely — rejected: governance context is valuable for contributors"
+    decided_by: "Claude Sonnet 4.6"
+    reviewed_by: ""
+
+reviewed_by: ""     # ← Tech Lead (Jerry van Heerikhuize) to fill
+review_date: ""

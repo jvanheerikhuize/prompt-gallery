@@ -1,0 +1,22 @@
+# =============================================================================
+# SC-11 — Container & IaC Security Scan Report
+# Control:   SC-11 Container & IaC Security Scanning
+# Stage:     3 — Coding & Implementation
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "SC-11-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-11"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  T.A.G. has no container images, Dockerfiles, Kubernetes manifests, Terraform
+  configurations, Helm charts, or any other Infrastructure-as-Code artefacts.
+  The deliverables are plain Markdown text files. SC-11 is not applicable.
+
+status: not_applicable

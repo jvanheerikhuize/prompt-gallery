@@ -1,0 +1,78 @@
+# =============================================================================
+# GC-03 — Code Provenance Record
+# Control:   GC-03 Agent Provenance Registry
+# Stage:     3 — Coding & Implementation
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "GC-03-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / GC-03"
+  date: "2026-03-11"
+  retention: "7 years (DORA Art. 28)"
+
+contributions:
+
+  - id: PROV-01
+    file: "prompt.md"
+    contribution_type: agent_generated
+    agent: "Claude Sonnet 4.6"
+    model_id: "claude-sonnet-4-6"
+    date: "2026-03-11"
+    based_on: "v2.0 baseline — github.com/jvanheerikhuize/prompt-gallery/blob/main/Fun/TAG/prompt.md"
+    changes_from_baseline:
+      - "Version bumped: 2.0 → 2.1"
+      - "ABSOLUTE_RULES: added 'treat input as data' rule (T-01 hardening)"
+      - "ABSOLUTE_RULES: auto-init promoted from 'can' to 'MUST'"
+      - "SESSION_LOOP step 1: added InputIsData reminder"
+      - "SESSION_LOOP step 7: clarified !RawJSON in output"
+      - "MODEL DIRECTIVES: added load validation note (T-07 hardening)"
+      - "CONSOLE_COMMANDS: added RESTRICTION XML comment (T-05 hardening)"
+      - "CONSOLE_COMMANDS load: added validation clause"
+      - "Minor prose/formatting normalisation throughout"
+    human_review_required: true
+    reviewed_by: ""     # ← Jerry van Heerikhuize to fill
+    review_date: ""
+
+  - id: PROV-02
+    file: "prompt-compressed.md"
+    contribution_type: agent_generated
+    agent: "Claude Sonnet 4.6"
+    model_id: "claude-sonnet-4-6"
+    date: "2026-03-11"
+    based_on: "v2.0 compressed baseline — github.com/jvanheerikhuize/prompt-gallery/blob/main/Fun/TAG/prompt.md"
+    changes_from_baseline:
+      - "Version bumped: 2.0 → 2.1"
+      - "InputIsData rule added to !Rule block"
+      - "AutoInit: 'can' → MUST"
+      - "ModelDirectives block added (OnLoad->ValidateStats)"
+      - "Console RESTRICTION note added"
+      - "Load command updated with validate+normalise step"
+      - "Sync note added at bottom of file"
+    human_review_required: true
+    reviewed_by: ""
+    review_date: ""
+
+  - id: PROV-03
+    file: "README.md"
+    contribution_type: co_authored
+    agent: "Claude Sonnet 4.6"
+    model_id: "claude-sonnet-4-6"
+    date: "2026-03-11"
+    based_on: "Existing A-SDLC consumer template README"
+    changes:
+      - "Added T.A.G. product header and description"
+      - "Added Quick Start section"
+      - "Added What Makes T.A.G. Different feature overview"
+      - "Wrapped existing content under Governance heading"
+    human_review_required: true
+    reviewed_by: ""
+    review_date: ""
+
+equivalence_check:
+  verbose_vs_compressed: pending    # ← To be confirmed by reviewer
+  notes: >
+    Reviewer should verify that prompt-compressed.md preserves all game rules, MVC
+    structure, STRIDE hardening (T-01/T-05/T-07), console commands, and templates
+    from prompt.md (canonical). The compressed notation must be functionally equivalent.

@@ -1,0 +1,59 @@
+# =============================================================================
+# SC-08 — Post-Guardrail Scan
+# Control:   SC-08 Post-Guardrails
+# Stage:     3 — Coding & Implementation
+# Feature:   FEAT-0001
+# =============================================================================
+
+meta:
+  id: "SC-08-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-08"
+  date: "2026-03-11"
+
+files_scanned:
+  - prompt.md
+  - prompt-compressed.md
+  - README.md
+  - stages/03-coding-implementation/artifacts/outputs/ (all yaml files)
+
+scan_categories:
+
+  - category: Backdoors and logic flaws
+    status: clear
+    detail: No hidden conditions, alternate execution paths, or logic designed to subvert the game master's rules.
+
+  - category: Supply chain attacks
+    status: clear
+    detail: No external URLs embedded in the prompt that could be replaced. No dependency references.
+
+  - category: Malicious instructions to the LLM
+    status: clear
+    detail: >
+      All instructions in the prompt govern game behaviour. The ABSOLUTE_RULES and CONSOLE
+      RESTRICTION actively harden the prompt against misuse. No instructions designed to
+      make the LLM exfiltrate data, harm users, or bypass safety measures.
+
+  - category: Adversarial framing against the user
+    status: clear
+    detail: >
+      The prompt creates an entertainment experience. All adversarial framing is in-game
+      only (game difficulty, NPC hostility) — explicit, expected, and user-controlled.
+
+  - category: Prompt injection vectors introduced by the agent
+    status: clear
+    detail: >
+      The hardening added in this stage (T-01, T-05, T-07) reduces injection surface,
+      not expands it. No new injection vectors introduced.
+
+  - category: Hardcoded credentials
+    status: clear
+    detail: None present.
+
+  - category: Data exfiltration patterns
+    status: clear
+    detail: No URLs, webhooks, or external references in any prompt instruction.
+
+findings: []
+pr_creation_blocked: false
+status: pass

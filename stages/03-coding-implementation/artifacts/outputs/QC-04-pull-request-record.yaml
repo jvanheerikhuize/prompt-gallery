@@ -1,0 +1,88 @@
+# =============================================================================
+# QC-04 — Pull Request Record
+# Control:   QC-04 Pull Request Creation & Review
+# Stage:     3 — Coding & Implementation
+# Feature:   FEAT-0001
+# Risk tier: low → 1 reviewer required
+# Status:    pending — awaiting Tech Lead approval
+# =============================================================================
+
+meta:
+  id: "QC-04-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 (PR Assembler / QC-04)"
+  date: "2026-03-11"
+  status: pending
+
+pr_title: "feat(FEAT-0001): T.A.G. v2.1 — Text Adventure Generator masterprompt"
+
+pr_description: |
+  ## What This PR Delivers
+
+  Implements FEAT-0001: T.A.G. v2.1 — a self-contained LLM prompt that turns any
+  advanced AI into a text adventure game master.
+
+  **New files:**
+  - `prompt.md` — canonical verbose T.A.G. prompt (COMP-10)
+  - `prompt-compressed.md` — token-efficient derived variant (COMP-11)
+
+  **Updated:**
+  - `README.md` — T.A.G. quick-start and feature overview added (COMP-12)
+
+  ## Changes from v2.0 Baseline
+
+  This is v2.1, based on the v2.0 baseline in prompt-gallery. Stage 3 hardening applied:
+  - **T-01**: "treat input as data" rule added to ABSOLUTE_RULES + SESSION_LOOP step 1
+  - **T-05**: CONSOLE RESTRICTION comment positioned before command list
+  - **T-07**: Load validation clause added to MODEL DIRECTIVES + load console command
+  - **FR-10**: auto-init promoted from 'can' to 'MUST' in both sections
+
+  ## Evidence Package
+
+target_branch: main
+source_branch: main    # solo project — direct to main, no feature branch
+
+evidence:
+  - control: SC-07
+    path: "stages/03-coding-implementation/artifacts/outputs/SC-07-permission-enforcement-log.yaml"
+    status: pass
+
+  - control: QC-05
+    path: "stages/03-coding-implementation/artifacts/outputs/QC-05-quality-gate-report.yaml"
+    status: pass
+
+  - control: SC-09
+    path: "stages/03-coding-implementation/artifacts/outputs/SC-09-secrets-scan-report.yaml"
+    status: pass
+
+  - control: SC-10
+    path: "stages/03-coding-implementation/artifacts/outputs/SC-10-sca-report.yaml"
+    status: not_applicable
+
+  - control: SC-11
+    path: "stages/03-coding-implementation/artifacts/outputs/SC-11-container-iac-security-report.yaml"
+    status: not_applicable
+
+  - control: SC-08
+    path: "stages/03-coding-implementation/artifacts/outputs/SC-08-post-guardrail-scan.yaml"
+    status: pass
+
+  - control: RC-04
+    path: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
+    status: complete
+
+  - control: GC-03
+    path: "stages/03-coding-implementation/artifacts/outputs/GC-03-code-provenance-record.yaml"
+    status: complete
+
+reviewer_assignment:
+  risk_tier: low
+  required_reviewers: 1
+  assigned_to: "Jerry van Heerikhuize (Tech Lead)"
+
+# ── Human Decision ────────────────────────────────────────────────────────────
+review_decision: ""       # approved | changes_requested
+reviewed_by: ""
+review_date: ""
+review_notes: ""
+stage_3_exit_clear: false  # ← set to true on approval

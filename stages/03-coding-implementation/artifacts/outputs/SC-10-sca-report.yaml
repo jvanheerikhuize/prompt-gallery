@@ -1,0 +1,28 @@
+# =============================================================================
+# SC-10 — Software Composition Analysis (SCA) Report
+# Control:   SC-10 SCA & SBOM Generation
+# Stage:     3 — Coding & Implementation
+# Feature:   FEAT-0001
+# Status:    not_applicable
+# =============================================================================
+
+meta:
+  id: "SC-10-FEAT-0001"
+  feature: "FEAT-0001"
+  produced_by: "Claude Sonnet 4.6 / SC-10"
+  date: "2026-03-11"
+
+applicable: false
+
+rationale: |
+  T.A.G. has no third-party software dependencies. The deliverables are plain Markdown
+  text files. There are no package manifests (package.json, requirements.txt, pom.xml,
+  go.mod, Gemfile, etc.) and no container images. SCA and SBOM generation are not
+  applicable to this change.
+
+sbom:
+  format: none
+  dependencies: []
+  vulnerabilities: []
+
+status: not_applicable
