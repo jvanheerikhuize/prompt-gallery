@@ -32,8 +32,8 @@ contributions:
       - "CONSOLE_COMMANDS load: added validation clause"
       - "Minor prose/formatting normalisation throughout"
     human_review_required: true
-    reviewed_by: ""     # ← Jerry van Heerikhuize to fill
-    review_date: ""
+    reviewed_by: "Jerry van Heerikhuize (Tech Lead)"
+    review_date: "2026-03-11"
 
   - id: PROV-02
     file: "prompt-compressed.md"
@@ -71,7 +71,7 @@ contributions:
     review_date: ""
 
 equivalence_check:
-  verbose_vs_compressed: pending    # ← To be confirmed by reviewer
+  verbose_vs_compressed: confirmed
   notes: >
     Reviewer should verify that prompt-compressed.md preserves all game rules, MVC
     structure, STRIDE hardening (T-01/T-05/T-07), console commands, and templates

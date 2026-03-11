@@ -81,8 +81,8 @@ reviewer_assignment:
   assigned_to: "Jerry van Heerikhuize (Tech Lead)"
 
 # ── Human Decision ────────────────────────────────────────────────────────────
-review_decision: ""       # approved | changes_requested
-reviewed_by: ""
-review_date: ""
+review_decision: approved
+reviewed_by: "Jerry van Heerikhuize (Tech Lead)"
+review_date: "2026-03-11"
 review_notes: ""
-stage_3_exit_clear: false  # ← set to true on approval
+stage_3_exit_clear: true
