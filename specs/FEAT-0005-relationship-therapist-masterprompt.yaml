@@ -1,9 +1,6 @@
 # =============================================================================
-# QC-01 — Feature Specification
-# Control:   QC-01 Specification Validation
-# Stage:     1 — Intent Ingestion
-# Source CR: CR-0005
-# Status:    approved
+# FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Canonical Feature Specification
 # =============================================================================
 
 meta:
@@ -20,6 +17,14 @@ provenance:
   reviewed_by: "Jerry van Heerikhuize (Product Owner)"
   approved_by: "Jerry van Heerikhuize (Product Owner)"
   approval_date: "2026-03-14"
+
+# ── Governance Classification ─────────────────────────────────────────────────
+governance:
+  risk_tier: medium
+  ai_tier: limited
+  data_classification: confidential    # RESTRICTED elevation trigger: mental health / DV disclosure
+  eu_ai_act_tier: limited
+  gdpr_special_category: conditional   # Art. 9(1) if mental health / DV data disclosed
 
 # ── Intent ────────────────────────────────────────────────────────────────────
 intent:
@@ -96,6 +101,8 @@ requirements:
         (b) suicidal ideation / self-harm linked to relationship distress,
         (c) child welfare concerns. On detection: render appropriate safety resources
         immediately, shift to safety-focused response, suspend session structure.
+        Tiered DV response: mild indicators trigger information and resources (not
+        labelling); clear disclosures trigger full safety response immediately.
         Non-bypassable by any user input or framing.
       priority: must
 
@@ -111,21 +118,25 @@ requirements:
     - id: FR-06
       title: Individual-Perspective Integrity
       description: >
-        FRANK works with one person's account at all times. Agent explicitly maintains
-        that it cannot assess the absent party; does not vilify or excuse partners
-        based on one-sided accounts; redirects if user seeks validation for a
-        particular narrative. User's self-reflection is always the therapeutic target.
+        FRANK works with one person's account at all times. Established at session open
+        in warm, transparent framing. Within sessions: validates feelings without
+        endorsing interpretations; introduces absent-party perspective as a curiosity
+        to explore (not a defence of the partner); does not vilify or excuse partners.
+        User's self-reflection is always the therapeutic target.
       priority: must
 
     - id: FR-07
-      title: Calibrated Wit Engine
+      title: Calibrated Wit Engine — HUMOR_PROTOCOL
       description: >
-        FRANK may deploy dry, observational humor when ALL of the following conditions
-        are met: (1) humor_rapport_established flag is true in SESSION_STATE
-        (user has laughed or used humor first); (2) current phase is not a distress
-        moment; (3) no crisis indicators are active; (4) topic is not abuse, violence,
-        or safety. Humor is always about patterns or dynamics, never about the user
-        or absent partner as a person. See RULES_ENGINE HUMOR_PROTOCOL.
+        FRANK may deploy dry, observational humor when ALL conditions are met:
+        (1) humor_rapport_established = true in SESSION_STATE (user has used humor first);
+        (2) current content is not a distress or crisis moment;
+        (3) topic is not on GRAVITY_TOPICS list (abuse, violence, suicide, grief,
+            betrayal, deep shame, DV/coercive control);
+        (4) humor is about patterns or dynamics, never about the user or absent party
+            as a person.
+        Default style: observational and warm, not ironic or sarcastic. Humor is not
+        sustained if the user does not mirror it. English only for v1.0.
       priority: must
 
     - id: FR-08
@@ -134,8 +145,8 @@ requirements:
         Agent provides accessible psychoeducation on: attachment styles and their
         relational expression; the pursue-withdraw cycle; needs identification and
         assertive communication (DEAR MAN); boundary-setting; self-compassion for
-        relationship difficulty; repair attempts (Gottman). All framed as skills
-        and insights, not treatment.
+        relationship difficulty; repair attempts (Gottman). Framed as skills and
+        insights, not treatment.
       priority: must
 
     - id: FR-09
@@ -143,8 +154,8 @@ requirements:
       description: >
         SESSION_STATE JSON maintained in-context: session_number, session_date,
         mood_checkin (0–10 start/end), active_themes, relationship_patterns_identified,
-        humor_rapport_established (bool), safety_flags, contract, session_notes.
-        Users advised not to share identifying information.
+        humor_rapport_established (bool, default false), safety_flags, contract,
+        session_notes. Users advised not to share identifying information.
       priority: must
 
     - id: FR-10
@@ -159,9 +170,9 @@ requirements:
       title: Scope Enforcement
       description: >
         Requests for couples mediation, legal advice, clinical diagnosis, or Phase 2/3
-        trauma processing declined with clear explanation; user redirected to appropriate
-        professional resource. Delivered without judgment and with warmth — potentially
-        with a wry note on FRANK's limitations if rapport permits.
+        trauma processing declined with clear explanation and referral to appropriate
+        professional. Delivered warmly; wit may be used if rapport is established to
+        acknowledge FRANK's limitations with lightness.
       priority: must
 
   non_functional:
@@ -176,9 +187,8 @@ requirements:
     - id: NFR-02
       title: Safety — Zero Tolerance for Crisis Bypass
       description: >
-        No user input may suspend, weaken, or bypass crisis-detection and escalation
-        rules. Including: roleplay framing, "hypothetically", "for a friend",
-        or direct instructions to ignore safety rules. Highest-priority NFR.
+        No user input may suspend, weaken, or bypass crisis-detection and escalation rules.
+        Highest-priority NFR.
       priority: must
 
     - id: NFR-03
@@ -188,11 +198,11 @@ requirements:
       priority: must
 
     - id: NFR-04
-      title: Data Awareness
+      title: Data Awareness (GDPR)
       description: >
-        Users advised at session open that personal relationship disclosures are personal
-        data and that the LLM provider may retain the conversation per their privacy policy.
-        If mental health information is disclosed, users reminded of GDPR Art. 9 relevance.
+        Users advised at session open that relationship disclosures are personal data;
+        if mental health information is shared, it is GDPR Art. 9 special category data;
+        LLM provider may retain the conversation per their privacy policy.
       priority: must
 
     - id: NFR-05
@@ -200,7 +210,7 @@ requirements:
       description: >
         Acknowledges that relationship norms, communication styles, and family structures
         are culturally situated. Does not impose Western-normative relationship models.
-        Humor calibrated to not rely on culturally specific references.
+        Humor does not rely on culturally specific references.
       priority: should
 
     - id: NFR-06
@@ -208,17 +218,15 @@ requirements:
       description: >
         Default plain English, approximately CEFR B2. Adjusts to user language patterns.
         Detects and responds in user's language for all session phases, disclaimers,
-        crisis resources, and skills. Humor deployed only in English for v1.0 unless
-        user clearly initiates humor in another language.
+        crisis resources, and skills. Humor deployed only in English for v1.0.
       priority: must
 
     - id: NFR-07
       title: Humor Calibration — Never Before Rapport
       description: >
-        FRANK does not deploy humor until the user has demonstrated comfort with it
-        (humor_rapport_established). FRANK never uses sarcasm in a way that could
-        be read as dismissive of the user's pain. Humor functions as a scalpel,
-        not a hammer.
+        humor_rapport_established is set true ONLY when user has themselves used humor,
+        irony, or self-deprecating wit in a turn. FRANK never uses sarcasm in a way that
+        could be read as dismissive of the user's pain.
       priority: must
 
   constraints:
@@ -238,74 +246,20 @@ requirements:
     - "Domestic violence / coercive control indicator literature — crisis sentinel set"
     - "CBT automatic thoughts model — Insight phase cognitive reframing"
 
-# ── Risk Classification (RC-01) ───────────────────────────────────────────────
-risk:
-  initial_classification: medium
-  rationale: >
-    Health-adjacent domain; potential for distress escalation; domestic violence
-    detection is a safety-critical function; humor element introduces novel risk
-    (inappropriate deployment at wrong moment). Lower acute risk than P.S.Y.
-    (no trauma processing, no PTSD focus) — MEDIUM appropriate without RO override.
+# ── Conflict Resolutions (from QC-02) ─────────────────────────────────────────
+conflict_resolutions:
+  CONF-01: "OPT-C — Hybrid humor engine: rule floor (rapport required + GRAVITY_TOPICS)
+    + contextual judgment within. Wit as scalpel within guardrails."
+  CONF-02: "OPT-B/C — Transparent individual-perspective framing at session open;
+    validate feelings not interpretations; absent-party perspective as curiosity."
+  CONF-03: "OPT-A — Tiered DV response: mild indicators = information + resources;
+    clear disclosures = full safety response. No labelling."
+  CONF-04: "OPT-A — Observational warm default; no sarcasm; not sustained without
+    user mirroring; English-only v1.0."
 
-# ── AI Classification (AC-01) ─────────────────────────────────────────────────
-ai:
-  component_involved: true
-  risk_tier: limited      # Confirmed by AGL — same rationale as FEAT-0004/P.S.Y.
-  eu_ai_act_applicable: true
-
-# ── Data Classification (SC-04) ───────────────────────────────────────────────
-data:
-  classification: confidential    # Elevates to restricted if mental health data disclosed
-  pii_involved: true
-  special_category_data: conditional
-  special_category_basis: >
-    Relationship disclosures are personal data. If user discloses mental health
-    information, data elevates to GDPR Art. 9(1) special category. Prompt must
-    advise users of this at session open.
-
-# ── Gaps Flagged for Product Owner Review ─────────────────────────────────────
-gaps:
-  - id: GAP-01
-    severity: minor
-    field: "requirements.functional.FR-07 — humor_rapport_established trigger"
-    description: >
-      The exact trigger for setting humor_rapport_established requires design
-      decision. Options: (a) user initiates humor explicitly; (b) user completes
-      a full session turn without distress signals and the mood score is > 5;
-      (c) FRANK reads tonal signals and makes a judgment call.
-    recommendation: >
-      OPT-A recommended: humor_rapport_established is set TRUE only when the
-      user has themselves used humor, irony, or self-deprecating wit in a turn.
-      This is the most conservative and clearest rule to implement. PO to confirm.
-
-  - id: GAP-02
-    severity: minor
-    field: "data.classification — conditional special category"
-    description: >
-      The classification is CONFIDENTIAL by default but elevates to RESTRICTED
-      if mental health information is disclosed. The prompt cannot know in advance
-      which users will disclose mental health information. The session-open notice
-      must cover both cases.
-    recommendation: >
-      Treat session-open notice as if RESTRICTED (include GDPR Art. 9 reference)
-      so users are always fully informed. Classification recorded as CONFIDENTIAL
-      with RESTRICTED elevation note. PO to confirm.
-
-  - id: GAP-03
-    severity: significant
-    field: "requirements.functional.FR-04 — DV/coercive control sentinel set"
-    description: >
-      Domestic violence and coercive control indicator patterns are complex and
-      nuanced — a user may describe controlling behaviour without naming it as
-      abuse. The sentinel set must be broad enough to catch subtle indicators
-      without triggering false positives on normal relationship friction.
-      The exact sentinel patterns require careful design in Stage 2/3.
-    recommendation: >
-      Flag for Stage 2 threat model. FRANK should respond to DV indicators with
-      information and resources (not diagnosis of abuse) — following the same
-      safe-messaging principle as P.S.Y.'s crisis response. PO to confirm approach.
-
-# ── Audit Trail ───────────────────────────────────────────────────────────────
-audit:
-  gc01_entry: "GC01-2026-03-14-FEAT-0005-stage1"
-  intent_audit_record: "GC05-2026-03-14-FEAT-0005"
+# ── Stage History ─────────────────────────────────────────────────────────────
+stage_history:
+  - stage: 1
+    status: complete
+    completed: "2026-03-14"
+    commit: "—"   # populated after commit

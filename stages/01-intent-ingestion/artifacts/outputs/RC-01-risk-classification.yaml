@@ -2,127 +2,136 @@
 # RC-01 — Risk Classification
 # Control:   RC-01 Risk Classification
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0004
-# Status:    draft — awaiting Risk Officer validation
+# Feature:   FEAT-0005
+# Status:    validated
 # =============================================================================
 
 meta:
-  id: "RC-01-FEAT-0004"
-  feature: "FEAT-0004"
-  source_cr: "CR-0004"
+  id: "RC-01-FEAT-0005"
+  feature: "FEAT-0005"
+  source_cr: "CR-0005"
   produced_by: "Claude Sonnet 4.6 (Risk Assessor / RC-01)"
   date: "2026-03-14"
   status: validated
 
-proposed_tier: high    # Agent-proposed tier (pre-RO review)
-confirmed_tier: medium # Risk Officer override — see validation block
+proposed_tier: medium    # Agent-proposed tier (pre-RO review)
+confirmed_tier: medium   # Risk Officer confirmed — no override required
 
 governance_intensity:
-  enhanced_scrutiny: true
+  enhanced_scrutiny: false
   approval_authority: "Product Owner + Risk Officer (Jerry van Heerikhuize)"
-  testing_depth: standard_plus
+  testing_depth: standard
   additional_controls_recommended:
-    - "Stage 2: Threat model including crisis-failure scenarios"
-    - "Stage 4: Safe-messaging compliance review against AFSP/Samaritans guidelines"
-    - "Stage 4: Edge-case crisis input testing"
+    - "Stage 2: DV/coercive control sentinel set — threat model focus area"
+    - "Stage 2: Humor engine design — CONF-01 OPT-C implementation"
+    - "Stage 4: Edge-case DV indicator testing across subtly-framed disclosures"
+    - "Stage 4: Humor deployment validation — confirm GRAVITY_TOPICS are honored"
 
 dimensions:
   user_harm:
-    score: high
+    score: medium
     rationale: |
-      Users are a vulnerable population — trauma survivors, people in active distress.
-      Crisis failure (failure to detect suicidal ideation or self-harm intent and escalate
-      to emergency services) could result in irreversible harm or death.
-      Even partial failures (delayed escalation, missed sentinel phrases, wrong tone in
-      crisis response) carry material harm potential.
-      This is the single most significant risk dimension for this feature.
+      Users are in relationship distress — a vulnerable population, though generally
+      less acutely at-risk than trauma survivors (FEAT-0004/P.S.Y.). However, two
+      specific harm vectors exist:
+
+      (1) Domestic violence / coercive control: if FRANK fails to detect DV indicators
+      and a user in an abusive relationship receives no safety resources, the harm
+      potential is serious. This is the highest-risk user harm vector.
+
+      (2) Humor misdeployment: if FRANK deploys wit at the wrong moment — when a user
+      is describing genuine pain — it could damage therapeutic alliance, invalidate the
+      user's experience, or in extreme cases cause re-hurt in an already distressed user.
+
+      Both vectors are mitigable by design (FR-04 crisis detection; FR-07 humor guardrails).
+      Residual risk is MEDIUM rather than HIGH because: no trauma processing in scope;
+      acute crisis scenarios less common than in P.S.Y.'s use case; humor guardrails
+      are rule-governed.
 
   data_sensitivity:
-    score: high
+    score: medium
     rationale: |
-      Mental health information disclosed in sessions constitutes special category data
-      under GDPR Art. 9(1). This is the highest GDPR data sensitivity category.
-      While the prompt itself stores no data persistently, the LLM context window
-      contains the full session — including trauma disclosures, safety flags, and mood
-      state — and may be retained by the LLM provider per their data policy.
-      SC-04 classification: RESTRICTED.
+      Relationship disclosures are personal data (GDPR applies). If mental health
+      information is disclosed (depression, anxiety linked to relationship distress),
+      data elevates to GDPR Art. 9(1) special category.
+
+      The conditional nature of special category data makes this MEDIUM: not all
+      sessions will involve mental health disclosures, but enough will that the
+      session-open notice must cover the RESTRICTED case. Unlike P.S.Y. where
+      special category data is certain, here it is probable but not guaranteed.
 
   reputational:
     score: medium
     rationale: |
-      If the prompt is misrepresented as clinical care (by users, press, or social media),
-      reputational damage to the project and author is possible.
-      Risk is mitigated by the mandatory disclaimer (FR-02) and clear scope limits (FR-11),
-      but cannot be eliminated — the internet will use tools in unintended ways.
+      Two reputational vectors: (a) if FRANK's humor is experienced as tone-deaf or
+      mocking in a widely-shared screenshot, it could damage the project's reputation;
+      (b) if FRANK mishandles a DV situation and fails to provide resources, the
+      reputational harm is significant and potentially legal in implication.
+      Both mitigated by design controls; residual risk is medium.
 
   legal_regulatory:
-    score: high
+    score: low
     rationale: |
-      EU AI Act: health-adjacent use case. AGL has flagged possible Annex III point 5
-      classification (health sector AI). If confirmed high-risk, mandatory obligations
-      include conformity assessment, technical documentation, human oversight measures,
-      transparency requirements, and registration in EU AI Act database.
+      EU AI Act: LIMITED tier confirmed by AGL (same rationale as P.S.Y.) — no
+      conformity assessment required. GPAI transparency obligations apply.
 
-      GDPR: special category data (Art. 9). Processing requires explicit legal basis.
-      The prompt is a tool users operate themselves — the user is the data controller
-      for their own session. However, this must be made explicit in the disclaimer.
+      GDPR: Personal data processing; conditional special category (Art. 9 if mental
+      health disclosed). User is data controller of their own session; LLM provider
+      is processor. Session-open notice addresses this.
 
-      Medical Device Regulation: a prompt that could be construed as providing clinical
-      psychological treatment may fall under MDR Annex XVI or MDR Art. 2(1) depending
-      on intended purpose claims. The mandatory scope limitation (Phase 1 only, not
-      clinical treatment) is the primary legal mitigation.
+      No medical device classification risk: relationship therapy psychoeducation is
+      further from clinical medical territory than trauma psychology (P.S.Y.).
+      No diagnosis, no treatment, no clinical decision support.
 
   blast_radius:
     score: low
     rationale: |
-      The deliverable is a standalone text file. No production systems, APIs, databases,
-      or infrastructure are affected. A defective version affects users who choose to use
-      it; it does not cause cascading system failures.
+      Standalone text file. No production systems, APIs, databases, or infrastructure
+      affected. Defective version affects only users who choose to use it; no
+      cascading system failures possible.
 
   reversibility:
     score: medium
     rationale: |
-      The prompt file itself is fully reversible via git. However, if a defective version
-      reaches users before being corrected — particularly one that fails crisis detection
-      — the harm caused to individual users during the exposure window may not be reversible.
-      Reversibility of the deliverable: HIGH. Reversibility of user harm: LOW.
+      Prompt file: fully reversible via git. However, as with P.S.Y., harm caused
+      to users during an exposure window (e.g. failed DV detection) may not be
+      reversible at the individual level. Reversibility of the deliverable: HIGH.
+      Reversibility of user harm in DV scenario: LOW.
 
   dependency_count:
     score: low
     rationale: |
-      No runtime dependencies. Reference dependencies (SAMHSA, AFSP, Samaritans guidelines)
-      are stable, widely accessible public standards. LLM capability dependency shared with
-      other prompts in this repository.
+      No runtime dependencies. Reference dependencies (attachment theory, Gottman,
+      EFT, DBT) are stable, widely accessible bodies of knowledge. No LLM-specific
+      tooling required.
 
   team_complexity:
     score: low
     rationale: |
       Solo project. All roles held by one person. No coordination overhead.
-      Note: the solo-project factor that reduces operational risk does NOT reduce user
-      harm risk — that dimension is independent of team structure.
 
 classification_rationale: |
-  FEAT-0004 is classified HIGH risk. The classification is driven by three high-scoring
-  dimensions: user harm potential (crisis failure risk with vulnerable population),
-  data sensitivity (GDPR Art. 9 special category), and legal/regulatory exposure
-  (EU AI Act health-adjacent classification pending; GDPR data controller question).
+  FEAT-0005 is classified MEDIUM risk without RO override. Unlike FEAT-0004 (P.S.Y.),
+  where the initial HIGH classification required Risk Officer override to MEDIUM, FRANK
+  is appropriately MEDIUM from the outset. The lower initial risk reflects:
 
-  High risk classification triggers enhanced governance intensity: mandatory threat model
-  in Stage 2, enhanced testing depth in Stage 4, and legal review of disclaimer language
-  recommended before Stage 5 release.
+  - Relationship distress is less acutely dangerous than trauma / PTSD crisis scenarios
+  - No Phase 2/3 trauma processing in scope
+  - Data sensitivity is conditional (not certain) special category
+  - EU AI Act regulatory exposure is LOW (LIMITED tier confirmed; no Annex III)
 
-  Note: the high risk classification applies to the GOVERNANCE PROCESS, not to the
-  feature itself being unsafe. The prompt can be implemented safely — this classification
-  ensures the process gives it appropriate scrutiny.
+  MEDIUM risk retains meaningful governance intensity: Stage 2 threat model required,
+  standard-plus testing in Stage 4, documented DV detection approach, and humor
+  guardrail validation. The novel humor engine element justifies the upper MEDIUM
+  classification rather than LOW — there is no precedent in this repository for a
+  prompt with a wit component, and its safety properties must be tested carefully.
 
 validation:
   validated_by: "Jerry van Heerikhuize (Risk Officer)"
   validation_date: "2026-03-14"
-  override_tier: medium
+  override_tier: ""
   override_rationale: >
-    AC-01 LIMITED tier confirmed by AGL reduces regulatory exposure materially —
-    no conformity assessment, no Annex III obligations. Prompt-only deliverable limits
-    operational blast radius: no infrastructure, no integrations, no cascading system
-    failures possible. User harm potential and data sensitivity remain significant but
-    are addressed through design controls (crisis detection, DHR set) rather than
-    requiring HIGH governance intensity. MEDIUM tier is appropriate and sufficient.
+    No override required. MEDIUM classification is accurate and appropriate.
+    FRANK's lower acute risk profile (vs. P.S.Y.) is correctly captured at MEDIUM.
+    The DV detection requirement and humor engine novelty together justify MEDIUM
+    rather than LOW. Validated as proposed.

@@ -2,14 +2,14 @@
 # SC-04 — Data Classification Record
 # Control:   SC-04 Data Classification Screening
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0004
-# Status:    complete — SA review required
+# Feature:   FEAT-0005
+# Status:    complete — SA approved
 # =============================================================================
 
 meta:
-  id: "SC-04-FEAT-0004"
-  feature: "FEAT-0004"
-  source_cr: "CR-0004"
+  id: "SC-04-FEAT-0005"
+  feature: "FEAT-0005"
+  source_cr: "CR-0005"
   produced_by: "Claude Sonnet 4.6 / SC-04"
   date: "2026-03-14"
 
@@ -17,28 +17,43 @@ applicable: true
 
 # ── Data Elements Identified ──────────────────────────────────────────────────
 data_elements:
-  - element: "Trauma disclosures and personal narratives"
-    gdpr_category: "Special category — health / mental health (Art. 9(1))"
-    sensitivity: restricted
+  - element: "Relationship disclosures — personal narratives about relationships"
+    gdpr_category: "Personal data (Art. 4(1)) — not special category by default"
+    sensitivity: confidential
     processing: "User discloses in session; held in LLM context window"
     storage: "In-memory only (LLM context window); potentially retained by LLM provider"
+    note: "Elevates to RESTRICTED if user discloses mental health information"
 
-  - element: "Mood scores (0–10 scale, check-in and close)"
-    gdpr_category: "Special category — health / mental health (Art. 9(1))"
+  - element: "Mental health disclosures (if user discloses depression, anxiety, etc.)"
+    gdpr_category: "Special category — health / mental health (GDPR Art. 9(1))"
     sensitivity: restricted
-    processing: "Recorded in SESSION_STATE schema within the context window"
+    processing: "User may disclose mental health context in relation to relationship distress"
     storage: "In-memory only; potentially retained by LLM provider"
+    note: "Conditional — not all sessions will contain mental health disclosures"
 
-  - element: "Safety flags (crisis trigger events)"
-    gdpr_category: "Special category — health (suicidality/self-harm indicators)"
+  - element: "Domestic violence / abuse disclosures"
+    gdpr_category: "Special category — health / criminal justice adjacent (Art. 9(1))"
     sensitivity: restricted
-    processing: "Recorded in SESSION_STATE on crisis detection"
-    storage: "In-memory only; potentially retained by LLM provider"
+    processing: "Disclosed in session; triggers safety response; recorded as safety_flag"
+    storage: "In-memory only; LLM provider may retain"
+    note: "Highest sensitivity data element; safety_flags must be handled with DHR-03 care"
 
-  - element: "Session themes and techniques introduced"
+  - element: "Mood scores (0–10 check-in and close)"
     gdpr_category: "Personal data — health-adjacent"
     sensitivity: confidential
-    processing: "Recorded in SESSION_STATE for session coherence"
+    processing: "Recorded in SESSION_STATE schema within context window"
+    storage: "In-memory only; potentially retained by LLM provider"
+
+  - element: "Relationship patterns identified in session"
+    gdpr_category: "Personal data — potentially sensitive (describes psychological patterns)"
+    sensitivity: confidential
+    processing: "Recorded in SESSION_STATE relationship_patterns_identified field"
+    storage: "In-memory only"
+
+  - element: "Safety flags (DV indicators, suicidal ideation)"
+    gdpr_category: "Special category — health / safety"
+    sensitivity: restricted
+    processing: "Recorded in SESSION_STATE on crisis/DV indicator detection"
     storage: "In-memory only; potentially retained by LLM provider"
 
   - element: "User identity (if disclosed voluntarily)"
@@ -48,45 +63,53 @@ data_elements:
     storage: "In-memory; prompt advises against sharing identifying information"
 
 classification:
-  overall: restricted
+  overall: confidential    # Default — elevates to restricted when mental health / DV data present
+  elevation_trigger: "User discloses mental health information or DV/abuse indicators"
+  elevated_classification: restricted
   pii_involved: true
-  special_category_data: true
-  special_category_basis: "Mental health information — GDPR Art. 9(1)"
-  data_subject: "End user (trauma survivor / person in distress)"
+  special_category_data: conditional
+  special_category_basis: >
+    Mental health information or DV disclosures — GDPR Art. 9(1). Not certain for
+    all sessions, but probable enough that the session-open notice must treat the
+    RESTRICTED case as the default warning level.
+  data_subject: "End user (person seeking relationship self-reflection support)"
   data_controller: "End user (operating the prompt in their own LLM session)"
   data_processor: "LLM provider (OpenAI, Anthropic, Google, etc. per user's choice)"
 
 gdpr_analysis:
   legal_basis_for_processing: |
-    The prompt does not process data on behalf of the author/publisher — the user
-    operates it in their own LLM session. The data controller is the user themselves.
+    Same structure as FEAT-0004/P.S.Y.: the author/publisher does not process data
+    on behalf of users. The user operates the prompt in their own LLM session; the
+    user is the data controller. The LLM provider is the processor.
 
-    However, the LLM provider processes the session data. The user consents to this
-    by accepting the LLM provider's terms of service. The prompt should make users
-    aware of this processing relationship.
+    The user consents to LLM provider processing by accepting the provider's terms
+    of service. The prompt must make this processing relationship transparent.
 
   article_9_basis: |
-    Art. 9(2)(a): Explicit consent — the user has chosen to use the tool and
-    voluntarily discloses health information. The mandatory disclaimer at session
-    open (FR-02, NFR-04) must inform users of the special category data nature
-    of the information they may share.
+    If mental health data is disclosed: Art. 9(2)(a) — explicit consent by the user
+    choosing to use the tool and voluntarily sharing health information.
+
+    The session-open notice (NFR-04) must inform users that:
+    (a) relationship disclosures are personal data;
+    (b) if they share mental health information, that is GDPR Art. 9 special category data;
+    (c) LLM providers may retain conversation data per their privacy policy.
 
   special_category_handling_requirements:
-    - "Prompt must advise users at session open that mental health disclosures
-      constitute GDPR Art. 9 special category data"
+    - "Session-open notice must cover both personal data (certain) and special
+      category data (conditional) — written to inform users of the elevated case"
     - "Prompt must advise users not to share identifying information"
-    - "Prompt must advise users that LLM provider may retain conversation data
-      per their privacy policy — users should consult their chosen provider's policy"
-    - "Safety flags and crisis disclosures must be treated as most sensitive —
-      never trivialised, never referenced casually in subsequent responses"
-    - "SESSION_STATE must not include free-text that reproduces verbatim disclosures
+    - "Prompt must advise users to consult their LLM provider's privacy policy"
+    - "DV disclosures and crisis indicators recorded in safety_flags must not be
+      reproduced casually in subsequent responses"
+    - "SESSION_STATE must not include free-text reproducing verbatim sensitive disclosures
       beyond what is necessary for session coherence"
 
 data_handling_requirements:
   - id: DHR-01
     requirement: >
-      Mandatory session-open notice: inform user that mental health disclosures are
-      special category data (GDPR Art. 9) and that LLM provider may retain session data.
+      Mandatory session-open notice: inform user that relationship disclosures are
+      personal data; if mental health information is shared, it is GDPR Art. 9 special
+      category data; LLM provider may retain the session per their privacy policy.
     maps_to: "NFR-04, FR-02"
     priority: must
 
@@ -99,8 +122,9 @@ data_handling_requirements:
 
   - id: DHR-03
     requirement: >
-      SESSION_STATE safety_flags field must be treated as the most sensitive data element.
-      Agent must not reference crisis disclosures casually or repeat them unnecessarily.
+      SESSION_STATE safety_flags field (DV indicators, suicidal ideation) must be
+      treated as the most sensitive data element. Agent must not reference these
+      disclosures casually or repeat them unnecessarily in subsequent turns.
     maps_to: "FR-09, NFR-02"
     priority: must
 
@@ -112,24 +136,25 @@ data_handling_requirements:
     priority: must
 
 high_risk_processing_flags:
-  - flag: "Mental health data of a vulnerable population"
-    risk: "Potential for sensitive data to be retained by LLM provider without explicit GDPR consent"
-    mitigation: "User informed at session open; user is data controller of own session"
+  - flag: "Domestic violence / coercive control disclosures"
+    risk: "Highly sensitive disclosure; if retained by LLM provider, constitutes sensitive personal data"
+    mitigation: "Prompt handles with DHR-03 care; safety_flags field; user informed at session open"
 
-  - flag: "Crisis/safety data (suicidality indicators)"
-    risk: "If retained by LLM provider, this constitutes highly sensitive health data"
-    mitigation: "Prompt design limits what is recorded in SESSION_STATE; user advised not to share PII"
+  - flag: "Conditional mental health data elevation"
+    risk: "Users who disclose mental health information create GDPR Art. 9 special category data without knowing it"
+    mitigation: "Session-open notice covers the elevated case proactively — users warned before they disclose"
 
   - flag: "No persistent storage by prompt"
     risk: "LLM provider retention is outside the prompt's control"
-    mitigation: "Disclosure in disclaimer; user chooses their LLM provider"
+    mitigation: "Disclosure in session-open notice; user chooses their LLM provider and agrees to their terms"
 
 sa_review:
   reviewed_by: "Jerry van Heerikhuize (Security Architect)"
   review_date: "2026-03-14"
   findings: >
-    Classification and DHR set approved as specified. RESTRICTED classification is
-    correct for GDPR Art. 9 special category mental health data. DHR-01 through DHR-04
-    are appropriate and sufficient for a prompt-only deliverable where the user is the
-    data controller of their own LLM session.
+    Classification structure approved. CONFIDENTIAL default with RESTRICTED elevation
+    trigger is the appropriate handling for a prompt where special category data is
+    conditional. The proactive RESTRICTED-level session-open notice (treating the
+    elevated case as the default warning) is the correct conservative approach.
+    DHR-01 through DHR-04 are appropriate and sufficient. Approved.
   approved: true

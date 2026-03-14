@@ -2,14 +2,14 @@
 # QC-02 — Conflict Resolution Record
 # Control:   QC-02 Coherence & Conflict Resolution
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0004
-# Status:    draft — awaiting Product Owner decisions on flagged items
+# Feature:   FEAT-0005
+# Status:    resolved
 # =============================================================================
 
 meta:
-  id: "QC-02-FEAT-0004"
-  feature: "FEAT-0004"
-  source_cr: "CR-0004"
+  id: "QC-02-FEAT-0005"
+  feature: "FEAT-0005"
+  source_cr: "CR-0005"
   produced_by: "Claude Sonnet 4.6 (Conflict Analyst / QC-02)"
   date: "2026-03-14"
   status: resolved
@@ -28,150 +28,189 @@ conflicts:
   - id: CONF-01
     severity: significant
     requirements_involved:
-      - "FR-02: Mandatory disclaimer (not a substitute for clinical care)"
-      - "NFR-01: Tone — warmth and immersive presence"
+      - "FR-07: Calibrated Wit Engine — humor deployment"
+      - "NFR-01: Tone — warm, perceptive, occasionally wry"
+      - "NFR-07: Humor calibration — never before rapport"
+      - "FR-03: Session Lifecycle — Insight phase delivery"
     description: |
-      There is a tension between maintaining an immersive, warm therapeutic persona (NFR-01)
-      and rendering a clinical disclaimer that breaks the immersive frame (FR-02).
+      The central tension of this feature: humor can be a powerful therapeutic tool
+      (creating safety, surfacing blind spots, making hard truths accessible) but
+      becomes harmful if deployed without careful contextual control.
 
-      A disclaimer that interrupts the session with legalistic language risks:
-      (a) reducing user trust and engagement at a vulnerable moment, or
-      (b) being written so softly that it fails its legal/ethical purpose.
+      The conflict is between:
+      (a) giving FRANK enough latitude to use wit naturally as a skilled therapist would,
+          trusting its contextual judgment, and
+      (b) using rigid rule-based controls on when humor is permitted to prevent
+          inappropriate deployment — which may make the humor feel forced or mechanical.
 
-      The conflict is between maximising therapeutic rapport and maintaining honest,
-      explicit boundary communication.
+      If the humor trigger rules are too strict, FRANK's wit becomes a party trick
+      deployed on a timer rather than genuine therapeutic craft. If too loose, FRANK
+      risks a poorly-timed quip when the user is describing something genuinely painful.
+
+      This is particularly acute during the Insight phase — FRANK may want to deliver
+      an observation with a light touch precisely because the insight is difficult.
     options:
       - id: OPT-A
         description: >
-          Disclaimer is rendered once at session open in warm, plain language that is
-          honest but not clinical or legalistic. It is woven into the persona's introduction,
-          not delivered as a formal legal notice. Re-render on boundary crossing only.
+          Fully rule-governed: humor permitted ONLY when humor_rapport_established = true
+          AND mood_checkin > 4 AND no crisis/distress signals in current turn AND
+          topic is not in the GRAVITY_TOPICS list (abuse, violence, grief, suicide,
+          betrayal). FRANK has no judgment override. Predictable but potentially stilted.
       - id: OPT-B
         description: >
-          Disclaimer is rendered as a distinct, clearly marked section separate from the
-          therapeutic persona — unambiguous, clinical in tone, cannot be misread. Immersion
-          is secondary to transparency.
+          Trust-based: provide FRANK with guidelines and examples but allow contextual
+          judgment. Humor deployment is governed by principles rather than rules.
+          More natural; harder to test and validate.
       - id: OPT-C
         description: >
-          Render a brief warm disclaimer at session open (OPT-A style), then a full formal
-          disclaimer if the user explicitly requests clinical guidance (diagnosis, medication,
-          Phase 2 processing). Two-tier approach.
+          Hybrid: rule-governed safety floor (humor_rapport_established MUST be true;
+          GRAVITY_TOPICS absolutely prohibited) with principle-governed ceiling
+          (within those constraints, FRANK applies contextual judgment on timing and
+          delivery). The rules prevent harm; the principles enable craft.
     resolution: >
-      OPT-C — Two-tier disclaimer adopted. A brief, warm disclaimer is woven into the
-      persona's session-open introduction. A full, formally worded disclaimer re-renders
-      whenever the user's language implies clinical treatment expectations (diagnosis,
-      medication, Phase 2 processing). This balances therapeutic rapport with unambiguous
-      boundary communication.
+      OPT-C — Hybrid approach adopted. RULES_ENGINE defines a non-negotiable safety
+      floor: humor_rapport_established must be true; GRAVITY_TOPICS list prohibits
+      humor in defined sensitive areas (abuse, violence, suicide, grief, betrayal,
+      deep shame). Within those constraints, FRANK applies contextual judgment.
+      The wit engine is a scalpel within guardrails — not a sledgehammer, not a toy.
     resolved_by: "Jerry van Heerikhuize (Product Owner)"
     resolution_date: "2026-03-14"
 
   - id: CONF-02
     severity: significant
     requirements_involved:
-      - "FR-09: Session State Schema — tracks themes, safety flags, techniques"
-      - "NFR-04: GDPR awareness — special category data, advise no PII"
-      - "SC-04: Data classification — RESTRICTED"
+      - "FR-06: Individual-perspective integrity"
+      - "NFR-01: Tone — empathetic and supportive"
+      - "FR-05: Relationship pattern identification"
     description: |
-      The SESSION_STATE schema tracks mental health data (mood scores, themes, safety flags,
-      session notes) in the LLM context window. This is beneficial for session coherence (FR-09)
-      but creates a tension with GDPR Art. 9 special category data obligations (NFR-04).
+      FRANK works with one person's account of a relationship. The therapeutic target
+      is the user's self-reflection — not the absent partner. But users in relationship
+      distress often want validation and often frame their partner in the worst possible
+      light. Two tensions arise:
 
-      Specifically: the same schema that provides therapeutic continuity also aggregates
-      sensitive mental health information in a context window that may be retained by the
-      LLM provider (OpenAI, Anthropic, Google, etc.) per their data policies.
+      (1) FRANK must support the user without colluding in a one-sided narrative that
+          demonises the absent partner — this would be therapeutically dishonest and
+          potentially harmful (it may, for example, escalate conflict rather than
+          support resolution).
 
-      The prompt cannot control LLM provider data retention, but it can:
-      (a) restrict what it records in STATE, and/or
-      (b) warn users about provider retention at session open.
+      (2) FRANK must NOT play devil's advocate for the absent partner so aggressively
+          that the user feels invalidated and unsupported — which breaks therapeutic
+          alliance and may cause users to disengage.
+
+      The conflict: how much does FRANK challenge the user's framing of the partner
+      versus how much does it simply hold and work with the user's experience?
     options:
       - id: OPT-A
         description: >
-          SESSION_STATE is kept minimal: mood scores and technique names only. No free-text
-          session notes or explicit theme labels that could identify the user's disclosures.
-          Reduces data sensitivity at cost of session coherence.
+          FRANK consistently redirects away from the absent partner entirely:
+          "I can only work with your experience and your patterns." Maintains strict
+          neutrality. Does not engage with characterisations of the partner at all.
+          Clean but may feel dismissive of the user's experience.
       - id: OPT-B
         description: >
-          SESSION_STATE includes full schema as specified. Warn users explicitly at session
-          open that LLM providers may retain conversation data per their privacy policy,
-          and advise not to share identifying information. Rich state; informed user.
+          FRANK works with the user's account as presented — validating their feelings
+          without endorsing their interpretation of the partner. Gently names the
+          interpretive gap ("I hear how that landed for you — I wonder what was
+          happening for them in that moment?") without requiring a definitive answer.
+          Supports without colluding; curious without interrogating.
       - id: OPT-C
         description: >
-          SESSION_STATE includes full schema. Prompt includes a ~privacy console command
-          that explains what is held in state and reminds users of provider retention risk.
-          State is also clearable via ~reset.
+          FRANK explicitly names its epistemic position at session open and revisits
+          it when needed: "I only have your side of the story, and I'm absolutely
+          here to work with your experience. I'll sometimes wonder aloud about the
+          other perspective — not to defend them, but because that's often where the
+          useful stuff lives." Transparent and bounded.
     resolution: >
-      OPT-B/C — Full SESSION_STATE schema retained for session coherence. Explicit user
-      notice rendered at session open (GDPR Art. 9 special category data, LLM provider
-      retention risk, advice not to share identifying information). A ~privacy console
-      command is added to FR-10 that on demand explains what STATE holds and reminds
-      users of provider data retention. State remains clearable via ~reset.
-      This satisfies both GDPR transparency and therapeutic continuity requirements.
+      OPT-B/C — Both approaches combined. FRANK establishes its individual-perspective
+      position at session open (OPT-C framing). Within sessions, it validates feelings
+      without endorsing interpretations (OPT-B approach), gently introducing the
+      absent party's possible perspective as a curiosity to explore rather than a
+      defence. The wry wit can be useful here — FRANK can acknowledge that it only
+      has one side of the story in a way that is warm rather than clinical.
     resolved_by: "Jerry van Heerikhuize (Product Owner)"
     resolution_date: "2026-03-14"
 
   - id: CONF-03
     severity: minor
     requirements_involved:
-      - "FR-11: Boundary enforcement — Phase 2/3 scope limit"
-      - "FR-06: Psychoeducation — trauma responses"
+      - "FR-04: Crisis detection — DV/coercive control"
+      - "FR-06: Individual-perspective integrity"
     description: |
-      The boundary between psychoeducation about trauma (Phase 1 — permitted) and
-      trauma memory processing (Phase 2 — out of scope) is clinically real but
-      contextually fluid in an LLM session. A user may begin with a psychoeducation
-      question and organically move toward re-experiencing narratives.
+      Domestic violence and coercive control indicators are tricky to detect from
+      a one-sided account. A user may describe behaviour that sounds controlling or
+      abusive but frames it neutrally ("he just gets very intense about where I go").
+      Conversely, a user may describe heated but non-abusive conflict in terms that
+      superficially resemble DV indicators.
 
-      The RULES_ENGINE must detect this drift and redirect, but if the detection
-      trigger is too sensitive it may interrupt legitimate Phase 1 work. If too
-      permissive, it allows drift into Phase 2 territory.
+      FRANK must be sensitive enough to notice genuine risk indicators without
+      over-pathologising normal relationship conflict — and without making assumptions
+      about the partner's behaviour based solely on the user's framing.
+
+      The conflict: early DV detection vs. avoiding false positives that break rapport.
     options:
       - id: OPT-A
         description: >
-          Define explicit sentinel patterns for Phase 2 drift in the RULES_ENGINE
-          (e.g. "tell me about what happened", "I keep seeing...", "I want to go back
-          to the memory"). On detection, gentle redirect offered once; if user persists,
-          firmer redirect with explanation.
+          FRANK responds to DV/control indicators by offering information and resources
+          without labelling the partner's behaviour as abuse. "What you're describing
+          sounds like it might be worth knowing about some resources — have you heard
+          of [X]?" User-led; no diagnosis of the situation.
       - id: OPT-B
         description: >
-          Trust the user: only redirect if user explicitly requests Phase 2 processing
-          by name. Allow narrative exploration within Explore phase without proactive
-          interruption.
-    resolution: "OPT-A recommended by agent — defining sentinel patterns is safer for vulnerable population.
-      PO to confirm or override."
-    resolved_by: "— pending"
-    resolution_date: "— pending"
+          FRANK uses explicit DV sentinel phrases and responds with a structured
+          safety check — same pattern as P.S.Y.'s CRISIS_CHECK — naming the concern
+          clearly and providing resources. More direct; potentially alarming to users
+          who don't identify as DV victims.
+    resolution: >
+      OPT-A — Information and resource offering without labelling. FRANK's RULES_ENGINE
+      defines a tiered response: mild indicators trigger a gentle resource mention woven
+      into the session; clear DV disclosures (physical harm, explicit fear of partner,
+      isolation) trigger the full safety response with resources rendered immediately.
+      OPT-A's non-labelling approach preserves user agency; the tiered escalation
+      ensures serious situations are not understated. PO confirmed.
+    resolved_by: "Jerry van Heerikhuize (Product Owner)"
+    resolution_date: "2026-03-14"
 
   - id: CONF-04
     severity: minor
     requirements_involved:
-      - "NFR-05: Cultural sensitivity (should)"
-      - "FR-06, FR-07: Psychoeducation and techniques"
+      - "NFR-01: Tone — wit"
+      - "NFR-05: Cultural sensitivity"
     description: |
-      Several grounding and stabilisation techniques in the library have Western cultural
-      origins (mindfulness from MBSR, self-compassion from Neff, visualisation). These
-      may not be appropriate, accessible, or culturally congruent for all users.
+      Humour is deeply culturally specific. Dry British irony does not land the same
+      way across all cultures; self-deprecating wit reads differently in high-context
+      vs. low-context communication cultures; sarcasm — even gentle sarcasm — is
+      considered rude in some cultural contexts.
 
-      NFR-05 is marked 'should', meaning cultural adaptation is desirable but not
-      mandatory for v1.0. However, the technique library should at minimum avoid
-      presenting these practices as universally applicable.
+      FRANK's humor could inadvertently alienate users from cultures where the wit
+      style is unfamiliar or offensive, without FRANK or the user understanding why
+      the interaction has gone flat.
     options:
       - id: OPT-A
         description: >
-          Techniques are introduced with cultural context acknowledged: "Some people find
-          this helpful; feel free to tell me if it doesn't resonate." User can ask for
-          alternatives. No additional cultural-specific techniques required for v1.0.
+          FRANK's default wit style is kept mild and universal — observational
+          rather than ironic; warm rather than dry. Cultural context cues in the
+          conversation guide tone adaptation. Humor is offered tentatively and
+          only sustained if the user responds positively.
       - id: OPT-B
         description: >
-          Defer cultural adaptation to a future CR. Document English/Western-centric
-          technique library as a known v1.0 limitation.
-    resolution: "OPT-A — agent recommendation. Techniques offered with explicit invitation to
-      decline or request alternatives. PO to confirm."
-    resolved_by: "— pending"
-    resolution_date: "— pending"
+          Defer cultural humor adaptation to a future CR; document it as a known v1.0
+          limitation. Humor is an English-language feature only and is documented
+          as such.
+    resolution: >
+      OPT-A — Mild, universal default. Humor style is observational and warm by default.
+      FRANK reads tonal cues and does not sustain a wit style that the user does not
+      mirror. Sarcasm is specifically excluded from the default style — only irony
+      and wry observation are in-bounds, and only when user rapport is clear.
+      NFR-06 already limits humor to English for v1.0. PO confirmed.
+    resolved_by: "Jerry van Heerikhuize (Product Owner)"
+    resolution_date: "2026-03-14"
 
 stage_gate:
   blocking_unresolved: false
   stage_blocked: false
   note: >
-    All conflicts resolved on 2026-03-14. CONF-01: OPT-C (two-tier disclaimer).
-    CONF-02: OPT-B/C (full STATE + user notice + ~privacy command). CONF-03 and
-    CONF-04 agent recommendations confirmed by PO. QC-02 exit criteria met.
+    All conflicts resolved on 2026-03-14. CONF-01: OPT-C (hybrid guardrails + judgment).
+    CONF-02: OPT-B/C (validate feelings, not interpretations; transparent epistemic position).
+    CONF-03: OPT-A (tiered DV response, information not labelling). CONF-04: OPT-A
+    (observational warm default; no sustained sarcasm; English-only for v1.0). QC-02
+    exit criteria met.

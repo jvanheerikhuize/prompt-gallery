@@ -6,8 +6,8 @@
 # =============================================================================
 
 project:
-  id: "PRJ-0001-test"              # Unique project identifier (e.g. PRJ-0001)
-  name: "tag-role-test"            # Human-readable project name
+  id: "A-SDLC-AGENTROLE-DEFINITIONS-MODULE"              # Unique project identifier (e.g. PRJ-0001)
+  name: "A-SDLC-AGENTROLE-DEFINITIONS-MODULE"            # Human-readable project name
   description: |
     Module repository of structured agent-role masterprompts. Each prompt is self-contained
     and assigns a specific role to any LLM (game master, code reviewer, psychologist, etc.).
@@ -65,9 +65,9 @@ governance:
 # ── Feature Tracking ─────────────────────────────────────────────────────────
 features:
   id_prefix: FEAT                  # Prefix for feature specification IDs
-  next_id: 5                       # Increment after each new feature spec is created
+  next_id: 6                       # Increment after each new feature spec is created
   cr_prefix: CR                    # Prefix for change request IDs
-  next_cr_id: 5                    # Increment after each new change request
+  next_cr_id: 6                    # Increment after each new change request
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 paths:

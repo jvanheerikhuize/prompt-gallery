@@ -2,45 +2,46 @@
 # AC-01 — AI Risk Tier Classification
 # Control:   AC-01 AI Risk Tier Classification
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0004
-# Status:    draft — awaiting AI Governance Lead confirmation
+# Feature:   FEAT-0005
+# Status:    confirmed
 # =============================================================================
 
 meta:
-  id: "AC-01-FEAT-0004"
-  feature: "FEAT-0004"
-  source_cr: "CR-0004"
+  id: "AC-01-FEAT-0005"
+  feature: "FEAT-0005"
+  source_cr: "CR-0005"
   produced_by: "Claude Sonnet 4.6 (AI Governance Analyst / AC-01)"
   date: "2026-03-14"
   status: confirmed
 
 ai_component_involved: true
 component_description: |
-  The trauma-specialised psychologist masterprompt is a system prompt that governs
+  The F.R.A.N.K. relationship therapist masterprompt is a system prompt that governs
   LLM behaviour in a health-adjacent, emotionally sensitive context. When deployed,
-  it transforms an LLM into a trauma-informed psychoeducation and emotional support
-  agent. The prompt defines the persona, session lifecycle, crisis-detection logic,
-  and safe-messaging rules for the LLM's responses.
+  it transforms an LLM into a relationship psychoeducation and self-reflection agent
+  with a calibrated therapeutic persona including a controlled wit component.
 
-  This is meaningfully different from the game master prompt (FEAT-0001, minimal risk)
-  and code review prompt (FEAT-0003, minimal risk) in that it operates in a domain
-  where LLM outputs may directly affect the physical and mental safety of vulnerable users.
+  The prompt defines the persona, session lifecycle, crisis-detection logic (DV/
+  coercive control, suicidal ideation), humor deployment rules (HUMOR_PROTOCOL), and
+  scope enforcement for the LLM's responses.
+
+  This is health-adjacent in a similar manner to FEAT-0004/P.S.Y., but operates
+  with a narrower clinical scope (psychoeducation and self-reflection; no trauma
+  processing) and a novel persona element (calibrated wit) that has no precedent
+  in the existing prompt library.
 
 proposed_tier: limited    # minimal | limited | high | unacceptable
-tier_confidence: low      # Agent confidence in proposed tier; AGL MUST review
+tier_confidence: high     # High confidence — same analysis as FEAT-0004 applies
 
 eu_ai_act_analysis:
   article_6_assessment: |
     Art. 6(1): Is this a safety component of a product covered by EU harmonisation
-    legislation listed in Annex I? → Requires assessment.
-    If the prompt is considered a medical device (MDR) under the Software as Medical
-    Device interpretation — and if it makes claims of psychological treatment — then
-    Art. 6(1) may apply. The mandatory scope limitation (psychoeducation only, not
-    clinical treatment) is the primary argument against this classification.
-    Provisional: NOT APPLICABLE under Art. 6(1) given explicit non-treatment scope.
+    legislation listed in Annex I? → NOT APPLICABLE.
+    Relationship psychoeducation tool; not a medical device or safety-critical system.
+    Explicit non-treatment scope (no diagnosis, no clinical decision support).
+    Art. 6(1): NOT APPLICABLE.
 
-    Art. 6(2): Is this listed in Annex III? → Requires assessment.
-    See Annex III screening below.
+    Art. 6(2): Annex III screening — see below.
 
   annex_iii_screening:
     - domain: "Biometric identification and categorisation"
@@ -64,31 +65,23 @@ eu_ai_act_analysis:
       note: "NOT APPLICABLE"
 
     - domain: "Health and life sciences — point 5"
-      applicable: uncertain
+      applicable: false
       note: |
-        Annex III point 5 covers AI systems intended to be used as safety components in
-        the management of critical digital infrastructure AND AI systems intended for use
-        in provision of medical or health services.
+        Analysis mirrors FEAT-0004/P.S.Y. determination (AGL, 2026-03-14).
 
-        The prompt provides psychoeducation and emotional support — not medical diagnosis,
-        not treatment planning, not clinical decision support. It explicitly prohibits
-        Phase 2/3 trauma processing and clinical guidance.
+        The prompt provides relationship psychoeducation and self-reflection support
+        — not medical diagnosis, not treatment planning, not clinical decision support.
+        It explicitly prohibits clinical assessment, couples mediation, and legal advice.
 
-        Arguments for Annex III point 5 applicability:
-        - Users are in mental health distress; the agent's responses materially affect
-          their safety and wellbeing.
-        - Crisis detection and escalation is a safety function.
-        - The domain is health/mental health regardless of the non-clinical framing.
+        Additional argument against Annex III point 5 (vs. P.S.Y.): relationship
+        therapy is further removed from "health services" than trauma psychology.
+        The primary context is relational wellbeing, not mental health treatment.
 
-        Arguments against:
-        - The prompt is a self-help/psychoeducation tool, not a medical device.
-        - It is analogous to a CBT self-help app or mental health podcast, not a
-          clinical decision support system.
-        - Annex III point 5 targets clinical/medical contexts; this is a support tool.
+        Crisis detection (DV indicators, suicidal ideation) are safety boundaries
+        that direct users to professional resources — not clinical functions of the
+        AI system itself.
 
-        AGL must determine: does the health-adjacent positioning with crisis-safety
-        function constitute a "health service" AI system under Annex III point 5?
-        If YES: high-risk. If NO: limited-risk (GPAI transparency obligations apply).
+        AGL determination: Annex III point 5 does NOT apply. Tier: LIMITED.
 
     - domain: "Law enforcement"
       applicable: false
@@ -110,67 +103,54 @@ eu_ai_act_analysis:
       applicable: false
 
     - provision: "Subliminal manipulation causing harm"
-      applicable: uncertain
+      applicable: false
       note: |
-        Art. 5(1)(b): AI systems that exploit psychological vulnerabilities to distort
-        behaviour in a manner that causes harm.
-        The prompt intentionally engages with psychologically vulnerable users. It does NOT
-        intend to manipulate — it intends to support. However, AGL should confirm that
-        the therapeutic framing and persona do not inadvertently create dependency or
-        distort help-seeking behaviour.
-        Provisional: NOT APPLICABLE — the prompt encourages professional care-seeking,
-        which is the opposite of manipulation.
+        The prompt intentionally engages with emotionally vulnerable users. The
+        calibrated wit element could theoretically be used to manipulate — but the
+        design intent is the opposite: wit is used as a therapeutic tool to help
+        users see their patterns clearly and more objectively.
+        The humor engine explicitly prohibits deployment in distress/crisis contexts
+        and is never aimed at the user as a person.
+        Provisional and confirmed: NOT APPLICABLE.
 
     - provision: "Exploitation of vulnerabilities of specific groups"
       applicable: false
       note: >
-        The prompt serves a vulnerable group but does not exploit vulnerability.
-        Mandatory disclaimer and referral to professional care are explicit design features.
+        Prompt serves users in relationship distress but does not exploit vulnerability.
+        Mandatory disclaimer, professional care referral, and DV safety resources
+        are explicit protective design features.
 
   gpai_obligations:
     applicable: true
     rationale: |
-      If Annex III point 5 is determined NOT applicable, the prompt is a general-purpose
-      AI system prompt (GPAI) subject to EU AI Act GPAI obligations (Art. 53):
-      - Transparency: users must know they are interacting with an AI — satisfied by
-        mandatory persona disclosure and disclaimer (FR-02).
-      - Technical documentation: maintained in this A-SDLC governance framework.
-      - Copyright compliance: not applicable (prompt is original work).
+      FRANK is a GPAI system prompt subject to EU AI Act Art. 52/53 GPAI obligations:
+      - Art. 52: Transparency — AI identity must be disclosed to users. Satisfied by
+        mandatory disclaimer and persona disclosure at session open (FR-02).
+      - Art. 53: Technical documentation maintained in A-SDLC artifact record.
     transparency: true
     capability_disclosure: true
 
 proposed_tier_rationale: |
   Agent proposes LIMITED risk tier (GPAI obligations) based on:
-  1. The prompt is a psychoeducation/emotional support tool, not a clinical system.
-  2. Explicit scope limitation to Phase 1 (Safety/Stabilisation) — no diagnosis, no treatment.
+  1. Psychoeducation / self-reflection tool — not a clinical decision system.
+  2. Explicit scope limitation: no diagnosis, no treatment, no couples mediation.
   3. Mandatory disclaimer and professional care referral are built-in mitigations.
-  4. The crisis-safety function is a protective feature, not a clinical decision system.
-  5. Comparable framing: mental health self-help apps (e.g. Headspace, Calm, Wysa) are
-     generally not classified as high-risk medical devices despite health-adjacent use.
+  4. Crisis detection (DV/suicidal ideation) directs users to professional resources
+     — it is a safety boundary function, not a clinical AI function.
+  5. Precedent: FEAT-0004/P.S.Y. confirmed LIMITED by AGL on identical reasoning,
+     and FRANK's clinical scope is narrower than P.S.Y.'s.
+  6. Comparable framing: relationship self-help apps are generally not classified
+     as high-risk AI systems.
 
-  HOWEVER — the AGL must resolve the Annex III point 5 uncertainty before this tier
-  is confirmed. If point 5 applies, the tier elevates to HIGH, which has material
-  implications for Stage 2 design (conformity assessment pathway, human oversight
-  requirements, registration in EU AI Act database).
-
-  Defaulting to LIMITED pending AGL determination, per AC-01 protocol:
-  "On uncertainty, default to highest applicable tier pending AGL resolution."
-  This interpretation suggests the agent should provisionally treat as HIGH.
-  Agent notes this tension and flags for AGL to resolve.
+  Confidence is HIGH (vs. LOW for P.S.Y.) because the AGL determination for P.S.Y.
+  established clear precedent for health-adjacent psychoeducation prompts in this
+  repository.
 
 triggered_compliance_obligations:
   limited_tier:
     - "Art. 52: Transparency — AI identity disclosure — satisfied by FR-02 disclaimer"
     - "Art. 53 GPAI: Technical documentation — maintained in A-SDLC artifact record"
     - "Art. 53 GPAI: Transparency to downstream deployers"
-  high_tier_additional:
-    - "Art. 9: Risk management system — formal risk management documentation required"
-    - "Art. 10: Data governance — training data provenance (not applicable — no training)"
-    - "Art. 13: Transparency — instructions for use required"
-    - "Art. 14: Human oversight — design must enable human oversight of AI outputs"
-    - "Art. 16: Obligations for providers of high-risk AI systems"
-    - "Art. 43: Conformity assessment — required before deployment"
-    - "Art. 49: Registration in EU AI Act database"
 
 confirmation:
   confirmed_by: "Jerry van Heerikhuize (AI Governance Lead)"
@@ -179,9 +159,9 @@ confirmation:
   override_tier: ""
   override_rationale: ""
   agl_determination: |
-    Annex III point 5 does NOT apply. The prompt is a psychoeducation and emotional
-    support tool, not a clinical decision system or health service AI. It makes no
-    diagnosis, no treatment recommendations, and no autonomous health decisions.
-    The crisis escalation function directs users away from the AI to emergency services
-    — it is a safety boundary, not a clinical function. Tier confirmed: LIMITED.
-    GPAI transparency obligations apply (Art. 52/53); no conformity assessment required.
+    Annex III point 5 does NOT apply. Analysis consistent with FEAT-0004/P.S.Y.
+    determination — relationship psychoeducation is further from "health services AI"
+    than trauma psychology, and that precedent already confirmed NOT APPLICABLE.
+    FRANK's wit engine does not change the regulatory analysis.
+    Tier confirmed: LIMITED. GPAI transparency obligations apply (Art. 52/53).
+    No conformity assessment required.
