@@ -2,271 +2,253 @@
 # QC-01 — Feature Specification (Draft)
 # Control:   QC-01 Specification Validation
 # Stage:     1 — Intent Ingestion
-# Source CR: CR-0001
+# Source CR: CR-0004
 # Status:    draft — awaiting Product Owner approval (GC-05)
 # =============================================================================
 
 meta:
-  id: "FEAT-0001"
-  title: "T.A.G. v2 — Text Adventure Generator dungeonmaster masterprompt"
-  status: approved
-  created: "2026-03-11"
-  last_updated: "2026-03-11"
-  source_cr: "CR-0001"
+  id: "FEAT-0004"
+  title: "Trauma-Specialised Psychologist Masterprompt"
+  status: draft
+  created: "2026-03-14"
+  last_updated: "2026-03-14"
+  source_cr: "CR-0004"
   stage_reached: 1
 
 provenance:
   created_by: "Claude Sonnet 4.6 (Intake Analyst / QC-01)"
-  reviewed_by: "Jerry van Heerikhuize (Product Owner)"
-  approved_by: "Jerry van Heerikhuize (Product Owner)"
-  approval_date: "2026-03-11"
+  reviewed_by: "— pending PO review"
+  approved_by: "— pending PO approval"
+  approval_date: "— pending"
 
 # ── Intent ────────────────────────────────────────────────────────────────────
 intent:
   problem_statement: |
-    There is no single, self-contained, LLM-agnostic prompt that delivers a fully-featured,
-    stateful text adventure game experience without requiring external tooling, a database,
-    or custom code. Existing approaches either rely on hardcoded story paths, lose coherence
-    over longer sessions due to absent state management, or require external infrastructure
-    unavailable in a standard chat UI.
+    Trauma survivors face systemic barriers to professional psychological support —
+    cost, scarcity, stigma, waitlists, and geography — that leave them without adequate
+    coping resources between formal care episodes or when no formal care exists.
 
-    Players who want an immersive, open-world text adventure with a single paste-and-play
-    prompt have no good option. LLMs remain underutilised as game masters and the format
-    stays inaccessible.
+    Existing "therapist roleplay" LLM prompts do not address this gap safely: they lack
+    trauma-informed principles, crisis detection, safe-messaging compliance, structured
+    session lifecycles, and session state management.
+
+    The impact: vulnerable users rely on ad-hoc prompts that may cause harm or fail at
+    the most critical moments (crisis disclosure).
 
   desired_outcome: |
-    A single prompt file (prompt.md) that any user can copy-paste into any advanced LLM
-    chat interface and immediately begin a fully-featured, procedurally generated text
-    adventure — with no additional setup.
-
-    Measurable success criteria:
-    1. LLM correctly assumes T.A.G. DM persona (brilliant, witty, sarcastic, Infocom-style)
-       on first invocation without additional instructions.
-    2. SESSION_LOOP executes deterministically every turn:
-       parse → validate → position → update state → narrate → offer options → output.
-    3. Game state is fully self-contained in the JSON STATE_SCHEMA; a saved JSON can be
-       loaded in a new session on a different LLM and resume correctly.
-    4. All SESSION_RULES are respected: physics, inventory transitivity, NPC memory/faction,
-       combat d20, dynamic difficulty (0–100), scoring ledger, death/permadeath.
-    5. Console mode (`~`) is functional with all 9 listed commands.
-    6. A compressed/token-efficient variant is maintained in sync with the verbose prompt.
-    7. README.md documents the prompt with quick-start instructions and an example.
+    A self-contained masterprompt (prompt-trauma-psychologist.md) that provides safe,
+    structured psychoeducation and emotional support sessions governed by trauma-informed
+    care principles, with non-bypassable crisis detection and safe-messaging compliance.
 
   out_of_scope:
-    - External APIs, server infrastructure, or database backends
-    - Web frontend or GUI
-    - Native mobile or desktop application
-    - Multi-player or networked play
-    - Automatic image/video generation (imageprompt/videoprompt console commands produce
-      prompts only — generation itself is out of scope)
+    - Clinical diagnosis of any mental health condition
+    - Prescription or recommendation of medication
+    - Phase 2/3 trauma processing (requires in-person clinical supervision)
+    - Couples or group therapy formats
+    - Child or adolescent-specific adaptations
+    - Legal or forensic psychological contexts
+    - Substitution of licensed clinical therapy
 
 # ── Requirements ──────────────────────────────────────────────────────────────
 requirements:
   functional:
     - id: FR-01
-      title: DM Persona
+      title: Trauma-Informed Persona
       description: >
-        The prompt MUST establish the T.A.G. persona: Senior Dungeon Master, storyteller,
-        arbiter; tone brilliant, witty, sarcastic in the style of classic Infocom adventures.
+        Agent adopts warm, boundaried, non-judgmental psychologist persona grounded in
+        SAMHSA 6 pillars: Safety, Trustworthiness, Peer Support, Collaboration,
+        Empowerment, Cultural Sensitivity.
       priority: must
 
     - id: FR-02
-      title: Initialization Flow
+      title: Mandatory Disclaimer
       description: >
-        The prompt MUST support three start modes: (a) new customized game — collect
-        player name, gender, setting, lore, goal one at a time; (b) new random game —
-        collect name/gender and generate setting/lore/goal; (c) load — accept a JSON
-        savegame and resume.
+        Disclaimer rendered at session open (not a substitute for licensed clinical care)
+        and re-rendered whenever user language implies clinical treatment expectations.
       priority: must
 
     - id: FR-03
-      title: STATE_SCHEMA (MVC Model)
+      title: Session Lifecycle — Phase Sequencing
       description: >
-        The prompt MUST define a JSON STATE_SCHEMA covering: game settings (difficulty,
-        logo), setting, lore[], goal, player (location, position xyz, stats, inventory
-        with flags, scoring ledger), world (locations with dimensions/exits/objects,
-        NPCs with memories/relationship scores/faction, quests, global flags including
-        turn count and world clock).
+        Phases execute in order: Check-in → Contract → Explore → Stabilise → Close.
+        Stabilise and Close phases are never skipped. Agent offers to defer if distress
+        rises unexpectedly during Explore.
       priority: must
 
     - id: FR-04
-      title: SESSION_LOOP (MVC Controller)
+      title: Crisis Detection and Escalation
       description: >
-        Every player turn MUST execute the 7-step loop in strict order:
-        1. Parse user input (intent + nouns).
-        2. Validate/resolve against SESSION_RULES and STATE_SCHEMA.
-        3. Calculate position (xyz).
-        4. Update STATE_SCHEMA (state, lore, time, score, difficulty history).
-        5. Generate narrative from state diff.
-        6. Generate 3–5 contextual options.
-        7. Assemble output — no internal reasoning or raw JSON in final output.
+        Continuous monitoring for crisis sentinel phrases. On detection: render emergency
+        resources immediately, shift to safety-focused response, do not attempt resolution
+        through session structure. Non-bypassable by any user input or framing.
       priority: must
 
     - id: FR-05
-      title: SESSION_RULES Engine
+      title: Safe-Messaging Compliance
       description: >
-        The prompt MUST enforce the full rules engine covering: physics/dark rooms,
-        inventory transitivity, state/logic invariants, NPC memory and relationship scores,
-        xyz navigation, world clock (turns-per-hour, day/night periods with NPC/world effects),
-        dynamic difficulty scaling (0–100, auto-adjust on 3 consecutive fails/successes),
-        scoring ledger (max_score at init, meaningful milestones only), combat (d20 resolution,
-        player-first, flee mechanic, NPC death/drop inventory), and death/permadeath
-        (one-turn rewind from end menu).
+        All crisis-related content complies with safe-messaging guidelines (AFSP, Samaritans):
+        no method description, no romantic framing, help-seeking presented as accessible.
+        Embedded in RULES_ENGINE as ABSOLUTE rules.
       priority: must
 
     - id: FR-06
-      title: Console Mode
+      title: Psychoeducation — Trauma Responses
       description: >
-        Typing `~` MUST switch to console mode. Available commands: gamesettings,
-        gamestate (full JSON dump), imageprompt (codeblock), videoprompt (codeblock),
-        hint, skiptoend, map (ASCII_MAP_BOT), save (JSON savegame), load (parse JSON),
-        ~ (exit console). Players MUST NOT be able to modify the CONTROLLER or SESSION_RULES
-        via the console.
+        Agent explains in accessible language: trauma physiology, fight/flight/freeze/fawn,
+        window of tolerance, triggers, trauma memory, and impact on functioning. All
+        explanations normalise without minimising.
       priority: must
 
     - id: FR-07
-      title: ASCII Map Bot
+      title: Grounding and Stabilisation Technique Library
       description: >
-        The map console command MUST invoke the ASCII_MAP_BOT sub-agent which generates a
-        top-down map of the current location: perfect rectangle, fixed line width, walls (#),
-        floor (.), exits (NESW replacing wall char), entity coordinates placed correctly,
-        and a LEGEND block — all in a single code block.
+        RULES_ENGINE includes techniques: box breathing, 4-7-8, 5-4-3-2-1 grounding,
+        safe-place visualisation, container exercise, self-compassion break, body scan
+        (non-processing variant). Offered collaboratively; user chooses.
       priority: must
 
     - id: FR-08
-      title: Compressed Prompt Variant
+      title: Cognitive Reframing (CBT-Informed)
       description: >
-        A functionally equivalent compressed/token-efficient variant of the full prompt MUST
-        be maintained. It MUST produce identical game behaviour. Both variants reside in the
-        same repository and are updated together on every change.
-      priority: must
+        Agent guides identifying automatic thoughts, distinguishing thought from fact,
+        exploring alternatives, and behavioural activation basics. Framed as psychoeducation
+        skills, not therapy.
+      priority: should
 
     - id: FR-09
-      title: Ending Phase
+      title: Session State Schema
       description: >
-        When the goal is met or the player dies, the game MUST transition to the Ending phase:
-        death/victory scene, score/max_score, turn count, and an end menu with three options:
-        Debriefing (DM summary), Different Choice (rewind one turn), Create a Next Chapter
-        (re-initialize with current state + 3–5 follow-up storylines).
+        SESSION_STATE JSON maintained in-context: session_number, session_date,
+        mood_checkin (0–10 start/end), active_themes, techniques_introduced,
+        safety_flags, contract, session_notes. Users advised not to share identifying info.
       priority: must
 
     - id: FR-10
-      title: Auto-initialize for Autonomous Agents
+      title: Console Mode (Meta-Commands)
       description: >
-        If the prompt detects it is running inside an autonomous agent or agentic framework,
-        it MUST auto-initialize without waiting for user interaction.
-      priority: must      # promoted from 'should' per CONF-03 PO decision 2026-03-11
+        Console (prefix: ~): ~state (SESSION_STATE JSON), ~techniques (technique list),
+        ~disclaimer (re-render), ~close (initiate Close phase), ~reset (clear state).
+      priority: should
+
+    - id: FR-11
+      title: Boundary Enforcement — Phase 2/3 Scope Limit
+      description: >
+        Requests for Phase 2/3 trauma processing declined with explanation; user redirected
+        to Phase 1 work or referred to qualified trauma therapist.
+      priority: must
 
   non_functional:
     - id: NFR-01
-      title: Self-contained
+      title: Tone — Warmth and Pacing
       description: >
-        The prompt MUST work with no external APIs, tools, databases, or infrastructure.
-        A user must only need to copy-paste the prompt into a chat UI.
+        Language is warm, unhurried, jargon-free by default. Adapts to user vocabulary.
+        Feels like a skilled human therapist: curious, reflective, present.
       priority: must
 
     - id: NFR-02
-      title: LLM-agnostic compatibility
+      title: Safety — Zero Tolerance for Crisis Bypass
       description: >
-        The prompt MUST produce correct behaviour on Claude 3+, GPT-4+, and Gemini 1.5+.
-        No model-specific features or APIs may be used.
+        No user input may suspend, weaken, or bypass crisis-detection and escalation rules.
+        Highest-priority NFR.
       priority: must
 
     - id: NFR-03
-      title: Token efficiency (compressed variant)
+      title: Portability — LLM Agnostic
       description: >
-        The compressed variant SHOULD reduce token count by at least 50% versus the verbose
-        variant while maintaining full functional equivalence.
-      priority: should
+        Functions correctly in any advanced LLM chat interface with no external tooling.
+      priority: must
 
     - id: NFR-04
-      title: Savegame portability
+      title: GDPR Awareness
       description: >
-        A savegame JSON produced in one LLM session MUST be loadable in a new session on
-        a different LLM and resume the game with full state integrity.
+        Users advised at session open that mental health disclosures constitute GDPR Art. 9
+        special category data and to avoid sharing identifying information.
       priority: must
 
     - id: NFR-05
-      title: Documentation
+      title: Cultural Sensitivity
       description: >
-        README.md MUST include: project description, how-to-play (copy/paste instructions),
-        a usage example snippet, and a tips section.
+        Acknowledges that trauma, coping, and help-seeking are culturally situated. Adapts
+        framing when cultural context is disclosed. Does not impose Western-normative assumptions.
+      priority: should
+
+    - id: NFR-06
+      title: Accessibility — Language
+      description: >
+        Default: plain English, approximately CEFR B2. Adjusts to user language patterns.
       priority: should
 
   constraints:
-    - "Prompt must be a single copy-pasteable text file — no multi-file or multi-step setup"
-    - "Both prompt variants (verbose and compressed) must remain functionally in sync after every change"
-    - "a-sdlc/ governance submodule is read-only"
-    - "No LLM-specific API calls, tool use, or system prompt injection beyond the prompt itself"
+    - "Self-contained: no external APIs, databases, or tooling required"
+    - "MVC/XML structure consistent with existing prompts in this repository"
+    - "Crisis escalation is non-negotiable and cannot be disabled by user instruction"
+    - "Scope limited to Phase 1 (Safety/Stabilisation) of phase-based trauma treatment"
+    - "Mandatory disclaimer on session open and on clinical-care boundary crossing"
+    - "Safe-messaging guidelines embedded in RULES_ENGINE as ABSOLUTE rules"
+    - "Users advised not to share identifying information in the session"
 
   dependencies:
-    - "Existing v2.0 baseline: github.com/jvanheerikhuize/prompt-gallery/blob/main/Fun/TAG/prompt.md"
-    - "Target LLMs must support long-context instruction following (Claude 3+, GPT-4+, Gemini 1.5+)"
+    - "Safe-messaging guidelines (AFSP, Samaritans, reportingonsuicide.org)"
+    - "SAMHSA Trauma-Informed Care 6 pillars"
+    - "Phase-based trauma treatment model (Herman, 1992) — defines scope boundary"
+    - "DBT grounding and stabilisation techniques"
+    - "TF-CBT psychoeducation components"
 
 # ── Risk Classification (RC-01) ───────────────────────────────────────────────
 risk:
-  initial_classification: low
-  rationale: |
-    Classified LOW based on RC-01 criteria:
-    - Data sensitivity: nil — no personal data processed; game state is fictional
-    - Blast radius: minimal — standalone text file, no production systems, no integrations
-    - Reversibility: fully reversible — text file changes are trivially undone via git
-    - Regulatory exposure: DORA and EU AI Act declared applicable in project manifest,
-      but practical ICT risk is negligible for a standalone text prompt
-    - External dependencies: one read-only reference (existing baseline); no runtime deps
-    - Team size: solo project, single approver across all roles
-    Conservative note: classified at low (not minimal) to acknowledge declared DORA/EU AI Act
-    scope; Risk Officer may revise to minimal with documented justification.
+  initial_classification: high
+  rationale: >
+    Vulnerable user population; health-adjacent domain; crisis scenarios with potential for
+    irreversible harm if escalation fails; GDPR Art. 9 special category data; legal/reputational
+    risk from misrepresentation as clinical care.
 
 # ── AI Classification (AC-01) ─────────────────────────────────────────────────
 ai:
   component_involved: true
-  risk_tier: minimal
+  risk_tier: unknown         # AGL must confirm — limited proposed; high possible
   eu_ai_act_applicable: true
-  rationale: |
-    This project is itself an AI system prompt — it governs LLM behaviour as a game master.
-    Under EU AI Act Art. 6 and Annex III analysis:
-    - Not listed in Annex III (high-risk AI systems): no safety-critical, biometric,
-      education/employment/credit/health/law enforcement/migration/justice use cases.
-    - Not an unacceptable-risk system: no social scoring, real-time biometric surveillance,
-      subliminal manipulation, or exploitation of vulnerabilities.
-    - Qualifies as minimal-risk (entertainment/creative tool).
-    EU AI Act applicable = true because declared in project manifest, but minimal-risk
-    classification means no mandatory compliance obligations beyond transparency (Art. 52)
-    which is satisfied by the project's open-source nature and README documentation.
-    Proposed tier: minimal. AI Governance Lead (Jerry van Heerikhuize) to confirm.
 
 # ── Data Classification (SC-04) ───────────────────────────────────────────────
 data:
-  classification: public
-  pii_involved: false
-  special_category_data: false
-  sc04_applicable: false
-  sc04_rationale: |
-    The prompt itself processes no personal data. Game session data (player name, character
-    attributes, in-game events) is entirely fictional and user-controlled. Savegame JSONs
-    may contain a user-chosen player name, but this is voluntarily entered fictional data,
-    not PII in the GDPR sense. SC-04 is NOT APPLICABLE to this change.
+  classification: restricted
+  pii_involved: true
+  special_category_data: true
+  special_category_basis: "Mental health information — GDPR Art. 9(1)"
 
 # ── Gaps Flagged for Product Owner Review ─────────────────────────────────────
 gaps:
   - id: GAP-01
-    field: "requirements.non_functional.NFR-03"
-    severity: minor
+    severity: significant
+    field: "requirements.functional.FR-07 — technique library"
     description: >
-      The 50% token reduction target for the compressed variant is an agent estimate.
-      No empirical baseline token count for v2.0 has been measured. PO should confirm
-      whether this is an acceptable threshold or if a specific token budget applies.
+      Technique library specified at category level; exact protocols/scripts not enumerated.
+      PO to confirm: IMPL engineer selects specific protocols with SA review (accept),
+      or enumerate approved scripts in spec before Stage 2 (reject and revise).
 
   - id: GAP-02
-    field: "requirements.functional.FR-10 (auto-initialize)"
-    severity: minor
+    severity: significant
+    field: "ai.risk_tier — pending AGL confirmation"
     description: >
-      The auto-initialize behaviour for autonomous agents is listed as 'should' priority.
-      The existing v2.0 prompt includes this as an ABSOLUTE_RULE. PO to confirm whether
-      this should be promoted to 'must' in this spec.
+      AI Act tier is 'unknown'. Agent proposes 'limited'; Annex III health-sector provision
+      may elevate to 'high'. Recommend holding Stage 2 until AGL confirms tier — design
+      controls differ materially between limited and high.
+    recommendation: "Hold Stage 2 pending AGL determination"
+
+  - id: GAP-03
+    severity: minor
+    field: "requirements.functional.FR-08 — CBT reframing (should)"
+    description: >
+      Unclear whether sessions without FR-08 are considered complete. PO to clarify:
+      FR-08 is optional enhancement, or elevate to must alongside FR-07.
+
+  - id: GAP-04
+    severity: minor
+    field: "language support"
+    description: >
+      Spec defaults English-only. PO to confirm: English-only for v1.0 (future CR for
+      multi-language), or add non-English as explicit known limitation in disclaimer.
 
 # ── Audit Trail ───────────────────────────────────────────────────────────────
 audit:
-  gc01_entry: "GC-01-FEAT-0001-2026-03-11"
-  intent_audit_record: "GC-05-FEAT-0001-2026-03-11"
+  gc01_entry: "GC01-2026-03-14-FEAT-0004-stage1"
+  intent_audit_record: "GC05-2026-03-14-FEAT-0004"

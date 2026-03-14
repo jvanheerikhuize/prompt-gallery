@@ -9,7 +9,9 @@ project:
   id: "PRJ-0001-test"              # Unique project identifier (e.g. PRJ-0001)
   name: "tag-role-test"            # Human-readable project name
   description: |
-    Builds a masterprompt for agents to behave as a text adventure dungeonmaster.
+    Module repository of structured agent-role masterprompts. Each prompt is self-contained
+    and assigns a specific role to any LLM (game master, code reviewer, psychologist, etc.).
+    Consumed as a git submodule or direct reference in agentic projects.
   status: active                   # active | paused | archived
 
   # ── Team ──────────────────────────────────────────────────────────────────
@@ -63,9 +65,9 @@ governance:
 # ── Feature Tracking ─────────────────────────────────────────────────────────
 features:
   id_prefix: FEAT                  # Prefix for feature specification IDs
-  next_id: 1                       # Increment after each new feature spec is created
+  next_id: 5                       # Increment after each new feature spec is created
   cr_prefix: CR                    # Prefix for change request IDs
-  next_cr_id: 2                    # Increment after each new change request
+  next_cr_id: 5                    # Increment after each new change request
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 paths:

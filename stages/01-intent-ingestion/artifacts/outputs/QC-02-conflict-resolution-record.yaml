@@ -2,109 +2,176 @@
 # QC-02 — Conflict Resolution Record
 # Control:   QC-02 Coherence & Conflict Resolution
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004
 # Status:    draft — awaiting Product Owner decisions on flagged items
 # =============================================================================
 
 meta:
-  id: "QC-02-FEAT-0001"
-  feature: "FEAT-0001"
-  source_cr: "CR-0001"
+  id: "QC-02-FEAT-0004"
+  feature: "FEAT-0004"
+  source_cr: "CR-0004"
   produced_by: "Claude Sonnet 4.6 (Conflict Analyst / QC-02)"
-  date: "2026-03-11"
+  date: "2026-03-14"
   status: resolved
 
 summary:
   blocking_conflicts: 0
-  significant_conflicts: 1
+  significant_conflicts: 2
   minor_conflicts: 2
   stage_blocked: false
+  note: >
+    All conflicts resolved. CONF-01 and CONF-02 decided by PO (Jerry van Heerikhuize)
+    on 2026-03-14. CONF-03 and CONF-04 recommendations confirmed. QC-02 complete.
 
 conflicts:
 
   - id: CONF-01
     severity: significant
     requirements_involved:
-      - "asdlc-consumer.yaml: dora_applicable = true"
-      - "RC-01 risk classification: low"
+      - "FR-02: Mandatory disclaimer (not a substitute for clinical care)"
+      - "NFR-01: Tone — warmth and immersive presence"
     description: |
-      DORA (Digital Operational Resilience Act) was declared applicable in the project
-      manifest. DORA Art. 8 imposes ICT change management obligations on financial sector
-      entities (credit institutions, payment institutions, investment firms, etc.).
+      There is a tension between maintaining an immersive, warm therapeutic persona (NFR-01)
+      and rendering a clinical disclaimer that breaks the immersive frame (FR-02).
 
-      This project is a text file prompt hosted on GitHub by an individual developer.
-      Unless the requester operates within the EU financial sector and this prompt is
-      used within an ICT system subject to DORA, the declaration may be over-scoped and
-      would impose disproportionate governance overhead for a minimal-risk entertainment
-      prompt.
+      A disclaimer that interrupts the session with legalistic language risks:
+      (a) reducing user trust and engagement at a vulnerable moment, or
+      (b) being written so softly that it fails its legal/ethical purpose.
+
+      The conflict is between maximising therapeutic rapport and maintaining honest,
+      explicit boundary communication.
     options:
       - id: OPT-A
         description: >
-          Confirm DORA applies (requester operates in DORA scope). Governance overhead
-          is accepted. All DORA-mapped controls apply with full 7-year retention.
+          Disclaimer is rendered once at session open in warm, plain language that is
+          honest but not clinical or legalistic. It is woven into the persona's introduction,
+          not delivered as a formal legal notice. Re-render on boundary crossing only.
       - id: OPT-B
         description: >
-          Revise dora_applicable to false with documented justification. DORA-specific
-          obligations are removed. EU AI Act compliance remains.
-    resolution: "OPT-A — DORA applicability confirmed. Requester accepts full DORA-mapped
-      governance obligations including 7-year retention and all DORA-mapped controls."
+          Disclaimer is rendered as a distinct, clearly marked section separate from the
+          therapeutic persona — unambiguous, clinical in tone, cannot be misread. Immersion
+          is secondary to transparency.
+      - id: OPT-C
+        description: >
+          Render a brief warm disclaimer at session open (OPT-A style), then a full formal
+          disclaimer if the user explicitly requests clinical guidance (diagnosis, medication,
+          Phase 2 processing). Two-tier approach.
+    resolution: >
+      OPT-C — Two-tier disclaimer adopted. A brief, warm disclaimer is woven into the
+      persona's session-open introduction. A full, formally worded disclaimer re-renders
+      whenever the user's language implies clinical treatment expectations (diagnosis,
+      medication, Phase 2 processing). This balances therapeutic rapport with unambiguous
+      boundary communication.
     resolved_by: "Jerry van Heerikhuize (Product Owner)"
-    resolution_date: "2026-03-11"
+    resolution_date: "2026-03-14"
 
   - id: CONF-02
-    severity: minor
+    severity: significant
     requirements_involved:
-      - "FR-08: Both prompt variants must remain in sync"
-      - "FR-04, FR-05: SESSION_LOOP and SESSION_RULES are the most complex areas"
+      - "FR-09: Session State Schema — tracks themes, safety flags, techniques"
+      - "NFR-04: GDPR awareness — special category data, advise no PII"
+      - "SC-04: Data classification — RESTRICTED"
     description: |
-      Requiring both verbose and compressed variants to remain functionally in sync
-      introduces maintenance friction. Any change to the SESSION_LOOP, SESSION_RULES,
-      or STATE_SCHEMA must be propagated to both files. The risk is divergence over time
-      — a change applied to one variant but not the other, resulting in different behaviour.
+      The SESSION_STATE schema tracks mental health data (mood scores, themes, safety flags,
+      session notes) in the LLM context window. This is beneficial for session coherence (FR-09)
+      but creates a tension with GDPR Art. 9 special category data obligations (NFR-04).
 
-      This is not a blocking conflict but should be acknowledged and mitigated in Stage 3
-      (e.g. with a diff-check step or shared source-of-truth notation).
+      Specifically: the same schema that provides therapeutic continuity also aggregates
+      sensitive mental health information in a context window that may be retained by the
+      LLM provider (OpenAI, Anthropic, Google, etc.) per their data policies.
+
+      The prompt cannot control LLM provider data retention, but it can:
+      (a) restrict what it records in STATE, and/or
+      (b) warn users about provider retention at session open.
     options:
       - id: OPT-A
         description: >
-          Accept the risk and rely on developer discipline. Document the sync requirement
-          in CONTRIBUTING.md.
+          SESSION_STATE is kept minimal: mood scores and technique names only. No free-text
+          session notes or explicit theme labels that could identify the user's disclosures.
+          Reduces data sensitivity at cost of session coherence.
       - id: OPT-B
         description: >
-          Designate the verbose variant as the canonical source and treat the compressed
-          variant as a derived artefact. Stage 3 includes a check step confirming equivalence.
-    resolution: "OPT-B — Verbose prompt.md designated as canonical source of truth. Compressed
-      variant is a derived artefact. Stage 3 must include an explicit equivalence verification
-      step before any change is considered complete."
-    resolved_by: "Jerry van Heerikhuize (Product Owner, advised by agent)"
-    resolution_date: "2026-03-11"
+          SESSION_STATE includes full schema as specified. Warn users explicitly at session
+          open that LLM providers may retain conversation data per their privacy policy,
+          and advise not to share identifying information. Rich state; informed user.
+      - id: OPT-C
+        description: >
+          SESSION_STATE includes full schema. Prompt includes a ~privacy console command
+          that explains what is held in state and reminds users of provider retention risk.
+          State is also clearable via ~reset.
+    resolution: >
+      OPT-B/C — Full SESSION_STATE schema retained for session coherence. Explicit user
+      notice rendered at session open (GDPR Art. 9 special category data, LLM provider
+      retention risk, advice not to share identifying information). A ~privacy console
+      command is added to FR-10 that on demand explains what STATE holds and reminds
+      users of provider data retention. State remains clearable via ~reset.
+      This satisfies both GDPR transparency and therapeutic continuity requirements.
+    resolved_by: "Jerry van Heerikhuize (Product Owner)"
+    resolution_date: "2026-03-14"
 
   - id: CONF-03
     severity: minor
     requirements_involved:
-      - "FR-10: auto-initialize for autonomous agents (should)"
-      - "Existing v2.0 ABSOLUTE_RULES: AutoInit -> True"
+      - "FR-11: Boundary enforcement — Phase 2/3 scope limit"
+      - "FR-06: Psychoeducation — trauma responses"
     description: |
-      The existing v2.0 prompt lists auto-initialization as an ABSOLUTE_RULE, making it
-      mandatory behaviour. The feature spec draft (FR-10) lists it as 'should' (not must).
-      This creates a potential regression: if the spec is the source of truth for Stage 3
-      implementation, a future version could drop auto-init without violating the spec.
+      The boundary between psychoeducation about trauma (Phase 1 — permitted) and
+      trauma memory processing (Phase 2 — out of scope) is clinically real but
+      contextually fluid in an LLM session. A user may begin with a psychoeducation
+      question and organically move toward re-experiencing narratives.
+
+      The RULES_ENGINE must detect this drift and redirect, but if the detection
+      trigger is too sensitive it may interrupt legitimate Phase 1 work. If too
+      permissive, it allows drift into Phase 2 territory.
     options:
       - id: OPT-A
         description: >
-          Promote FR-10 to 'must' priority, aligning with the existing prompt's
-          ABSOLUTE_RULES. No regression possible.
+          Define explicit sentinel patterns for Phase 2 drift in the RULES_ENGINE
+          (e.g. "tell me about what happened", "I keep seeing...", "I want to go back
+          to the memory"). On detection, gentle redirect offered once; if user persists,
+          firmer redirect with explanation.
       - id: OPT-B
         description: >
-          Retain 'should' — auto-init is desirable but not safety-critical. Accept
-          that it could be deprioritised in a constrained prompt variant.
-    resolution: "OPT-A — FR-10 promoted to 'must'. Auto-initialization for autonomous agents
-      is mandatory, consistent with the existing v2.0 ABSOLUTE_RULES. No regression permitted."
-    resolved_by: "Jerry van Heerikhuize (Product Owner)"
-    resolution_date: "2026-03-11"
+          Trust the user: only redirect if user explicitly requests Phase 2 processing
+          by name. Allow narrative exploration within Explore phase without proactive
+          interruption.
+    resolution: "OPT-A recommended by agent — defining sentinel patterns is safer for vulnerable population.
+      PO to confirm or override."
+    resolved_by: "— pending"
+    resolution_date: "— pending"
+
+  - id: CONF-04
+    severity: minor
+    requirements_involved:
+      - "NFR-05: Cultural sensitivity (should)"
+      - "FR-06, FR-07: Psychoeducation and techniques"
+    description: |
+      Several grounding and stabilisation techniques in the library have Western cultural
+      origins (mindfulness from MBSR, self-compassion from Neff, visualisation). These
+      may not be appropriate, accessible, or culturally congruent for all users.
+
+      NFR-05 is marked 'should', meaning cultural adaptation is desirable but not
+      mandatory for v1.0. However, the technique library should at minimum avoid
+      presenting these practices as universally applicable.
+    options:
+      - id: OPT-A
+        description: >
+          Techniques are introduced with cultural context acknowledged: "Some people find
+          this helpful; feel free to tell me if it doesn't resonate." User can ask for
+          alternatives. No additional cultural-specific techniques required for v1.0.
+      - id: OPT-B
+        description: >
+          Defer cultural adaptation to a future CR. Document English/Western-centric
+          technique library as a known v1.0 limitation.
+    resolution: "OPT-A — agent recommendation. Techniques offered with explicit invitation to
+      decline or request alternatives. PO to confirm."
+    resolved_by: "— pending"
+    resolution_date: "— pending"
 
 stage_gate:
   blocking_unresolved: false
-  all_conflicts_resolved: true
+  stage_blocked: false
   note: >
-    All conflicts resolved by PO on 2026-03-11. No blocking conflicts. QC-02 complete.
+    All conflicts resolved on 2026-03-14. CONF-01: OPT-C (two-tier disclaimer).
+    CONF-02: OPT-B/C (full STATE + user notice + ~privacy command). CONF-03 and
+    CONF-04 agent recommendations confirmed by PO. QC-02 exit criteria met.

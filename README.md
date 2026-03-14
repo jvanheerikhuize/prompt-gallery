@@ -1,28 +1,56 @@
-# T.A.G. — Text Adventure Generator
+# Agent Role Module — Masterprompt Library
 
-A single, powerful prompt that turns any advanced LLM into a dynamic, next-generation text adventure game master.
+A collection of structured masterprompts that define specific agent roles for any LLM or agentic pipeline.
+Each prompt is self-contained: paste into a fresh LLM session, inject as a system prompt, or load dynamically
+from your agent framework. No external infrastructure required.
 
-**[→ Get the prompt](prompt.md)** | **[→ Compressed variant](prompt-compressed.md)**
+This repository can be consumed as a **git submodule** or simply referenced directly, adding ready-made agent
+roles to any agentic project.
 
 ---
 
-## Quick Start
+## Available Roles
 
-1. Open [prompt.md](prompt.md) and copy the entire content of the code block.
+| Role | Masterprompt | Variant | Description |
+|------|-------------|---------|-------------|
+| T.A.G. — Text Adventure Generator | [prompt.md](prompt.md) | [compressed](prompt-compressed.md) | Game master for an immersive, stateful text adventure |
+| Code Review Analyst | [prompt-code-reviewer.md](prompt-code-reviewer.md) | — | Structured code review with security, quality, and architecture focus |
+
+---
+
+## Using a Role
+
+### As a system prompt (API / agent framework)
+
+```python
+import anthropic, pathlib
+
+role_prompt = pathlib.Path("prompt-code-reviewer.md").read_text()
+
+client = anthropic.Anthropic()
+response = client.messages.create(
+    model="claude-opus-4-6",
+    system=role_prompt,
+    messages=[{"role": "user", "content": "Review the attached diff..."}],
+)
+```
+
+### As a paste-in session prompt
+
+1. Open the masterprompt file and copy the content of its code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
-3. Paste and send. Follow the game master's instructions.
+3. Paste and send. The agent will adopt its role and guide you from there.
 
 ---
 
-## What Makes T.A.G. Different
+## Adding This Repo as a Submodule
 
-- **Procedurally generated world** — no predefined paths; every playthrough is unique
-- **Persistent state** — full game state tracked in a JSON schema across the session
-- **Intelligent NPCs** — memories, relationship scores, faction behaviour
-- **Dynamic difficulty** — auto-adjusts based on player performance (0–100 scale)
-- **Full rules engine** — physics, inventory, combat (d20), world clock, scoring
-- **Console mode** — type `~` for meta-commands: save, load, map, hints, and more
-- **Savegame portability** — save as JSON, load in any LLM session
+```bash
+git submodule add https://github.com/<your-org>/tag-role-test roles
+git submodule update --init --recursive
+```
+
+Then reference individual masterprompts from `roles/prompt-*.md` in your project.
 
 ---
 
@@ -34,7 +62,7 @@ alongside human developers. Compliant with DORA and the EU AI Act out of the box
 
 ---
 
-## Quick Start
+## Quick Start — New Consumer Project
 
 ### 1. Create your project from this template
 

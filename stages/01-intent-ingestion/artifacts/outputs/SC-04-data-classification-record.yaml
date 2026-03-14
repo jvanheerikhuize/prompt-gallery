@@ -2,31 +2,134 @@
 # SC-04 — Data Classification Record
 # Control:   SC-04 Data Classification Screening
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0001
-# Status:    not_applicable
+# Feature:   FEAT-0004
+# Status:    complete — SA review required
 # =============================================================================
 
 meta:
-  id: "SC-04-FEAT-0001"
-  feature: "FEAT-0001"
-  source_cr: "CR-0001"
+  id: "SC-04-FEAT-0004"
+  feature: "FEAT-0004"
+  source_cr: "CR-0004"
   produced_by: "Claude Sonnet 4.6 / SC-04"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
-applicable: false
+applicable: true
 
-rationale: |
-  SC-04 is NOT APPLICABLE to this change.
+# ── Data Elements Identified ──────────────────────────────────────────────────
+data_elements:
+  - element: "Trauma disclosures and personal narratives"
+    gdpr_category: "Special category — health / mental health (Art. 9(1))"
+    sensitivity: restricted
+    processing: "User discloses in session; held in LLM context window"
+    storage: "In-memory only (LLM context window); potentially retained by LLM provider"
 
-  The T.A.G. prompt does not introduce, modify, or interact with personal data processing:
-  - The prompt file itself contains no personal data.
-  - Game session data (player character name, attributes, in-game events) is entirely
-    fictional and voluntarily entered by the user as part of gameplay.
-  - A player-chosen character name entered during game initialization is not PII in the
-    GDPR sense: it is a fictional character name, not necessarily the user's real name,
-    and it is not collected, stored, transmitted, or processed outside the user's own
-    LLM chat session.
-  - No profiling, tracking, or data aggregation occurs.
-  - No personal data leaves the user's chat session.
+  - element: "Mood scores (0–10 scale, check-in and close)"
+    gdpr_category: "Special category — health / mental health (Art. 9(1))"
+    sensitivity: restricted
+    processing: "Recorded in SESSION_STATE schema within the context window"
+    storage: "In-memory only; potentially retained by LLM provider"
 
-  Data classification: PUBLIC (the prompt file is open-source).
+  - element: "Safety flags (crisis trigger events)"
+    gdpr_category: "Special category — health (suicidality/self-harm indicators)"
+    sensitivity: restricted
+    processing: "Recorded in SESSION_STATE on crisis detection"
+    storage: "In-memory only; potentially retained by LLM provider"
+
+  - element: "Session themes and techniques introduced"
+    gdpr_category: "Personal data — health-adjacent"
+    sensitivity: confidential
+    processing: "Recorded in SESSION_STATE for session coherence"
+    storage: "In-memory only; potentially retained by LLM provider"
+
+  - element: "User identity (if disclosed voluntarily)"
+    gdpr_category: "Personal data (PII)"
+    sensitivity: confidential
+    processing: "User may voluntarily disclose name or identity; not requested by prompt"
+    storage: "In-memory; prompt advises against sharing identifying information"
+
+classification:
+  overall: restricted
+  pii_involved: true
+  special_category_data: true
+  special_category_basis: "Mental health information — GDPR Art. 9(1)"
+  data_subject: "End user (trauma survivor / person in distress)"
+  data_controller: "End user (operating the prompt in their own LLM session)"
+  data_processor: "LLM provider (OpenAI, Anthropic, Google, etc. per user's choice)"
+
+gdpr_analysis:
+  legal_basis_for_processing: |
+    The prompt does not process data on behalf of the author/publisher — the user
+    operates it in their own LLM session. The data controller is the user themselves.
+
+    However, the LLM provider processes the session data. The user consents to this
+    by accepting the LLM provider's terms of service. The prompt should make users
+    aware of this processing relationship.
+
+  article_9_basis: |
+    Art. 9(2)(a): Explicit consent — the user has chosen to use the tool and
+    voluntarily discloses health information. The mandatory disclaimer at session
+    open (FR-02, NFR-04) must inform users of the special category data nature
+    of the information they may share.
+
+  special_category_handling_requirements:
+    - "Prompt must advise users at session open that mental health disclosures
+      constitute GDPR Art. 9 special category data"
+    - "Prompt must advise users not to share identifying information"
+    - "Prompt must advise users that LLM provider may retain conversation data
+      per their privacy policy — users should consult their chosen provider's policy"
+    - "Safety flags and crisis disclosures must be treated as most sensitive —
+      never trivialised, never referenced casually in subsequent responses"
+    - "SESSION_STATE must not include free-text that reproduces verbatim disclosures
+      beyond what is necessary for session coherence"
+
+data_handling_requirements:
+  - id: DHR-01
+    requirement: >
+      Mandatory session-open notice: inform user that mental health disclosures are
+      special category data (GDPR Art. 9) and that LLM provider may retain session data.
+    maps_to: "NFR-04, FR-02"
+    priority: must
+
+  - id: DHR-02
+    requirement: >
+      Prompt explicitly advises user not to share full name, address, date of birth,
+      or other identifying information in the session.
+    maps_to: "NFR-04"
+    priority: must
+
+  - id: DHR-03
+    requirement: >
+      SESSION_STATE safety_flags field must be treated as the most sensitive data element.
+      Agent must not reference crisis disclosures casually or repeat them unnecessarily.
+    maps_to: "FR-09, NFR-02"
+    priority: must
+
+  - id: DHR-04
+    requirement: >
+      No session data is logged, exported, or transmitted by the prompt itself.
+      The ~state console command displays state within the session only.
+    maps_to: "FR-10"
+    priority: must
+
+high_risk_processing_flags:
+  - flag: "Mental health data of a vulnerable population"
+    risk: "Potential for sensitive data to be retained by LLM provider without explicit GDPR consent"
+    mitigation: "User informed at session open; user is data controller of own session"
+
+  - flag: "Crisis/safety data (suicidality indicators)"
+    risk: "If retained by LLM provider, this constitutes highly sensitive health data"
+    mitigation: "Prompt design limits what is recorded in SESSION_STATE; user advised not to share PII"
+
+  - flag: "No persistent storage by prompt"
+    risk: "LLM provider retention is outside the prompt's control"
+    mitigation: "Disclosure in disclaimer; user chooses their LLM provider"
+
+sa_review:
+  reviewed_by: "Jerry van Heerikhuize (Security Architect)"
+  review_date: "2026-03-14"
+  findings: >
+    Classification and DHR set approved as specified. RESTRICTED classification is
+    correct for GDPR Art. 9 special category mental health data. DHR-01 through DHR-04
+    are appropriate and sufficient for a prompt-only deliverable where the user is the
+    data controller of their own LLM session.
+  approved: true

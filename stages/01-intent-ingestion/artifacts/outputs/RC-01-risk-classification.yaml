@@ -2,78 +2,127 @@
 # RC-01 — Risk Classification
 # Control:   RC-01 Risk Classification
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004
 # Status:    draft — awaiting Risk Officer validation
 # =============================================================================
 
 meta:
-  id: "RC-01-FEAT-0001"
-  feature: "FEAT-0001"
-  source_cr: "CR-0001"
+  id: "RC-01-FEAT-0004"
+  feature: "FEAT-0004"
+  source_cr: "CR-0004"
   produced_by: "Claude Sonnet 4.6 (Risk Assessor / RC-01)"
-  date: "2026-03-11"
-  status: draft
+  date: "2026-03-14"
+  status: validated
 
-proposed_tier: low    # low | medium | high | critical
+proposed_tier: high    # Agent-proposed tier (pre-RO review)
+confirmed_tier: medium # Risk Officer override — see validation block
 
 governance_intensity:
-  enhanced_scrutiny: false
-  approval_authority: "Product Owner (solo project — Jerry van Heerikhuize)"
-  testing_depth: standard
+  enhanced_scrutiny: true
+  approval_authority: "Product Owner + Risk Officer (Jerry van Heerikhuize)"
+  testing_depth: standard_plus
+  additional_controls_recommended:
+    - "Stage 2: Threat model including crisis-failure scenarios"
+    - "Stage 4: Safe-messaging compliance review against AFSP/Samaritans guidelines"
+    - "Stage 4: Edge-case crisis input testing"
 
 dimensions:
+  user_harm:
+    score: high
+    rationale: |
+      Users are a vulnerable population — trauma survivors, people in active distress.
+      Crisis failure (failure to detect suicidal ideation or self-harm intent and escalate
+      to emergency services) could result in irreversible harm or death.
+      Even partial failures (delayed escalation, missed sentinel phrases, wrong tone in
+      crisis response) carry material harm potential.
+      This is the single most significant risk dimension for this feature.
+
   data_sensitivity:
-    score: minimal
-    rationale: >
-      No personal data is processed by the prompt. Game session data (player character
-      name, fictional attributes, in-game events) is entirely user-controlled fiction.
-      Savegame JSON may contain a voluntarily entered player name, which is not PII
-      under GDPR. Data classification: PUBLIC.
+    score: high
+    rationale: |
+      Mental health information disclosed in sessions constitutes special category data
+      under GDPR Art. 9(1). This is the highest GDPR data sensitivity category.
+      While the prompt itself stores no data persistently, the LLM context window
+      contains the full session — including trauma disclosures, safety flags, and mood
+      state — and may be retained by the LLM provider per their data policy.
+      SC-04 classification: RESTRICTED.
+
+  reputational:
+    score: medium
+    rationale: |
+      If the prompt is misrepresented as clinical care (by users, press, or social media),
+      reputational damage to the project and author is possible.
+      Risk is mitigated by the mandatory disclaimer (FR-02) and clear scope limits (FR-11),
+      but cannot be eliminated — the internet will use tools in unintended ways.
+
+  legal_regulatory:
+    score: high
+    rationale: |
+      EU AI Act: health-adjacent use case. AGL has flagged possible Annex III point 5
+      classification (health sector AI). If confirmed high-risk, mandatory obligations
+      include conformity assessment, technical documentation, human oversight measures,
+      transparency requirements, and registration in EU AI Act database.
+
+      GDPR: special category data (Art. 9). Processing requires explicit legal basis.
+      The prompt is a tool users operate themselves — the user is the data controller
+      for their own session. However, this must be made explicit in the disclaimer.
+
+      Medical Device Regulation: a prompt that could be construed as providing clinical
+      psychological treatment may fall under MDR Annex XVI or MDR Art. 2(1) depending
+      on intended purpose claims. The mandatory scope limitation (Phase 1 only, not
+      clinical treatment) is the primary legal mitigation.
 
   blast_radius:
-    score: minimal
-    rationale: >
-      The deliverable is a standalone text file (prompt.md). It has no integrations,
-      no API calls, no database writes, no infrastructure footprint. A defective prompt
-      version causes no data loss, no system impact, and no downstream failures beyond
-      a suboptimal game experience.
+    score: low
+    rationale: |
+      The deliverable is a standalone text file. No production systems, APIs, databases,
+      or infrastructure are affected. A defective version affects users who choose to use
+      it; it does not cause cascading system failures.
 
   reversibility:
-    score: fully_reversible
-    rationale: >
-      All changes are tracked in git. Any version can be reverted instantly.
-      No deployments, no migrations, no external state to roll back.
-
-  regulatory_exposure:
-    score: low
-    rationale: >
-      DORA and EU AI Act declared applicable in project manifest. However:
-      - EU AI Act minimal-risk classification imposes no mandatory obligations beyond
-        voluntary transparency (Art. 52), which is satisfied by open-source publication.
-      - DORA applicability is contested (see CONF-01 in QC-02). If confirmed, DORA
-        imposes documentation and retention requirements (already met by this framework).
-      Regulatory exposure is low even with both frameworks in scope.
+    score: medium
+    rationale: |
+      The prompt file itself is fully reversible via git. However, if a defective version
+      reaches users before being corrected — particularly one that fails crisis detection
+      — the harm caused to individual users during the exposure window may not be reversible.
+      Reversibility of the deliverable: HIGH. Reversibility of user harm: LOW.
 
   dependency_count:
-    score: minimal
-    rationale: >
-      Single read-only reference dependency (existing v2.0 baseline). No runtime
-      dependencies. No third-party libraries or services.
+    score: low
+    rationale: |
+      No runtime dependencies. Reference dependencies (SAMHSA, AFSP, Samaritans guidelines)
+      are stable, widely accessible public standards. LLM capability dependency shared with
+      other prompts in this repository.
 
   team_complexity:
-    score: minimal
-    rationale: >
-      Solo project. All roles (PO, SA, AGL, RO, Tech Lead) held by one person.
-      No coordination overhead, no handoff risk.
+    score: low
+    rationale: |
+      Solo project. All roles held by one person. No coordination overhead.
+      Note: the solo-project factor that reduces operational risk does NOT reduce user
+      harm risk — that dimension is independent of team structure.
 
-classification_boundary_note: |
-  This change sits at the boundary of minimal and low. Conservative classification
-  applied (low) to acknowledge the declared DORA/EU AI Act scope. Risk Officer may
-  revise to minimal with documented justification if DORA applicability is resolved
-  as false (see CONF-01).
+classification_rationale: |
+  FEAT-0004 is classified HIGH risk. The classification is driven by three high-scoring
+  dimensions: user harm potential (crisis failure risk with vulnerable population),
+  data sensitivity (GDPR Art. 9 special category), and legal/regulatory exposure
+  (EU AI Act health-adjacent classification pending; GDPR data controller question).
+
+  High risk classification triggers enhanced governance intensity: mandatory threat model
+  in Stage 2, enhanced testing depth in Stage 4, and legal review of disclaimer language
+  recommended before Stage 5 release.
+
+  Note: the high risk classification applies to the GOVERNANCE PROCESS, not to the
+  feature itself being unsafe. The prompt can be implemented safely — this classification
+  ensures the process gives it appropriate scrutiny.
 
 validation:
   validated_by: "Jerry van Heerikhuize (Risk Officer)"
-  validation_date: "2026-03-11"
-  override_tier: ""
-  override_rationale: ""
+  validation_date: "2026-03-14"
+  override_tier: medium
+  override_rationale: >
+    AC-01 LIMITED tier confirmed by AGL reduces regulatory exposure materially —
+    no conformity assessment, no Annex III obligations. Prompt-only deliverable limits
+    operational blast radius: no infrastructure, no integrations, no cascading system
+    failures possible. User harm potential and data sensitivity remain significant but
+    are addressed through design controls (crisis detection, DHR set) rather than
+    requiring HIGH governance intensity. MEDIUM tier is appropriate and sufficient.

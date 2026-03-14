@@ -2,130 +2,182 @@
 # GC-05 — Intent Audit Record
 # Control:   GC-05 Intent Traceability
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0001
-# Status:    draft — PO sign-off pending
+# Feature:   FEAT-0004
+# Status:    draft — awaiting PO sign-off and human role decisions
 # =============================================================================
 
 meta:
-  id: "GC-05-FEAT-0001-2026-03-11"
-  feature: "FEAT-0001"
-  source_cr: "CR-0001"
+  id: "GC-05-FEAT-0004-2026-03-14"
+  feature: "FEAT-0004"
+  source_cr: "CR-0004"
   produced_by: "Claude Sonnet 4.6 (GC-05)"
-  date: "2026-03-11T00:00:00Z"
+  date: "2026-03-14T00:00:00Z"
   retention: "7 years (DORA Art. 8(6))"
 
 # ── Event Log ─────────────────────────────────────────────────────────────────
 events:
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14T00:00:00Z"
     event: SC-03_PASS
     actor: "Claude Sonnet 4.6"
-    description: >
-      Pre-guardrail scan of CR-0001 completed. No prompt injection patterns, adversarial
-      framing, or manipulation attempts detected. Request cleared for processing.
+    description: |
+      Pre-guardrail scan of CR-0004 completed. No prompt injection patterns, adversarial
+      framing, or manipulation attempts detected. The request is a legitimate feature request
+      for a trauma-specialised psychologist masterprompt. Request cleared for processing.
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14T00:00:00Z"
     event: QC-01_DRAFT_PRODUCED
     actor: "Claude Sonnet 4.6"
-    description: >
-      Feature specification FEAT-0001 drafted from CR-0001. 10 functional requirements,
-      5 non-functional requirements, 4 constraints, 2 dependencies identified.
-      2 gaps flagged for PO review (GAP-01: NFR-03 token reduction threshold;
-      GAP-02: FR-10 auto-init priority).
-    artefact: "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
+    description: |
+      Feature specification FEAT-0004 drafted from CR-0004. 11 functional requirements
+      (FR-01 through FR-11), 6 non-functional requirements (NFR-01 through NFR-06),
+      7 constraints, 5 dependencies identified. 4 gaps flagged for PO review:
+        GAP-01: Technique library protocols (significant)
+        GAP-02: AI Act risk tier pending AGL (significant — stage hold recommended)
+        GAP-03: FR-08 CBT reframing priority (minor)
+        GAP-04: Language support scope (minor)
+    artifact: "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
+    canonical_spec: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14T00:00:00Z"
     event: QC-02_COMPLETE
     actor: "Claude Sonnet 4.6"
-    description: >
-      Conflict analysis complete. 0 blocking, 1 significant (CONF-01: DORA scope),
-      2 minor (CONF-02: variant sync risk; CONF-03: auto-init priority). No stage block.
-      PO decisions required on all three conflicts at sign-off.
-    artefact: "stages/01-intent-ingestion/artifacts/outputs/QC-02-conflict-resolution-record.yaml"
+    description: |
+      Conflict analysis complete. 0 blocking, 2 significant, 2 minor conflicts.
+        CONF-01 (significant): Disclaimer tone vs. therapeutic immersion — PO decision pending
+        CONF-02 (significant): SESSION_STATE vs. GDPR special category data — PO decision pending
+        CONF-03 (minor): Phase 1/2 boundary sentinel pattern design — OPT-A recommended
+        CONF-04 (minor): Cultural sensitivity of technique library — OPT-A recommended
+      Stage not blocked. PO decisions on CONF-01 and CONF-02 required before sign-off.
+    artifact: "stages/01-intent-ingestion/artifacts/outputs/QC-02-conflict-resolution-record.yaml"
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14T00:00:00Z"
     event: RC-01_CLASSIFIED
     actor: "Claude Sonnet 4.6"
-    description: >
-      Risk classified as LOW. Rationale: minimal data sensitivity, negligible blast radius,
-      fully reversible, low regulatory exposure, no runtime dependencies, solo project.
-      Risk Officer validation pending.
-    artefact: "stages/01-intent-ingestion/artifacts/outputs/RC-01-risk-classification.yaml"
+    description: |
+      Risk classified as HIGH. Rationale: vulnerable user population (trauma survivors),
+      crisis failure potential (irreversible user harm), GDPR Art. 9 special category data,
+      EU AI Act health-adjacent regulatory exposure, reputational risk from misrepresentation
+      as clinical care. High classification triggers enhanced governance intensity:
+      enhanced scrutiny, deeper testing, legal disclaimer review recommended.
+    artifact: "stages/01-intent-ingestion/artifacts/outputs/RC-01-risk-classification.yaml"
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14T00:00:00Z"
     event: AC-01_CLASSIFIED
     actor: "Claude Sonnet 4.6"
-    description: >
-      AI component confirmed present (T.A.G. is a system prompt governing LLM behaviour).
-      EU AI Act risk tier proposed: MINIMAL. Annex III screening: no domains applicable.
-      Unacceptable-risk check: clear. Triggered obligations: Art. 52 transparency only —
-      satisfied by existing prompt design and README. AGL confirmation pending.
-    artefact: "stages/01-intent-ingestion/artifacts/outputs/AC-01-ai-tier-classification.yaml"
+    description: |
+      AI component confirmed present (masterprompt governing LLM in health-adjacent domain).
+      EU AI Act risk tier proposed: LIMITED — but flagged with LOW CONFIDENCE.
+      Annex III point 5 (health sector AI) is UNCERTAIN and requires AGL determination.
+      If point 5 applies: HIGH-risk tier with conformity assessment obligations.
+      If point 5 does not apply: LIMITED-risk (GPAI transparency obligations only).
+      Unacceptable risk check: CLEAR. GPAI transparency obligations: APPLICABLE.
+      AGL confirmation REQUIRED before Stage 2 — tier determines Stage 2 design depth.
+    artifact: "stages/01-intent-ingestion/artifacts/outputs/AC-01-ai-tier-classification.yaml"
 
-  - timestamp: "2026-03-11"
-    event: SC-04_NOT_APPLICABLE
+  - timestamp: "2026-03-14T00:00:00Z"
+    event: SC-04_COMPLETE
     actor: "Claude Sonnet 4.6"
-    description: >
-      SC-04 data classification: NOT APPLICABLE. No personal data processed. Data
-      classification: PUBLIC.
-    artefact: "stages/01-intent-ingestion/artifacts/outputs/SC-04-data-classification-record.yaml"
+    description: |
+      SC-04 data classification: APPLICABLE. Mental health information = GDPR Art. 9(1)
+      special category data. Classification: RESTRICTED. PII: true. Special category: true.
+      Data controller: end user (self-directed use). Data processor: LLM provider chosen
+      by user. 4 mandatory data handling requirements (DHR-01 through DHR-04) defined.
+      SA review pending.
+    artifact: "stages/01-intent-ingestion/artifacts/outputs/SC-04-data-classification-record.yaml"
 
-  - timestamp: "2026-03-11"
+  # ── Human approvals ────────────────────────────────────────────────────────
+  - timestamp: "2026-03-14T00:00:00Z"
     event: QC-02_CONFLICTS_RESOLVED
     actor: "Jerry van Heerikhuize (Product Owner)"
-    description: >
-      All QC-02 conflicts resolved by PO. CONF-01: DORA applicability confirmed (OPT-A).
-      CONF-02: Verbose prompt designated canonical source, compressed is derived artefact,
-      equivalence check required in Stage 3 (OPT-B). CONF-03: FR-10 auto-init promoted
-      to 'must' (OPT-A). QC-01 feature spec updated accordingly.
+    description: |
+      All QC-02 conflicts resolved by PO.
+      CONF-01: OPT-C — two-tier disclaimer adopted. Warm brief disclaimer at session open;
+        full formal disclaimer re-renders on clinical-care boundary crossing.
+      CONF-02: OPT-B/C — full SESSION_STATE schema retained; explicit GDPR Art. 9 notice
+        at session open; ~privacy console command added (FR-10); state clearable via ~reset.
+      CONF-03: OPT-A confirmed — sentinel patterns for Phase 1/2 drift, gentle then firm redirect.
+      CONF-04: OPT-A confirmed — techniques offered with explicit invitation to decline or request alternatives.
+      Feature spec updated: FR-10 extended with ~privacy command.
 
-  - timestamp: "2026-03-11"
-    event: RC-01_VALIDATED
-    actor: "Jerry van Heerikhuize (Risk Officer)"
-    description: >
-      Risk classification LOW validated. No override. Rationale accepted: minimal blast
-      radius, no PII, fully reversible, low regulatory exposure despite DORA scope.
+  - timestamp: "2026-03-14T00:00:00Z"
+    event: QC-01_GAPS_RESOLVED
+    actor: "Jerry van Heerikhuize (Product Owner)"
+    description: |
+      All QC-01 gaps resolved by PO.
+      GAP-01: Accepted — IMPL engineer selects specific technique protocols with SA review.
+      GAP-02: Resolved by AC-01 determination (pending).
+      GAP-03: Accepted — FR-08 CBT reframing remains 'should'; sessions without it are complete.
+      GAP-04: Multi-language support brought into scope. NFR-06 updated: agent detects and
+        responds in user's language; all phases, disclaimers, crisis resources, and techniques
+        delivered in detected language. Priority elevated from 'should' to 'must'.
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14T00:00:00Z"
     event: AC-01_CONFIRMED
     actor: "Jerry van Heerikhuize (AI Governance Lead)"
     description: >
-      AI risk tier MINIMAL confirmed. Annex III screening clear. No mandatory EU AI Act
-      obligations beyond Art. 52 transparency, which is satisfied. No override.
+      AI risk tier confirmed: LIMITED. Annex III point 5 (health sector AI) determined
+      NOT applicable — prompt is a psychoeducation/self-help tool, not a clinical
+      decision system. GPAI transparency obligations apply (Art. 52/53). No conformity
+      assessment required. Feature spec updated accordingly.
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14T00:00:00Z"
+    event: RC-01_VALIDATED
+    actor: "Jerry van Heerikhuize (Risk Officer)"
+    description: >
+      Risk classification overridden from HIGH to MEDIUM. Rationale: AC-01 LIMITED
+      tier reduces regulatory exposure; prompt-only deliverable limits operational
+      blast radius. User harm and data sensitivity addressed through design controls.
+      Feature spec and RC-01 artifact updated with override and documented justification.
+
+  - timestamp: "2026-03-14T00:00:00Z"
+    event: SC-04_SA_REVIEWED
+    actor: "Jerry van Heerikhuize (Security Architect)"
+    description: >
+      Data classification RESTRICTED approved. DHR-01 through DHR-04 approved as
+      appropriate and sufficient for a prompt-only deliverable where the user is the
+      data controller of their own LLM session.
+
+  - timestamp: "2026-03-14T00:00:00Z"
     event: GC-05_PO_SIGNOFF
     actor: "Jerry van Heerikhuize (Product Owner)"
     description: >
-      Stage 1 complete. All controls executed, all conflicts resolved, risk and AI tiers
-      confirmed. Feature specification FEAT-0001 approved. Stage 1 exit criteria met.
-      Proceeding to Stage 2 (System Design).
+      Stage 1 complete. All controls executed. All conflicts resolved. All gaps
+      addressed (GAP-04 brought multi-language into scope as must). Risk tier: MEDIUM.
+      AI tier: LIMITED. Data classification: RESTRICTED. Feature specification
+      FEAT-0004 approved. Stage 1 exit criteria met. Proceeding to Stage 2.
     decision: approved
     rejection_reason: ""
 
-# ── Artefact Index ────────────────────────────────────────────────────────────
-artefacts:
-  - path: "stages/01-intent-ingestion/artifacts/inputs/CR-0001-tag-dungeonmaster-masterprompt.yaml"
+# ── Artifact Index ─────────────────────────────────────────────────────────────
+artifacts:
+  - path: "stages/01-intent-ingestion/artifacts/inputs/CR-0004-trauma-psychologist-masterprompt.yaml"
     type: input
     description: Original change request
+
   - path: "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
     type: output
-    description: Draft feature specification (FEAT-0001)
+    description: Draft feature specification (FEAT-0004)
+
   - path: "stages/01-intent-ingestion/artifacts/outputs/QC-02-conflict-resolution-record.yaml"
     type: output
-    description: Conflict resolution record
+    description: Conflict resolution record — 2 significant conflicts pending PO decision
+
   - path: "stages/01-intent-ingestion/artifacts/outputs/RC-01-risk-classification.yaml"
     type: output
-    description: Risk classification
+    description: Risk classification — HIGH — pending Risk Officer validation
+
   - path: "stages/01-intent-ingestion/artifacts/outputs/AC-01-ai-tier-classification.yaml"
     type: output
-    description: AI tier classification
+    description: AI tier classification — LIMITED proposed, uncertain — pending AGL confirmation
+
   - path: "stages/01-intent-ingestion/artifacts/outputs/SC-04-data-classification-record.yaml"
     type: output
-    description: Data classification record (not applicable)
-  - path: "specs/FEAT-0001-tag-dungeonmaster-masterprompt.yaml"
+    description: Data classification — RESTRICTED (GDPR Art. 9 special category) — pending SA review
+
+  - path: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
     type: output
-    description: Canonical feature spec (promoted from draft on PO approval)
+    description: Canonical feature spec (draft — pending PO approval)
 
 # ── Stage Gate ────────────────────────────────────────────────────────────────
 stage_gate:
@@ -133,7 +185,9 @@ stage_gate:
   sc04_complete: true
   qc01_approved: true
   qc02_complete: true
-  rc01_validated: true
-  ac01_confirmed: true
+  rc01_validated: true      # overridden to MEDIUM by RO 2026-03-14
+  ac01_confirmed: true      # LIMITED confirmed by AGL 2026-03-14
   gc05_logged: true
   stage_1_exit_clear: true
+
+  blocking_items: []
