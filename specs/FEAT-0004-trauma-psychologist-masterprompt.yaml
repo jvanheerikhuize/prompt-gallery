@@ -10,11 +10,11 @@
 meta:
   id: "FEAT-0004"
   title: "Trauma-Specialised Psychologist Masterprompt"
-  status: approved           # draft | approved | in-progress | complete | cancelled
+  status: complete           # draft | approved | in-progress | complete | cancelled
   created: "2026-03-14"
   last_updated: "2026-03-14"
   source_cr: "CR-0004"
-  stage_reached: 5
+  stage_reached: 6
 
 provenance:
   created_by: "Claude Sonnet 4.6 (Intake Analyst / QC-01 / Stage 1)"
