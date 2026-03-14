@@ -2,13 +2,13 @@
 # AC-04 — AI Model Governance Record
 # Control:   AC-04 AI Model Governance & Version Control
 # Stage:     2 — System Design
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
 # Status:    not_applicable (documented)
 # =============================================================================
 
 meta:
-  id: "AC-04-FEAT-0004"
-  feature: "FEAT-0004"
+  id: "AC-04-FEAT-0005"
+  feature: "FEAT-0005"
   produced_by: "Claude Sonnet 4.6 / AC-04"
   date: "2026-03-14"
 
@@ -18,26 +18,20 @@ rationale: |
   AC-04 is NOT APPLICABLE to this change.
 
   AC-04 applies "when the change introduces or modifies use of a GPAI or foundation
-  model." P.S.Y. does NOT introduce, train, or pin a specific AI model. The prompt
+  model." F.R.A.N.K. does NOT introduce, train, or pin a specific AI model. The prompt
   is model-agnostic by design (NFR-03): users run it on whichever LLM they choose.
 
-  The LLMs that P.S.Y. runs on (Claude, GPT-4, Gemini) are:
-  - Third-party models chosen and operated by end users independently.
-  - Not introduced, modified, or version-pinned by this project.
-  - Outside the project's supply chain and control plane.
-
-  Therefore, no model registry entry, no version pinning, and no model update
-  approval process is applicable to P.S.Y. itself.
-
-  EU AI Act Arts. 51–56 (GPAI model documentation): not applicable — P.S.Y. is not
-  a GPAI model provider; it is a consumer of third-party GPAI models.
+  Identical determination to FEAT-0004/P.S.Y. (AC-04-FEAT-0004, 2026-03-14).
+  The LLMs that F.R.A.N.K. runs on (Claude, GPT-4, Gemini, etc.) are third-party
+  models chosen and operated by end users independently — not introduced, modified,
+  or version-pinned by this project.
 
 note: |
-  If a future version of P.S.Y. is deployed as a pre-configured agent on a specific
-  LLM API (e.g. as a Claude API integration with a pinned model version), AC-04 would
-  become applicable at that point. A model registry entry and version pinning record
-  would be required. This is out of scope for FEAT-0004.
+  If a future version of F.R.A.N.K. is deployed as a pre-configured agent on a
+  specific LLM API (e.g. as a Claude API integration with a pinned model version),
+  AC-04 would become applicable at that point.
 
-  Safety note: while AC-04 is not applicable, the model-agnostic design introduces
-  a safety consideration documented in AC-03 (gap ACG-01): safety rule compliance
-  may vary across LLMs. Stage 4 testing must cover at least two LLMs.
+  Safety note: model-agnostic design introduces gap ACG-01 (documented in AC-03):
+  safety rule compliance — including HUMOR_PROTOCOL and DV detection — may vary
+  across LLMs. Stage 4 testing must cover safety and humor behaviour on at least
+  two major LLMs.

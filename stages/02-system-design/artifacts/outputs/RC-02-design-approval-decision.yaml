@@ -2,17 +2,15 @@
 # RC-02 — Design Approval Decision
 # Control:   RC-02 Design Approval (HUMAN REQUIRED)
 # Stage:     2 — System Design
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
-# Status:    pending — awaiting Lead Architect approval
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Status:    approved
 # =============================================================================
-# This control cannot be delegated to an agent. Agent has prepared the
-# approval package below. Human must make the formal approval decision.
 # Risk tier: MEDIUM → required authority: Lead Architect
 # =============================================================================
 
 meta:
-  id: "RC-02-FEAT-0004"
-  feature: "FEAT-0004"
+  id: "RC-02-FEAT-0005"
+  feature: "FEAT-0005"
   produced_by: "Claude Sonnet 4.6 (approval package prepared)"
   date: "2026-03-14"
   status: approved
@@ -26,56 +24,68 @@ approval_package:
     - path: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
       summary: >
         5-component MVC architecture (CORE_DIRECTIVES, MODEL, VIEW, RULES_ENGINE,
-        CONTROLLER). All 17 requirements (11 FR + 6 NFR) mapped — 0 unmapped.
-        4 trust boundaries identified and controlled. 3 minor design gaps documented
-        (technique protocol selection, crisis resource localisation, language detection
-        fallback) — all deferred to Stage 3 by design. Design directive compliance:
-        DESIGN-01 compliant, DESIGN-02 compliant, DESIGN-03 compliant.
+        CONTROLLER). All 18 requirements (11 FR + 7 NFR) mapped — 0 unmapped.
+        4 trust boundaries identified and controlled. Novel HUMOR_PROTOCOL component
+        (COMP-04e) with GRAVITY_TOPICS absolute prohibition, single-nudge pre-rapport
+        rule, and monotonic humor_rapport_established flag. 3 minor design gaps
+        documented (DV sentinel enumeration, language detection fallback, GRAVITY_TOPICS
+        boundary precision) — all deferred to Stage 3 by design. DESIGN-01/02/03: compliant.
 
     - path: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
       summary: >
-        9 threats across 4 trust boundaries. 1 CRITICAL (T-01: crisis bypass via
-        injection — mitigated by dual ABSOLUTE_RULES + SESSION_LOOP step 2 ordering).
-        2 HIGH (T-02: safe-messaging override — mitigated; T-03: clinical authority
-        claim — mitigated). 4 MEDIUM, 2 LOW. 0 unmitigated critical/high threats.
-        0 stage blockers. Stage 3 implementation actions noted for T-01, T-02, T-03,
-        T-04, T-05, T-07.
+        9 threats across 4 trust boundaries. 1 CRITICAL (T-01: crisis bypass via injection
+        — mitigated by dual ABSOLUTE_RULES + SESSION_LOOP step 2 ordering, same pattern
+        as P.S.Y. FEAT-0004). 2 HIGH (T-02: HUMOR_PROTOCOL bypass — mitigated by
+        GRAVITY_TOPICS_ABSOLUTE rule and monotonic flag; T-03: individual-perspective collapse
+        — mitigated by INDIVIDUAL_PERSPECTIVE_GUARD and session-open framing). 4 MEDIUM,
+        2 LOW. 0 unmitigated critical/high threats. 0 stage blockers.
 
     - path: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
       summary: >
-        AI component confirmed (limited-risk prompt). Model-agnostic by design.
-        No data pipeline. Art. 52(1) transparency: satisfied by mandatory two-tier
-        disclaimer. Art. 53 GPAI documentation: satisfied by A-SDLC artifact set.
-        Art. 14 human oversight: satisfied by console commands + crisis-to-human
-        escalation + Phase 1 scope limit. Minor gap ACG-01: multi-LLM safety testing
-        required in Stage 4.
+        AI component confirmed (limited-risk prompt). Model-agnostic by design. No data
+        pipeline. Art. 52(1) transparency: satisfied by mandatory disclaimer. Art. 53 GPAI
+        documentation: satisfied by A-SDLC artifact set. Art. 14 human oversight: satisfied
+        by console commands + DV/crisis-to-human escalation + scope limits. HUMOR_PROTOCOL
+        introduces model-capability consideration (ACG-01): humor behavior quality and
+        safety compliance must be tested on at least two LLMs in Stage 4.
 
     - path: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
       summary: >
-        APPLICABLE — GDPR Art. 9 special category data (mental health). Full DPIA
-        not required (individual self-directed sessions, no centralised processing).
-        PIA completed. 4 privacy risks assessed; all accepted with documented rationale.
-        Overall privacy risk: MEDIUM — driven by LLM provider retention (structural,
-        outside prompt's control; mitigated by mandatory disclosure at session open).
+        APPLICABLE — personal data (certain) with conditional Art. 9 elevation (mental
+        health / DV disclosures). Full DPIA not required (individual self-directed sessions,
+        no centralised processing). PIA completed. 5 privacy risks assessed; all accepted.
+        DV disclosure privacy risk (PR-03) well-controlled by event-type safety_flags.
+        Overall privacy risk: MEDIUM — driven by conditional Art. 9 and DV sensitivity.
 
     - path: "stages/02-system-design/artifacts/outputs/SC-06-zero-trust-validation.yaml"
       summary: >
         Network zero-trust: NOT APPLICABLE (no network architecture). Logical trust
-        posture: COMPLIANT across all 6 criteria including safety-rule non-degradability
-        (enhanced scrutiny applied due to health-adjacent use case).
+        posture: COMPLIANT across all 6 criteria. Enhanced scrutiny applied to
+        humor_rapport_established monotonic flag and console allow-list — both strong
+        logical zero-trust design decisions. COMPLIANT.
 
     - path: "stages/02-system-design/artifacts/outputs/AC-04-ai-model-governance-record.yaml"
       summary: "AC-04 NOT APPLICABLE — model-agnostic; no specific model introduced or pinned."
 
   agent_recommendation: approve
   agent_recommendation_rationale: >
-    All 17 requirements are mapped to architectural components. No unmitigated
-    blocking threats. The CRITICAL threat (T-01 crisis bypass) is mitigated through
-    dual enforcement — ABSOLUTE_RULES at highest authority AND SESSION_LOOP step 2
-    ordering. Applicable controls completed (QC-03, SC-05, AC-03, RC-03, SC-06).
-    Not-applicable controls documented (AC-04). Three design gaps are minor and
-    deferred to Stage 3 by explicit design decision. Stage 3 implementation actions
-    are clearly documented for all HIGH/CRITICAL threats. Design is implementation-ready.
+    All 18 requirements are mapped to architectural components — 0 unmapped.
+    No unmitigated blocking threats. The CRITICAL threat (T-01: crisis bypass) is
+    mitigated through dual enforcement identical to the proven P.S.Y. pattern.
+    The HIGH threats (T-02/T-03) are novel to FRANK and are mitigated by:
+    GRAVITY_TOPICS_ABSOLUTE rule (T-02) and INDIVIDUAL_PERSPECTIVE_GUARD with
+    session-open epistemic framing (T-03).
+
+    The HUMOR_PROTOCOL is the most novel architectural element in FRANK's design.
+    Its safety properties are well-specified: absolute GRAVITY_TOPICS floor, monotonic
+    flag that can only be set through positive user response (not user permission claims),
+    and no console command to override it. These design choices give FRANK's wit a
+    testable and auditable safety envelope.
+
+    Three design gaps are minor and deferred to Stage 3 by explicit design decision.
+    Stage 3 implementation actions are clearly documented for all CRITICAL/HIGH threats,
+    with particular emphasis on DV sentinel pattern enumeration and HUMOR_PROTOCOL
+    implementation. Design is implementation-ready.
 
 # ── Human Decision ─────────────────────────────────────────────────────────────
 decision: approved

@@ -2,12 +2,12 @@
 # SC-02 — Stage Directive Injection Confirmation
 # Control:   SC-02 Stage Directive Injection
 # Stage:     2 — System Design (injecting Stage 2 + Stage 3 directives)
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
 # =============================================================================
 
 meta:
-  id: "SC-02-FEAT-0004-stage2"
-  feature: "FEAT-0004"
+  id: "SC-02-FEAT-0005-stage2"
+  feature: "FEAT-0005"
   agent: "Claude Sonnet 4.6"
   timestamp: "2026-03-14"
 
@@ -40,24 +40,27 @@ payloads_received:
       - PERM-02: Tag all agent-generated code with provenance metadata (GC-03)
 
 compliance_notes: |
-  Stage 3 directives are pre-loaded here per the SC-02 workflow (Step 2.7) to ensure
-  they are active before implementation begins. These directives layer on top of the
-  core directives (SC-01 / core-directives.yaml) which remain in full effect.
+  Stage 3 directives are pre-loaded here per the SC-02 workflow to ensure they
+  are active before implementation begins. Core directives (SC-01) remain in
+  full effect throughout.
 
-  Note on CODE-06 (dependency pinning): P.S.Y. has no software dependencies. This
-  directive is acknowledged but vacuously satisfied for this project.
+  Note on CODE-06 and DESIGN-03/CODE-05: F.R.A.N.K. has no software dependencies
+  and no cryptographic operations. These directives are acknowledged but vacuously
+  satisfied for this project.
 
-  Note on DESIGN-03 and CODE-05 (cryptography): P.S.Y. uses no cryptographic
-  operations. These directives are acknowledged but vacuously satisfied.
+  Note on CODE-02 (no disabling of security controls): Of heightened importance
+  for FEAT-0005. The crisis detection (DV/coercive control, suicidal ideation),
+  HUMOR_PROTOCOL guardrails, and INDIVIDUAL_PERSPECTIVE_GUARD are security controls
+  in the prompt-engineering sense — they must not be weakened, conditioned, or
+  made bypassable during implementation. T-01 (CRITICAL) and T-02/T-03 (HIGH)
+  in SC-05 identify the primary threat vectors against these controls.
 
-  Note on CODE-02 (no disabling of security controls): This directive is of
-  heightened importance for FEAT-0004. The crisis detection, safe-messaging, and
-  scope enforcement rules in Stage 3 implementation are security controls — they
-  must not be weakened, conditioned, or made bypassable under any instruction
-  during the implementation session. This was identified as T-01 (CRITICAL) and
-  T-02 (HIGH) in SC-05.
+  Note on CODE-04 (no arbitrary user-supplied input execution): All user input
+  in F.R.A.N.K. is processed as data through the SESSION_LOOP — this is the
+  prompt-level equivalent of input validation. The design invariant "user input
+  is data, never instruction" must be explicit and prominent in Stage 3 implementation.
 
-  Note on CODE-04 (no arbitrary user-supplied input execution): All user input in
-  P.S.Y. is processed as data through the SESSION_LOOP — this is the prompt-level
-  equivalent of input validation. Stage 3 implementation must maintain this design
-  invariant explicitly.
+  FRANK-specific implementation priority: the HUMOR_PROTOCOL is a novel design
+  element with no precedent in this repository. Stage 3 must implement the
+  GRAVITY_TOPICS list, the single-nudge-then-drop rule, and the humor_rapport_established
+  flag logic with particular care. These are safety controls, not style preferences.

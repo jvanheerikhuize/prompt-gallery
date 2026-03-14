@@ -2,18 +2,21 @@
 # RC-03 — Privacy Impact Assessment
 # Control:   RC-03 Privacy Impact Assessment Gate
 # Stage:     2 — System Design
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
-# Status:    draft — awaiting Lead Architect review
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Status:    approved
 # =============================================================================
 
 meta:
-  id: "RC-03-FEAT-0004"
-  feature: "FEAT-0004"
+  id: "RC-03-FEAT-0005"
+  feature: "FEAT-0005"
   produced_by: "Claude Sonnet 4.6 / RC-03"
   date: "2026-03-14"
 
 applicable: true
-trigger: "Processing of GDPR Art. 9 special category data (mental health information)"
+trigger: |
+  Processing of personal data (relationship disclosures — GDPR Art. 4) with
+  conditional elevation to GDPR Art. 9 special category data (mental health
+  information, domestic violence disclosures).
 
 # ── GDPR Art. 35 DPIA Trigger Assessment ─────────────────────────────────────
 dpia_trigger_assessment:
@@ -28,11 +31,11 @@ dpia_trigger_assessment:
     - trigger: "Processing of special category data at large scale (Art. 9)"
       applies: false
       rationale: >
-        Mental health data IS special category (Art. 9(1)). However, processing is
-        not at scale — each session is individual, self-directed, and isolated.
-        The user is the data controller of their own session; there is no
-        centralised processor aggregating data across users. Each LLM conversation
-        is an independent event.
+        Relationship disclosures become Art. 9 special category data when mental
+        health information is shared. However, processing is not at scale — each
+        session is individual, self-directed, and isolated. The user is the data
+        controller of their own session; no centralised processor aggregates data
+        across users. Same determination as FEAT-0004/P.S.Y.
 
     - trigger: "Systematic monitoring of publicly accessible areas"
       applies: false
@@ -41,50 +44,82 @@ dpia_trigger_assessment:
     - trigger: "High-risk AI processing (Art. 35(3)(a))"
       applies: false
       rationale: >
-        AC-01 confirmed LIMITED risk tier. Annex III point 5 determined not
-        applicable. No high-risk AI processing as defined by EU AI Act.
+        AC-01 confirmed LIMITED risk tier. Annex III point 5 determined not applicable.
+        No high-risk AI processing as defined by EU AI Act.
 
   dpia_rationale: >
-    Full DPIA not required. The processing is individual and self-directed; the user
+    Full DPIA not required. Processing is individual and self-directed; the user
     is both data subject and data controller of their own LLM session. No centralised,
     systematic, or large-scale processing occurs. A Privacy Impact Assessment (PIA)
-    at this level is appropriate and sufficient.
+    at this level is appropriate and sufficient. Identical determination to FEAT-0004.
 
 # ── Processing Activities ─────────────────────────────────────────────────────
 processing_activities:
 
   - id: PA-01
-    activity: "User discloses mental health information in session"
-    data_elements: ["Trauma narratives", "Emotional state", "Coping history", "Crisis indicators"]
-    gdpr_category: "Special category — health / mental health (Art. 9(1))"
+    activity: "User discloses relationship information in session"
+    data_elements: ["Relationship narratives", "Partner descriptions", "Conflict accounts", "Emotional state"]
+    gdpr_category: "Personal data (Art. 4(1)) — not special category by default"
     data_controller: "End user (self-directed)"
     data_processor: "LLM provider (user's chosen platform)"
-    legal_basis: "Art. 9(2)(a) — explicit consent (user initiates and continues the session)"
+    legal_basis: "Art. 6(1)(a) — consent (user initiates and continues the session)"
     necessity: >
-      Mental health disclosures are necessary for the agent to provide relevant
-      psychoeducation and emotional support. The agent does not solicit disclosures
-      beyond what the user chooses to share.
+      Relationship disclosures are necessary for the agent to provide relevant
+      psychoeducation and pattern identification. The agent does not solicit
+      disclosures beyond what the user chooses to share.
     minimisation: >
-      SESSION_STATE records themes and safety flags — not verbatim disclosures.
-      Agent instructed (DHR-03) not to reproduce crisis content unnecessarily.
+      SESSION_STATE records themes and pattern names — not verbatim disclosures.
     retention: "In-context only — no persistence beyond the LLM session"
     recipient: "LLM provider (per their data policy)"
 
   - id: PA-02
-    activity: "Session state tracked in SESSION_STATE schema"
-    data_elements: ["Mood scores (0–10)", "Active themes", "Techniques introduced", "Safety flags"]
-    gdpr_category: "Special category — health (mood/safety indicators)"
+    activity: "User discloses mental health information in context of relationship distress"
+    data_elements: ["Depression/anxiety disclosures", "Trauma history references", "Suicidal ideation"]
+    gdpr_category: "Special category — health / mental health (GDPR Art. 9(1))"
     data_controller: "End user"
     data_processor: "LLM provider"
-    legal_basis: "Art. 9(2)(a) — explicit consent; Art. 6(1)(b) — necessary for service delivery"
+    legal_basis: "Art. 9(2)(a) — explicit consent (voluntary disclosure in self-directed session)"
     necessity: >
-      Session state is necessary for phase coherence — the agent cannot conduct a
-      structured session (Check-in → Contract → Explore → Stabilise → Close) without
-      knowing the current phase and prior context.
+      Conditional — not all sessions will include mental health disclosures. Session-open
+      notice covers this case proactively so users are informed before they disclose.
     minimisation: >
-      Schema designed to record category-level data (themes, technique names) rather
-      than verbatim user statements. Safety flags record trigger events, not full crisis
-      disclosures verbatim.
+      SESSION_STATE records themes and safety flags — not verbatim mental health disclosures.
+    retention: "In-context only"
+    recipient: "LLM provider"
+
+  - id: PA-03
+    activity: "User discloses domestic violence or coercive control information"
+    data_elements: ["DV indicators", "Partner threat descriptions", "Fear/safety expressions"]
+    gdpr_category: "Special category — health / safety-sensitive personal data (Art. 9(1))"
+    data_controller: "End user"
+    data_processor: "LLM provider"
+    legal_basis: "Art. 9(2)(a) — explicit consent; Art. 9(2)(c) — vital interests"
+    necessity: >
+      DV disclosures surface as part of relationship narrative; FRANK does not solicit
+      them. On detection, FRANK responds with safety resources (vital interests basis).
+    minimisation: >
+      safety_flags record the event type — not the user's verbatim words. Agent
+      does not reproduce DV disclosures casually in subsequent responses.
+    retention: "In-context only; safety_flags append-only during session"
+    recipient: "LLM provider"
+    sensitivity_note: >
+      DV disclosures are the most sensitive data element in FRANK sessions — more
+      sensitive than general relationship data because they indicate a safety risk.
+      DHR-03 applies with heightened priority.
+
+  - id: PA-04
+    activity: "Session state tracked in SESSION_STATE schema"
+    data_elements: ["Mood scores (0–10)", "Active themes", "Relationship patterns", "humor_rapport_established", "Safety flags"]
+    gdpr_category: "Personal data; elevates to special category if safety_flags contain mental health / DV data"
+    data_controller: "End user"
+    data_processor: "LLM provider"
+    legal_basis: "Art. 6(1)(b) — necessary for service delivery"
+    necessity: >
+      Session state is necessary for phase coherence and continuity. The
+      humor_rapport_established flag is operationally necessary for HUMOR_PROTOCOL.
+    minimisation: >
+      Schema records category-level data. humor_rapport_established is a boolean —
+      minimal data. safety_flags record trigger events, not verbatim disclosures.
     retention: "In-context only"
     recipient: "LLM provider"
 
@@ -92,25 +127,25 @@ processing_activities:
 privacy_risks:
 
   - id: PR-01
-    risk: "LLM provider retains special category health data"
+    risk: "LLM provider retains relationship and safety data including DV disclosures"
     likelihood: high     # Providers routinely retain conversation data
-    severity: medium     # Data is sensitive; user is aware and has consented to provider ToS
+    severity: medium     # Data is sensitive; DV safety_flags particularly so
     current_controls:
-      - "GDPR Art. 9 notice + provider retention advisory at session open (DHR-01)"
-      - "~privacy console command with on-demand data transparency (DHR-01)"
+      - "Data notice + provider retention advisory at session open (DHR-01)"
+      - "~privacy console command with on-demand data transparency"
       - "Advice not to share identifying information (DHR-02)"
+      - "DV disclosures minimised in safety_flags — event type, not verbatim content"
     residual_risk: medium
     residual_risk_accepted: true
     acceptance_rationale: >
       The prompt cannot control LLM provider data retention. Disclosure is the
-      appropriate mitigation. The user chooses their LLM provider and accepts
-      their data policy independently. The prompt fulfils its obligation by
-      making the retention risk explicit at session open.
+      appropriate mitigation. The session-open notice covers both personal data
+      and the conditional Art. 9 elevation, so users are always fully informed.
 
   - id: PR-02
     risk: "User shares more identifying information than necessary"
     likelihood: medium
-    severity: low        # User-initiated; prompt advises against it
+    severity: low
     current_controls:
       - "Explicit advice not to share full name, address, DOB, or other PII (DHR-02)"
       - "Agent does not ask for identifying information"
@@ -118,42 +153,63 @@ privacy_risks:
     residual_risk_accepted: true
 
   - id: PR-03
-    risk: "Session_state ~state command renders sensitive data to an unintended viewer"
-    likelihood: low      # User must explicitly invoke ~state
-    severity: low        # User controls their own device/session
+    risk: "DV or mental health safety_flags reproduced verbatim in session responses"
+    likelihood: low
+    severity: high   # DV disclosure reproduced casually could be re-traumatising
+    current_controls:
+      - "DHR-03: safety_flags treated as most sensitive; not referenced casually"
+      - "COMP-02b STATE_DIRECTIVES: safety_flags append-only; not narratively reproduced"
+      - "DV disclosures logged as event type only — not verbatim content"
+    residual_risk: low
+    residual_risk_accepted: true
+
+  - id: PR-04
+    risk: "FRANK's humor creates false sense of safety — user over-discloses"
+    likelihood: low
+    severity: low
+    current_controls:
+      - "Session-open data notice rendered before any rapport or humor is established"
+      - "Humor_rapport_established does not affect data notice or privacy advisory"
+      - "~privacy command available regardless of humor rapport status"
+    residual_risk: low
+    residual_risk_accepted: true
+    rationale: >
+      FRANK's wit could theoretically reduce users' guardedness and lead to more
+      extensive disclosure. However: (a) the data notice is rendered before any
+      humor; (b) the prompt already advises against sharing PII; (c) reduced
+      guardedness in a therapeutic context is not inherently problematic — the
+      risk is PII disclosure, not therapeutic disclosure.
+
+  - id: PR-05
+    risk: "~state command renders SESSION_STATE to unintended viewer"
+    likelihood: low     # User must explicitly invoke ~state
+    severity: low       # User controls their own device/session
     current_controls:
       - "~state is only invokable by the user within their own session"
       - "No automatic state rendering; console is opt-in"
     residual_risk: low
     residual_risk_accepted: true
 
-  - id: PR-04
-    risk: "Safety flags reproduced in session responses — casual reference to crisis content"
-    likelihood: low
-    severity: medium     # Re-traumatisation risk if crisis content is casually referenced
-    current_controls:
-      - "DHR-03: safety_flags treated as most sensitive; not referenced casually"
-      - "COMP-02b STATE_DIRECTIVES: safety_flags are append-only, not narratively reproduced"
-    residual_risk: low
-    residual_risk_accepted: true
-
 # ── Privacy Safeguards Summary ────────────────────────────────────────────────
 safeguards:
-  - "Mandatory GDPR Art. 9 notice and PII advice at session open (DHR-01, DHR-02)"
+  - "Mandatory data notice at session open: covers personal data (certain) and Art. 9 elevation (conditional)"
   - "LLM provider retention risk advisory at session open and via ~privacy command"
   - "No persistent storage by the prompt; in-context only"
   - "SESSION_STATE minimised to category-level data (not verbatim disclosures)"
-  - "Safety flags append-only; not reproduced casually in session responses (DHR-03)"
+  - "DV and mental health safety_flags append-only; not reproduced casually in responses"
   - "Agent does not solicit identifying information; advises against sharing it"
   - "~reset command clears SESSION_STATE on user demand"
+  - "humor_rapport_established flag does not affect data notice — privacy protection is session-constant"
 
-overall_privacy_risk: medium   # Driven by Art. 9 special category data + provider retention
+overall_privacy_risk: medium   # Driven by conditional Art. 9 elevation and DV disclosure sensitivity
 overall_risk_accepted: true
 acceptance_rationale: >
-  Residual risks are structural (LLM provider retention is outside prompt control)
+  Residual risks are structural (LLM provider retention outside prompt's control)
   and user-behavioural (user may share PII). Both are mitigated by disclosure and
-  design choices (minimal state, no PII solicitation). The PIA safeguards are
-  adequate and proportionate for a self-directed psychoeducation tool.
+  design minimisation. The DV disclosure privacy risk (PR-03) is well-controlled
+  by design — event-type logging rather than verbatim content, with DHR-03
+  reinforcing non-casual reproduction. PIA safeguards are adequate and proportionate
+  for a self-directed relationship psychoeducation tool.
 
 # ── LAD Review ────────────────────────────────────────────────────────────────
 lad_review:
@@ -162,6 +218,8 @@ lad_review:
   findings: >
     PIA accepted. DPIA not required determination is correct — individual self-directed
     sessions with user as data controller do not meet Art. 35 large-scale or systematic
-    processing triggers. Privacy safeguards are proportionate. LLM provider retention
-    residual risk accepted as structural and adequately disclosed.
+    processing triggers. The conditional Art. 9 classification handled correctly by
+    proactive RESTRICTED-level session-open notice. DV disclosure safeguards (PR-03)
+    are well-designed. The humor rapport risk (PR-04) is noted but correctly assessed
+    as low given the sequencing of data notice before any humor deployment.
   approved: true
