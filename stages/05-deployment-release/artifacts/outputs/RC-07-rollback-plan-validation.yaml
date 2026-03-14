@@ -2,62 +2,110 @@
 # RC-07 — Rollback Plan Validation Report
 # Control:   RC-07 Rollback Plan Validation
 # Stage:     5 — Deployment & Release
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "RC-07-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "RC-07-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / RC-07"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 scope_note: |
-  T.A.G. is a prompt-only deliverable published via git. There is no deployment
+  P.S.Y. is a prompt-only deliverable published via git. There is no deployment
   pipeline, server, or infrastructure to roll back. "Rollback" is defined as
-  reverting the git repository to the last known-good commit and users accessing
-  the prior version of the prompt file.
+  reverting the git repository to the last known-good commit so that users
+  accessing the repository receive the prior version.
+
+  Given the MEDIUM risk classification and health-adjacent use case, the rollback
+  plan includes a post-rollback user communication step — unlike the FEAT-0001
+  entertainment prompt, a flawed psychoeducation prompt with incorrect crisis
+  resources or failed crisis detection could cause harm to users who have already
+  copied it locally.
 
 rollback_strategy:
   type: git_revert
   mechanism: |
     git revert <commit-sha> or git reset --hard <prior-sha> on main branch.
-    Users who have already copied the prompt are unaffected; any user accessing
-    the repository after the revert will receive the prior version.
+    Users who have already copied the prompt locally are unaffected by the git
+    rollback. Any user accessing the repository after the revert will receive
+    the prior version. For health-adjacent context, a README notice is required
+    to reach users who may already hold a local copy.
   prior_good_commit:
-    sha: "5c6c344"
-    description: "chore(stage-3): seal QC-04 PR approval, close Stage 3 for FEAT-0001"
-    prompt_version: "v2.1 (same)"
+    sha: "41b805b"
+    description: "feat(stage-2): complete system design for FEAT-0004 — pre-prompt commit"
+    note: "Rollback target if prompt-trauma-psychologist.md must be withdrawn entirely."
 
 rollback_triggers:
-  - trigger: "Critical security vulnerability discovered in prompt post-release"
-    threshold: "Any SC finding rated HIGH or CRITICAL that cannot be mitigated by advisory"
-  - trigger: "Prompt causes consistent harmful outputs across multiple LLMs"
-    threshold: "Confirmed by Tech Lead after review of ≥3 independent reports"
-  - trigger: "Integrity compromise — evidence that repository content was tampered with"
-    threshold: "Any mismatch in SC-17 checksums detected post-deployment"
+  - trigger: "Safety-critical failure in ATC-01 through ATC-05 post-release acceptance tests"
+    threshold: >
+      Crisis detection fails to trigger (ATC-02 fail); crisis bypass succeeds (ATC-03 fail);
+      safe-messaging violated (ATC-04 fail); Phase 2/3 boundary not enforced (ATC-05 fail);
+      or session lifecycle skips Stabilise/Close (ATC-01 fail).
+    priority: IMMEDIATE
+    rationale: "Any safety-critical ATC failure indicates the prompt may cause harm to vulnerable users."
+
+  - trigger: "Crisis resource inaccuracy — incorrect or discontinued phone number discovered"
+    threshold: "Any localised crisis line number confirmed as incorrect or discontinued"
+    priority: IMMEDIATE
+    rationale: >
+      Incorrect crisis resources in a mental health support tool is a direct patient safety
+      risk. User in crisis who receives a wrong number may not reach help. Rollback +
+      corrected version to follow within 24 hours.
+
+  - trigger: "Critical security vulnerability in prompt content"
+    threshold: "Any SC finding rated HIGH or CRITICAL confirmed by Security Architect"
+    priority: urgent_within_24h
+
+  - trigger: "Integrity compromise"
+    threshold: "Evidence that repository content was tampered with post-deployment"
+    priority: IMMEDIATE
 
 rollback_decision_authority: "Jerry van Heerikhuize (Tech Lead / Risk Officer)"
+rollback_escalation: |
+  IMMEDIATE triggers: Tech Lead may execute rollback without additional approval.
+  Urgent triggers: confirm with Risk Officer before execution unless Tech Lead
+  is unavailable, in which case proceed and notify retrospectively.
 
 rollback_execution_steps:
-  1: "Tech Lead confirms trigger condition is met"
-  2: "Execute: git revert HEAD or git reset --hard <prior-sha>"
+  1: "Tech Lead confirms trigger condition is met and documents the trigger"
+  2: "Execute: git revert HEAD (preferred) or git reset --hard <prior-sha>"
   3: "Force push to main (requires explicit authorisation from Tech Lead)"
-  4: "Post GitHub security advisory if applicable"
-  5: "Log rollback event in RC-04 decision log with rationale"
+  4: "Post README notice: 'prompt-trauma-psychologist.md v1.0 temporarily withdrawn pending review'"
+  5: "For crisis resource inaccuracy: post urgent advisory note with correct crisis line numbers and link to update"
+  6: "Post GitHub security advisory if security vulnerability confirmed"
+  7: "Log rollback event in RC-04 decision log with: trigger, timestamp, decision authority, and root cause"
+  8: "Investigate and remediate root cause; re-run affected Stage 4 tests before re-release"
 
-rollback_time_objective: "<15 minutes from decision to completion (single git command)"
+rollback_time_objective: "<15 minutes from decision to git completion; README notice within 30 minutes"
 
 pre_production_test: |
-  T.A.G. has no pre-production environment distinct from the repository. The
-  rollback procedure was validated logically:
+  P.S.Y. has no pre-production environment. Rollback procedure validated logically:
   - git revert is an atomic, well-understood operation on a plain-text repository
   - No database migrations, container images, or infrastructure state to unwind
-  - Prior prompt version (v2.0 tag or prior commit) is immediately accessible
-  Formal pre-production environment test is not applicable.
+  - Prior commit (41b805b) is immediately accessible
+  - README notice template drafted above; can be posted in <5 minutes
+  Rollback time objective (<15 minutes) is achievable. Validated.
+
+post_rollback_communication:
+  required: true
+  mandatory_for: "IMMEDIATE trigger rollbacks (ATC failure, crisis resource inaccuracy)"
+  channels:
+    - "GitHub README notice on repository landing page (immediate)"
+    - "GitHub security advisory (if vulnerability-driven)"
+  notice_template: |
+    **⚠️ Notice:** prompt-trauma-psychologist.md v1.0 has been temporarily withdrawn
+    pending a safety review. If you have copied this prompt, please do not use it until
+    the updated version is published. In a mental health crisis, please contact your
+    local emergency services or crisis line directly.
+  rationale: >
+    Users of a health-adjacent tool may already hold local copies. Unlike an entertainment
+    prompt, an incorrect crisis resource could fail a user at a critical moment.
+    Communication is proportionate to MEDIUM risk / health-adjacent context.
 
 # -----------------------------------------------------------------------------
 # Release Manager / Tech Lead approval
 # -----------------------------------------------------------------------------
 approved_by: "Jerry van Heerikhuize"
-approval_date: "2026-03-11"
+approval_date: "2026-03-14"
 rollback_plan_validated: true

@@ -2,57 +2,63 @@
 # SC-17 — Deployment Integrity Verification Report
 # Control:   SC-17 Deployment Integrity
 # Stage:     5 — Deployment & Release
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "SC-17-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "SC-17-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / SC-17"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 scope_note: |
-  T.A.G. has no traditional deployment pipeline. "Deployment" is defined as the
-  publication of prompt.md and prompt-compressed.md in the main branch of the
-  public GitHub repository, where users access them directly. Integrity verification
-  is performed by comparing SHA-256 checksums of the tested artefacts (at the
-  Stage 3 implementation commit) against the current HEAD.
+  P.S.Y. has no traditional deployment pipeline. "Deployment" is defined as the
+  publication of prompt-trauma-psychologist.md in the main branch of the public
+  GitHub repository, where users access it directly. Integrity verification is
+  performed by comparing SHA-256 checksums of the tested artefacts (at the Stage 3
+  implementation commit) against the current HEAD.
 
   This is a genuine integrity check: any modification between test and release
-  would be detectable as a checksum mismatch.
+  would be detectable as a checksum mismatch. Given the health-adjacent context,
+  integrity verification is particularly important — a tampered prompt could
+  compromise crisis detection or safe-messaging rules.
 
 # -----------------------------------------------------------------------------
 # Artefact integrity verification
 # -----------------------------------------------------------------------------
-tested_at_commit: "34697d7b5a6ea78bf01ea4dbafbfd79cce6465a0"
-release_commit:   "b5f3941b6fd5b25f8d1c7034f4550d9bb4cf481c"
+implementation_commit: "42e6a56"   # Stage 3 — prompt authored and tested here
+release_commit:        "bd51843"   # Stage 4 HEAD — governance artefacts added only
 
 note: |
-  The release commit (b5f3941) adds Stage 4 governance artefacts only.
-  The prompt artefacts (prompt.md, prompt-compressed.md, README.md) are unchanged
-  since the tested commit (34697d7). SHA-256 checksums confirm byte-for-byte
-  identity with what was tested.
+  The release commit (bd51843) adds Stage 4 governance artefacts only (testing and
+  documentation controls). The prompt artefact (prompt-trauma-psychologist.md) and
+  README.md are unchanged since the implementation commit (42e6a56).
+  SHA-256 checksums confirm byte-for-byte identity with the tested artefact.
 
 artefact_checks:
 
-  - file: "prompt.md"
-    sha256_at_test:    "1a373f45f7fa3263af7710e0bb046d39aa2c3da2f75d0ae3de9bda18924aa01a"
-    sha256_at_release: "1a373f45f7fa3263af7710e0bb046d39aa2c3da2f75d0ae3de9bda18924aa01a"
+  - file: "prompt-trauma-psychologist.md"
+    sha256_at_implementation: "41ac263a4c7a2b9e8af0568cf1b50e1acf552c7d4fbe929b515e598f4c8e49ed"
+    sha256_at_release:        "41ac263a4c7a2b9e8af0568cf1b50e1acf552c7d4fbe929b515e598f4c8e49ed"
     match: true
     result: pass
-
-  - file: "prompt-compressed.md"
-    sha256_at_test:    "0fafd3690fed81a40ffaf0e36de659345c31560bb72efcdce5f6cf22ae10cdd3"
-    sha256_at_release: "0fafd3690fed81a40ffaf0e36de659345c31560bb72efcdce5f6cf22ae10cdd3"
-    match: true
-    result: pass
+    safety_note: >
+      The safety-critical prompt (crisis detection, safe-messaging, ABSOLUTE_RULES)
+      has not been modified between testing and release. The artefact deployed is
+      the artefact that was tested in Stage 4.
 
   - file: "README.md"
-    sha256_at_test:    "6d8ac9c3bdfc4c62a73f464ad2eae0f0d2e6d9ce0734d85e4771919b2f0efaa0"
-    sha256_at_release: "6d8ac9c3bdfc4c62a73f464ad2eae0f0d2e6d9ce0734d85e4771919b2f0efaa0"
+    sha256_at_implementation: "f94861f9733922085e6156e0d243cb993c85597abf6fb7c400e42d5021e8fe47"
+    sha256_at_release:        "f94861f9733922085e6156e0d243cb993c85597abf6fb7c400e42d5021e8fe47"
     match: true
     result: pass
 
 integrity_failures: 0
 overall_result: pass
 blocker: false
+
+post_deployment_monitoring: |
+  Given the health-adjacent context, post-release integrity monitoring is recommended:
+  - Periodic SHA-256 checksum verification of the deployed prompt against this record
+  - Any discrepancy triggers the RC-07 rollback plan immediately (IMMEDIATE trigger)
+  - Stage 6 monitoring profile should include a weekly integrity check

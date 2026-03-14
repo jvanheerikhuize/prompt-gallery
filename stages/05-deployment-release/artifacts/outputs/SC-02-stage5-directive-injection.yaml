@@ -2,14 +2,14 @@
 # SC-02 — Stage Directive Injection Confirmation (Stage 5)
 # Control:   SC-02 Directive Injection
 # Stage:     5 — Deployment & Release
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "SC-02-STAGE5-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "SC-02-STAGE5-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / SC-02"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 directives_loaded:
   - source: "a-sdlc/directives/core/core-directives.yaml"
@@ -18,9 +18,23 @@ directives_loaded:
     status: active
 
 stage5_directives_acknowledged:
-  DEPLOY-01: "No deployment without all Stage 4 exit criteria confirmed — RC-05 stage_4_exit_clear: true. Confirmed."
-  DEPLOY-02: "CAB gate (RC-06) will not be bypassed. Risk: LOW → line management approval is required authority."
-  DEPLOY-03: "Rollback plan (RC-07) will be documented before deployment execution."
-  DEPLOY-04: "T.A.G. has no production infrastructure systems. Deployment is prompt file publication via git. No direct production system access required."
+  DEPLOY-01: >
+    No deployment without all Stage 4 exit criteria confirmed — RC-05 stage_4_exit_clear: true.
+    Confirmed. RC-05 decision: conditional_pass. stage_4_exit_clear: true.
+  DEPLOY-02: >
+    CAB gate (RC-06) will not be bypassed. Risk tier: MEDIUM → line management approval
+    is the required authority (not full CAB). Jerry van Heerikhuize (Tech Lead / Risk Officer)
+    is the required approver.
+  DEPLOY-03: >
+    Rollback plan (RC-07) will be documented before deployment execution. P.S.Y. is
+    a prompt-only deliverable; rollback is git revert on main branch.
+  DEPLOY-04: >
+    P.S.Y. has no production infrastructure systems. Deployment is prompt file publication
+    via git (main branch). No direct production system access required. SC-16 and SC-18
+    are not applicable.
+  DEPLOY-05: >
+    MEDIUM risk classification: post-release acceptance tests ATC-01 through ATC-05
+    are mandatory before FEAT-0004 can be marked closed. This is a Stage 5 deployment
+    condition carried forward from RC-05.
 
 stage5_entry_clear: true

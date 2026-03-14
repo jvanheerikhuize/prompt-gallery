@@ -2,23 +2,24 @@
 # SC-16 — Infrastructure Security Baseline Report
 # Control:   SC-16 Infrastructure Security
 # Stage:     5 — Deployment & Release
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # Status:    not_applicable
 # =============================================================================
 
 meta:
-  id: "SC-16-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "SC-16-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / SC-16"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 applicable: false
 
 rationale: |
-  T.A.G. has no production infrastructure. The deliverable is a plain-text prompt
-  (prompt.md / prompt-compressed.md) that users copy-paste into an LLM chat
-  interface. There are no servers, containers, cloud resources, network configurations,
-  or IaC to assess. Infrastructure security baseline validation is not applicable.
+  P.S.Y. has no production infrastructure. The deliverable is a plain-text prompt
+  (prompt-trauma-psychologist.md) that users copy-paste into an LLM chat interface
+  of their choosing. There are no servers, containers, cloud resources, network
+  configurations, or IaC to assess. Infrastructure security baseline validation
+  is not applicable.
 
 status: not_applicable
 blocker: false
