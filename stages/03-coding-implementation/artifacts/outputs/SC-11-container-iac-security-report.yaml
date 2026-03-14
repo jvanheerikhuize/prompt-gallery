@@ -2,21 +2,27 @@
 # SC-11 — Container & IaC Security Scan Report
 # Control:   SC-11 Container & IaC Security Scanning
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
 # Status:    not_applicable
 # =============================================================================
 
 meta:
-  id: "SC-11-FEAT-0004"
-  feature: "FEAT-0004"
-  produced_by: "Claude Sonnet 4.6 / SC-11"
+  id: "SC-11-FEAT-0005"
+  feature: "FEAT-0005"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-11)"
   date: "2026-03-14"
+  status: not_applicable
 
 applicable: false
+rationale: >
+  F.R.A.N.K. is a plain-text masterprompt. No Dockerfile, container image,
+  Kubernetes manifest, Terraform, Helm chart, CloudFormation, or any other
+  infrastructure-as-code artifact exists for this feature. The prompt runs
+  inside the user's chosen LLM provider — no infrastructure is provisioned
+  by this project. Identical determination to all prior masterprompts in
+  this repository.
 
-rationale: |
-  P.S.Y. has no container images, Dockerfiles, Kubernetes manifests, Terraform
-  configurations, Helm charts, or any other Infrastructure-as-Code artefacts.
-  The deliverable is a plain Markdown text file. SC-11 is not applicable.
-
-status: not_applicable
+containers_scanned: 0
+iac_files_scanned: 0
+vulnerabilities_found: 0
+blocker: false

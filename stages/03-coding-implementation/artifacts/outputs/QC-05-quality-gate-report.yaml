@@ -2,113 +2,214 @@
 # QC-05 — Quality Gate Report
 # Control:   QC-05 Code Quality Standards
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Status:    pass
 # =============================================================================
 
 meta:
-  id: "QC-05-FEAT-0004"
-  feature: "FEAT-0004"
-  produced_by: "Claude Sonnet 4.6 / QC-05"
+  id: "QC-05-FEAT-0005"
+  feature: "FEAT-0005"
+  produced_by: "Claude Sonnet 4.6 (QC Analyst / QC-05)"
   date: "2026-03-14"
+  status: pass
 
-note: |
-  P.S.Y. deliverable is a Markdown prompt file, not compiled source code. Traditional
-  linting and cyclomatic complexity metrics do not apply. Quality gates are adapted to
-  the artefact type. Given the health-adjacent, vulnerable-user context, quality checks
-  include additional safety-rule verification beyond standard code quality.
+artifact_reviewed: "roles/health/relationship-therapist/prompt.md"
+sha256: "ea93a9246204e734f452cab547b094d82153c799218276e334351696bb294b96"
 
-quality_checks:
+# ── Standard Quality Checks ───────────────────────────────────────────────────
+standard_checks:
 
-  - check: "All required MVC/XML sections present (prompt-trauma-psychologist.md)"
+  - id: QC-S01
+    check: "MVC/XML structural compliance"
     status: pass
-    detail: >
-      CORE_DIRECTIVES, MODEL (PERSONA, ABSOLUTE_RULES), VIEW (9 templates),
-      RULES_ENGINE (CRISIS_DETECTION, SAFE_MESSAGING, SCOPE_ENFORCEMENT,
-      DISCLAIMER_TRIGGER, PSYCHOEDUCATION_LIBRARY, TECHNIQUE_LIBRARY,
-      CBT_REFRAMING, LANGUAGE_DETECTION), CONTROLLER (SESSION_PHASES,
-      SESSION_LOOP, CONSOLE) all present. Structure consistent with QC-03
-      design document 5-component architecture.
+    notes: >
+      Prompt uses the canonical <MASTER_PROMPT> → <CORE_DIRECTIVES>, <MODEL>,
+      <VIEW>, <RULES_ENGINE>, <CONTROLLER> structure consistent with T.A.G.,
+      C.R.A., and P.S.Y. All 5 top-level components present and correctly ordered.
 
-  - check: "All 17 requirements (FR-01 through FR-11, NFR-01 through NFR-06) implemented"
+  - id: QC-S02
+    check: "All functional requirements mapped to implementation"
     status: pass
-    detail: >
-      FR-01 (Persona): PERSONA section with SAMHSA 6 pillars. FR-02 (Disclaimer):
-      SESSION_OPEN template + DISCLAIMER_TRIGGER rule + FULL_DISCLAIMER template.
-      FR-03 (Session Lifecycle): SESSION_PHASES with 6 phases, stabilise/close
-      mandatory. FR-04 (Crisis Detection): CRISIS_FIRST absolute rule + CRISIS_DETECTION
-      RULES_ENGINE + SESSION_LOOP step 2 mandatory. FR-05 (Safe Messaging):
-      SAFE_MESSAGING_ABSOLUTE absolute rule + SAFE_MESSAGING RULES_ENGINE.
-      FR-06 (Psychoeducation): PSYCHOEDUCATION_LIBRARY. FR-07 (Techniques):
-      TECHNIQUE_LIBRARY (7 techniques). FR-08 (CBT): CBT_REFRAMING.
-      FR-09 (Session State): SESSION_STATE schema with all required fields.
-      FR-10 (Console): ~state, ~techniques, ~disclaimer, ~privacy, ~close, ~reset.
-      FR-11 (Phase 2/3 Boundary): SCOPE_ENFORCEMENT sentinel patterns with
-      gentle-then-firm redirect. NFR-01 through NFR-06 verified in PERSONA and
-      output templates.
+    notes: >
+      FR-01 (persona): CORE_DIRECTIVES + COMP-01. FR-02 (disclaimer): COMP-03a +
+      DISCLAIMER_MANDATORY absolute rule. FR-03 (session lifecycle): COMP-05b
+      SESSION_LOOP, 5 phases. FR-04 (crisis detection): COMP-04a CRISIS_DETECTION
+      + 3 tracks + DV_RESPONSE_ENGINE. FR-05 (pattern identification):
+      PATTERN_LIBRARY. FR-06 (individual perspective): COMP-04f
+      INDIVIDUAL_PERSPECTIVE_GUARD. FR-07 (humor): COMP-04e HUMOR_PROTOCOL.
+      FR-08 (psychoeducation): SKILL_LIBRARY. FR-09 (session state): SESSION_STATE
+      schema. FR-10 (console): COMP-05c CONSOLE. FR-11 (scope): SCOPE_GUARD.
+      All 11 FR implemented. 0 unmapped.
 
-  - check: "All STRIDE Stage 3 hardening actions applied"
+  - id: QC-S03
+    check: "All non-functional requirements reflected in implementation"
     status: pass
-    detail: >
-      T-01 (Crisis bypass via injection): INPUT_IS_DATA absolute rule +
-      SESSION_LOOP step 2 CRISIS_CHECK labelled NON-SKIPPABLE. Dual enforcement
-      confirmed. T-02 (Safe-messaging override): SAFE_MESSAGING_ABSOLUTE absolute
-      rule, cannot be overridden by user framing. T-03 (Clinical authority claim):
-      SCOPE_ENFORCEMENT handles 'I am a clinician'/'medical necessity' patterns.
-      T-04 (Third-person crisis sentinel evasion): CRISIS_DETECTION includes
-      third-person sentinel patterns ('my friend', 'someone I know').
-      T-05 (Phase 2/3 drift via narrative escalation): SCOPE_ENFORCEMENT with
-      sentinel phrases and gentle-then-firm redirect logic (3+ attempts = firm).
-      T-06 (State corruption): SESSION_STATE append-only for safety_flags;
-      ~reset requires explicit user invocation. T-07 (Language detection evasion):
-      LANGUAGE_DETECTION with uncertainty fallback to English.
+    notes: >
+      NFR-01 (tone): PERSONA + COMP-01 register adaptation. NFR-02 (zero crisis bypass):
+      ABSOLUTE_RULES priority + SESSION_LOOP step 2 mandatory CRISIS_CHECK.
+      NFR-03 (portability): no external dependencies. NFR-04 (GDPR): GDPR_NOTICE
+      absolute rule + session-open disclosure. NFR-05 (cultural sensitivity):
+      COMP-01 cultural note + non-Western-normative patterns acknowledged.
+      NFR-06 (accessibility/language): language detection in SESSION_STATE,
+      COMP-01 CEFR B2 baseline. NFR-07 (humor calibration): PRE_RAPPORT_RULE
+      single-nudge, no retry. All 7 NFR addressed.
 
-  - check: "Crisis detection sentinels cover both first-person and third-person patterns"
+  - id: QC-S04
+    check: "ABSOLUTE_RULES hierarchy correctly implemented"
     status: pass
-    detail: >
-      CRISIS_DETECTION includes first-person (I want to die, I'm going to hurt myself,
-      etc.) and third-person (my friend wants to hurt themselves, someone I know is
-      thinking about suicide, etc.) sentinel patterns. T-04 mitigation confirmed.
+    notes: >
+      8 ABSOLUTE_RULES present: INPUT_IS_DATA, CRISIS_FIRST, GRAVITY_TOPICS_ABSOLUTE,
+      INDIVIDUAL_PERSPECTIVE, DISCLAIMER_MANDATORY, MAINTAIN_STATE, GDPR_NOTICE,
+      NO_LEGAL_ADVICE. CRISIS_FIRST and GRAVITY_TOPICS_ABSOLUTE both assert
+      non-bypassability by user input. Ordering is correct — CRISIS_FIRST is rule 2
+      (immediately after INPUT_IS_DATA meta-rule), placing crisis above all other logic.
 
-  - check: "Crisis resources localised for 7 languages + default"
+  - id: QC-S05
+    check: "SESSION_STATE schema completeness"
     status: pass
-    detail: >
-      CRISIS_DETECTION RESOURCES covers: en (US 988 / UK 116 123), nl (0800 0113),
-      fr (3114), de (0800 111 0 111), es (024), pt (213 544 545), it (800 274 274),
-      default (fallback to en + WHO resources). NFR-06 multi-language requirement met.
+    notes: >
+      Schema includes: session_id, session_number, session_date, language, phase,
+      mood_checkin {start, end}, active_themes, relationship_patterns_identified,
+      humor_rapport_established (bool, default false, monotonic noted),
+      safety_flags, scope_redirects, contract, session_notes, disclaimer_rendered.
+      All fields required by FR-09 and design document present.
 
-  - check: "Two-tier disclaimer implemented (CONF-01 OPT-C)"
+  - id: QC-S06
+    check: "Console commands correctly implemented (FR-10)"
     status: pass
-    detail: >
-      Tier 1: brief warm disclaimer in SESSION_OPEN template. Tier 2: full formal
-      GDPR + scope disclaimer in FULL_DISCLAIMER template, rendered on clinical-boundary
-      crossing. DISCLAIMER_TRIGGER rule covers: diagnosis requests, medication queries,
-      clinical authority claims, treatment expectations.
+    notes: >
+      6 console commands present: ~state, ~patterns, ~skills, ~disclaimer, ~privacy,
+      ~close, ~reset. All specified in FR-10. Prefix `~` consistent with design.
+      Allow-list correctly scoped — no console command can override ABSOLUTE_RULES.
 
-  - check: "SESSION_STATE includes all required fields (FR-09)"
+  - id: QC-S07
+    check: "Session lifecycle phases complete and correctly sequenced"
     status: pass
-    detail: >
-      session_id, session_number, session_date, language, phase, mood_checkin
-      {start/end}, active_themes, techniques_introduced, safety_flags (append-only),
-      contract, session_notes, boundary_crossings, disclaimer_rendered — all present.
+    notes: >
+      5 phases implemented: open → check_in → explore → insight → action → close.
+      Close phase never skipped (FR-03). insight phase is mandatory before close.
+      SESSION_LOOP step 2 CRISIS_CHECK precedes all other processing.
 
-  - check: "~privacy console command implemented (CONF-02 OPT-B/C)"
+  - id: QC-S08
+    check: "Multi-language support implemented"
     status: pass
-    detail: >
-      CONSOLE ~privacy command renders: SESSION_STATE fields held, LLM provider
-      retention advisory, GDPR Art. 9 notice, advice not to share identifying
-      information. Satisfies FR-10 privacy transparency requirement.
+    notes: >
+      DV resources localised for 7 languages: en, nl, fr, de, es, pt, it + default
+      fallback (international numbers). Language detection instruction in COMP-01.
+      Humor English-only v1.0 noted.
 
-  - check: "No hardcoded secrets or credentials"
+# ── FRANK-Specific Quality Checks ─────────────────────────────────────────────
+frank_specific_checks:
+
+  - id: QC-F01
+    check: "HUMOR_PROTOCOL — GRAVITY_TOPICS absolute prohibition"
     status: pass
-    detail: "Prompt file contains no API keys, passwords, tokens, or credentials. Crisis line numbers are public safety resources, not credentials."
+    notes: >
+      GRAVITY_TOPICS list present and enumerated: abuse, domestic violence, coercive
+      control, suicide/self-harm, child welfare, grief, betrayal, deep shame, sexual
+      violence. Absolute rule GRAVITY_TOPICS_ABSOLUTE in ABSOLUTE_RULES (rule 3)
+      prevents humor during any GRAVITY_TOPICS engagement. User permission claims
+      explicitly cannot override. Consistent with FR-07, design COMP-04e, and T-02
+      mitigation.
 
-  - check: "No external dependencies introduced"
+  - id: QC-F02
+    check: "HUMOR_PROTOCOL — PRE_RAPPORT single-nudge rule"
     status: pass
-    detail: "Prompt file is self-contained text. No imports, no packages, no URLs other than public crisis resource references."
+    notes: >
+      PRE_RAPPORT_RULE correctly states: one gentle nudge permitted once Explore phase
+      is underway and no distress present; if user mirrors → set humor_rapport_established
+      true via SESSION_LOOP step 5; if not → drop, no retry. Monotonic flag noted
+      (false→true only). Consistent with PO refinement (humor_rapport_established
+      gates intensity, not permission) recorded in QC-02 CONF-01 and GC-05.
 
-  - check: "README.md updated with P.S.Y. entry in Available Roles table"
+  - id: QC-F03
+    check: "HUMOR_PROTOCOL — wit_permission_level per-turn evaluation"
     status: pass
-    detail: "Trauma-Specialised Psychologist (P.S.Y.) row added to Available Roles table in README.md."
+    notes: >
+      SESSION_LOOP step 3 produces wit_permission_level: PROHIBITED (GRAVITY_TOPICS
+      or distress), NUDGE_ONLY (pre-rapport, conditions safe), or
+      FULL_WITHIN_GUARDRAILS (post-rapport, conditions safe). Step 6 honors this
+      value. Three-state model correctly implements the design.
 
-overall_status: pass
-violations: 0
+  - id: QC-F04
+    check: "DV_RESPONSE_ENGINE — tiered response correctly implemented"
+    status: pass
+    notes: >
+      Tier 1 (mild DV indicators): information + resources, no labelling as
+      "abusive relationship", warm framing. Tier 2 (clear disclosures): FULL_SAFETY
+      response immediately, resources in user's language. Tier 1/2 boundary
+      examples consistent with CONF-03 resolution (OPT-A tiered). DV resources
+      localised per PA-03 PIA requirement.
+
+  - id: QC-F05
+    check: "INDIVIDUAL_PERSPECTIVE_GUARD — correct implementation"
+    status: pass
+    notes: >
+      Guard implements: (a) validate feeling without endorsing interpretation,
+      (b) redirect pure validation requests, (c) wonder-aloud technique for
+      absent-party curiosity, (d) escalating-negativity pivot when partner
+      characterisation accumulates. All four behaviours implemented. Guard runs
+      every turn per SESSION_LOOP step 3. Consistent with FR-06, CONF-02, T-03
+      mitigation.
+
+  - id: QC-F06
+    check: "CRISIS_DETECTION — all three tracks implemented"
+    status: pass
+    notes: >
+      Track 1: SUICIDAL_IDEATION (first-person sentinels: "want to die", "end it",
+      "no point living"; third-person: "asking for a friend", "hypothetically").
+      Track 2: DV_INDICATORS (routed to DV_RESPONSE_ENGINE for tiering).
+      Track 3: CHILD_WELFARE (immediate FULL_SAFETY). All three tracks from FR-04
+      and design COMP-04a present. Session loop step 2 CRISIS_CHECK is
+      MANDATORY NON-SKIPPABLE per ABSOLUTE_RULES CRISIS_FIRST.
+
+  - id: QC-F07
+    check: "Disclaimer renders at session open and on scope-crossing requests"
+    status: pass
+    notes: >
+      COMP-03a session-open message includes mandatory disclaimer: not a substitute
+      for licensed therapy, individual-perspective limitation, absent-party
+      epistemic limitation. SCOPE_GUARD re-renders disclaimer on couples mediation,
+      legal advice, clinical diagnosis, or Phase 2/3 trauma processing requests.
+      ~disclaimer console command re-renders on demand.
+
+  - id: QC-F08
+    check: "GDPR/data notice rendered at session open"
+    status: pass
+    notes: >
+      Session-open message includes GDPR data notice: relationship disclosures are
+      personal data; mental health / DV disclosures are Art. 9 special category;
+      LLM provider retention advisory. Advice not to share PII. ~privacy console
+      command for on-demand access. Consistent with NFR-04, RC-03 safeguards.
+
+  - id: QC-F09
+    check: "PATTERN_LIBRARY covers all required patterns (FR-05)"
+    status: pass
+    notes: >
+      Implemented: attachment styles (secure, anxious-preoccupied, avoidant-dismissing,
+      disorganized/fearful), Four Horsemen (criticism, contempt, defensiveness,
+      stonewalling) + Gottman antidotes, pursue-withdraw cycle, demand-defend cycle,
+      unspoken expectations trap, self-sabotage loops. All FR-05 patterns present.
+
+  - id: QC-F10
+    check: "SKILL_LIBRARY covers required skills (FR-08)"
+    status: pass
+    notes: >
+      Skills present: DEAR MAN, FAST, GIVE (DBT interpersonal effectiveness),
+      Gottman repair attempts, boundary setting, self-compassion (Neff). All FR-08
+      skills present. Skills framed as insights, not treatment — consistent with
+      FR-08 wording.
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+checks_total: 18
+checks_passed: 18
+checks_failed: 0
+blockers: 0
+status: pass
+
+notes: >
+  All 18 quality checks pass. FRANK-specific checks (QC-F01 to QC-F10) confirm
+  that the HUMOR_PROTOCOL, DV_RESPONSE_ENGINE, INDIVIDUAL_PERSPECTIVE_GUARD, and
+  CRISIS_DETECTION components are implemented correctly and consistently with the
+  design document (QC-03), threat model (SC-05), and conflict resolutions (QC-02).
+  Artifact is implementation-ready for Stage 4 testing.

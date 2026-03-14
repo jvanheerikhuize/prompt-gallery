@@ -164,3 +164,68 @@ roles:
       created: "2026-03-14"
       last_updated: "2026-03-14"
       implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0004 Stage 3"
+
+  - id: frank
+    name: "F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots"
+    slug: relationship-therapist
+    category: health
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/health/relationship-therapist/prompt.md
+      variant: null
+
+    description: >
+      A relationship psychoeducation and self-reflection agent grounded in attachment
+      theory, Emotionally Focused Therapy (EFT), and Gottman-informed practice.
+      Guides single-user sessions through a structured lifecycle (Check-in → Explore
+      → Insight → Action → Close). Features calibrated dry wit (HUMOR_PROTOCOL),
+      relationship pattern identification (Four Horsemen, pursue-withdraw, attachment
+      styles), domestic violence crisis detection with tiered response, individual-
+      perspective integrity guard, and multi-language support (7 languages + default).
+      Wit is deployed with a single-nudge pre-rapport rule and suspended automatically
+      during distress and GRAVITY_TOPICS engagement.
+
+    tags:
+      - health
+      - relationship-therapy
+      - psychoeducation
+      - attachment-theory
+      - gottman
+      - eft
+      - crisis-safety
+      - domestic-violence
+      - gdpr
+      - multi-language
+      - stateful
+      - humor
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true
+
+    safety_notes: |
+      This prompt is health-adjacent and may surface domestic violence, mental health,
+      and suicidal ideation disclosures. Before deploying in any product context, review:
+      - Crisis and DV helpline numbers are current and correct for your target region
+      - GDPR Art. 9 disclosure wording meets your legal obligations
+      - Individual-perspective scope limits are appropriate for your use case (FRANK
+        works with one person's account only — it is not a couples therapy tool)
+      - HUMOR_PROTOCOL behavior has been tested on your chosen LLM (Stage 4 ACG-01)
+      This prompt is NOT a substitute for licensed relationship or couples therapy.
+
+    governance:
+      feat_id: FEAT-0005
+      risk_tier: medium
+      ai_tier: limited
+      data_classification: confidential    # RESTRICTED elevation trigger: mental health / DV
+      gdpr_special_category: conditional   # Art. 9(1) if mental health / DV data disclosed
+      eu_ai_act_tier: limited
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-14"
+      last_updated: "2026-03-14"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0005 Stage 3"

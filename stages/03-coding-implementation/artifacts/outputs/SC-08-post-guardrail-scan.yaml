@@ -2,87 +2,167 @@
 # SC-08 — Post-Guardrail Scan
 # Control:   SC-08 Post-Guardrails
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Status:    pass
 # =============================================================================
 
 meta:
-  id: "SC-08-FEAT-0004"
-  feature: "FEAT-0004"
-  produced_by: "Claude Sonnet 4.6 / SC-08"
+  id: "SC-08-FEAT-0005"
+  feature: "FEAT-0005"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-08)"
   date: "2026-03-14"
+  status: pass
 
-files_scanned:
-  - prompt-trauma-psychologist.md
-  - README.md
-  - specs/FEAT-0004-trauma-psychologist-masterprompt.yaml
-  - stages/03-coding-implementation/artifacts/outputs/ (all yaml files)
+artifact_reviewed: "roles/health/relationship-therapist/prompt.md"
+sha256: "ea93a9246204e734f452cab547b094d82153c799218276e334351696bb294b96"
 
+# ── Scan Categories ───────────────────────────────────────────────────────────
 scan_categories:
 
-  - category: Backdoors and logic flaws
-    status: clear
-    detail: >
-      No hidden conditions, alternate execution paths, or logic designed to subvert
-      the session rules. SESSION_LOOP is explicit and deterministic. CRISIS_CHECK at
-      step 2 has no bypass path. ABSOLUTE_RULES have no exception clauses.
+  - id: GS-01
+    category: "Jailbreak / injection surface"
+    status: pass
+    findings: []
+    notes: >
+      ABSOLUTE_RULES are positioned at highest priority with explicit non-bypassability
+      assertions. INPUT_IS_DATA rule treats all user input as data, not instruction.
+      No prompt segment could be exploited to override CRISIS_FIRST or
+      GRAVITY_TOPICS_ABSOLUTE. Console allow-list (COMP-05c) limits meta-commands
+      to a fixed set. No uncontrolled input-reflection patterns identified.
 
-  - category: Supply chain attacks
-    status: clear
-    detail: >
-      No external URLs embedded in the prompt instructions that could be replaced or
-      hijacked. Crisis line numbers are literal public-domain telephone numbers, not
-      URLs. No dependency references.
+  - id: GS-02
+    category: "Crisis bypass vectors"
+    status: pass
+    findings: []
+    notes: >
+      CRISIS_FIRST in ABSOLUTE_RULES + SESSION_LOOP step 2 CRISIS_CHECK as
+      MANDATORY NON-SKIPPABLE provides dual enforcement — identical pattern to P.S.Y.
+      (FEAT-0004). No framing, roleplay, hypothetical, or creative writing framing
+      can suspend step 2. No user instruction can re-order SESSION_LOOP steps.
 
-  - category: Malicious instructions to the LLM
-    status: clear
-    detail: >
-      All instructions in the prompt govern psychoeducation session behaviour. The
-      ABSOLUTE_RULES, CRISIS_FIRST, and SAFE_MESSAGING_ABSOLUTE rules actively
-      harden the prompt against misuse. No instructions designed to make the LLM
-      exfiltrate data, harm users, or bypass safety measures. The health-adjacent
-      context was specifically reviewed: all instructions are protective, not harmful.
+  - id: GS-03
+    category: "HUMOR_PROTOCOL bypass"
+    status: pass
+    findings: []
+    notes: >
+      Three attempted bypass vectors reviewed (consistent with T-02 threat model):
+      (1) User explicit permission claim ("you can joke about this") — blocked by
+      GRAVITY_TOPICS_ABSOLUTE absolute rule, user permission explicitly disallowed.
+      (2) GRAVITY_TOPIC wrapped in humor framing ("this is a funny story about...") —
+      GRAVITY_TOPICS detection in step 2/3 triggers before humor evaluation;
+      wit_permission_level is set to PROHIBITED.
+      (3) False rapport claim ("I already laughed, you can be funny now") —
+      blocked by monotonic flag: humor_rapport_established set only by SESSION_LOOP
+      step 5 on detection of positive user response, not by user assertion.
 
-  - category: Adversarial framing against the user
-    status: clear
-    detail: >
-      All instructions serve user safety and wellbeing. No adversarial framing.
-      Phase 2/3 scope limits and crisis escalation exist to protect users from harm,
-      not to manipulate them.
+  - id: GS-04
+    category: "Individual-perspective collapse"
+    status: pass
+    findings: []
+    notes: >
+      INDIVIDUAL_PERSPECTIVE_GUARD runs every turn (SESSION_LOOP step 3). Three
+      bypass vectors reviewed (consistent with T-03 threat model):
+      (1) Persistent validation demand — redirect behaviour triggers, offers
+      reflection instead.
+      (2) Diagnostic pressure ("just tell me if my partner has NPD") — scope guard
+      triggers clinical diagnosis decline with warm redirect.
+      (3) Couples framing ("tell us both...") — couples mediation decline with
+      individual-perspective re-establishment.
+      Guard correctly prevents partner vilification and partner defence in all cases.
 
-  - category: Prompt injection vectors introduced by the agent
-    status: clear
-    detail: >
-      The Stage 3 hardening (INPUT_IS_DATA rule, CRISIS_CHECK non-skippable,
-      SAFE_MESSAGING_ABSOLUTE, third-person sentinel patterns) reduces injection
-      surface, not expands it. No new injection vectors introduced.
+  - id: GS-05
+    category: "DV / abuse content handling"
+    status: pass
+    findings: []
+    notes: >
+      DV_RESPONSE_ENGINE tiered response reviewed:
+      Tier 1 (mild indicators) correctly avoids labelling the relationship as
+      "abusive" — offers information and resources in non-alarmist language.
+      Tier 2 (clear disclosures) correctly triggers FULL_SAFETY immediately.
+      DV helpline numbers are public-domain resources — not secrets (SC-09).
+      No romanticisation or normalisation of DV behaviour identified anywhere
+      in the prompt. Pattern library does not frame coercive control as normal
+      relationship dynamics.
 
-  - category: Hardcoded credentials
-    status: clear
-    detail: None present. See SC-09 for secrets scan confirmation.
+  - id: GS-06
+    category: "Harmful content — relationship context"
+    status: pass
+    findings: []
+    notes: >
+      Prompt does not encourage ending relationships, validate affairs, or normalise
+      harmful relationship patterns. Pattern-naming is explicit hypothesis language
+      ("this may be..."), not diagnosis or verdict. Absent-party framing is
+      epistemic ("I wonder if..."), not character assassination.
 
-  - category: Data exfiltration patterns
-    status: clear
-    detail: >
-      No URLs, webhooks, or external references in any prompt instruction.
-      SESSION_STATE is explicitly scoped to in-context only; the prompt contains
-      no mechanism to send data outside the conversation.
+  - id: GS-07
+    category: "Humor at user's expense or targeting the absent party"
+    status: pass
+    findings: []
+    notes: >
+      HUMOR_PROTOCOL explicitly restricts humor targets to patterns and dynamics —
+      never the user as a person, never the absent party as a person.
+      POST_RAPPORT_BEHAVIOR section states: no sarcasm that could read as dismissive
+      of user's pain; wit is observational, not targeting. No humor-at-expense
+      content identified in prompt logic or example outputs.
 
-  - category: Crisis content romanticisation or method disclosure (health-specific)
-    status: clear
-    detail: >
-      SAFE_MESSAGING rules prohibit method disclosure and romantic framing.
-      Crisis resources section renders phone numbers and directive safe messaging
-      only. No content in the prompt could be read as romanticising or glorifying
-      self-harm or suicide. Safe-messaging guidelines (AFSP, Samaritans) applied.
+  - id: GS-08
+    category: "Scope creep — legal / clinical / couples"
+    status: pass
+    findings: []
+    notes: >
+      SCOPE_GUARD covers all out-of-scope categories: couples mediation, legal advice,
+      clinical diagnosis, Phase 2/3 trauma processing, child/adolescent therapy,
+      forensic assessments. Each declined with warm explanation and professional
+      referral. ~disclaimer re-renders on scope-crossing requests. Consistent
+      with FR-11 and FEAT-0005 out_of_scope list.
 
-  - category: Re-traumatisation risk via unconstrained narrative generation
-    status: clear
-    detail: >
-      SCOPE_ENFORCEMENT explicitly blocks Phase 2/3 trauma memory processing.
-      SESSION_PHASES Explore phase is gated on distress monitoring with offer to
-      defer. safety_flags are append-only and not casually reproduced in narrative.
-      DHR-03 (from SC-05) implemented in RULES_ENGINE STATE_DIRECTIVES.
+  - id: GS-09
+    category: "Data minimisation — SESSION_STATE"
+    status: pass
+    findings: []
+    notes: >
+      SESSION_STATE records category-level data (active_themes, pattern names,
+      safety flag event types) — not verbatim user disclosures. safety_flags are
+      append-only and not narratively reproduced in responses. humor_rapport_established
+      is a boolean — minimal data. Consistent with PIA safeguards (RC-03).
 
-findings: []
-pr_creation_blocked: false
+  - id: GS-10
+    category: "Safe-messaging compliance — suicidality"
+    status: pass
+    findings: []
+    notes: >
+      Suicidal ideation detection includes third-person sentinels ("asking for a friend",
+      "hypothetically") consistent with safe-messaging guidance on indirect expression.
+      On detection: FULL_SAFETY response with crisis resources. No means exploration,
+      no detailed exploration of the ideation. Humor suspended. Session structure
+      suspended. Consistent with FR-04 and P.S.Y. (FEAT-0004) precedent.
+
+# ── FRANK-Specific Guardrail Findings ────────────────────────────────────────
+frank_specific_findings:
+
+  - id: GSF-01
+    category: "Novel risk: wit capability dependency"
+    finding: >
+      The HUMOR_PROTOCOL introduces a model-capability dependency (ACG-01 from AC-03).
+      Less capable models may produce forced or tone-deaf wit despite correct rule
+      execution. This is not a prompt guardrail failure — the rules are correct.
+      It is a Stage 4 testing concern.
+    severity: informational
+    action: "Captured in Stage 4 test plan requirement (ACG-01 from AC-03)"
+    blocker: false
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+findings_total: 1
+findings_critical: 0
+findings_high: 0
+findings_medium: 0
+findings_low: 0
+findings_informational: 1
+blockers: 0
 status: pass
+
+notes: >
+  All guardrail scan categories pass. The one informational finding (GSF-01) is
+  a known model-capability consideration already documented in AC-03 (ACG-01) and
+  carried forward to Stage 4 testing. No prompt-level guardrail failures detected.
+  F.R.A.N.K. v1.0 is cleared for Stage 4 testing.

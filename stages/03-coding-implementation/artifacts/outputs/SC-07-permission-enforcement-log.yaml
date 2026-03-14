@@ -2,88 +2,114 @@
 # SC-07 — Permission Enforcement Log
 # Control:   SC-07 Permission Management
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Status:    complete
 # =============================================================================
 
 meta:
-  id: "SC-07-FEAT-0004"
-  feature: "FEAT-0004"
-  agent: "Claude Sonnet 4.6"
-  session_date: "2026-03-14"
+  id: "SC-07-FEAT-0005"
+  feature: "FEAT-0005"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-07)"
+  date: "2026-03-14"
+  status: complete
 
-permission_boundary:
-  allowed:
-    - "Read: all files within tag-role-test/ repository"
-    - "Write: prompt-trauma-psychologist.md, README.md, specs/FEAT-0004-*.yaml, stages/03-coding-implementation/artifacts/outputs/"
-    - "Execute: git add, git commit, git push (within tag-role-test/ repository)"
-  denied:
-    - "External API calls"
-    - "Network requests (except git remote)"
-    - "File system access outside tag-role-test/"
-    - "Modification of a-sdlc/ submodule (read-only)"
-    - "Access to user PII or session data outside this repository"
+# ── Files Written This Stage ──────────────────────────────────────────────────
+files_written:
 
-access_log:
-  - timestamp: "2026-03-14"
-    action: read
-    resource: "a-sdlc/stages/03-coding-implementation/03-coding-implementation.yaml"
-    granted: true
-    notes: "Stage definition load"
+  - path: "roles/health/relationship-therapist/prompt.md"
+    operation: create
+    author: "Claude Sonnet 4.6 (Stage 3 implementer)"
+    authorized_by: "RC-02-FEAT-0005 (Design Approval — approved 2026-03-14)"
+    sensitivity: confidential    # RESTRICTED elevation trigger: mental health / DV
+    permission_check: pass
+    notes: >
+      Primary Stage 3 deliverable. Health-adjacent masterprompt. Reviewed against
+      QC-05 quality gate and SC-08 guardrail scan prior to stage exit.
 
-  - timestamp: "2026-03-14"
-    action: read
-    resource: "a-sdlc/controls/ (QC-04, QC-05, SC-07 through SC-11, RC-04, GC-03)"
-    granted: true
-    notes: "Control definitions load"
+  - path: "stages/03-coding-implementation/artifacts/outputs/SC-07-permission-enforcement-log.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (SC-07)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: read
-    resource: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
-    granted: true
-    notes: "Stage 3 design reference — implementation component mapping"
+  - path: "stages/03-coding-implementation/artifacts/outputs/QC-05-quality-gate-report.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (QC-05)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: read
-    resource: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
-    granted: true
-    notes: "Stage 3 hardening actions — T-01 through T-07 implementation"
+  - path: "stages/03-coding-implementation/artifacts/outputs/SC-08-post-guardrail-scan.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (SC-08)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: read
-    resource: "stages/02-system-design/artifacts/outputs/RC-02-design-approval-decision.yaml"
-    granted: true
-    notes: "Stage 2 exit confirmation before Stage 3 entry"
+  - path: "stages/03-coding-implementation/artifacts/outputs/SC-09-secrets-scan-report.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (SC-09)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: read
-    resource: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
-    granted: true
-    notes: "Requirements reference for implementation verification"
+  - path: "stages/03-coding-implementation/artifacts/outputs/SC-10-sca-report.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (SC-10)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: write
-    resource: "prompt-trauma-psychologist.md"
-    granted: true
-    notes: "Main deliverable — P.S.Y. masterprompt v1.0"
+  - path: "stages/03-coding-implementation/artifacts/outputs/SC-11-container-iac-security-report.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (SC-11)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: write
-    resource: "README.md"
-    granted: true
-    notes: "Available Roles table updated with P.S.Y. entry"
+  - path: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (RC-04)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: write
-    resource: "stages/03-coding-implementation/artifacts/outputs/"
-    granted: true
-    notes: "Stage 3 evidence artefacts (SC-07 through QC-04)"
+  - path: "stages/03-coding-implementation/artifacts/outputs/GC-03-code-provenance-record.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (GC-03)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
-  - timestamp: "2026-03-14"
-    action: write
-    resource: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
-    granted: true
-    notes: "stage_reached updated to 3 on Stage 3 completion"
+  - path: "stages/03-coding-implementation/artifacts/outputs/QC-04-pull-request-record.yaml"
+    operation: overwrite
+    author: "Claude Sonnet 4.6 (QC-04)"
+    authorized_by: "A-SDLC Stage 3 controls mandate"
+    sensitivity: internal
+    permission_check: pass
 
+  - path: "roles/registry.yaml"
+    operation: update
+    author: "Claude Sonnet 4.6 (Stage 3 registry update)"
+    authorized_by: "RC-02-FEAT-0005 (Design Approval)"
+    sensitivity: internal
+    permission_check: pass
+    notes: "Adds F.R.A.N.K. entry under health category."
+
+  - path: "specs/FEAT-0005-relationship-therapist-masterprompt.yaml"
+    operation: update
+    author: "Claude Sonnet 4.6"
+    authorized_by: "A-SDLC lifecycle management"
+    sensitivity: internal
+    permission_check: pass
+    notes: "stage_reached updated to 3; Stage 3 commit hash recorded."
+
+# ── Permission Violations ─────────────────────────────────────────────────────
 violations: []
-out_of_boundary_attempts: 0
-status: clean
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+summary:
+  files_written: 12
+  violations: 0
+  status: pass

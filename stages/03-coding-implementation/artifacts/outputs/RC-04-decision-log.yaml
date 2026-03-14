@@ -2,123 +2,163 @@
 # RC-04 — Decision Log
 # Control:   RC-04 Decision Log
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Status:    complete
 # =============================================================================
 
 meta:
-  id: "RC-04-FEAT-0004"
-  feature: "FEAT-0004"
-  produced_by: "Claude Sonnet 4.6 / RC-04"
+  id: "RC-04-FEAT-0005"
+  feature: "FEAT-0005"
+  produced_by: "Claude Sonnet 4.6 (RC-04)"
   date: "2026-03-14"
+  status: complete
 
+# ── Implementation Decisions ──────────────────────────────────────────────────
 decisions:
 
   - id: DEC-01
-    timestamp: "2026-03-14"
-    decision: "Prompt versioned at v1.0 (new prompt, no prior baseline)"
+    title: "HUMOR_PROTOCOL as a named RULES_ENGINE component, not inline logic"
+    decision: >
+      HUMOR_PROTOCOL was implemented as a dedicated <HUMOR_PROTOCOL> subsection
+      within <RULES_ENGINE>, with its own GRAVITY_TOPICS list, PRE_RAPPORT_RULE,
+      POST_RAPPORT_BEHAVIOR, and WIT_PERMISSION_LEVELS. It is not inlined into
+      SESSION_LOOP step logic.
     rationale: >
-      Unlike T.A.G. (which had a v2.0 baseline to increment from), P.S.Y. is a new
-      masterprompt with no prior version. v1.0 is the correct starting version per
-      semantic versioning convention for a first-release artefact.
+      Treating HUMOR_PROTOCOL as a named component makes it auditable as a safety
+      control: the GRAVITY_TOPICS list can be inspected, the PRE_RAPPORT_RULE can
+      be read in isolation, and the WIT_PERMISSION_LEVELS output is explicit.
+      Inlining it into SESSION_LOOP steps would make the safety envelope harder
+      to test and audit — a critical property given ACG-01 (humor quality must
+      be tested on multiple LLMs in Stage 4).
     alternatives_considered:
-      - "v2.1 or similar to match T.A.G. version — rejected: P.S.Y. is an independent
-        prompt; version numbers should not be coupled across prompts"
-    decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""
+      - "Inline humor logic into SESSION_LOOP step 6 (rejected: audit surface reduced)"
+      - "Separate humor as a post-processing step (rejected: GRAVITY_TOPICS must
+         gate humor before content generation, not after)"
 
   - id: DEC-02
-    timestamp: "2026-03-14"
-    decision: "T-01 hardening: INPUT_IS_DATA as ABSOLUTE_RULES item + SESSION_LOOP step 2 non-skippable CRISIS_CHECK (dual enforcement)"
+    title: "wit_permission_level as a SESSION_LOOP step output"
+    decision: >
+      SESSION_LOOP step 3 (RULES_CHECK) explicitly produces wit_permission_level
+      as an output value (PROHIBITED / NUDGE_ONLY / FULL_WITHIN_GUARDRAILS).
+      SESSION_LOOP step 6 (GENERATE_RESPONSE) consumes this value.
     rationale: >
-      T-01 is the only CRITICAL threat in the STRIDE model (T-01: crisis bypass via
-      prompt injection). Dual enforcement — INPUT_IS_DATA in ABSOLUTE_RULES (highest
-      authority in the prompt) AND CRISIS_CHECK labelled NON-SKIPPABLE in SESSION_LOOP
-      step 2 — maximises LLM adherence. A single enforcement point could be circumvented
-      by adversarial framing that shifts processing to a different section.
+      Making wit_permission_level explicit between steps creates a testable
+      interface: given a known session state and input, the expected
+      wit_permission_level can be asserted in Stage 4 tests. This prevents
+      HUMOR_PROTOCOL logic from being re-evaluated during response generation
+      (which could lead to inconsistency between evaluation and output).
     alternatives_considered:
-      - "ABSOLUTE_RULES only — rejected: SESSION_LOOP is the per-turn enforcement point,
-        should redundantly mirror the absolute rule for defence-in-depth"
-    decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""
+      - "Evaluate humor permission inline at step 6 (rejected: creates two evaluation
+         points; monotonic flag check must occur exactly once per turn)"
 
   - id: DEC-03
-    timestamp: "2026-03-14"
-    decision: "Crisis resources localised by LANGUAGE_DETECTION output (7 languages + default)"
+    title: "humor_rapport_established settable only by SESSION_LOOP step 5"
+    decision: >
+      The humor_rapport_established flag transitions from false to true exclusively
+      in SESSION_LOOP step 5 (UPDATE_STATE), on detection of a positive user
+      response to the wit nudge. No console command can set it. No user assertion
+      ("I'm ok with humor") can set it. The CONTROLLER has no path to override it.
     rationale: >
-      NFR-06 (multi-language, elevated to must) and GAP-04 (support multi-language)
-      require that crisis escalation resources are delivered in the user's language and
-      region. Hard-coding English-only resources would fail users in non-English sessions
-      at the most critical moment. Localised resources for en/nl/fr/de/es/pt/it were
-      selected based on European/US coverage; a default fallback covers undetected languages.
+      Monotonic flag with single write path is the strongest available defence
+      against T-02 (HUMOR_PROTOCOL bypass). The flag is not a user preference
+      setting — it records a user behaviour (positive response to a nudge).
+      Only SESSION_LOOP step 5 can observe that behaviour and record it.
+      This decision implements the zero-trust logical posture validated in SC-06.
     alternatives_considered:
-      - "English-only with note — rejected: NFR-06 is a must requirement; crisis moment
-        is exactly when language clarity matters most"
-      - "Full per-country lookup table — rejected: complexity is disproportionate for a
-        prompt-only deliverable; language-level coverage is adequate"
-    decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""
+      - "Allow ~state command to set humor_rapport_established (rejected: console
+         commands cannot override ABSOLUTE_RULES; humor state is safety-relevant)"
+      - "Allow user to opt in to humor explicitly (rejected: consistent with
+         PO decision that the flag gates intensity not permission — user opt-in
+         is not needed; FRANK may nudge first)"
 
   - id: DEC-04
-    timestamp: "2026-03-14"
-    decision: "Two-tier disclaimer (CONF-01 OPT-C): brief warm tier at session open + full formal tier on boundary crossing"
+    title: "DV_RESPONSE_ENGINE Tier 1/2 split"
+    decision: >
+      DV indicators split into Tier 1 (mild/ambiguous: isolation, controlling
+      behaviour descriptions, expressed fear of partner reaction) and Tier 2
+      (clear disclosures: physical violence, explicit threat descriptions, explicit
+      fear for safety). Tier 1 triggers warm information + resource offering without
+      labelling. Tier 2 triggers FULL_SAFETY immediately.
     rationale: >
-      CONF-01 identified tension between immersion/warmth and mandatory disclosure. OPT-C
-      resolves this by separating disclosure into two tiers: a brief, warm acknowledgement
-      at session open (preserving therapeutic atmosphere) and a full formal GDPR+scope
-      disclaimer triggered only when clinical-boundary language is detected. This satisfies
-      both FR-02 (mandatory disclaimer) and NFR-01 (warm pacing) without compromise.
+      Consistent with CONF-03 resolution (OPT-A tiered) and T-04 mitigation.
+      A single-tier DV response at FULL_SAFETY for all indicators risks over-triggering
+      on ambiguous language common in relationship distress narratives (e.g., "he controls
+      everything" could be a personality complaint, not a coercive control disclosure).
+      Tier 1 allows resource offering without the stigmatising effect of being told
+      one is in an "abusive relationship" before the user has framed it that way.
+      At Tier 2, the safety imperative overrides all other considerations.
     alternatives_considered:
-      - "OPT-A (full disclaimer only) — rejected: disrupts session opening warmth"
-      - "OPT-B (brief disclaimer only) — rejected: may under-disclose scope on clinical crossings"
-    decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""
+      - "Single-tier FULL_SAFETY for all indicators (rejected: false positive risk
+         on ambiguous language; may cause user to disengage)"
+      - "Three-tier system (rejected: added complexity without safety benefit
+         over two tiers; Tier 1 resources are appropriate for mid-range ambiguity)"
 
   - id: DEC-05
-    timestamp: "2026-03-14"
-    decision: "SESSION_STATE includes ~privacy command (CONF-02 OPT-B/C): full state schema + GDPR disclosure + on-demand privacy transparency"
+    title: "INDIVIDUAL_PERSPECTIVE_GUARD as per-turn evaluation, not phase-gated"
+    decision: >
+      INDIVIDUAL_PERSPECTIVE_GUARD runs in SESSION_LOOP step 3 every turn, not
+      only in specific session phases.
     rationale: >
-      CONF-02 identified tension between full session state (needed for phase coherence)
-      and GDPR Art. 9 data minimisation. OPT-B/C resolves this: full SESSION_STATE schema
-      is maintained for coherence (OPT-B), AND a ~privacy console command explicitly
-      discloses what state is held and the LLM provider retention risk (OPT-C). This gives
-      users full transparency and control without degrading session quality.
+      Consistent with T-03 mitigation design. The risk of individual-perspective
+      collapse exists in any phase — a user may demand partner validation during
+      Explore, Insight, or Action equally. Phase-gating the guard would create
+      a window in which the guard is not active, increasing T-03 likelihood.
+      Per-turn evaluation ensures continuous protection.
     alternatives_considered:
-      - "OPT-A (minimal state) — rejected: insufficient for phase sequencing and FR-09"
-      - "OPT-B only (no ~privacy) — rejected: GDPR Art. 9 transparency requires disclosure"
-    decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""
+      - "Evaluate guard only during Explore phase (rejected: validation pressure
+         can arise in Insight and Action phases)"
 
   - id: DEC-06
-    timestamp: "2026-03-14"
-    decision: "SCOPE_ENFORCEMENT uses gentle-then-firm redirect: first two Phase 2/3 boundary crossings get a warm redirect; third+ gets a firm decline"
+    title: "DV helpline numbers localised for 7 languages"
+    decision: >
+      DV_RESPONSE_ENGINE includes localised helpline numbers for en, nl, fr, de,
+      es, pt, it + international default. Numbers are the same public-domain
+      resources used in P.S.Y. (FEAT-0004) plus extended DV-specific lines.
     rationale: >
-      A rigid hard-stop on first Phase 2/3 attempt may feel harsh in a therapeutic context
-      and could disengage a vulnerable user. A gentle first response normalises the boundary
-      as care, not refusal. The firm response (third+ attempt) prevents boundary erosion via
-      persistence. This graduated approach aligns with trauma-informed care principles
-      (empowerment and collaboration — SAMHSA pillar 4/5) while maintaining FR-11.
+      FRANK is a relationship support tool that may surface DV disclosures from
+      users in multiple European and English-speaking countries. Localised numbers
+      reduce friction in safety-critical moments. NFR-06 (multi-language) and
+      FR-04 (crisis escalation) jointly require this. Numbers verified as current
+      public-domain resources at time of authorship (SC-09 confirms public-domain
+      classification).
     alternatives_considered:
-      - "Hard stop on first attempt — rejected: inconsistent with NFR-01 warm pacing and
-        SAMHSA collaboration pillar"
-      - "Always gentle redirect with no escalation — rejected: persistent attempts could
-        eventually drift the session into unsafe territory"
-    decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""
+      - "Single international hotline only (rejected: many users cannot use
+         international lines; local lines have higher trust)"
 
   - id: DEC-07
-    timestamp: "2026-03-14"
-    decision: "safety_flags in SESSION_STATE are append-only and not narratively reproduced in session responses"
+    title: "Session lifecycle: 5 phases vs. P.S.Y.'s 5 phases"
+    decision: >
+      FRANK session lifecycle: open → check_in → explore → insight → action → close.
+      P.S.Y. lifecycle: open → check_in → contract → explore → stabilise → close.
+      FRANK omits Contract (not appropriate for a session-discovery format) and
+      Stabilise (distress stabilisation is a trauma-care concern, less central to
+      relationship self-reflection). FRANK adds Action (skills and next steps).
     rationale: >
-      PR-04 (from RC-03 privacy risk assessment) and DHR-03 (from SC-05 STRIDE) identified
-      that casually referencing crisis content in later session responses risks re-traumatisation.
-      Making safety_flags append-only (never modified, never deleted) ensures audit integrity.
-      The restriction on narrative reproduction ensures crisis disclosures are not casually
-      surfaced in subsequent session turns.
+      Relationship self-reflection sessions are goal-oriented in a different way than
+      trauma support sessions. The Action phase is essential for FRANK to deliver on
+      FR-08 (skill delivery) and prevents sessions ending without practical takeaways.
+      The Contract phase from P.S.Y. is appropriate for trauma care (explicit
+      stabilisation goals) but overly clinical for relationship psychoeducation.
     alternatives_considered:
-      - "Full verbatim crisis disclosure stored in safety_flags — rejected: PR-04 and DHR-03
-        both identify this as a re-traumatisation and data minimisation risk"
-    decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""
+      - "Reuse P.S.Y. lifecycle exactly (rejected: Stabilise phase is trauma-specific;
+         Contract phase is clinically heavy for a relationship context)"
 
-reviewed_by: "Jerry van Heerikhuize (Tech Lead)"
-review_date: "2026-03-14"
+  - id: DEC-08
+    title: "Humor English-only in v1.0"
+    decision: >
+      HUMOR_PROTOCOL wit deployment restricted to English in v1.0. FRANK detects
+      and responds in the user's language for all other session content.
+    rationale: >
+      Consistent with NFR-06 and CONF-04 (OPT-A). Humor quality and appropriateness
+      are highly language- and culturally-specific. Dry observational wit in English
+      may not translate correctly into other languages and could create unintended
+      tone. Safer to restrict wit to English in v1.0 and evaluate multi-language
+      humor in a future version after testing.
+    alternatives_considered:
+      - "Allow humor in all session languages (rejected: cultural humor risk;
+         would require per-language humor testing in Stage 4)"
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+decisions_total: 8
+decisions_with_alternatives: 8
+status: complete

@@ -30,9 +30,10 @@ The canonical role list lives in [`roles/registry.yaml`](roles/registry.yaml).
 | Role | Prompt | Variant | Description | Notes |
 |------|--------|---------|-------------|-------|
 | P.S.Y. — Trauma-Specialised Psychologist | [roles/health/trauma-psychologist/prompt.md](roles/health/trauma-psychologist/prompt.md) | — | Trauma-informed psychoeducation and emotional support session agent | ⚠️ See safety notes |
+| F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots | [roles/health/relationship-therapist/prompt.md](roles/health/relationship-therapist/prompt.md) | — | Relationship self-reflection and psychoeducation agent — attachment theory, EFT, Gottman-informed, with calibrated wit | ⚠️ See safety notes |
 
-> **P.S.Y. safety notes:** Crisis line numbers should be verified for your target region before deployment.
-> This prompt is not a substitute for licensed clinical care. See [`roles/registry.yaml`](roles/registry.yaml) for full governance details.
+> **Health prompt safety notes:** Crisis line numbers should be verified for your target region before deployment.
+> These prompts are not a substitute for licensed clinical care. See [`roles/registry.yaml`](roles/registry.yaml) for full governance details.
 
 ---
 
@@ -77,7 +78,9 @@ roles/
 │       └── prompt.md
 │
 └── health/
-    └── trauma-psychologist/             ← P.S.Y. v1.0
+    ├── trauma-psychologist/             ← P.S.Y. v1.0
+    │   └── prompt.md
+    └── relationship-therapist/          ← F.R.A.N.K. v1.0
         └── prompt.md
 
 specs/                                   ← Feature specifications (A-SDLC Stage 1 outputs)
