@@ -2,44 +2,45 @@
 # QC-08 — Documentation Completeness Report
 # Control:   QC-08 Documentation Completeness
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "QC-08-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "QC-08-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / QC-08"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 documentation_checks:
 
-  - doc: "README.md — User quick-start"
+  - doc: "README.md — Available Roles table"
     required: true
     status: present
-    location: "README.md (top section)"
-    content: "Project overview, Quick Start (3 steps), feature list, governance info"
+    location: "README.md — Available Roles table"
+    content: "P.S.Y. — Trauma-Specialised Psychologist row added with link to prompt-trauma-psychologist.md"
 
-  - doc: "prompt.md — Canonical prompt with inline documentation"
+  - doc: "prompt-trauma-psychologist.md — Canonical prompt with inline documentation"
     required: true
     status: present
-    location: "prompt.md"
-    content: "How to Play, full prompt, Tips, Contributing section"
+    location: "prompt-trauma-psychologist.md"
+    content: >
+      How to Use section, full prompt (MVC/XML structure), inline documentation of all
+      ABSOLUTE_RULES, RULES_ENGINE sections, SESSION_PHASES, SESSION_LOOP, CONSOLE commands.
+      Author, version, provenance, and date documented in file header.
 
-  - doc: "prompt-compressed.md — Compressed variant with sync note"
+  - doc: "Feature Specification (FEAT-0004)"
     required: true
     status: present
-    location: "prompt-compressed.md"
-    content: "How to Play, compressed prompt, Sync Note"
+    location: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
+    content: >
+      11 FR + 6 NFR requirements, risk classification (MEDIUM), AI tier (LIMITED),
+      data classification (RESTRICTED/GDPR Art. 9), constraints, dependencies,
+      audit trail. stage_reached: 3.
 
-  - doc: "Feature Specification (FEAT-0001)"
+  - doc: "Change Request (CR-0004)"
     required: true
     status: present
-    location: "specs/FEAT-0001-tag-dungeonmaster-masterprompt.yaml"
-
-  - doc: "Change Request (CR-0001)"
-    required: true
-    status: present
-    location: "stages/01-intent-ingestion/artifacts/inputs/CR-0001-tag-dungeonmaster-masterprompt.yaml"
+    location: "stages/01-intent-ingestion/artifacts/inputs/CR-0004-trauma-psychologist-masterprompt.yaml"
 
   - doc: "Stage 1 artefacts (QC-01, QC-02, RC-01, AC-01, SC-04, GC-05)"
     required: true
@@ -60,12 +61,30 @@ documentation_checks:
     required: true
     status: present
     location: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
-    content: "6 decisions documented with rationale and alternatives"
+    content: "7 decisions documented: version, T-01 dual enforcement, crisis localisation, 2-tier disclaimer, SESSION_STATE + ~privacy, SCOPE_ENFORCEMENT graduated redirect, safety_flags append-only"
+
+  - doc: "STRIDE Threat Model (SC-05)"
+    required: true
+    status: present
+    location: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
+    content: "9 threats, 4 trust boundaries, T-01 CRITICAL mitigated, T-02/T-03 HIGH mitigated"
+
+  - doc: "Privacy Impact Assessment (RC-03)"
+    required: true
+    status: present
+    location: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
+    content: "GDPR Art. 9 special category data, DPIA not required, 4 privacy risks assessed, overall MEDIUM accepted"
+
+  - doc: "AI Component Design Review (AC-03)"
+    required: true
+    status: present
+    location: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
+    content: "LIMITED tier confirmed, Art. 52/53/14 compliance, ACG-01 gap documented"
 
   - doc: "Runbook"
     required: false
     status: not_applicable
-    rationale: "No deployment infrastructure; prompt is copy-paste only. No runbook required."
+    rationale: "No deployment infrastructure; prompt is copy-paste only. No operational runbook required."
 
   - doc: "API documentation"
     required: false
@@ -75,12 +94,17 @@ documentation_checks:
   - doc: "Architecture Decision Records (ADRs)"
     required: false
     status: covered_by_rc04
-    rationale: "RC-04 decision log covers all significant architectural decisions."
+    rationale: "RC-04 decision log (7 decisions) covers all significant architectural and design decisions made in Stage 3."
 
   - doc: "EU AI Act Annex IV technical documentation"
-    required: false
-    status: not_applicable
-    rationale: "Annex IV required for high-risk AI only. T.A.G. is minimal-risk."
+    required: true    # Required for LIMITED tier (GPAI technical documentation)
+    status: present
+    location: "specs/FEAT-0004-*.yaml + A-SDLC artifact set (Stages 1–4)"
+    content: >
+      AC-03 documents Art. 52(1) transparency, Art. 53 GPAI documentation, and Art. 14
+      human oversight compliance. The full A-SDLC artifact set constitutes the technical
+      documentation package per AC-03 confirmation. Annex IV (high-risk) is not applicable;
+      GPAI Art. 53 documentation is satisfied.
 
   - doc: "CONTRIBUTING.md"
     required: true
@@ -90,5 +114,5 @@ documentation_checks:
 gaps: []
 
 overall_status: complete
-approved_by: "Jerry van Heerikhuize"
-approval_date: "2026-03-11"
+approved_by: "Jerry van Heerikhuize (QA)"
+approval_date: "2026-03-14"

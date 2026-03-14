@@ -2,60 +2,142 @@
 # AC-05 — Bias & Fairness Report
 # Control:   AC-05 Bias & Fairness Testing
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "AC-05-FEAT-0001"
-  feature: "FEAT-0001"
-  ai_tier: minimal
+  id: "AC-05-FEAT-0004"
+  feature: "FEAT-0004"
+  ai_tier: limited
   produced_by: "Claude Sonnet 4.6 / AC-05"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 scope_note: |
-  T.A.G. is a minimal-risk entertainment prompt. It generates fictional narrative content
-  in response to user-defined settings. The AI component (the prompt) does not make
-  decisions affecting real people's rights, employment, credit, healthcare, or legal status.
-  Bias analysis is proportionate to the minimal-risk classification.
+  P.S.Y. is a LIMITED-risk psychoeducation and emotional support prompt targeting adult
+  users with trauma histories. Bias analysis is proportionate to the LIMITED risk
+  classification and the vulnerable user population context.
+
+  Unlike systems that make decisions affecting real people's rights (employment, credit,
+  healthcare access), P.S.Y. provides psychoeducation and coping skill support.
+  It does not make recommendations that determine access to services or resources.
+  However, the health-adjacent context and vulnerable population mean that encoded
+  biases — even subtle ones — could undermine therapeutic value or cause harm.
+
+  EU AI Act Art. 10(2)(f): No training data involved. Analysis is content-review based.
+  EU AI Act Art. 15 (accuracy, robustness, cybersecurity): bias-related robustness
+  assessed proportionately for LIMITED tier.
 
 content_bias_analysis:
 
-  - characteristic: Gender
+  - characteristic: "Gender and Sexual Orientation"
     finding: none
     detail: >
-      The prompt collects player_gender as a user-supplied input with no constraints or
-      defaults. NPCs have gender stored in STATE_SCHEMA as user-defined strings. No
-      gendered stereotypes are encoded in the prompt's instructions.
+      The prompt uses gender-neutral language throughout. SESSION_STATE does not
+      collect or require gender information. The agent does not ask for gender. There
+      are no gendered assumptions in technique guidance, psychoeducation content, or
+      session structure. The self-compassion break (Neff) and other techniques are
+      framed without gender assumptions. Relationship references use gender-neutral
+      language ('your partner', 'your relationships').
 
-  - characteristic: Ethnicity / Race
-    finding: none
-    detail: >
-      The prompt contains no ethnicity-specific content. Setting, lore, and world are
-      entirely user-defined. No racial or ethnic defaults are encoded.
-
-  - characteristic: Age
-    finding: none
-    detail: "No age-related content or defaults in the prompt."
-
-  - characteristic: Disability
-    finding: none
-    detail: "No disability-related content or defaults in the prompt."
-
-  - characteristic: Socioeconomic status
-    finding: none
-    detail: "Difficulty scaling is game-mechanical, not socioeconomic."
-
-  - characteristic: "Narrative bias (adversarial NPC framing)"
+  - characteristic: "Ethnicity and Cultural Background"
     finding: low_noted
     detail: >
-      NPCs can become hostile based on relationship_score reductions. This is a game
-      mechanic (consequence of player actions) not a bias. The mechanic applies equally
-      regardless of player or NPC characteristics.
-    severity: none
+      The SAMHSA 6-pillar framework and Herman (1992) phase-based trauma model
+      originate from Western psychological tradition. The prompt explicitly acknowledges
+      this in NFR-05 (Cultural Sensitivity) and the PERSONA, instructing the agent not
+      to impose Western-normative assumptions. Technique library includes cultural
+      context invitations per CONF-04 resolution. However, all psychoeducation concepts
+      (HPA axis, window of tolerance, CBT reframing) are from Western clinical traditions.
+      Non-Western trauma frameworks (e.g. collectivist healing, spiritual/religious
+      coping) are not represented in the PSYCHOEDUCATION_LIBRARY.
+    severity: low
+    mitigation: >
+      NFR-05 instructs the agent to adapt framing when cultural context is disclosed.
+      Cultural context invitations in technique guidance allow users to redirect.
+      This is a structural limitation of a Phase 1 psychoeducation prompt rather
+      than an encoded discriminatory outcome. Accepted.
+    accepted: true
+
+  - characteristic: "Age"
+    finding: low_noted
+    detail: >
+      The prompt assumes adult users (stated in FEAT-0004 out_of_scope: "Child or
+      adolescent-specific adaptations — prompt assumes adult users"). No age-appropriate
+      adaptation is provided for younger adults (18–21) who may need different pacing
+      or language. The prompt does not verify or ask about age. No content is harmful
+      to adult users of any age; the limitation is absence of age-specific adaptation
+      rather than discriminatory content.
+    severity: low
+    mitigation: >
+      Out-of-scope statement is explicit. Adult users across age ranges can engage
+      meaningfully with the prompt. Age adaptation is a future enhancement scope item.
+    accepted: true
+
+  - characteristic: "Disability"
+    finding: low_noted
+    detail: >
+      The 5-4-3-2-1 sensory grounding technique (TECHNIQUE_LIBRARY T-03) relies on
+      sensory modalities (sight, hearing, touch, smell, taste). Users with sensory
+      disabilities (visual impairment, hearing loss, limited touch sensitivity) may
+      find this technique less accessible. The cultural context invitation partially
+      mitigates this by allowing users to redirect. The body scan technique (T-07)
+      may be challenging for users with somatic dissociation or chronic pain conditions.
+      The prompt instructs that techniques are offered collaboratively and users always
+      choose — this reduces harm risk but does not fully address the accessibility gap.
+    severity: low
+    mitigation: >
+      Technique choice is always user-controlled. Cultural context invitations for each
+      technique allow users to opt out. Future enhancement: explicit adaptations for
+      sensory disabilities in technique guidance.
+    accepted: true
+
+  - characteristic: "Socioeconomic Status"
+    finding: none
+    detail: >
+      The prompt explicitly acknowledges systemic barriers to care (cost, scarcity,
+      stigma, waitlists, geography) in its problem framing (FEAT-0004 intent). The
+      session structure is designed to be accessible regardless of socioeconomic context.
+      No assumptions are made about users' access to therapists, medication, or other
+      resources. Crisis resources referenced are public emergency lines (free to access).
+
+  - characteristic: "Language and Literacy"
+    finding: none
+    detail: >
+      NFR-06 (multi-language, elevated to must): the agent detects and responds in the
+      user's language. Default complexity approximately CEFR B2; adjusts to user
+      language patterns. Crisis resources are localised. This design actively reduces
+      language-based barriers rather than introducing bias.
+
+  - characteristic: "Religion and Spirituality"
+    finding: low_noted
+    detail: >
+      The safe-place visualisation technique (T-04) is a secular exercise. No religious
+      or spiritual content is embedded in the prompt. However, the absence of
+      spiritually-informed coping options (prayer, spiritual community, faith-based
+      resilience) may be perceived as exclusionary by users for whom spirituality is a
+      primary coping resource. NFR-05 Cultural Sensitivity instructs the agent to adapt
+      when spiritual context is disclosed.
+    severity: low
+    mitigation: >
+      NFR-05 and CONF-04 provide a mechanism for the agent to acknowledge and work with
+      spiritual framing when the user introduces it. The absence of explicit spiritual
+      content is a scope limit, not a discriminatory design choice. Accepted.
     accepted: true
 
 overall_assessment: no_discriminatory_outcomes_detected
+overall_note: |
+  No HIGH or CRITICAL bias findings. Five LOW findings are documented — all are structural
+  limitations of a Phase 1 psychoeducation prompt (Western clinical tradition, adult-only
+  scope, no sensory disability adaptations, no spiritual content) rather than discriminatory
+  encoding. All are accepted with documented rationale.
+
+  The core therapy-informed design (user always chooses, cultural context invitations,
+  multi-language support, explicit systemic barrier acknowledgement) actively reduces
+  disparate impact. No group receives a materially worse or harmful experience by design.
+
 eu_ai_act_art10_compliance: >
-  Art. 10(2)(f): No training data involved. Content review shows no encoded biases.
-  Proportionate to minimal-risk classification.
+  Art. 10(2)(f): No training data involved. Content review shows no encoded biases
+  producing discriminatory outcomes. Proportionate to LIMITED-risk classification.
 blocker: false
+reviewed_by: "Jerry van Heerikhuize (AI Governance Lead)"
+review_date: "2026-03-14"
