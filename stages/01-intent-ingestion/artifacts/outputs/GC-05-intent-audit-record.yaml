@@ -142,6 +142,17 @@ events:
       approach. DHR-01 through DHR-04 approved.
 
   - timestamp: "2026-03-14T00:00:00Z"
+    event: QC-02_CONF01_REFINED
+    actor: "Jerry van Heerikhuize (Product Owner)"
+    description: >
+      PO refinement to CONF-01 resolution: FRANK need not wait for the user to initiate
+      humor. FRANK may offer a single gentle observational nudge once the Explore phase
+      is underway and no distress is present. humor_rapport_established gates wit
+      intensity (not permission) — the flag is set true if the user responds positively
+      to the nudge; FRANK drops the wit entirely and does not retry if not. FR-07,
+      NFR-07, and GAP-01 resolution updated accordingly in QC-01 and canonical spec.
+
+  - timestamp: "2026-03-14T00:00:00Z"
     event: GC-05_PO_SIGNOFF
     actor: "Jerry van Heerikhuize (Product Owner)"
     description: >

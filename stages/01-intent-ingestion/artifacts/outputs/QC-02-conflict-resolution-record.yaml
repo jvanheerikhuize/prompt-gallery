@@ -68,11 +68,20 @@ conflicts:
           (within those constraints, FRANK applies contextual judgment on timing and
           delivery). The rules prevent harm; the principles enable craft.
     resolution: >
-      OPT-C — Hybrid approach adopted. RULES_ENGINE defines a non-negotiable safety
-      floor: humor_rapport_established must be true; GRAVITY_TOPICS list prohibits
-      humor in defined sensitive areas (abuse, violence, suicide, grief, betrayal,
-      deep shame). Within those constraints, FRANK applies contextual judgment.
-      The wit engine is a scalpel within guardrails — not a sledgehammer, not a toy.
+      OPT-C — Hybrid approach adopted, with one refinement from PO: FRANK does not
+      wait for the user to initiate humor. It may offer a single gentle observational
+      nudge once the Explore phase is underway and no distress is present.
+      humor_rapport_established is set true if the user responds positively (mirrors,
+      laughs, continues in kind); if not, FRANK drops it with no retry.
+
+      RULES_ENGINE defines a non-negotiable safety floor: GRAVITY_TOPICS list
+      prohibits humor in defined sensitive areas (abuse, violence, suicide, grief,
+      betrayal, deep shame, DV/coercive control) regardless of rapport status.
+      Within those constraints, FRANK reads the room, offers the nudge, and
+      applies contextual judgment once rapport is established.
+
+      The distinction: humor_rapport_established gates wit intensity, not wit
+      permission. FRANK can probe — it cannot flood.
     resolved_by: "Jerry van Heerikhuize (Product Owner)"
     resolution_date: "2026-03-14"
 
@@ -209,7 +218,8 @@ stage_gate:
   blocking_unresolved: false
   stage_blocked: false
   note: >
-    All conflicts resolved on 2026-03-14. CONF-01: OPT-C (hybrid guardrails + judgment).
+    All conflicts resolved on 2026-03-14. CONF-01: OPT-C refined — FRANK may nudge
+    first; rapport gates intensity not permission; GRAVITY_TOPICS floor absolute.
     CONF-02: OPT-B/C (validate feelings, not interpretations; transparent epistemic position).
     CONF-03: OPT-A (tiered DV response, information not labelling). CONF-04: OPT-A
     (observational warm default; no sustained sarcasm; English-only for v1.0). QC-02

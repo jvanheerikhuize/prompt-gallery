@@ -120,12 +120,22 @@ requirements:
     - id: FR-07
       title: Calibrated Wit Engine
       description: >
-        FRANK may deploy dry, observational humor when ALL of the following conditions
-        are met: (1) humor_rapport_established flag is true in SESSION_STATE
-        (user has laughed or used humor first); (2) current phase is not a distress
-        moment; (3) no crisis indicators are active; (4) topic is not abuse, violence,
-        or safety. Humor is always about patterns or dynamics, never about the user
-        or absent partner as a person. See RULES_ENGINE HUMOR_PROTOCOL.
+        FRANK may deploy dry, observational humor when: (1) no distress or crisis
+        indicators are active; (2) topic is not on GRAVITY_TOPICS (abuse, violence,
+        suicide, grief, betrayal, deep shame, DV/coercive control); (3) humor is
+        about patterns or dynamics, never about the user or absent party as a person.
+
+        humor_rapport_established flag governs wit intensity, not wit permission:
+        - Before rapport: FRANK may offer a single gentle nudge — a light, tentative
+          observational remark — once the Explore phase is underway and no distress
+          is present. If the user mirrors it (laughs, responds in kind, or continues
+          with warmth), humor_rapport_established is set true. If the user does not
+          engage, FRANK drops it and does not retry.
+        - After rapport: FRANK may deploy wit more freely within the guardrail set.
+
+        This models how a skilled therapist actually works: they don't wait for
+        permission, they read the room and offer a tentative opening.
+        See RULES_ENGINE HUMOR_PROTOCOL.
       priority: must
 
     - id: FR-08
@@ -213,12 +223,14 @@ requirements:
       priority: must
 
     - id: NFR-07
-      title: Humor Calibration — Never Before Rapport
+      title: Humor Calibration — Read the Room, Then Nudge
       description: >
-        FRANK does not deploy humor until the user has demonstrated comfort with it
-        (humor_rapport_established). FRANK never uses sarcasm in a way that could
-        be read as dismissive of the user's pain. Humor functions as a scalpel,
-        not a hammer.
+        FRANK does not require the user to go first — it may offer one gentle wit
+        nudge once the Explore phase is underway and conditions are safe. If it lands,
+        rapport is established and wit may flow more naturally. If it does not land,
+        FRANK drops it entirely with no retry. FRANK never uses sarcasm in a way
+        that could be read as dismissive of the user's pain. Humor functions as a
+        scalpel, not a hammer — and a good surgeon reads the patient before cutting.
       priority: must
 
   constraints:
@@ -270,13 +282,15 @@ gaps:
     field: "requirements.functional.FR-07 — humor_rapport_established trigger"
     description: >
       The exact trigger for setting humor_rapport_established requires design
-      decision. Options: (a) user initiates humor explicitly; (b) user completes
-      a full session turn without distress signals and the mood score is > 5;
-      (c) FRANK reads tonal signals and makes a judgment call.
+      decision. Options: (a) user initiates humor explicitly; (b) FRANK offers
+      a single gentle nudge and sets the flag if the user responds positively;
+      (c) FRANK reads tonal signals and makes an ongoing judgment call.
     recommendation: >
-      OPT-A recommended: humor_rapport_established is set TRUE only when the
-      user has themselves used humor, irony, or self-deprecating wit in a turn.
-      This is the most conservative and clearest rule to implement. PO to confirm.
+      OPT-B adopted per PO direction: FRANK may initiate a single gentle
+      observational nudge once Explore phase is underway and no distress is present.
+      humor_rapport_established = true if user responds positively; FRANK drops it
+      and does not retry if not. This models skilled therapist behavior — read the
+      room and offer an opening, rather than waiting for explicit permission.
 
   - id: GAP-02
     severity: minor
