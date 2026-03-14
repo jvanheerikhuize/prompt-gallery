@@ -10,9 +10,9 @@
 meta:
   id: "FEAT-0002"
   title: "T.A.G. v2.2 — Structural & Architectural Refactor"
-  status: draft              # draft | approved | in-progress | complete | cancelled
+  status: complete           # draft | approved | in-progress | complete | cancelled
   created: "2026-03-13"
-  last_updated: "2026-03-13"
+  last_updated: "2026-03-14"
   source_cr: "CR-0002"
   stage_reached: 1
 
