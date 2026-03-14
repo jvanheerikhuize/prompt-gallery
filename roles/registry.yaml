@@ -1,0 +1,166 @@
+# =============================================================================
+# Masterprompt Registry
+# Single source of truth for all agent roles in this library.
+# =============================================================================
+# Each entry describes one role: its location, purpose, version, usage notes,
+# and governance provenance. Keep this file in sync when adding, updating, or
+# deprecating a role.
+# =============================================================================
+
+schema_version: "1"
+
+roles:
+
+  # ---------------------------------------------------------------------------
+  # Entertainment
+  # ---------------------------------------------------------------------------
+
+  - id: tag
+    name: "T.A.G. — Text Adventure Generator"
+    slug: text-adventure
+    category: entertainment
+    version: "2.2"
+    status: stable       # stable | beta | deprecated
+
+    files:
+      prompt: roles/entertainment/text-adventure/prompt.md
+      variant: roles/entertainment/text-adventure/prompt-compressed.md
+
+    description: >
+      A stateful text adventure game master. Takes any setting, lore, and player
+      profile and runs a fully rules-governed, turn-based narrative RPG. Features
+      session state, inventory physics, NPC relationships, quest tracking, and a
+      debug console. The compressed variant is token-efficient for resource-constrained
+      contexts.
+
+    tags:
+      - entertainment
+      - stateful
+      - game-master
+      - multi-turn
+
+    usage:
+      paste_in: true       # Can be pasted into a chat session
+      system_prompt: true  # Can be injected as an API system prompt
+      auto_init: true      # Agent initialises itself without user input
+
+    governance:
+      feat_id: FEAT-0001
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-11"
+      last_updated: "2026-03-14"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0001 Stage 3"
+
+  # ---------------------------------------------------------------------------
+  # Engineering
+  # ---------------------------------------------------------------------------
+
+  - id: cra
+    name: "C.R.A. — Code Review Analyst"
+    slug: code-reviewer
+    category: engineering
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/engineering/code-reviewer/prompt.md
+      variant: null
+
+    description: >
+      A structured code review agent grounded in security (OWASP, CWE), correctness,
+      performance, and maintainability. Takes a diff or file list and produces a
+      scored, verdict-driven review report. Tracks findings with severity ratings
+      and blocks merges when a risk score threshold is exceeded.
+
+    tags:
+      - engineering
+      - security
+      - code-review
+      - stateful
+      - owasp
+      - cwe
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: false     # Waits for diff input
+
+    governance:
+      feat_id: null        # Human-authored; predates FEAT-0002
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: internal
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-14"
+      last_updated: "2026-03-14"
+      implementation: "Human-authored"
+
+  # ---------------------------------------------------------------------------
+  # Health
+  # ---------------------------------------------------------------------------
+
+  - id: psy
+    name: "P.S.Y. — Trauma-Specialised Psychologist"
+    slug: trauma-psychologist
+    category: health
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/health/trauma-psychologist/prompt.md
+      variant: null
+
+    description: >
+      A trauma-informed psychoeducation and emotional support companion grounded in
+      the SAMHSA six pillars of trauma-informed care. Provides Phase 1 (Safety and
+      Stabilisation) support only: psychoeducation, grounding techniques, CBT-informed
+      reflection, and crisis escalation. Scoped strictly to Phase 1 — Phase 2/3
+      trauma processing requires in-person clinical supervision. Features mandatory
+      crisis detection, safe-messaging enforcement, GDPR Art. 9 disclosure, and
+      multi-language support (7 languages + default).
+
+    tags:
+      - health
+      - trauma-informed
+      - psychoeducation
+      - crisis-safety
+      - gdpr
+      - multi-language
+      - stateful
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true
+
+    safety_notes: |
+      This prompt is health-adjacent and targets a vulnerable user population.
+      Before deploying in any product context, review:
+      - Crisis line numbers are current and correct for your target region
+      - Safe-messaging guidelines are appropriate for your jurisdiction
+      - GDPR Art. 9 disclosure wording meets your legal obligations
+      - Phase 1 scope limits are appropriate for your use case
+      This prompt is NOT a substitute for licensed clinical care.
+
+    governance:
+      feat_id: FEAT-0004
+      risk_tier: medium
+      ai_tier: limited
+      data_classification: restricted
+      gdpr_special_category: true      # GDPR Art. 9 — mental health data
+      eu_ai_act_tier: limited
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-14"
+      last_updated: "2026-03-14"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0004 Stage 3"

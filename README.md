@@ -4,18 +4,35 @@ A collection of structured masterprompts that define specific agent roles for an
 Each prompt is self-contained: paste into a fresh LLM session, inject as a system prompt, or load dynamically
 from your agent framework. No external infrastructure required.
 
-This repository can be consumed as a **git submodule** or simply referenced directly, adding ready-made agent
+This repository can be consumed as a **git submodule** or referenced directly, adding ready-made agent
 roles to any agentic project.
 
 ---
 
-## Available Roles
+## Role Registry
 
-| Role | Masterprompt | Variant | Description |
-|------|-------------|---------|-------------|
-| T.A.G. — Text Adventure Generator | [prompt.md](prompt.md) | [compressed](prompt-compressed.md) | Game master for an immersive, stateful text adventure |
-| Code Review Analyst | [prompt-code-reviewer.md](prompt-code-reviewer.md) | — | Structured code review with security, quality, and architecture focus |
-| P.S.Y. — Trauma-Specialised Psychologist | [prompt-trauma-psychologist.md](prompt-trauma-psychologist.md) | — | Trauma-informed psychoeducation and emotional support session agent |
+The canonical role list lives in [`roles/registry.yaml`](roles/registry.yaml).
+
+### Entertainment
+
+| Role | Prompt | Variant | Description |
+|------|--------|---------|-------------|
+| T.A.G. — Text Adventure Generator | [roles/entertainment/text-adventure/prompt.md](roles/entertainment/text-adventure/prompt.md) | [compressed](roles/entertainment/text-adventure/prompt-compressed.md) | Game master for an immersive, stateful text adventure |
+
+### Engineering
+
+| Role | Prompt | Variant | Description |
+|------|--------|---------|-------------|
+| C.R.A. — Code Review Analyst | [roles/engineering/code-reviewer/prompt.md](roles/engineering/code-reviewer/prompt.md) | — | Structured code review with security, quality, and architecture focus |
+
+### Health
+
+| Role | Prompt | Variant | Description | Notes |
+|------|--------|---------|-------------|-------|
+| P.S.Y. — Trauma-Specialised Psychologist | [roles/health/trauma-psychologist/prompt.md](roles/health/trauma-psychologist/prompt.md) | — | Trauma-informed psychoeducation and emotional support session agent | ⚠️ See safety notes |
+
+> **P.S.Y. safety notes:** Crisis line numbers should be verified for your target region before deployment.
+> This prompt is not a substitute for licensed clinical care. See [`roles/registry.yaml`](roles/registry.yaml) for full governance details.
 
 ---
 
@@ -26,7 +43,7 @@ roles to any agentic project.
 ```python
 import anthropic, pathlib
 
-role_prompt = pathlib.Path("prompt-code-reviewer.md").read_text()
+role_prompt = pathlib.Path("roles/engineering/code-reviewer/prompt.md").read_text()
 
 client = anthropic.Anthropic()
 response = client.messages.create(
@@ -44,6 +61,32 @@ response = client.messages.create(
 
 ---
 
+## Repository Structure
+
+```text
+roles/
+├── registry.yaml                        ← Masterprompt registry (start here)
+│
+├── entertainment/
+│   └── text-adventure/                  ← T.A.G. v2.2
+│       ├── prompt.md                    ← Canonical verbose prompt
+│       └── prompt-compressed.md         ← Token-efficient variant
+│
+├── engineering/
+│   └── code-reviewer/                   ← C.R.A. v1.0
+│       └── prompt.md
+│
+└── health/
+    └── trauma-psychologist/             ← P.S.Y. v1.0
+        └── prompt.md
+
+specs/                                   ← Feature specifications (A-SDLC Stage 1 outputs)
+stages/                                  ← A-SDLC stage workspaces (01–06)
+a-sdlc/                                  ← Governance framework (submodule — read-only)
+```
+
+---
+
 ## Adding This Repo as a Submodule
 
 ```bash
@@ -51,7 +94,16 @@ git submodule add https://github.com/<your-org>/tag-role-test roles
 git submodule update --init --recursive
 ```
 
-Then reference individual masterprompts from `roles/prompt-*.md` in your project.
+Then reference individual masterprompts from `roles/roles/<category>/<slug>/prompt.md` in your project.
+
+---
+
+## Adding a New Role
+
+1. Create a directory: `roles/<category>/<slug>/`
+2. Add `prompt.md` (and an optional `prompt-compressed.md` for token-heavy prompts)
+3. Add an entry to `roles/registry.yaml`
+4. Open a change request via the A-SDLC intake process (see [Governance](#governance) below)
 
 ---
 
@@ -60,6 +112,23 @@ Then reference individual masterprompts from `roles/prompt-*.md` in your project
 This project is built using the [A-SDLC framework](https://github.com/jvanheerikhuize/a-sdlc) — an Agentic Software
 Development Life Cycle defining how software is built, tested, and released when AI agents work
 alongside human developers. Compliant with DORA and the EU AI Act out of the box.
+
+### The Six Lifecycle Stages
+
+| Stage | Name | Purpose |
+|-------|------|---------|
+| 1 | Intent Ingestion | Capture and structure requirements into a Feature Spec |
+| 2 | System Design | Architecture, threat modelling, and technical specification |
+| 3 | Coding & Implementation | Implementation with quality gates, security scans, and PR review |
+| 4 | Testing & Documentation | Verification, documentation, and risk threshold evaluation |
+| 5 | Deployment & Release | Production promotion with approval gates and rollback plan |
+| 6 | Observability & Maintenance | Continuous monitoring — feeds back into the lifecycle |
+
+All 50 controls (QC, RC, SC, AC, GC) from the A-SDLC framework apply.
+
+- Framework docs: `a-sdlc/README.md`
+- Agent operating instructions: `a-sdlc/AGENTS.md`
+- Control registry: `a-sdlc/controls/registry.yaml`
 
 ---
 
@@ -99,69 +168,6 @@ cp stages/01-intent-ingestion/artifacts/inputs/CR-0000-template.yaml \
 
 ---
 
-## Repository Structure
-
-```text
-<project>/
-├── a-sdlc/                          ← Governance framework (submodule — read-only)
-│
-├── .agent/                          ← Tool-agnostic agent config (the canonical source)
-│   ├── settings.yaml                ← Startup sequence, paths, rules, read-only boundaries
-│   └── README.md                    ← How the config is structured
-│
-├── AGENTS.md                        ← Primary agent entry point — all agents read this first
-│
-├── README.md                        ← This file
-├── asdlc-consumer.yaml              ← Project configuration (fill in when creating a sibling)
-│
-├── specs/                           ← Feature specifications (output of Stage 1)
-│   └── FEAT-0000-template.yaml      ← Template — do not fill in directly
-│
-└── stages/                          ← Stage workspaces
-    ├── 01-intent-ingestion/
-    │   └── artifacts/
-    │       ├── inputs/              ← Submit change requests here
-    │       └── outputs/             ← Agent-produced artifacts
-    ├── 02-system-design/artifacts/outputs/
-    ├── 03-coding-implementation/artifacts/outputs/
-    ├── 04-testing-documentation/artifacts/outputs/
-    ├── 05-deployment-release/artifacts/outputs/
-    └── 06-observability-maintenance/artifacts/outputs/
-```
-
----
-
-## Agent Support
-
-This template is fully agent-agnostic. `AGENTS.md` is the single entry point — any AI coding assistant reads it directly. Structured configuration for programmatic consumption is in `.agent/settings.yaml`.
-
----
-
-## The Six Lifecycle Stages
-
-| Stage | Name | Purpose |
-| ----- | ---- | ------- |
-| 1 | Intent Ingestion | Capture and structure requirements into a Feature Spec |
-| 2 | System Design | Architecture, threat modelling, and technical specification |
-| 3 | Coding & Implementation | Implementation with quality gates, security scans, and PR review |
-| 4 | Testing & Documentation | Verification, documentation, and risk threshold evaluation |
-| 5 | Deployment & Release | Production promotion with approval gates and rollback plan |
-| 6 | Observability & Maintenance | Continuous monitoring — feeds back into the lifecycle |
-
----
-
-## Governance
-
-All 50 controls (QC, RC, SC, AC, GC) from the A-SDLC framework apply.
-Provides DORA and EU AI Act compliance coverage.
-
-- Framework docs: `a-sdlc/README.md`
-- Agent operating instructions: `a-sdlc/AGENTS.md`
-- Control registry: `a-sdlc/controls/registry.yaml`
-- Regulatory mappings: `a-sdlc/regulatory/compliance-matrix.yaml`
-
----
-
 ## Keeping Governance Current
 
 ```bash
@@ -169,5 +175,3 @@ git submodule update --remote a-sdlc
 git add a-sdlc
 git commit -m "chore: update a-sdlc governance framework"
 ```
-
-Review `a-sdlc/` changes before committing — governance updates may introduce new controls or modify delegation patterns.

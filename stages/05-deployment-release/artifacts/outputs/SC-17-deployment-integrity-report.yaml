@@ -37,7 +37,7 @@ note: |
 
 artefact_checks:
 
-  - file: "prompt-trauma-psychologist.md"
+  - file: "roles/health/trauma-psychologist/prompt.md"
     sha256_at_implementation: "41ac263a4c7a2b9e8af0568cf1b50e1acf552c7d4fbe929b515e598f4c8e49ed"
     sha256_at_release:        "41ac263a4c7a2b9e8af0568cf1b50e1acf552c7d4fbe929b515e598f4c8e49ed"
     match: true

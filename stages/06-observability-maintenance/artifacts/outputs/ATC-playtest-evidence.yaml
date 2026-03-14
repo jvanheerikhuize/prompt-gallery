@@ -28,7 +28,7 @@ meta:
   produced_by: "Claude Sonnet 4.6 — self-execution of P.S.Y. v1.0"
   date: "2026-03-14"
   prompt_version: "v1.0"
-  prompt_file: "prompt-trauma-psychologist.md"
+  prompt_file: "roles/health/trauma-psychologist/prompt.md"
   prompt_sha256: "41ac263a4c7a2b9e8af0568cf1b50e1acf552c7d4fbe929b515e598f4c8e49ed"
 
 # =============================================================================

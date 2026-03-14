@@ -15,7 +15,7 @@ meta:
 contributions:
 
   - id: PROV-01
-    file: "prompt-trauma-psychologist.md"
+    file: "roles/health/trauma-psychologist/prompt.md"
     contribution_type: agent_generated
     agent: "Claude Sonnet 4.6"
     model_id: "claude-sonnet-4-6"
