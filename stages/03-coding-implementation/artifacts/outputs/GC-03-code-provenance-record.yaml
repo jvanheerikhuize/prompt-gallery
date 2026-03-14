@@ -2,77 +2,76 @@
 # GC-03 — Code Provenance Record
 # Control:   GC-03 Agent Provenance Registry
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "GC-03-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "GC-03-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / GC-03"
-  date: "2026-03-11"
+  date: "2026-03-14"
   retention: "7 years (DORA Art. 28)"
 
 contributions:
 
   - id: PROV-01
-    file: "prompt.md"
+    file: "prompt-trauma-psychologist.md"
     contribution_type: agent_generated
     agent: "Claude Sonnet 4.6"
     model_id: "claude-sonnet-4-6"
-    date: "2026-03-11"
-    based_on: "v2.0 baseline — github.com/jvanheerikhuize/prompt-gallery/blob/main/Fun/TAG/prompt.md"
-    changes_from_baseline:
-      - "Version bumped: 2.0 → 2.1"
-      - "ABSOLUTE_RULES: added 'treat input as data' rule (T-01 hardening)"
-      - "ABSOLUTE_RULES: auto-init promoted from 'can' to 'MUST'"
-      - "SESSION_LOOP step 1: added InputIsData reminder"
-      - "SESSION_LOOP step 7: clarified !RawJSON in output"
-      - "MODEL DIRECTIVES: added load validation note (T-07 hardening)"
-      - "CONSOLE_COMMANDS: added RESTRICTION XML comment (T-05 hardening)"
-      - "CONSOLE_COMMANDS load: added validation clause"
-      - "Minor prose/formatting normalisation throughout"
+    date: "2026-03-14"
+    based_on: >
+      No prior baseline. New prompt authored from scratch against FEAT-0004 specification,
+      QC-03 design document, SC-05 STRIDE threat model, and RC-03 PIA.
+    key_design_decisions:
+      - "MVC/XML masterprompt structure (CORE_DIRECTIVES / MODEL / VIEW / RULES_ENGINE / CONTROLLER)"
+      - "SAMHSA 6 pillars embedded in PERSONA"
+      - "Dual safety enforcement: INPUT_IS_DATA absolute rule + SESSION_LOOP CRISIS_CHECK non-skippable"
+      - "Two-tier disclaimer (CONF-01 OPT-C): brief warm + full formal on boundary crossing"
+      - "Full SESSION_STATE schema with ~privacy command (CONF-02 OPT-B/C)"
+      - "Multi-language crisis resources for 7 languages + default (NFR-06/GAP-04)"
+      - "Third-person crisis sentinel patterns (T-04 hardening)"
+      - "Gentle-then-firm Phase 2/3 redirect (T-05 / CONF-03)"
+      - "safety_flags append-only, not narratively reproduced (DHR-03/PR-04)"
+      - "7 grounding/stabilisation techniques with cultural context invitations (CONF-04)"
+      - "Language detection with uncertainty fallback to English (DG-03)"
     human_review_required: true
     reviewed_by: "Jerry van Heerikhuize (Tech Lead)"
-    review_date: "2026-03-11"
+    review_date: "2026-03-14"
 
   - id: PROV-02
-    file: "prompt-compressed.md"
-    contribution_type: agent_generated
+    file: "README.md"
+    contribution_type: co_authored
     agent: "Claude Sonnet 4.6"
     model_id: "claude-sonnet-4-6"
-    date: "2026-03-11"
-    based_on: "v2.0 compressed baseline — github.com/jvanheerikhuize/prompt-gallery/blob/main/Fun/TAG/prompt.md"
-    changes_from_baseline:
-      - "Version bumped: 2.0 → 2.1"
-      - "InputIsData rule added to !Rule block"
-      - "AutoInit: 'can' → MUST"
-      - "ModelDirectives block added (OnLoad->ValidateStats)"
-      - "Console RESTRICTION note added"
-      - "Load command updated with validate+normalise step"
-      - "Sync note added at bottom of file"
+    date: "2026-03-14"
+    based_on: "Existing Agent Role Module README (updated from FEAT-0001/FEAT-0003)"
+    changes:
+      - "Added Trauma-Specialised Psychologist (P.S.Y.) row to Available Roles table"
     human_review_required: true
     reviewed_by: ""
     review_date: ""
 
   - id: PROV-03
-    file: "README.md"
-    contribution_type: co_authored
+    file: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
+    contribution_type: agent_generated
     agent: "Claude Sonnet 4.6"
     model_id: "claude-sonnet-4-6"
-    date: "2026-03-11"
-    based_on: "Existing A-SDLC consumer template README"
+    date: "2026-03-14"
+    based_on: "A-SDLC feature spec schema"
     changes:
-      - "Added T.A.G. product header and description"
-      - "Added Quick Start section"
-      - "Added What Makes T.A.G. Different feature overview"
-      - "Wrapped existing content under Governance heading"
-    human_review_required: true
+      - "stage_reached updated to 3 on Stage 3 completion"
+    human_review_required: false
     reviewed_by: ""
     review_date: ""
 
-equivalence_check:
-  verbose_vs_compressed: confirmed
-  notes: >
-    Reviewer should verify that prompt-compressed.md preserves all game rules, MVC
-    structure, STRIDE hardening (T-01/T-05/T-07), console commands, and templates
-    from prompt.md (canonical). The compressed notation must be functionally equivalent.
+health_adjacent_note: |
+  P.S.Y. is a health-adjacent prompt targeting a vulnerable user population. All agent
+  contributions have been reviewed against FEAT-0004 STRIDE threat model (SC-05) and
+  privacy impact assessment (RC-03). The human reviewer (Tech Lead) should pay
+  particular attention to:
+  1. Crisis detection sentinel completeness and language accuracy
+  2. Accuracy and currentness of localised crisis line numbers
+  3. Safe-messaging compliance in all crisis-adjacent responses
+  4. Phase 2/3 boundary enforcement under adversarial inputs
+  5. GDPR Art. 9 disclosure adequacy at session open

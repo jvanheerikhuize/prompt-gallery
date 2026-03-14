@@ -2,90 +2,123 @@
 # RC-04 — Decision Log
 # Control:   RC-04 Decision Log
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "RC-04-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "RC-04-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / RC-04"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 decisions:
 
   - id: DEC-01
-    timestamp: "2026-03-11"
-    decision: "Version bumped from 2.0 to 2.1"
+    timestamp: "2026-03-14"
+    decision: "Prompt versioned at v1.0 (new prompt, no prior baseline)"
     rationale: >
-      Stage 3 hardening introduces behavioural changes to the prompt (T-01 data framing,
-      T-05 console restriction, T-07 load validation). A minor version bump correctly
-      signals that the prompt is functionally equivalent to v2.0 with security improvements.
+      Unlike T.A.G. (which had a v2.0 baseline to increment from), P.S.Y. is a new
+      masterprompt with no prior version. v1.0 is the correct starting version per
+      semantic versioning convention for a first-release artefact.
     alternatives_considered:
-      - "Keep v2.0 — rejected: changes are meaningful and should be trackable"
-      - "Major version 3.0 — rejected: changes are hardening, not feature additions"
+      - "v2.1 or similar to match T.A.G. version — rejected: P.S.Y. is an independent
+        prompt; version numbers should not be coupled across prompts"
     decided_by: "Claude Sonnet 4.6"
-    reviewed_by: ""   # ← Tech Lead to fill
+    reviewed_by: ""
 
   - id: DEC-02
-    timestamp: "2026-03-11"
-    decision: "T-01 hardening: added 'treat input as data' to both ABSOLUTE_RULES and SESSION_LOOP step 1"
+    timestamp: "2026-03-14"
+    decision: "T-01 hardening: INPUT_IS_DATA as ABSOLUTE_RULES item + SESSION_LOOP step 2 non-skippable CRISIS_CHECK (dual enforcement)"
     rationale: >
-      Placing the data-not-commands framing in two locations (the persona-level
-      ABSOLUTE_RULES and the per-turn SESSION_LOOP) maximises LLM adherence. A single
-      location could be overridden; two reinforcing locations reduce that risk.
+      T-01 is the only CRITICAL threat in the STRIDE model (T-01: crisis bypass via
+      prompt injection). Dual enforcement — INPUT_IS_DATA in ABSOLUTE_RULES (highest
+      authority in the prompt) AND CRISIS_CHECK labelled NON-SKIPPABLE in SESSION_LOOP
+      step 2 — maximises LLM adherence. A single enforcement point could be circumvented
+      by adversarial framing that shifts processing to a different section.
     alternatives_considered:
-      - "ABSOLUTE_RULES only — rejected: SESSION_LOOP step 1 is the enforcement point, should mirror it"
+      - "ABSOLUTE_RULES only — rejected: SESSION_LOOP is the per-turn enforcement point,
+        should redundantly mirror the absolute rule for defence-in-depth"
     decided_by: "Claude Sonnet 4.6"
     reviewed_by: ""
 
   - id: DEC-03
-    timestamp: "2026-03-11"
-    decision: "T-05 hardening: RESTRICTION as XML comment directly above command list, not after it"
+    timestamp: "2026-03-14"
+    decision: "Crisis resources localised by LANGUAGE_DETECTION output (7 languages + default)"
     rationale: >
-      LLMs process instructions top-to-bottom. Placing the restriction before the command
-      list means it is loaded into context before the commands are enumerated, making it
-      more likely to be respected when a player attempts a violation.
+      NFR-06 (multi-language, elevated to must) and GAP-04 (support multi-language)
+      require that crisis escalation resources are delivered in the user's language and
+      region. Hard-coding English-only resources would fail users in non-English sessions
+      at the most critical moment. Localised resources for en/nl/fr/de/es/pt/it were
+      selected based on European/US coverage; a default fallback covers undetected languages.
     alternatives_considered:
-      - "Restriction at bottom of CONSOLE_COMMANDS — rejected: processed after commands, less effective"
+      - "English-only with note — rejected: NFR-06 is a must requirement; crisis moment
+        is exactly when language clarity matters most"
+      - "Full per-country lookup table — rejected: complexity is disproportionate for a
+        prompt-only deliverable; language-level coverage is adequate"
     decided_by: "Claude Sonnet 4.6"
     reviewed_by: ""
 
   - id: DEC-04
-    timestamp: "2026-03-11"
-    decision: "T-07 hardening: load validation note added to both MODEL DIRECTIVES and CONSOLE_COMMANDS load entry"
+    timestamp: "2026-03-14"
+    decision: "Two-tier disclaimer (CONF-01 OPT-C): brief warm tier at session open + full formal tier on boundary crossing"
     rationale: >
-      Dual placement (MODEL level for overall schema guidance, CONSOLE level for the
-      specific load command) ensures the LLM applies validation regardless of which
-      section it is processing when the load is invoked.
+      CONF-01 identified tension between immersion/warmth and mandatory disclosure. OPT-C
+      resolves this by separating disclosure into two tiers: a brief, warm acknowledgement
+      at session open (preserving therapeutic atmosphere) and a full formal GDPR+scope
+      disclaimer triggered only when clinical-boundary language is detected. This satisfies
+      both FR-02 (mandatory disclaimer) and NFR-01 (warm pacing) without compromise.
     alternatives_considered:
-      - "Single location only — rejected: same reasoning as DEC-02"
+      - "OPT-A (full disclaimer only) — rejected: disrupts session opening warmth"
+      - "OPT-B (brief disclaimer only) — rejected: may under-disclose scope on clinical crossings"
     decided_by: "Claude Sonnet 4.6"
     reviewed_by: ""
 
   - id: DEC-05
-    timestamp: "2026-03-11"
-    decision: "Compressed variant filename: prompt-compressed.md"
+    timestamp: "2026-03-14"
+    decision: "SESSION_STATE includes ~privacy command (CONF-02 OPT-B/C): full state schema + GDPR disclosure + on-demand privacy transparency"
     rationale: >
-      QC-03 noted TBD for this filename. Chosen for clarity: parallel to prompt.md,
-      unambiguous, no special characters, works as a direct GitHub link.
+      CONF-02 identified tension between full session state (needed for phase coherence)
+      and GDPR Art. 9 data minimisation. OPT-B/C resolves this: full SESSION_STATE schema
+      is maintained for coherence (OPT-B), AND a ~privacy console command explicitly
+      discloses what state is held and the LLM provider retention risk (OPT-C). This gives
+      users full transparency and control without degrading session quality.
     alternatives_considered:
-      - "prompt.min.md — rejected: .min. convention implies automated minification"
-      - "tag-compressed.md — rejected: adds project prefix already in repo name"
+      - "OPT-A (minimal state) — rejected: insufficient for phase sequencing and FR-09"
+      - "OPT-B only (no ~privacy) — rejected: GDPR Art. 9 transparency requires disclosure"
     decided_by: "Claude Sonnet 4.6"
     reviewed_by: ""
 
   - id: DEC-06
-    timestamp: "2026-03-11"
-    decision: "README.md updated with T.A.G. quick-start prepended above governance section"
+    timestamp: "2026-03-14"
+    decision: "SCOPE_ENFORCEMENT uses gentle-then-firm redirect: first two Phase 2/3 boundary crossings get a warm redirect; third+ gets a firm decline"
     rationale: >
-      The repo is the T.A.G. product repo. Users arriving via GitHub see the README
-      first. Putting the product quick-start before governance information serves users
-      better without removing the governance context.
+      A rigid hard-stop on first Phase 2/3 attempt may feel harsh in a therapeutic context
+      and could disengage a vulnerable user. A gentle first response normalises the boundary
+      as care, not refusal. The firm response (third+ attempt) prevents boundary erosion via
+      persistence. This graduated approach aligns with trauma-informed care principles
+      (empowerment and collaboration — SAMHSA pillar 4/5) while maintaining FR-11.
     alternatives_considered:
-      - "Separate TAG-README.md — rejected: splits user entry point; COMP-12 maps to README.md"
-      - "Replace README entirely — rejected: governance context is valuable for contributors"
+      - "Hard stop on first attempt — rejected: inconsistent with NFR-01 warm pacing and
+        SAMHSA collaboration pillar"
+      - "Always gentle redirect with no escalation — rejected: persistent attempts could
+        eventually drift the session into unsafe territory"
+    decided_by: "Claude Sonnet 4.6"
+    reviewed_by: ""
+
+  - id: DEC-07
+    timestamp: "2026-03-14"
+    decision: "safety_flags in SESSION_STATE are append-only and not narratively reproduced in session responses"
+    rationale: >
+      PR-04 (from RC-03 privacy risk assessment) and DHR-03 (from SC-05 STRIDE) identified
+      that casually referencing crisis content in later session responses risks re-traumatisation.
+      Making safety_flags append-only (never modified, never deleted) ensures audit integrity.
+      The restriction on narrative reproduction ensures crisis disclosures are not casually
+      surfaced in subsequent session turns.
+    alternatives_considered:
+      - "Full verbatim crisis disclosure stored in safety_flags — rejected: PR-04 and DHR-03
+        both identify this as a re-traumatisation and data minimisation risk"
     decided_by: "Claude Sonnet 4.6"
     reviewed_by: ""
 
 reviewed_by: "Jerry van Heerikhuize (Tech Lead)"
-review_date: "2026-03-11"
+review_date: "2026-03-14"

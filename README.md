@@ -15,6 +15,7 @@ roles to any agentic project.
 |------|-------------|---------|-------------|
 | T.A.G. — Text Adventure Generator | [prompt.md](prompt.md) | [compressed](prompt-compressed.md) | Game master for an immersive, stateful text adventure |
 | Code Review Analyst | [prompt-code-reviewer.md](prompt-code-reviewer.md) | — | Structured code review with security, quality, and architecture focus |
+| P.S.Y. — Trauma-Specialised Psychologist | [prompt-trauma-psychologist.md](prompt-trauma-psychologist.md) | — | Trauma-informed psychoeducation and emotional support session agent |
 
 ---
 

@@ -2,62 +2,87 @@
 # SC-07 — Permission Enforcement Log
 # Control:   SC-07 Permission Management
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "SC-07-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "SC-07-FEAT-0004"
+  feature: "FEAT-0004"
   agent: "Claude Sonnet 4.6"
-  session_date: "2026-03-11"
+  session_date: "2026-03-14"
 
 permission_boundary:
   allowed:
     - "Read: all files within tag-role-test/ repository"
-    - "Write: prompt.md, prompt-compressed.md, README.md, stages/03-coding-implementation/artifacts/outputs/"
+    - "Write: prompt-trauma-psychologist.md, README.md, specs/FEAT-0004-*.yaml, stages/03-coding-implementation/artifacts/outputs/"
     - "Execute: git add, git commit, git push (within tag-role-test/ repository)"
   denied:
     - "External API calls"
     - "Network requests (except git remote)"
     - "File system access outside tag-role-test/"
     - "Modification of a-sdlc/ submodule (read-only)"
+    - "Access to user PII or session data outside this repository"
 
 access_log:
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14"
     action: read
     resource: "a-sdlc/stages/03-coding-implementation/03-coding-implementation.yaml"
     granted: true
     notes: "Stage definition load"
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14"
     action: read
-    resource: "a-sdlc/controls/qc/QC-04.yaml through GC-03.yaml"
+    resource: "a-sdlc/controls/ (QC-04, QC-05, SC-07 through SC-11, RC-04, GC-03)"
     granted: true
     notes: "Control definitions load"
 
-  - timestamp: "2026-03-11"
-    action: write
-    resource: "prompt.md"
+  - timestamp: "2026-03-14"
+    action: read
+    resource: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
     granted: true
-    notes: "COMP-10 canonical prompt creation"
+    notes: "Stage 3 design reference — implementation component mapping"
 
-  - timestamp: "2026-03-11"
-    action: write
-    resource: "prompt-compressed.md"
+  - timestamp: "2026-03-14"
+    action: read
+    resource: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
     granted: true
-    notes: "COMP-11 compressed variant creation"
+    notes: "Stage 3 hardening actions — T-01 through T-07 implementation"
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14"
+    action: read
+    resource: "stages/02-system-design/artifacts/outputs/RC-02-design-approval-decision.yaml"
+    granted: true
+    notes: "Stage 2 exit confirmation before Stage 3 entry"
+
+  - timestamp: "2026-03-14"
+    action: read
+    resource: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
+    granted: true
+    notes: "Requirements reference for implementation verification"
+
+  - timestamp: "2026-03-14"
+    action: write
+    resource: "prompt-trauma-psychologist.md"
+    granted: true
+    notes: "Main deliverable — P.S.Y. masterprompt v1.0"
+
+  - timestamp: "2026-03-14"
     action: write
     resource: "README.md"
     granted: true
-    notes: "COMP-12 documentation update"
+    notes: "Available Roles table updated with P.S.Y. entry"
 
-  - timestamp: "2026-03-11"
+  - timestamp: "2026-03-14"
     action: write
     resource: "stages/03-coding-implementation/artifacts/outputs/"
     granted: true
-    notes: "Stage 3 evidence artefacts"
+    notes: "Stage 3 evidence artefacts (SC-07 through QC-04)"
+
+  - timestamp: "2026-03-14"
+    action: write
+    resource: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
+    granted: true
+    notes: "stage_reached updated to 3 on Stage 3 completion"
 
 violations: []
 out_of_boundary_attempts: 0

@@ -2,64 +2,113 @@
 # QC-05 — Quality Gate Report
 # Control:   QC-05 Code Quality Standards
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # =============================================================================
 
 meta:
-  id: "QC-05-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "QC-05-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / QC-05"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
 note: |
-  T.A.G. deliverables are Markdown prompt files, not compiled source code. Traditional
+  P.S.Y. deliverable is a Markdown prompt file, not compiled source code. Traditional
   linting and cyclomatic complexity metrics do not apply. Quality gates are adapted to
-  the artefact type.
+  the artefact type. Given the health-adjacent, vulnerable-user context, quality checks
+  include additional safety-rule verification beyond standard code quality.
 
 quality_checks:
 
-  - check: "All required prompt sections present (prompt.md)"
+  - check: "All required MVC/XML sections present (prompt-trauma-psychologist.md)"
     status: pass
     detail: >
-      CORE_DIRECTIVES, IN_PROMPT_CONTEXT, MODEL, VIEW, CONTROLLER all present.
-      All sub-sections (PERSONA, VISION, MISSION, ABSOLUTE_RULES, STATE_SCHEMA,
-      TEMPLATES, SESSION_PHASES, SESSION_LOOP, SESSION_RULES, CONSOLE_COMMANDS,
-      ASCII_MAP_BOT) present.
+      CORE_DIRECTIVES, MODEL (PERSONA, ABSOLUTE_RULES), VIEW (9 templates),
+      RULES_ENGINE (CRISIS_DETECTION, SAFE_MESSAGING, SCOPE_ENFORCEMENT,
+      DISCLAIMER_TRIGGER, PSYCHOEDUCATION_LIBRARY, TECHNIQUE_LIBRARY,
+      CBT_REFRAMING, LANGUAGE_DETECTION), CONTROLLER (SESSION_PHASES,
+      SESSION_LOOP, CONSOLE) all present. Structure consistent with QC-03
+      design document 5-component architecture.
 
-  - check: "All Stage 3 STRIDE hardening applied"
+  - check: "All 17 requirements (FR-01 through FR-11, NFR-01 through NFR-06) implemented"
     status: pass
     detail: >
-      T-01: "treat input as data" rule added to ABSOLUTE_RULES and SESSION_LOOP step 1.
-      T-05: RESTRICTION comment added directly above CONSOLE_COMMANDS commands.
-      T-07: Load validation note added to MODEL DIRECTIVES and CONSOLE_COMMANDS load command.
+      FR-01 (Persona): PERSONA section with SAMHSA 6 pillars. FR-02 (Disclaimer):
+      SESSION_OPEN template + DISCLAIMER_TRIGGER rule + FULL_DISCLAIMER template.
+      FR-03 (Session Lifecycle): SESSION_PHASES with 6 phases, stabilise/close
+      mandatory. FR-04 (Crisis Detection): CRISIS_FIRST absolute rule + CRISIS_DETECTION
+      RULES_ENGINE + SESSION_LOOP step 2 mandatory. FR-05 (Safe Messaging):
+      SAFE_MESSAGING_ABSOLUTE absolute rule + SAFE_MESSAGING RULES_ENGINE.
+      FR-06 (Psychoeducation): PSYCHOEDUCATION_LIBRARY. FR-07 (Techniques):
+      TECHNIQUE_LIBRARY (7 techniques). FR-08 (CBT): CBT_REFRAMING.
+      FR-09 (Session State): SESSION_STATE schema with all required fields.
+      FR-10 (Console): ~state, ~techniques, ~disclaimer, ~privacy, ~close, ~reset.
+      FR-11 (Phase 2/3 Boundary): SCOPE_ENFORCEMENT sentinel patterns with
+      gentle-then-firm redirect. NFR-01 through NFR-06 verified in PERSONA and
+      output templates.
 
-  - check: "All requirements mapped to prompt content"
+  - check: "All STRIDE Stage 3 hardening actions applied"
     status: pass
     detail: >
-      FR-01 through FR-10 and NFR-01 through NFR-05 verified against prompt.md content.
-      FR-10 (auto-init) confirmed as MUST in both ABSOLUTE_RULES and CONTROLLER DIRECTIVES.
+      T-01 (Crisis bypass via injection): INPUT_IS_DATA absolute rule +
+      SESSION_LOOP step 2 CRISIS_CHECK labelled NON-SKIPPABLE. Dual enforcement
+      confirmed. T-02 (Safe-messaging override): SAFE_MESSAGING_ABSOLUTE absolute
+      rule, cannot be overridden by user framing. T-03 (Clinical authority claim):
+      SCOPE_ENFORCEMENT handles 'I am a clinician'/'medical necessity' patterns.
+      T-04 (Third-person crisis sentinel evasion): CRISIS_DETECTION includes
+      third-person sentinel patterns ('my friend', 'someone I know').
+      T-05 (Phase 2/3 drift via narrative escalation): SCOPE_ENFORCEMENT with
+      sentinel phrases and gentle-then-firm redirect logic (3+ attempts = firm).
+      T-06 (State corruption): SESSION_STATE append-only for safety_flags;
+      ~reset requires explicit user invocation. T-07 (Language detection evasion):
+      LANGUAGE_DETECTION with uncertainty fallback to English.
 
-  - check: "Compressed variant functionally equivalent to verbose"
+  - check: "Crisis detection sentinels cover both first-person and third-person patterns"
     status: pass
     detail: >
-      All game rules, MVC structure, console commands, bot, templates, and hardening
-      present in prompt-compressed.md. Sync note included. Verbose is canonical source.
+      CRISIS_DETECTION includes first-person (I want to die, I'm going to hurt myself,
+      etc.) and third-person (my friend wants to hurt themselves, someone I know is
+      thinking about suicide, etc.) sentinel patterns. T-04 mitigation confirmed.
+
+  - check: "Crisis resources localised for 7 languages + default"
+    status: pass
+    detail: >
+      CRISIS_DETECTION RESOURCES covers: en (US 988 / UK 116 123), nl (0800 0113),
+      fr (3114), de (0800 111 0 111), es (024), pt (213 544 545), it (800 274 274),
+      default (fallback to en + WHO resources). NFR-06 multi-language requirement met.
+
+  - check: "Two-tier disclaimer implemented (CONF-01 OPT-C)"
+    status: pass
+    detail: >
+      Tier 1: brief warm disclaimer in SESSION_OPEN template. Tier 2: full formal
+      GDPR + scope disclaimer in FULL_DISCLAIMER template, rendered on clinical-boundary
+      crossing. DISCLAIMER_TRIGGER rule covers: diagnosis requests, medication queries,
+      clinical authority claims, treatment expectations.
+
+  - check: "SESSION_STATE includes all required fields (FR-09)"
+    status: pass
+    detail: >
+      session_id, session_number, session_date, language, phase, mood_checkin
+      {start/end}, active_themes, techniques_introduced, safety_flags (append-only),
+      contract, session_notes, boundary_crossings, disclaimer_rendered — all present.
+
+  - check: "~privacy console command implemented (CONF-02 OPT-B/C)"
+    status: pass
+    detail: >
+      CONSOLE ~privacy command renders: SESSION_STATE fields held, LLM provider
+      retention advisory, GDPR Art. 9 notice, advice not to share identifying
+      information. Satisfies FR-10 privacy transparency requirement.
 
   - check: "No hardcoded secrets or credentials"
     status: pass
-    detail: "Prompt files contain no API keys, passwords, tokens, or credentials."
+    detail: "Prompt file contains no API keys, passwords, tokens, or credentials. Crisis line numbers are public safety resources, not credentials."
 
   - check: "No external dependencies introduced"
     status: pass
-    detail: "Prompt files are self-contained text. No imports, no packages, no URLs."
+    detail: "Prompt file is self-contained text. No imports, no packages, no URLs other than public crisis resource references."
 
-  - check: "README.md updated with T.A.G. quick-start"
+  - check: "README.md updated with P.S.Y. entry in Available Roles table"
     status: pass
-    detail: "Quick start, feature overview, and governance section added."
-
-  - check: "Version bumped to 2.1 (v2.0 + Stage 3 hardening)"
-    status: pass
-    detail: "Both prompt.md and prompt-compressed.md declare version 2.1."
+    detail: "Trauma-Specialised Psychologist (P.S.Y.) row added to Available Roles table in README.md."
 
 overall_status: pass
 violations: 0
