@@ -1,0 +1,96 @@
+# =============================================================================
+# Change Request CR-0003
+# =============================================================================
+
+id: "CR-0003"
+title: "T.A.G. v2.2 — Game Feature Additions"
+type: feature
+urgency: routine
+
+requester:
+  name: "Jerry van Heerikhuize"
+  team: "Solo"
+  contact: "jvanheerikhuize@gmail.com"
+
+description: |
+  Add a set of new game mechanics and console capabilities to the T.A.G. masterprompt,
+  identified during the post-release audit of v2.1 (2026-03-13).
+
+  These features expand the game's simulation depth without breaking the existing MVC
+  architecture or LLM-agnostic constraint. They are grouped into two priority tiers:
+
+  HIGH — directly fills gaps in v2.1:
+    F-01  Weather system (per-location + global; gameplay effects)
+    F-02  Item weight & encumbrance (weight_capacity, movement penalty)
+    F-03  NPC dialogue trees (greeting / hostile / topics structure)
+    F-05  Exit leads_to field (explicit location_id on every exit)
+    F-06  Status effects (poisoned, blessed, etc. — tracked in STATE_SCHEMA)
+    F-10  Faction / reputation system (world.factions map, NPC faction score links)
+
+  MEDIUM — meaningful gameplay additions:
+    F-07  World Map Bot (worldmap console command — full location graph)
+    F-08  Merchant / economy system (player.currency, merchant_inventory)
+    F-09  Rest / recovery mechanic (rest action, safe-room flag, HP restore)
+    F-11  musicprompt console command (ambient music prompt in codeblock)
+    F-13  Puzzle formalization (world.puzzles schema; links to hints and scoring)
+
+  Note: F-04 (sub_quests schema) and F-12 (save_version) are captured in CR-0002 /
+  FEAT-0002 as architectural fixes A-07 and A-08, since they are schema correctness
+  issues rather than new game mechanics.
+
+problem_statement: |
+  The v2.1 prompt delivers a solid core game loop but lacks several simulation layers
+  that make text adventures feel alive and consequential:
+
+  - There is no weather: all outdoor locations feel the same regardless of setting.
+  - Inventory is weightless: no tactical trade-off in what to carry.
+  - NPCs have no structured dialogue: first-meeting tone and hostile tone are improvised
+    inconsistently across LLMs and sessions.
+  - There is no way to see the full world layout: the ASCII map shows one room at a time.
+  - Factions exist as a flag but have no mechanical weight; killing a faction member
+    has no cross-NPC consequence beyond a note in the rule.
+  - There is no economy: merchant NPCs exist in the schema but have no tradeable inventory.
+  - There is no rest mechanic: health recovery is undefined outside of finding items.
+  - Puzzles are implied by the scoring rules but have no formal structure in the state.
+
+desired_outcome: |
+  A v2.2 prompt that:
+  - Renders weather as a named state per location with defined gameplay effects
+    (fog, storm, freezing temperature each apply specific mechanical modifiers).
+  - Tracks item weight and player encumbrance, creating meaningful inventory decisions.
+  - Gives every NPC a structured dialogue object so greeting and hostile tone are
+    consistent and trackable across sessions and LLMs.
+  - Provides a worldmap console command showing the full discovered location graph.
+  - Supports a player currency field and merchant NPC inventory for trading interactions.
+  - Defines a rest action tied to the world clock and safe-room flag.
+  - Formalises puzzles as first-class STATE_SCHEMA entities linked to scoring and hints.
+  - Adds a faction reputation map so cross-NPC consequences of player actions are tracked.
+  - Adds a musicprompt console command alongside imageprompt and videoprompt.
+
+context: |
+  Several of these features were partially prototyped in the v2.2-vuln-test variant
+  produced during FEAT-0001 Stage 6 (weather system, item weight, NPC dialogue, exit
+  leads_to). That variant intentionally introduced security vulnerabilities alongside
+  the features; this CR implements the features only, with the v2.2-vuln-test used
+  as a design reference — not as a source to copy.
+
+  Features are designed to:
+  - Remain self-contained: no external APIs, tools, or infrastructure.
+  - Be LLM-agnostic: all mechanics are expressible as JSON state + prose rules.
+  - Compose cleanly with the structural refactor in CR-0002.
+
+constraints:
+  - "All new fields must be added to both verbose (prompt.md) and compressed (prompt-compressed.md)"
+  - "No external APIs, infrastructure, or LLM-specific features"
+  - "New mechanics must not break existing ATC-01 through ATC-04 acceptance tests"
+  - "a-sdlc/ governance submodule is read-only"
+
+known_dependencies:
+  - "FEAT-0001 complete (v2.1 baseline)"
+  - "CR-0002 / FEAT-0002 (structural refactor) should land first or in parallel;
+     exit leads_to (F-05) and sub_quests schema (F-04, handled in FEAT-0002) are
+     prerequisites for the World Map Bot (F-07)"
+
+ai_component_involved: true
+  # This CR modifies a system prompt governing LLM behaviour.
+  # Risk tier: minimal — entertainment/creative tool, no safety-critical decisions.

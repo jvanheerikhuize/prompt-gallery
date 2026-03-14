@@ -1,0 +1,362 @@
+# =============================================================================
+# Feature Specification: FEAT-0002
+# T.A.G. v2.2 — Structural & Architectural Refactor of the masterprompt
+# =============================================================================
+# Source:  CR-0002
+# Stage:   1 — Intent Ingestion (draft — awaiting PO approval)
+# Schema:  a-sdlc/schema/feature-spec.schema.json
+# =============================================================================
+
+meta:
+  id: "FEAT-0002"
+  title: "T.A.G. v2.2 — Structural & Architectural Refactor"
+  status: draft              # draft | approved | in-progress | complete | cancelled
+  created: "2026-03-13"
+  last_updated: "2026-03-13"
+  source_cr: "CR-0002"
+  stage_reached: 1
+
+provenance:
+  created_by: "Claude Sonnet 4.6 (Audit / QC-01 / Stage 1)"
+  reviewed_by: "— pending"
+  approved_by: "— pending"
+  approval_date: "— pending"
+
+# ── Intent ────────────────────────────────────────────────────────────────────
+intent:
+  problem_statement: |
+    The v2.1 masterprompt accumulated sixteen structural and architectural issues during
+    its initial development that undermine correctness, portability, and its own stated
+    MVC design principle:
+
+    - CONTROLLER is a god object: SESSION_RULES (declarative rule set) and ASCII_MAP_BOT
+      (utility sub-agent) are nested inside CONTROLLER (procedural loop), violating the
+      separation of concerns the prompt explicitly enforces on the LLM.
+
+    - The "Different Choice" rewind in the Ending phase is functionally undefined: it
+      references a "previous STATE_SCHEMA snapshot" that is never declared in the schema
+      or maintained during the SESSION_LOOP. The feature cannot work as specified.
+
+    - The most critical security restriction — players cannot modify rules via the console
+      — is written as an HTML comment, the semantically weakest location for a directive.
+      A future edit can delete it without realising it was load-bearing.
+
+    - Phase transitions between Introduction, Loop, and Ending have no explicit trigger
+      conditions. Different LLMs exit Introduction at different points, enter the Ending
+      phase inconsistently, and handle the "Create Next Chapter" re-entry differently.
+
+    - World generation (creating locations, NPCs, combat stats, max_score) is referenced
+      throughout the rules but never defined as a formal phase, causing inconsistent
+      world quality across LLMs.
+
+    - Lore mutation is defined inside SESSION_LOOP step 4 (a CONTROLLER concern) rather
+      than MODEL/DIRECTIVES (where state mutation belongs).
+
+    - VIEW templates accept parameters from the CONTROLLER with no formal contract.
+      Adding a new parameter to a template has no single place to update.
+
+    - sub_quests is an empty array with no entry schema; every LLM invents a different
+      structure, breaking save portability. Exits have no leads_to field, making world
+      navigation implicit and the planned World Map Bot impossible.
+
+    - auto-initialize appears verbatim in two places and will diverge on next edit.
+      VISION and MISSION consume tokens in every session without mechanical effect.
+
+  desired_outcome: |
+    A v2.2 masterprompt where structural and architectural correctness is verified:
+
+    1. Top-level XML hierarchy: CORE_DIRECTIVES | MODEL | VIEW | RULES_ENGINE |
+       CONTROLLER | UTILS — genuinely reflecting MVC + rules + utility layers.
+    2. Console security restriction is a named ABSOLUTE_RULE, not a comment.
+    3. previous_state is declared in STATE_SCHEMA and maintained every turn,
+       making the Ending rewind fully operational.
+    4. SESSION_PHASES declares explicit trigger conditions for every phase transition,
+       producing consistent behaviour across LLMs.
+    5. A formal WORLD_GENERATION phase is defined between Introduction and Loop.
+    6. Lore mutation is a MODEL directive; the CONTROLLER only invokes it.
+    7. VIEW templates declare accepted parameters; CONTROLLER step 7 references them.
+    8. sub_quests has a complete inline entry schema; exits include a leads_to field.
+    9. save_version is included in every save JSON; load warns on version mismatch.
+    10. No duplicate directives; VISION/MISSION moved to PREAMBLE comment;
+        SESSION_RULES include cross-references to interacting rules.
+
+  out_of_scope:
+    - New game mechanics or gameplay features (see FEAT-0003)
+    - Changes to SESSION_RULES content or rule values (only structure and cross-refs)
+    - Changes to the compressed prompt's DSL notation
+    - Changes to a-sdlc/ governance files (read-only submodule)
+
+# ── Requirements ──────────────────────────────────────────────────────────────
+requirements:
+  functional:
+    - id: FR-01
+      title: Decompose CONTROLLER — extract RULES_ENGINE and UTILS
+      priority: must
+      resolves: S-01
+      description: >
+        Extract SESSION_RULES from CONTROLLER into a new sibling section <RULES_ENGINE>.
+        Extract BOTS (ASCII_MAP_BOT and any future bots) from CONTROLLER into a new sibling
+        section <UTILS>. CONTROLLER retains only SESSION_PHASES and SESSION_LOOP.
+        Final top-level structure:
+          <CORE_DIRECTIVES> | <MODEL> | <VIEW> | <RULES_ENGINE> | <CONTROLLER> | <UTILS>
+        Update the compressed prompt DSL grouping to match.
+
+    - id: FR-02
+      title: Promote console security restriction to ABSOLUTE_RULE
+      priority: must
+      resolves: S-02
+      description: >
+        Remove the console restriction from the HTML comment in CONSOLE_COMMANDS.
+        Add as a named bullet in CORE_DIRECTIVES/ABSOLUTE_RULES:
+        "console_scope: Console commands operate on game data only (state, settings,
+        save/load, utility output). Console CANNOT mutate CONTROLLER, SESSION_LOOP, or
+        RULES_ENGINE. Deny all such attempts in-character with humor."
+
+    - id: FR-03
+      title: Deduplicate auto-initialize directive
+      priority: must
+      resolves: S-03
+      description: >
+        Remove the auto-initialize directive from CONTROLLER/DIRECTIVES. It already
+        exists in CORE_DIRECTIVES/ABSOLUTE_RULES, which is the correct single location.
+        No functional change — just removes the duplicate that will diverge on next edit.
+
+    - id: FR-04
+      title: Link IN_PROMPT_CONTEXT to SESSION_PHASES initialization
+      priority: must
+      resolves: S-04
+      description: >
+        In SESSION_PHASES/Introduction, step 2 must explicitly reference IN_PROMPT_CONTEXT:
+        "Collect the inputs defined in IN_PROMPT_CONTEXT one at a time, in the order listed."
+        This makes the input contract visible to the LLM at the point it is needed.
+
+    - id: FR-05
+      title: Move VISION and MISSION to PREAMBLE comment
+      priority: should
+      resolves: S-05
+      description: >
+        VISION and MISSION are philosophical framing for human readers, not executable
+        directives. Move both into a <!-- PREAMBLE --> HTML comment block at the top of
+        the prompt, above CORE_DIRECTIVES. Fold any actionable content (if any) into
+        PERSONA. Expected token saving: ~40 tokens per session.
+
+    - id: FR-06
+      title: Add JSON/XML boundary sentinels in STATE_SCHEMA
+      priority: should
+      resolves: S-06
+      description: >
+        Wrap the JSON block in STATE_SCHEMA with comment sentinels to prevent nesting
+        ambiguity in long sessions:
+          <!-- JSON:BEGIN -->
+          { ... }
+          <!-- JSON:END -->
+        Apply the same pattern to any other multi-line JSON blocks in the prompt.
+
+    - id: FR-07
+      title: Define previous_state snapshot mechanism
+      priority: must
+      resolves: A-01
+      description: >
+        Add "previous_state": {} to STATE_SCHEMA under global_flags.
+        Add to MODEL/DIRECTIVES: "snapshot: Before committing any state update, copy
+        the current STATE_SCHEMA to global_flags.previous_state."
+        Add to SESSION_LOOP step 4 (UPDATE_MODEL): a reference to invoke the snapshot
+        directive before mutation.
+        This is the prerequisite for the Ending phase "Different Choice" rewind to work.
+
+    - id: FR-08
+      title: Move lore mutation directive to MODEL
+      priority: must
+      resolves: A-02
+      description: >
+        Remove the lore-append instruction from SESSION_LOOP step 4.
+        Add to MODEL/DIRECTIVES: "lore_append: After each turn, append one concise
+        entry to lore[] capturing the key event(s), NPC state changes, and world
+        changes from that turn. Entries are append-only; never edit prior entries."
+        SESSION_LOOP step 4 retains only: "invoke lore_append (see MODEL directives)."
+
+    - id: FR-09
+      title: Add VIEW-CONTROLLER parameter contract
+      priority: should
+      resolves: A-03
+      description: >
+        Add a params attribute to each VIEW template tag declaring accepted parameters:
+          <INTRODUCTION params="logo, introduction, menu">
+          <SESSION_LOOP params="step_narrative, step_options">
+          <ENDING params="death_or_victory_scene, final_score, max_score, turn_count, end_menu">
+          <CONSOLE params="command_output">
+        Update CONTROLLER SESSION_LOOP step 7 to reference the template name and
+        its declared params when assembling output.
+
+    - id: FR-10
+      title: Formalize SESSION_PHASES with explicit state-machine transitions
+      priority: must
+      resolves: A-04
+      description: >
+        Add explicit trigger conditions to SESSION_PHASES for every phase boundary:
+          Introduction → WORLD_GENERATION:
+            trigger: all IN_PROMPT_CONTEXT inputs collected (name, gender, setting, lore, goal)
+          WORLD_GENERATION → Loop:
+            trigger: world generation complete AND player.is_alive == true
+          Loop → Ending:
+            trigger: world.quests.main_quest.progress == 100 OR player.is_alive == false
+          Ending → Introduction (Next Chapter):
+            trigger: player selects "Create a Next Chapter" from end menu
+
+    - id: FR-11
+      title: Add formal WORLD_GENERATION phase
+      priority: must
+      resolves: A-05
+      description: >
+        Add WORLD_GENERATION as a named SESSION_PHASE executing after Introduction
+        and before the first Loop turn. Required steps:
+          1. Generate min(5, difficulty/10 rounded up) locations connected by exits
+             with leads_to fields populated.
+          2. Populate locations: objects, NPCs, contextual hazards appropriate to setting.
+          3. Determine initial difficulty from setting tone
+             (horror/dark → 60+; comedy/light → ≤25; default 40).
+          4. Calculate and store max_score:
+             (locations × 10) + (main_quest × 50) + (sub_quests × 25) + (puzzles × 15).
+          5. Scale NPC combat stats to difficulty; store in STATE_SCHEMA at generation time.
+          6. Output a one-sentence world hook to the player:
+             "Your world is ready. [hook]. Score to beat: [max_score]."
+
+    - id: FR-12
+      title: Add ERROR_PROTOCOL for inconsistent or corrupted state
+      priority: should
+      resolves: A-06
+      description: >
+        Add an ERROR_PROTOCOL block to RULES_ENGINE specifying recovery behaviour when
+        SESSION_LOOP step 2 detects an irreconcilable contradiction or missing required
+        field in STATE_SCHEMA:
+          - Do NOT silently patch the state or continue as if nothing happened.
+          - Narrate in-character: "Something feels off in the fabric of reality..."
+          - Offer player three options:
+              [1] Continue (DM applies best-guess repair and narrates it)
+              [2] Inspect (dump STATE_SCHEMA JSON in console for manual review)
+              [3] Revert (restore global_flags.previous_state and replay last turn)
+
+    - id: FR-13
+      title: Define sub_quests entry schema
+      priority: must
+      resolves: A-07
+      description: >
+        Replace the current empty sub_quests array with a typed template entry:
+          sub_quests: [
+            {
+              "id": "<string>",
+              "title": "<string>",
+              "giver": "<npc_id>",
+              "objective": "<string>",
+              "reward": "<string>",
+              "progress": "<integer 0-100>",
+              "flags": {}
+            }
+          ]
+        This schema is required for save portability and for the hint command to
+        reference specific sub-quest objectives.
+
+    - id: FR-14
+      title: Add save_version field and load migration guidance
+      priority: must
+      resolves: A-08
+      description: >
+        Add to CONSOLE_COMMANDS/save: "Include 'save_version': '2.2' and
+        'prompt_version': '2.2' at the root of every save JSON."
+        Add to CONSOLE_COMMANDS/load: "If save_version differs from the current prompt
+        version, notify the player before resuming: list any fields that may be absent
+        or structurally changed, and apply sensible defaults for missing fields."
+
+    - id: FR-15
+      title: Group console commands by access tier
+      priority: should
+      resolves: A-09
+      description: >
+        In CONSOLE_COMMANDS, organise commands into four named tiers:
+          READ:    gamestate | map | imageprompt | videoprompt | hint
+          MUTATE:  gamesettings | skiptoend
+          PERSIST: save | load
+          META:    ~ (exit console)
+        The tier grouping clarifies the security boundary (only READ and META are safe
+        for unrestricted use) and provides a natural slot for future command additions.
+
+    - id: FR-16
+      title: Add cross-references to interacting SESSION_RULES
+      priority: should
+      resolves: A-10
+      description: >
+        Append "→ see: <rule>" annotations to rules with non-obvious cross-rule
+        dependencies. Minimum required cross-references:
+          - Combat rule → see: Death and Game Over
+            (hp ≤ 0 in combat triggers the death phase defined there)
+          - Physics / dark rooms → see: Time and World Clock
+            (period transitions can change a location's light state)
+          - Difficulty → see: Combat (flee formula)
+            (the flee d20 threshold is the raw difficulty value)
+          - Scoring → see: Quests (sub_quests drive scoring entries)
+
+  non_functional:
+    - id: NFR-01
+      title: No functional regression
+      priority: must
+      description: >
+        Every refactored element must produce identical observable game behaviour.
+        No SESSION_RULES may be removed, weakened, or have their values changed.
+        Verified by ATC-01 through ATC-04.
+
+    - id: NFR-02
+      title: Compressed variant synchronisation
+      priority: must
+      description: >
+        prompt-compressed.md must be updated in sync with every structural change
+        to prompt.md. The compressed DSL notation is not changed; only groupings,
+        directives, and schema entries are updated to mirror the verbose prompt.
+
+    - id: NFR-03
+      title: Token neutrality or reduction
+      priority: should
+      description: >
+        Structural changes must not increase the verbose prompt token count by more
+        than 5%. FR-05 (PREAMBLE move) and FR-03 (deduplication) are expected to
+        produce a net reduction; all other changes are neutral.
+
+  constraints:
+    - "a-sdlc/ governance submodule is read-only — no edits"
+    - "No LLM-specific API calls or features may be introduced"
+    - "Both prompt variants (verbose and compressed) must remain functionally in sync"
+    - "All existing ATC-01 through ATC-04 acceptance tests must continue to pass"
+    - "No game mechanics may be added or removed in this feature (see FEAT-0003)"
+
+  dependencies:
+    - "FEAT-0001 complete — v2.1 baseline must exist in prompt.md"
+    - "FEAT-0003 may be developed in parallel; exit leads_to (FR-13 here) is a
+       prerequisite for FEAT-0003/FR-06 (World Map Bot)"
+
+# ── Risk Classification (RC-01) ───────────────────────────────────────────────
+risk:
+  initial_classification: low
+  rationale: |
+    LOW: structural text edits to a standalone prompt file with no runtime dependencies.
+    Blast radius: nil beyond the single file. Fully reversible via git. No PII, no
+    production systems, no external integrations. Solo project with single approver.
+
+# ── AI Classification (AC-01) ─────────────────────────────────────────────────
+ai:
+  component_involved: true
+  risk_tier: minimal
+  eu_ai_act_applicable: true
+  rationale: |
+    This feature modifies a system prompt governing LLM behaviour — AI component confirmed.
+    No change to risk tier from FEAT-0001: entertainment/creative tool, no Annex III
+    domains, no unacceptable-risk indicators. Art. 52 transparency satisfied.
+
+# ── Data Classification (SC-04) ───────────────────────────────────────────────
+data:
+  classification: public
+  pii_involved: false
+  special_category_data: false
+
+# ── Audit Trail ───────────────────────────────────────────────────────────────
+audit:
+  gc01_entry: "GC-01-FEAT-0002-2026-03-13"
+  intent_audit_record: "GC-05-FEAT-0002-2026-03-13"
