@@ -2,89 +2,134 @@
 # AC-03 — AI Component Design Review
 # Control:   AC-03 AI Component Design Review
 # Stage:     2 — System Design
-# Feature:   FEAT-0001
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
 # Status:    draft — awaiting AI Governance Lead approval
 # =============================================================================
 
 meta:
-  id: "AC-03-FEAT-0001"
-  feature: "FEAT-0001"
-  ai_tier: minimal      # from AC-01-FEAT-0001
+  id: "AC-03-FEAT-0004"
+  feature: "FEAT-0004"
+  ai_tier: limited      # Confirmed by AGL in AC-01-FEAT-0004
   produced_by: "Claude Sonnet 4.6 (AI Governance Analyst / AC-03)"
-  date: "2026-03-11"
-  status: draft
+  date: "2026-03-14"
+  status: approved
 
 ai_component_description: |
-  T.A.G. is itself an AI system: a system prompt that governs LLM behaviour to act as a
-  text adventure game master. The AI component is the prompt + the LLM it runs on. The
-  prompt is the "model" in terms of AI Act obligations — it defines the system's behaviour.
+  P.S.Y. is a system prompt that governs LLM behaviour to act as a trauma-informed
+  psychoeducation and emotional support agent. The AI component is the prompt + the
+  LLM it runs on. The prompt defines the system's persona, session lifecycle, safety
+  rules, and output constraints. Unlike T.A.G. (entertainment, minimal risk), P.S.Y.
+  operates in a health-adjacent domain with a vulnerable user population — this
+  materially affects the design obligations reviewed here.
 
-# ── Model Selection ───────────────────────────────────────────────────────────
+# ── Model Selection ────────────────────────────────────────────────────────────
 model_selection:
   approach: LLM-agnostic (user-selected)
   rationale: >
-    T.A.G. is deliberately model-agnostic (NFR-02). The user chooses the LLM (Claude,
-    ChatGPT, Gemini, etc.). T.A.G. does not introduce, train, or pin a specific model.
+    P.S.Y. is model-agnostic (NFR-03). The user chooses the LLM. The prompt does
+    not introduce, train, or pin a specific model.
   supported_models: [Claude 3+, GPT-4+, Gemini 1.5+]
   model_pinning: false
   model_pinning_rationale: >
-    Pinning a specific model would violate NFR-02. Users run the prompt on whichever
-    LLM they choose. This is an accepted design decision documented in QC-03.
+    Pinning would violate NFR-03. Accepted design decision per QC-03.
+  model_capability_note: |
+    Design note: safety-critical rules (crisis detection, safe-messaging, scope
+    enforcement) depend on the LLM's instruction-following fidelity. Model-agnostic
+    design means safety behaviour may vary across LLMs. Stage 4 testing must cover
+    safety rule compliance on at least two major LLMs.
 
-# ── Data Pipeline ─────────────────────────────────────────────────────────────
+# ── Data Pipeline ──────────────────────────────────────────────────────────────
 data_pipeline:
   exists: false
   rationale: >
     No data pipeline. The system processes only the in-session conversation context.
     No training data, no fine-tuning, no vector databases, no retrieval systems.
+    SESSION_STATE is in-context only.
 
-# ── Explainability ────────────────────────────────────────────────────────────
+# ── Explainability ─────────────────────────────────────────────────────────────
 explainability:
-  mechanism: >
-    Full transparency by design:
-    1. The prompt is open-source — anyone can read the full MASTER_PROMPT.
-    2. The gamestate console command exposes the full STATE_SCHEMA at any time.
-    3. The SESSION_LOOP is documented step-by-step in the prompt itself.
-    4. The CONTROLLER explicitly forbids exposing internal reasoning in output (step 7),
-       but this is a UX choice, not a transparency restriction — the full logic is visible
-       in the prompt source.
-  eu_ai_act_art13_compliance: >
-    Art. 13 (transparency): Satisfied. The prompt self-identifies as T.A.G. (AI game master)
-    in its introduction. The system is open-source. Users know they are interacting with AI.
+  mechanism: |
+    1. The prompt is open-source — anyone can read the full MASTER_PROMPT structure.
+    2. The ~state console command exposes SESSION_STATE at any time.
+    3. The SESSION_LOOP is documented step-by-step in the prompt (COMP-05b).
+    4. RULES_ENGINE sections are named and their logic is explicit in the prompt source.
+    5. All output is in natural language — no opaque numerical scores or rankings.
+  eu_ai_act_art13_compliance: |
+    Art. 13 (transparency): satisfied.
+    - The prompt opens with a mandatory disclaimer identifying it as an AI tool.
+    - The system is open-source; full behaviour is auditable.
+    - Session limitations and scope are explicitly communicated to users.
+    - The ~disclaimer command re-renders the disclosure on demand.
 
-# ── Human Oversight ───────────────────────────────────────────────────────────
+# ── Human Oversight ────────────────────────────────────────────────────────────
 human_oversight:
   mechanisms:
-    - "Console mode (~): user can inspect full game state at any time (gamestate command)"
-    - "hint command: user can request guidance, preventing complete loss of agency"
-    - "skiptoend: user can terminate the game at will"
-    - "save/load: user retains full control of game state via JSON portability"
-    - "Different Choice end-menu option: user can rewind one turn"
+    - "~state: user can inspect full SESSION_STATE at any time"
+    - "~privacy: user can review what data is held and LLM provider retention risk"
+    - "~disclaimer: user can re-read scope limitations on demand"
+    - "~close: user can end the session at any point"
+    - "~reset: user can clear state and restart"
+    - "Crisis escalation: routes user to real human services (emergency services, crisis lines)"
+    - "Phase 1 scope limit: prevents autonomous AI handling of Phase 2/3 processing — human therapist required"
     - "Open-source prompt: full system behaviour is auditable by anyone"
-  eu_ai_act_art14_compliance: >
-    Art. 14 (human oversight): Satisfied for minimal-risk classification. Users have full
-    visibility into and control over the system at all times via console mode.
+  eu_ai_act_art14_compliance: |
+    Art. 14 (human oversight): satisfied for LIMITED risk tier.
+    Users have full session control via console commands. Crisis escalation
+    explicitly routes users to human services — the AI defers to human
+    responders at the most critical moments. The Phase 1/2 scope limit
+    ensures the most complex and risky therapeutic work requires a human
+    clinical professional.
 
-# ── EU AI Act Compliance (Minimal Risk) ──────────────────────────────────────
+# ── EU AI Act Compliance (Limited Risk) ───────────────────────────────────────
 eu_ai_act_compliance:
-  tier: minimal
+  tier: limited
   mandatory_obligations:
-    - id: "Art. 52"
-      obligation: Transparency for certain AI systems (chatbots/conversational AI)
+    - id: "Art. 52(1)"
+      obligation: >
+        Transparency for AI systems interacting with natural persons — users must
+        be informed they are interacting with an AI.
       status: compliant
       evidence: >
-        The prompt introduction explicitly identifies the system as T.A.G. (AI game master).
-        No user could reasonably mistake this for a human interaction.
-  additional_voluntary_measures:
-    - Open-source publication (full prompt visible)
-    - Console gamestate command (full state visibility)
-    - README documentation
+        Mandatory disclaimer (FR-02, COMP-03a) at session open identifies the agent
+        as an AI psychoeducation tool. The two-tier disclaimer design (CONF-01 OPT-C)
+        ensures the disclosure is present at session start and reinforced on
+        clinical-boundary crossings. No user could reasonably mistake this for a
+        human therapist interaction.
 
-# ── Gaps ──────────────────────────────────────────────────────────────────────
-gaps: []
+    - id: "Art. 53 GPAI (technical documentation)"
+      obligation: Technical documentation evidencing system capabilities and limitations.
+      status: compliant
+      evidence: >
+        This A-SDLC artifact set (CR-0004, FEAT-0004 spec, Stage 1 and 2 artifacts)
+        constitutes technical documentation. The feature spec (specs/FEAT-0004-*.yaml)
+        documents intended purpose, scope limitations, and compliance measures.
 
-# ── Approval ─────────────────────────────────────────────────────────────────
+    - id: "Art. 53 GPAI (downstream deployer transparency)"
+      obligation: Information enabling downstream deployers to comply with their obligations.
+      status: compliant
+      evidence: >
+        The prompt is open-source. README.md documents the role, limitations, and
+        intended use. The mandatory disclaimer in the prompt itself informs end users.
+
+  voluntary_measures:
+    - "Open-source publication — full prompt visible and auditable"
+    - "A-SDLC governance record — full development traceability"
+    - "~privacy command — explicit data transparency beyond Art. 52 minimum"
+    - "Phase 1/2 scope limit — proactive restriction beyond regulatory minimum"
+    - "Crisis escalation to human services — human-in-the-loop at highest risk moments"
+
+# ── Gaps ───────────────────────────────────────────────────────────────────────
+gaps:
+  - id: ACG-01
+    severity: minor
+    description: >
+      Model-agnostic design means safety rule compliance (crisis detection, safe-messaging)
+      cannot be guaranteed uniformly across all LLMs. Stage 4 must test safety behaviour
+      on at least two major LLMs to identify any model-specific compliance gaps.
+    stage_3_action: "Document safety test matrix in Stage 4 test plan"
+
+# ── Approval ───────────────────────────────────────────────────────────────────
 approval:
   approved_by: "Jerry van Heerikhuize (AI Governance Lead)"
-  approval_date: "2026-03-11"
+  approval_date: "2026-03-14"
   revisions_required: false

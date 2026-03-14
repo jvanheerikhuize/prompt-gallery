@@ -2,35 +2,166 @@
 # RC-03 — Privacy Impact Assessment
 # Control:   RC-03 Privacy Impact Assessment Gate
 # Stage:     2 — System Design
-# Feature:   FEAT-0001
-# Status:    not_applicable
+# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Status:    draft — awaiting Lead Architect review
 # =============================================================================
 
 meta:
-  id: "RC-03-FEAT-0001"
-  feature: "FEAT-0001"
+  id: "RC-03-FEAT-0004"
+  feature: "FEAT-0004"
   produced_by: "Claude Sonnet 4.6 / RC-03"
-  date: "2026-03-11"
+  date: "2026-03-14"
 
-applicable: false
+applicable: true
+trigger: "Processing of GDPR Art. 9 special category data (mental health information)"
 
-rationale: |
-  RC-03 is NOT APPLICABLE. This determination is consistent with SC-04 (Stage 1).
+# ── GDPR Art. 35 DPIA Trigger Assessment ─────────────────────────────────────
+dpia_trigger_assessment:
+  required: false
+  triggers_evaluated:
+    - trigger: "Systematic and extensive profiling with significant effects"
+      applies: false
+      rationale: >
+        No profiling occurs. The prompt does not aggregate, compare, or score users
+        against any profile. SESSION_STATE tracks only the current session's data.
 
-  T.A.G. processes no personal data:
-  - The prompt file contains no personal data.
-  - Game session data (player character name, attributes, events) is entirely fictional
-    and voluntarily entered as part of gameplay.
-  - A player-chosen character name is not PII under GDPR — it is a fictional character
-    name, not necessarily the user's real name, and is not collected, stored, transmitted,
-    or processed outside the user's own LLM chat session.
-  - No profiling, tracking, aggregation, or data sharing occurs.
-  - No personal data crosses any system boundary.
+    - trigger: "Processing of special category data at large scale (Art. 9)"
+      applies: false
+      rationale: >
+        Mental health data IS special category (Art. 9(1)). However, processing is
+        not at scale — each session is individual, self-directed, and isolated.
+        The user is the data controller of their own session; there is no
+        centralised processor aggregating data across users. Each LLM conversation
+        is an independent event.
 
-  AI Act Art. 9(2)(a) (risk to fundamental rights including privacy): not triggered
-  because T.A.G. is minimal-risk and processes no personal data.
+    - trigger: "Systematic monitoring of publicly accessible areas"
+      applies: false
+      rationale: No monitoring of any kind occurs.
 
-  GDPR DPIA trigger conditions (Art. 35): none met.
-    - Systematic and extensive profiling: NO
-    - Processing of special categories at scale: NO
-    - Systematic monitoring of a publicly accessible area: NO
+    - trigger: "High-risk AI processing (Art. 35(3)(a))"
+      applies: false
+      rationale: >
+        AC-01 confirmed LIMITED risk tier. Annex III point 5 determined not
+        applicable. No high-risk AI processing as defined by EU AI Act.
+
+  dpia_rationale: >
+    Full DPIA not required. The processing is individual and self-directed; the user
+    is both data subject and data controller of their own LLM session. No centralised,
+    systematic, or large-scale processing occurs. A Privacy Impact Assessment (PIA)
+    at this level is appropriate and sufficient.
+
+# ── Processing Activities ─────────────────────────────────────────────────────
+processing_activities:
+
+  - id: PA-01
+    activity: "User discloses mental health information in session"
+    data_elements: ["Trauma narratives", "Emotional state", "Coping history", "Crisis indicators"]
+    gdpr_category: "Special category — health / mental health (Art. 9(1))"
+    data_controller: "End user (self-directed)"
+    data_processor: "LLM provider (user's chosen platform)"
+    legal_basis: "Art. 9(2)(a) — explicit consent (user initiates and continues the session)"
+    necessity: >
+      Mental health disclosures are necessary for the agent to provide relevant
+      psychoeducation and emotional support. The agent does not solicit disclosures
+      beyond what the user chooses to share.
+    minimisation: >
+      SESSION_STATE records themes and safety flags — not verbatim disclosures.
+      Agent instructed (DHR-03) not to reproduce crisis content unnecessarily.
+    retention: "In-context only — no persistence beyond the LLM session"
+    recipient: "LLM provider (per their data policy)"
+
+  - id: PA-02
+    activity: "Session state tracked in SESSION_STATE schema"
+    data_elements: ["Mood scores (0–10)", "Active themes", "Techniques introduced", "Safety flags"]
+    gdpr_category: "Special category — health (mood/safety indicators)"
+    data_controller: "End user"
+    data_processor: "LLM provider"
+    legal_basis: "Art. 9(2)(a) — explicit consent; Art. 6(1)(b) — necessary for service delivery"
+    necessity: >
+      Session state is necessary for phase coherence — the agent cannot conduct a
+      structured session (Check-in → Contract → Explore → Stabilise → Close) without
+      knowing the current phase and prior context.
+    minimisation: >
+      Schema designed to record category-level data (themes, technique names) rather
+      than verbatim user statements. Safety flags record trigger events, not full crisis
+      disclosures verbatim.
+    retention: "In-context only"
+    recipient: "LLM provider"
+
+# ── Privacy Risk Assessment ────────────────────────────────────────────────────
+privacy_risks:
+
+  - id: PR-01
+    risk: "LLM provider retains special category health data"
+    likelihood: high     # Providers routinely retain conversation data
+    severity: medium     # Data is sensitive; user is aware and has consented to provider ToS
+    current_controls:
+      - "GDPR Art. 9 notice + provider retention advisory at session open (DHR-01)"
+      - "~privacy console command with on-demand data transparency (DHR-01)"
+      - "Advice not to share identifying information (DHR-02)"
+    residual_risk: medium
+    residual_risk_accepted: true
+    acceptance_rationale: >
+      The prompt cannot control LLM provider data retention. Disclosure is the
+      appropriate mitigation. The user chooses their LLM provider and accepts
+      their data policy independently. The prompt fulfils its obligation by
+      making the retention risk explicit at session open.
+
+  - id: PR-02
+    risk: "User shares more identifying information than necessary"
+    likelihood: medium
+    severity: low        # User-initiated; prompt advises against it
+    current_controls:
+      - "Explicit advice not to share full name, address, DOB, or other PII (DHR-02)"
+      - "Agent does not ask for identifying information"
+    residual_risk: low
+    residual_risk_accepted: true
+
+  - id: PR-03
+    risk: "Session_state ~state command renders sensitive data to an unintended viewer"
+    likelihood: low      # User must explicitly invoke ~state
+    severity: low        # User controls their own device/session
+    current_controls:
+      - "~state is only invokable by the user within their own session"
+      - "No automatic state rendering; console is opt-in"
+    residual_risk: low
+    residual_risk_accepted: true
+
+  - id: PR-04
+    risk: "Safety flags reproduced in session responses — casual reference to crisis content"
+    likelihood: low
+    severity: medium     # Re-traumatisation risk if crisis content is casually referenced
+    current_controls:
+      - "DHR-03: safety_flags treated as most sensitive; not referenced casually"
+      - "COMP-02b STATE_DIRECTIVES: safety_flags are append-only, not narratively reproduced"
+    residual_risk: low
+    residual_risk_accepted: true
+
+# ── Privacy Safeguards Summary ────────────────────────────────────────────────
+safeguards:
+  - "Mandatory GDPR Art. 9 notice and PII advice at session open (DHR-01, DHR-02)"
+  - "LLM provider retention risk advisory at session open and via ~privacy command"
+  - "No persistent storage by the prompt; in-context only"
+  - "SESSION_STATE minimised to category-level data (not verbatim disclosures)"
+  - "Safety flags append-only; not reproduced casually in session responses (DHR-03)"
+  - "Agent does not solicit identifying information; advises against sharing it"
+  - "~reset command clears SESSION_STATE on user demand"
+
+overall_privacy_risk: medium   # Driven by Art. 9 special category data + provider retention
+overall_risk_accepted: true
+acceptance_rationale: >
+  Residual risks are structural (LLM provider retention is outside prompt control)
+  and user-behavioural (user may share PII). Both are mitigated by disclosure and
+  design choices (minimal state, no PII solicitation). The PIA safeguards are
+  adequate and proportionate for a self-directed psychoeducation tool.
+
+# ── LAD Review ────────────────────────────────────────────────────────────────
+lad_review:
+  reviewed_by: "Jerry van Heerikhuize (Lead Architect)"
+  review_date: "2026-03-14"
+  findings: >
+    PIA accepted. DPIA not required determination is correct — individual self-directed
+    sessions with user as data controller do not meet Art. 35 large-scale or systematic
+    processing triggers. Privacy safeguards are proportionate. LLM provider retention
+    residual risk accepted as structural and adequately disclosed.
+  approved: true
