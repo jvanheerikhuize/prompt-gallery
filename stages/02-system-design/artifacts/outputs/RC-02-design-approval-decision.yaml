@@ -2,95 +2,71 @@
 # RC-02 — Design Approval Decision
 # Control:   RC-02 Design Approval (HUMAN REQUIRED)
 # Stage:     2 — System Design
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # Status:    approved
 # =============================================================================
-# Risk tier: MEDIUM → required authority: Lead Architect
+# Risk tier: LOW → required authority: Lead Architect
 # =============================================================================
 
 meta:
-  id: "RC-02-FEAT-0005"
-  feature: "FEAT-0005"
+  id: "RC-02-FEAT-0006"
+  feature: "FEAT-0006"
   produced_by: "Claude Sonnet 4.6 (approval package prepared)"
-  date: "2026-03-14"
+  date: "2026-03-15"
   status: approved
 
-# ── Approval Package ───────────────────────────────────────────────────────────
 approval_package:
-  risk_tier: medium
+  risk_tier: low
   required_authority: "Lead Architect (Jerry van Heerikhuize)"
 
   artifacts:
     - path: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
       summary: >
-        5-component MVC architecture (CORE_DIRECTIVES, MODEL, VIEW, RULES_ENGINE,
-        CONTROLLER). All 18 requirements (11 FR + 7 NFR) mapped — 0 unmapped.
-        4 trust boundaries identified and controlled. Novel HUMOR_PROTOCOL component
-        (COMP-04e) with GRAVITY_TOPICS absolute prohibition, single-nudge pre-rapport
-        rule, and monotonic humor_rapport_established flag. 3 minor design gaps
-        documented (DV sentinel enumeration, language detection fallback, GRAVITY_TOPICS
-        boundary precision) — all deferred to Stage 3 by design. DESIGN-01/02/03: compliant.
+        10-component MVC/XML architecture (COMP-01 through COMP-06 across 5 sections).
+        All 17 requirements (12 FR + 5 NFR) mapped — 0 unmapped. Single-task stateless
+        REQUEST_LOOP (10 steps). Explicit equirectangular projection formula.
+        Deterministic label placement rules. 2 minor design gaps documented (high-latitude
+        distortion, dense-cluster label omission) — both deferred to Stage 3. DESIGN-01/02: compliant.
 
     - path: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
       summary: >
-        9 threats across 4 trust boundaries. 1 CRITICAL (T-01: crisis bypass via injection
-        — mitigated by dual ABSOLUTE_RULES + SESSION_LOOP step 2 ordering, same pattern
-        as P.S.Y. FEAT-0004). 2 HIGH (T-02: HUMOR_PROTOCOL bypass — mitigated by
-        GRAVITY_TOPICS_ABSOLUTE rule and monotonic flag; T-03: individual-perspective collapse
-        — mitigated by INDIVIDUAL_PERSPECTIVE_GUARD and session-open framing). 4 MEDIUM,
-        2 LOW. 0 unmitigated critical/high threats. 0 stage blockers.
-
-    - path: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
-      summary: >
-        AI component confirmed (limited-risk prompt). Model-agnostic by design. No data
-        pipeline. Art. 52(1) transparency: satisfied by mandatory disclaimer. Art. 53 GPAI
-        documentation: satisfied by A-SDLC artifact set. Art. 14 human oversight: satisfied
-        by console commands + DV/crisis-to-human escalation + scope limits. HUMOR_PROTOCOL
-        introduces model-capability consideration (ACG-01): humor behavior quality and
-        safety compliance must be tested on at least two LLMs in Stage 4.
-
-    - path: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
-      summary: >
-        APPLICABLE — personal data (certain) with conditional Art. 9 elevation (mental
-        health / DV disclosures). Full DPIA not required (individual self-directed sessions,
-        no centralised processing). PIA completed. 5 privacy risks assessed; all accepted.
-        DV disclosure privacy risk (PR-03) well-controlled by event-type safety_flags.
-        Overall privacy risk: MEDIUM — driven by conditional Art. 9 and DV sensitivity.
+        5 threats across 2 trust boundaries. No CRITICAL or HIGH threats. 1 MEDIUM
+        (T-01: prompt injection via POI label — mitigated by INPUT_IS_DATA absolute rule;
+        residual LOW). 4 LOW (invalid coordinates, dense cluster degradation, world-knowledge
+        inaccuracy, arithmetic drift). 0 unmitigated threats. 0 stage blockers. Lowest
+        threat profile in this repository.
 
     - path: "stages/02-system-design/artifacts/outputs/SC-06-zero-trust-validation.yaml"
       summary: >
-        Network zero-trust: NOT APPLICABLE (no network architecture). Logical trust
-        posture: COMPLIANT across all 6 criteria. Enhanced scrutiny applied to
-        humor_rapport_established monotonic flag and console allow-list — both strong
-        logical zero-trust design decisions. COMPLIANT.
+        Network zero-trust: NOT APPLICABLE. Logical trust posture: COMPLIANT across
+        all 5 criteria. No novel zero-trust concerns — simpler than any prior masterprompt.
+
+    - path: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
+      summary: >
+        MINIMAL AI tier confirmed. Model-agnostic. No EU AI Act Art. 52 obligations.
+        One minor gap (ACG-01: LLM arithmetic accuracy) — quality concern, not safety.
+        Explicit projection formula in Stage 3 mitigates.
 
     - path: "stages/02-system-design/artifacts/outputs/AC-04-ai-model-governance-record.yaml"
-      summary: "AC-04 NOT APPLICABLE — model-agnostic; no specific model introduced or pinned."
+      summary: "NOT APPLICABLE — model-agnostic."
+
+    - path: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
+      summary: >
+        APPLICABLE (conditional personal data if private locations provided). DPIA not
+        required. 2 privacy risks — both LOW, both accepted. DHR-01 data notice
+        sufficient. Overall privacy risk: LOW. Lowest privacy risk in this repository.
 
   agent_recommendation: approve
   agent_recommendation_rationale: >
-    All 18 requirements are mapped to architectural components — 0 unmapped.
-    No unmitigated blocking threats. The CRITICAL threat (T-01: crisis bypass) is
-    mitigated through dual enforcement identical to the proven P.S.Y. pattern.
-    The HIGH threats (T-02/T-03) are novel to FRANK and are mitigated by:
-    GRAVITY_TOPICS_ABSOLUTE rule (T-02) and INDIVIDUAL_PERSPECTIVE_GUARD with
-    session-open epistemic framing (T-03).
+    All 17 requirements are mapped — 0 unmapped. No unmitigated threats of any
+    severity. Design is clean, simple, and consistent with repository conventions.
+    The single-task stateless architecture is fit for purpose. The equirectangular
+    projection formula is explicitly specified (mitigating ACG-01). The two design
+    gaps are minor quality concerns deferred to Stage 3. Design is implementation-ready.
 
-    The HUMOR_PROTOCOL is the most novel architectural element in FRANK's design.
-    Its safety properties are well-specified: absolute GRAVITY_TOPICS floor, monotonic
-    flag that can only be set through positive user response (not user permission claims),
-    and no console command to override it. These design choices give FRANK's wit a
-    testable and auditable safety envelope.
-
-    Three design gaps are minor and deferred to Stage 3 by explicit design decision.
-    Stage 3 implementation actions are clearly documented for all CRITICAL/HIGH threats,
-    with particular emphasis on DV sentinel pattern enumeration and HUMOR_PROTOCOL
-    implementation. Design is implementation-ready.
-
-# ── Human Decision ─────────────────────────────────────────────────────────────
 decision: approved
 decided_by: "Jerry van Heerikhuize (Lead Architect)"
-decision_date: "2026-03-14"
+decision_date: "2026-03-15"
 conditions: ""
 rejection_reason: ""
 

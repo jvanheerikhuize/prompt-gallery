@@ -2,152 +2,84 @@
 # AC-03 — AI Component Design Review
 # Control:   AC-03 AI Component Design Review
 # Stage:     2 — System Design
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # Status:    approved
 # =============================================================================
 
 meta:
-  id: "AC-03-FEAT-0005"
-  feature: "FEAT-0005"
-  ai_tier: limited      # Confirmed by AGL in AC-01-FEAT-0005
+  id: "AC-03-FEAT-0006"
+  feature: "FEAT-0006"
+  ai_tier: minimal
   produced_by: "Claude Sonnet 4.6 (AI Governance Analyst / AC-03)"
-  date: "2026-03-14"
+  date: "2026-03-15"
   status: approved
 
 ai_component_description: |
-  F.R.A.N.K. is a system prompt that governs LLM behaviour to act as a relationship
-  psychoeducation and self-reflection agent. The AI component is the prompt + the LLM
-  it runs on. The prompt defines the persona, session lifecycle, safety rules, humor
-  protocol, individual-perspective guard, and output constraints.
+  A.T.L.A.S. is a system prompt that governs LLM behaviour to act as a stateless
+  ASCII cartography service. The AI component performs: coordinate parsing, bounding
+  box computation, equirectangular projection arithmetic, ASCII grid rendering,
+  label placement, and metadata generation. All computation is performed by the LLM
+  from the prompt instructions — no external tools or data sources.
 
-  F.R.A.N.K. is health-adjacent (relationship wellbeing, with potential for DV and
-  mental health disclosures) but at lower acute risk than P.S.Y. (FEAT-0004). The
-  novel HUMOR_PROTOCOL component requires AI governance attention — an AI system
-  that deploys calibrated wit creates alignment challenges that pure safety-focused
-  prompts do not: the model must be capable of both therapeutic warmth and appropriate
-  restraint of its wit capabilities depending on context.
-
-# ── Model Selection ────────────────────────────────────────────────────────────
 model_selection:
   approach: LLM-agnostic (user-selected)
-  rationale: >
-    F.R.A.N.K. is model-agnostic (NFR-03). The user chooses the LLM. The prompt does
-    not introduce, train, or pin a specific model. Identical design decision to P.S.Y.
+  rationale: "A.T.L.A.S. is model-agnostic (NFR-03). Identical design decision to all prior masterprompts."
   supported_models: [Claude 3+, GPT-4+, Gemini 1.5+]
   model_pinning: false
   model_capability_note: |
-    Design note: the HUMOR_PROTOCOL introduces a model-capability dependency that P.S.Y.
-    did not have. The protocol requires the LLM to:
-    (a) recognise when a humor nudge is contextually appropriate;
-    (b) formulate a genuinely light, observational remark (not forced or awkward);
-    (c) accurately read the user's response to determine whether to set humor_rapport_established.
-    Less capable models may deploy humor mechanically or miss tonal cues. Stage 4
-    testing should include humor behavior evaluation across at least two major LLMs.
-    If a model cannot execute the HUMOR_PROTOCOL naturally, humor should fail gracefully
-    (no nudge, remain in full-warmth mode) rather than producing awkward output.
+    A.T.L.A.S. requires the LLM to perform arithmetic (coordinate-to-grid mapping,
+    haversine approximation for scale bar). Arithmetic accuracy varies across models
+    and sessions. Design mitigation: the rendering algorithm is explicitly specified
+    step-by-step in the prompt, reducing reliance on model initiative. Precision
+    metadata is included in output so the user can assess accuracy.
+    Unlike FRANK's HUMOR_PROTOCOL, this is a quality concern (slightly inaccurate
+    grid placement) not a safety concern.
 
-# ── Data Pipeline ──────────────────────────────────────────────────────────────
 data_pipeline:
   exists: false
-  rationale: >
-    No data pipeline. The system processes only the in-session conversation context.
-    No training data, no fine-tuning, no vector databases, no retrieval systems.
-    SESSION_STATE is in-context only.
+  rationale: "No data pipeline. In-request processing only. No training, fine-tuning, or retrieval."
 
-# ── Explainability ─────────────────────────────────────────────────────────────
 explainability:
   mechanism: |
-    1. The prompt is open-source — anyone can read the full MASTER_PROMPT structure,
-       including HUMOR_PROTOCOL guardrails and INDIVIDUAL_PERSPECTIVE_GUARD logic.
-    2. The ~state console command exposes SESSION_STATE including humor_rapport_established.
-    3. The ~patterns command surfaces identified relationship patterns.
-    4. The SESSION_LOOP is documented step-by-step in the prompt (COMP-05b).
-    5. RULES_ENGINE sections (HUMOR_PROTOCOL, DV_RESPONSE_ENGINE, etc.) are named
-       and their logic is explicit in the prompt source.
-    6. All output is in natural language — no opaque scoring or ranking.
-  eu_ai_act_art13_compliance: |
-    Art. 13 (transparency): satisfied.
-    - The prompt opens with a mandatory disclaimer identifying it as an AI tool.
-    - The system is open-source; full behaviour including humor rules is auditable.
-    - Session limitations (individual perspective, scope limits) explicitly communicated.
-    - The ~disclaimer command re-renders the disclosure on demand.
+    1. The prompt is open-source — full rendering algorithm is visible and auditable.
+    2. Map metadata block explicitly states: grid dimensions, scale (km/char), projection,
+       and character resolution — so the user can verify or challenge the rendering.
+    3. CONF-03 LLM world-knowledge use is declared in output (coordinates stated explicitly).
+    4. INPUT_IS_DATA prevents opaque prompt-injection effects.
+    5. All output is deterministic natural language — no opaque scoring.
 
-# ── Human Oversight ────────────────────────────────────────────────────────────
 human_oversight:
   mechanisms:
-    - "~state: user can inspect full SESSION_STATE including humor_rapport_established flag"
-    - "~patterns: user can review relationship patterns FRANK has identified"
-    - "~privacy: user can review what data is held and LLM provider retention risk"
-    - "~disclaimer: user can re-read scope limitations on demand"
-    - "~close: user can end the session at any point"
-    - "~reset: user can clear state and restart"
-    - "DV/crisis escalation: routes user to real human services (helplines, crisis lines)"
-    - "Scope limits: prevents AI providing legal advice or couples mediation — human professionals required"
-    - "Individual-perspective guard: prevents AI from adjudicating the absent party — human judgment required"
-    - "Open-source prompt: full system behaviour including humor rules is auditable by anyone"
-  eu_ai_act_art14_compliance: |
-    Art. 14 (human oversight): satisfied for LIMITED risk tier.
-    Users have full session control via console commands. DV and crisis escalation
-    explicitly routes users to human services — the AI defers to human responders
-    at the most critical moments. The individual-perspective guard and scope limits
-    ensure the most consequential decisions (adjudicating relationship behavior,
-    giving legal advice) require human professionals.
+    - "Map metadata block: states all rendering parameters; user can audit"
+    - "Legend: authoritative list of all POIs and their coordinates as applied"
+    - "Precision warning: below-resolution POI pairs flagged in output"
+    - "Open-source prompt: full algorithm including projection formula is auditable"
+    - "User re-submission: stateless design means user can always re-submit with corrections"
 
-# ── EU AI Act Compliance (Limited Risk) ───────────────────────────────────────
 eu_ai_act_compliance:
-  tier: limited
+  tier: minimal
   mandatory_obligations:
-    - id: "Art. 52(1)"
-      obligation: >
-        Transparency for AI systems interacting with natural persons — users must
-        be informed they are interacting with an AI.
+    - id: "General obligations (Art. 4)"
+      obligation: "AI literacy — users understand they are using an LLM-based tool"
       status: compliant
       evidence: >
-        Mandatory disclaimer (FR-02, COMP-03a) at session open identifies FRANK as
-        an AI relationship psychoeducation tool. No user could reasonably mistake
-        this for a human therapist interaction. The disclaimer also establishes
-        FRANK's individual-perspective limitation — additional transparency beyond
-        the Art. 52(1) minimum.
+        The prompt opens with A.T.L.A.S. identifying itself as an ASCII cartography
+        system. The data notice (DHR-01) references the LLM provider. No obligation
+        to explicitly label as AI system for MINIMAL tier (Art. 52(1) applies to
+        limited-risk systems interacting with natural persons in a potentially deceptive
+        way — a map-rendering utility does not meet this threshold).
 
-    - id: "Art. 53 GPAI (technical documentation)"
-      obligation: Technical documentation evidencing system capabilities and limitations.
-      status: compliant
-      evidence: >
-        This A-SDLC artifact set (CR-0005, FEAT-0005 spec, Stage 1 and 2 artifacts)
-        constitutes technical documentation. The feature spec documents intended purpose,
-        scope limitations (individual perspective, no legal advice, no couples mediation),
-        and compliance measures. HUMOR_PROTOCOL is documented as part of the design.
-
-    - id: "Art. 53 GPAI (downstream deployer transparency)"
-      obligation: Information enabling downstream deployers to comply with their obligations.
-      status: compliant
-      evidence: >
-        The prompt is open-source. README.md documents the role, limitations, and
-        intended use. The mandatory disclaimer in the prompt itself informs end users.
-        The roles/registry.yaml entry will document governance provenance.
-
-  voluntary_measures:
-    - "Open-source publication — full prompt including HUMOR_PROTOCOL visible and auditable"
-    - "A-SDLC governance record — full development traceability"
-    - "~privacy command — data transparency beyond Art. 52 minimum"
-    - "Individual-perspective guard — transparency about epistemic limits of one-sided account"
-    - "GRAVITY_TOPICS prohibition — proactive humor restriction beyond regulatory minimum"
-    - "DV safety resources — proactive user safety beyond regulatory minimum"
-
-# ── Gaps ───────────────────────────────────────────────────────────────────────
 gaps:
   - id: ACG-01
     severity: minor
     description: >
-      Model-agnostic design means safety rule compliance (DV detection, HUMOR_PROTOCOL
-      guardrails) and humor quality cannot be guaranteed uniformly across all LLMs.
-      A model with weak instruction-following may fail to honour GRAVITY_TOPICS or
-      produce mechanically forced wit that reads as sarcastic when it shouldn't.
-      Stage 4 must test safety and humor behavior on at least two major LLMs.
-    stage_3_action: "Document safety and humor behavior test matrix in Stage 4 test plan"
+      LLM arithmetic accuracy for coordinate-to-grid projection cannot be guaranteed
+      uniformly across all models and sessions. A model producing slightly incorrect
+      grid positions would result in inaccurate proportional placement (violating
+      NFR-01 ±1 character tolerance). This is a quality concern, not a safety concern.
+    stage_3_action: "Specify projection arithmetic with explicit step-by-step formula in prompt; include precision metadata so users can detect errors"
 
-# ── Approval ───────────────────────────────────────────────────────────────────
 approval:
   approved_by: "Jerry van Heerikhuize (AI Governance Lead)"
-  approval_date: "2026-03-14"
+  approval_date: "2026-03-15"
   revisions_required: false

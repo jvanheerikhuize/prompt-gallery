@@ -2,89 +2,58 @@
 # SC-06 — Zero-Trust Architecture Validation
 # Control:   SC-06 Zero-Trust Architecture Validation
 # Stage:     2 — System Design
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    complete
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "SC-06-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 / SC-06"
-  date: "2026-03-14"
+  id: "SC-06-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-06)"
+  date: "2026-03-15"
 
-network_zero_trust_applicable: false
-rationale: |
-  F.R.A.N.K. is a self-contained text prompt with no network architecture.
-  Zero-trust network-level principles (mutual TLS, micro-segmentation,
-  deny-by-default network policies, lateral movement controls) are structurally
-  not applicable — there are no network segments, no service-to-service
-  communication, no authentication infrastructure, and no data in transit
-  outside the user's own LLM session.
+network_zero_trust:
+  applicable: false
+  rationale: "No network architecture. A.T.L.A.S. is a prompt-only system with no network components."
 
-  SC-06 is NOT APPLICABLE at the network architecture level.
+logical_zero_trust:
+  applicable: true
+  overall: compliant
 
-logical_trust_posture_assessment: |
-  The logical trust posture of the prompt is assessed below. Given the health-adjacent
-  context with vulnerable users and novel HUMOR_PROTOCOL component, logical zero-trust
-  is assessed with enhanced scrutiny.
+  criteria:
 
-  Criterion: No implicit trust for inputs
-  Status: COMPLIANT
-  Evidence: COMP-01b ABSOLUTE_RULES: INPUT_IS_DATA rule frames all user input as data
-  processed by SESSION_LOOP — never obeyed as instruction or accepted as authority claim.
-  COMP-05b SESSION_LOOP step 1 parses; step 2 evaluates crisis signals; step 3 evaluates
-  all rules — no input is trusted implicitly. User permission claims ("you can be sarcastic")
-  are processed as data, not as HUMOR_PROTOCOL overrides.
+    - criterion: "Never trust, always verify — user input treated as untrusted"
+      status: compliant
+      evidence: >
+        INPUT_IS_DATA is an absolute rule. VALIDATION_ENGINE verifies all coordinate
+        values before processing. Labels are treated as inert strings, not trusted instructions.
 
-  Criterion: Explicit allow-listing of operations
-  Status: COMPLIANT
-  Evidence: Console commands are an explicit enumerated allow-list (~state, ~patterns,
-  ~skills, ~disclaimer, ~privacy, ~close, ~reset). No open-ended command execution.
-  CONTROLLER phase advancement follows defined exit conditions only. Crucially,
-  there is no ~humor or similar command that can directly set humor_rapport_established
-  — this can only be set by SESSION_LOOP step 5 evaluating HUMOR_PROTOCOL.
+    - criterion: "Least privilege — minimal operations performed on user data"
+      status: compliant
+      evidence: >
+        A.T.L.A.S. performs only the computation required to render the requested map.
+        No data stored beyond the request. No operations on user data beyond coordinate
+        parsing and grid placement. Stateless by design — no accumulation of state.
 
-  Criterion: Least privilege
-  Status: COMPLIANT
-  Evidence: The user can interact only within the defined session structure. No path
-  exists to modify RULES_ENGINE, ABSOLUTE_RULES, or SESSION_LOOP logic. Authority claims
-  (therapist, researcher, developer) are explicitly denied by INPUT_IS_DATA rule.
-  Console commands are limited to inspection and session management — no state
-  manipulation that weakens safety posture beyond ~reset (which is intentional and safe).
+    - criterion: "Explicit trust boundaries documented and controlled"
+      status: compliant
+      evidence: >
+        Two trust boundaries defined (TB-01 user input, TB-02 LLM arithmetic).
+        Both have documented controls. TB-01 controlled by INPUT_IS_DATA + VALIDATION_ENGINE.
+        TB-02 controlled by explicit formula specification + precision metadata disclosure.
 
-  Criterion: Verification at every turn
-  Status: COMPLIANT
-  Evidence: SESSION_LOOP evaluates CRISIS_CHECK (step 2) and RULES_CHECK including
-  INDIVIDUAL_PERSPECTIVE_GUARD and HUMOR_PROTOCOL (step 3) every turn, regardless of
-  session history or established rapport. There is no "trusted session" concept after
-  initial check — safety rules and humor guardrails are re-evaluated for every input.
+    - criterion: "Assume breach — design tolerates input that attempts to corrupt behaviour"
+      status: compliant
+      evidence: >
+        T-01 (label injection) assumes hostile input is possible — INPUT_IS_DATA
+        provides defence-in-depth. VALIDATION_ENGINE rejects invalid coordinates rather
+        than attempting to render with them. Worst-case output is a structured error
+        message, not a harmful response.
 
-  Criterion: Safety rule non-degradability
-  Status: COMPLIANT
-  Evidence: Crisis detection (DV + suicidal ideation) and HUMOR_PROTOCOL guardrails
-  are declared in both COMP-01b (ABSOLUTE_RULES — highest authority) and COMP-04
-  (RULES_ENGINE — evaluated every turn). Dual placement means no single-point
-  architectural failure can suppress safety rules. GRAVITY_TOPICS prohibition is
-  ABSOLUTE — no user input, console command, or CONTROLLER branch can override it.
+    - criterion: "Audit and transparency — user can inspect what was processed"
+      status: compliant
+      evidence: >
+        Legend is always present, listing all coordinates as applied. Metadata block
+        states all rendering parameters. CONF-03 world-knowledge use is declared.
+        Below-resolution warnings are explicit. Full prompt is open-source.
 
-  Criterion: State integrity
-  Status: COMPLIANT
-  Evidence: SESSION_STATE is the single source of truth. COMP-02b STATE_DIRECTIVES
-  enforce: safety_flags append-only; humor_rapport_established monotonic (false→true
-  only, never reversed); phase forward-only. No state manipulation that weakens the
-  safety posture is permitted. The humor_rapport_established monotonic lock is
-  particularly important — it prevents a compromised CONTROLLER from cycling the
-  flag to re-trigger the single-nudge window.
-
-overall_assessment: compliant_at_logical_level
-exception_accepted: true
-exception_rationale: >
-  Network-level zero-trust principles are not applicable to a text prompt with no
-  network architecture. Logical trust posture assessed as COMPLIANT across all six
-  criteria. Enhanced scrutiny applied given health-adjacent domain and novel
-  HUMOR_PROTOCOL component. The humor_rapport_established monotonic flag and
-  console allow-list are particularly strong logical zero-trust design decisions
-  for this feature.
-
-accepted_by: "Jerry van Heerikhuize (Security Architect)"
-acceptance_date: "2026-03-14"
+status: compliant

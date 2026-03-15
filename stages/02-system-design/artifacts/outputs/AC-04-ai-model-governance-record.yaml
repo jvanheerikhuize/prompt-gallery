@@ -2,36 +2,20 @@
 # AC-04 — AI Model Governance Record
 # Control:   AC-04 AI Model Governance & Version Control
 # Stage:     2 — System Design
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    not_applicable (documented)
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Status:    not_applicable
 # =============================================================================
 
 meta:
-  id: "AC-04-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 / AC-04"
-  date: "2026-03-14"
+  id: "AC-04-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (AI Governance / AC-04)"
+  date: "2026-03-15"
+  status: not_applicable
 
 applicable: false
-
-rationale: |
-  AC-04 is NOT APPLICABLE to this change.
-
-  AC-04 applies "when the change introduces or modifies use of a GPAI or foundation
-  model." F.R.A.N.K. does NOT introduce, train, or pin a specific AI model. The prompt
-  is model-agnostic by design (NFR-03): users run it on whichever LLM they choose.
-
-  Identical determination to FEAT-0004/P.S.Y. (AC-04-FEAT-0004, 2026-03-14).
-  The LLMs that F.R.A.N.K. runs on (Claude, GPT-4, Gemini, etc.) are third-party
-  models chosen and operated by end users independently — not introduced, modified,
-  or version-pinned by this project.
-
-note: |
-  If a future version of F.R.A.N.K. is deployed as a pre-configured agent on a
-  specific LLM API (e.g. as a Claude API integration with a pinned model version),
-  AC-04 would become applicable at that point.
-
-  Safety note: model-agnostic design introduces gap ACG-01 (documented in AC-03):
-  safety rule compliance — including HUMOR_PROTOCOL and DV detection — may vary
-  across LLMs. Stage 4 testing must cover safety and humor behaviour on at least
-  two major LLMs.
+rationale: >
+  A.T.L.A.S. is model-agnostic (NFR-03). The prompt does not introduce, train,
+  fine-tune, or pin a specific AI model. The user chooses the LLM. No model
+  governance record is required. Identical determination to T.A.G. (FEAT-0001),
+  P.S.Y. (FEAT-0004), and F.R.A.N.K. (FEAT-0005).
