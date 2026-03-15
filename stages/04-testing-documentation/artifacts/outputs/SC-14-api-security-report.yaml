@@ -2,22 +2,24 @@
 # SC-14 — API Security Test Report
 # Control:   SC-14 API Security Testing (OWASP API Top 10)
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    not_applicable
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "SC-14-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 / SC-14"
+  id: "SC-14-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-14)"
   date: "2026-03-15"
   status: not_applicable
 
 applicable: false
 rationale: >
-  F.R.A.N.K. is a plain-text masterprompt. No APIs are exposed, no endpoints are
-  defined, no authentication or authorisation mechanisms exist at the API layer.
-  OWASP API Top 10 testing requires API endpoints — none exist. Identical
-  determination to all prior masterprompts in this repository.
+  A.T.L.A.S. exposes no API. It is a prompt-only artefact delivered as a Markdown
+  text file. Consumers use it by pasting into an LLM session or injecting as a system
+  prompt via whatever API their LLM provider offers (e.g., Anthropic Messages API,
+  OpenAI Chat API). A.T.L.A.S. itself defines no API endpoints, no authentication
+  surface, no rate limiting, and no data access controls of its own.
 
-blocker: false
+  OWASP API Top 10 testing does not apply to this deliverable type.
+
+findings: 0

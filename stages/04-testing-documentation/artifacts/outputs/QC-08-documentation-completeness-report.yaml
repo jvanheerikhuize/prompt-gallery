@@ -2,149 +2,123 @@
 # QC-08 — Documentation Completeness Report
 # Control:   QC-08 Documentation Completeness
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "QC-08-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 / QC-08"
+  id: "QC-08-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (QC Analyst / QC-08)"
   date: "2026-03-15"
+  status: complete
 
+# ── Documentation Checklist ───────────────────────────────────────────────────
 documentation_checks:
 
-  - doc: "README.md — Health roles table"
-    required: true
-    status: present
-    location: "README.md — Health section"
-    content: "F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots row added with link, description, and safety note"
+  - id: DC-01
+    item: "Canonical feature specification (FEAT-0006 spec YAML)"
+    file: "specs/FEAT-0006-ascii-cartographer-masterprompt.yaml"
+    status: complete
+    notes: >
+      15 FRs + 5 NFRs. 6 conflict resolutions (CONF-01 to CONF-06). Stage history
+      through Stage 3. stage_reached: 3. All PO refinement additions included.
 
-  - doc: "roles/health/relationship-therapist/prompt.md — Canonical prompt"
-    required: true
-    status: present
-    location: "roles/health/relationship-therapist/prompt.md"
-    content: >
-      Full MVC/XML masterprompt: CORE_DIRECTIVES (8 ABSOLUTE_RULES, SESSION_STATE schema,
-      PERSONA, LANGUAGE_DETECTION), MODEL (PATTERN_LIBRARY, SKILL_LIBRARY, CRISIS_DETECTION,
-      DV_RESPONSE_ENGINE), VIEW (phase templates + HUMOR_PROTOCOL), RULES_ENGINE
-      (HUMOR_PROTOCOL, INDIVIDUAL_PERSPECTIVE_GUARD, SCOPE_GUARD, SESSION_LOOP),
-      CONTROLLER. Author, version (1.0), feature (FEAT-0005), SHA-256, date documented
-      in file header.
-    sha256: "ea93a9246204e734f452cab547b094d82153c799218276e334351696bb294b96"
+  - id: DC-02
+    item: "Prompt file header — author, version, provenance"
+    file: "roles/utility/ascii-cartographer/prompt.md"
+    status: complete
+    notes: "Author, version 1.0, agent-assisted provenance with date all present."
 
-  - doc: "Feature Specification (FEAT-0005)"
-    required: true
-    status: present
-    location: "specs/FEAT-0005-relationship-therapist-masterprompt.yaml"
-    content: >
-      11 FR + 7 NFR requirements, risk classification (MEDIUM), AI tier (LIMITED),
-      data classification (CONFIDENTIAL / RESTRICTED elevation), constraints,
-      dependencies, conflict resolutions (CONF-01 through CONF-04), stage history.
-      stage_reached: 3.
+  - id: DC-03
+    item: "Prompt file — How to Use section"
+    file: "roles/utility/ascii-cartographer/prompt.md"
+    status: complete
+    notes: >
+      How to Use section covers: paste-in workflow, system prompt usage, input format
+      description, density keyword explanation, interior map explanation. No safety
+      notes required (risk tier LOW, no vulnerable population).
 
-  - doc: "Change Request (CR-0005)"
-    required: true
-    status: present
-    location: "stages/01-intent-ingestion/artifacts/inputs/CR-0005-relationship-therapist-masterprompt.yaml"
+  - id: DC-04
+    item: "Registry entry"
+    file: "roles/registry.yaml"
+    status: complete
+    notes: >
+      A.T.L.A.S. entry: id, name, slug, category (utility), version, status, files,
+      description, tags, usage flags, governance (FEAT-0006, LOW, MINIMAL, PUBLIC),
+      provenance.
 
-  - doc: "Stage 1 artifacts (QC-01, QC-02, RC-01, AC-01, SC-04, GC-05)"
-    required: true
-    status: present
-    location: "stages/01-intent-ingestion/artifacts/outputs/"
+  - id: DC-05
+    item: "README — Utility table"
+    file: "README.md"
+    status: complete
+    notes: "Utility section added with A.T.L.A.S. row. Repository structure tree updated."
 
-  - doc: "Stage 2 artifacts (QC-03, SC-05, SC-06, RC-02, RC-03, AC-03, AC-04, SC-02)"
-    required: true
-    status: present
-    location: "stages/02-system-design/artifacts/outputs/"
+  - id: DC-06
+    item: "Stage 1 artifacts — intent and specification"
+    files:
+      - "stages/01-intent-ingestion/artifacts/outputs/QC-01-feature-spec.yaml"
+      - "stages/01-intent-ingestion/artifacts/outputs/QC-02-conflict-resolution-record.yaml"
+      - "stages/01-intent-ingestion/artifacts/outputs/RC-01-risk-classification.yaml"
+      - "stages/01-intent-ingestion/artifacts/outputs/AC-01-ai-tier-classification.yaml"
+      - "stages/01-intent-ingestion/artifacts/outputs/SC-04-data-classification-record.yaml"
+      - "stages/01-intent-ingestion/artifacts/outputs/GC-05-intent-audit-record.yaml"
+    status: complete
+    notes: "All Stage 1 outputs present and updated with PO refinement (FR-13/14/15, CONF-05/06)."
 
-  - doc: "Stage 3 artifacts (QC-04, QC-05, SC-07–11, RC-04, GC-03)"
-    required: true
-    status: present
-    location: "stages/03-coding-implementation/artifacts/outputs/"
+  - id: DC-07
+    item: "Stage 2 artifacts — system design"
+    files:
+      - "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
+      - "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
+      - "stages/02-system-design/artifacts/outputs/SC-06-zero-trust-validation.yaml"
+      - "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
+      - "stages/02-system-design/artifacts/outputs/AC-04-ai-model-governance-record.yaml"
+      - "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
+      - "stages/02-system-design/artifacts/outputs/RC-02-design-approval-decision.yaml"
+    status: complete
+    notes: >
+      QC-03 updated with COMP-03f/03g, 12-step REQUEST_LOOP, DESIGN-03. RC-02 updated
+      to reflect 20 requirements. All other Stage 2 artifacts remain valid.
 
-  - doc: "Decision log (RC-04)"
-    required: true
-    status: present
-    location: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
-    content: >
-      8 decisions documented: HUMOR_PROTOCOL as named component; wit_permission_level
-      as SESSION_LOOP step output; humor_rapport_established single write path;
-      DV_RESPONSE_ENGINE Tier 1/2 split; INDIVIDUAL_PERSPECTIVE_GUARD per-turn evaluation;
-      DV helpline localisation for 7 languages; 5-phase session lifecycle vs P.S.Y.;
-      humor English-only v1.0.
+  - id: DC-08
+    item: "Stage 3 artifacts — implementation"
+    files:
+      - "stages/03-coding-implementation/artifacts/outputs/SC-07-permission-enforcement-log.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/QC-05-quality-gate-report.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/SC-08-post-guardrail-scan.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/SC-09-secrets-scan-report.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/SC-10-sca-report.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/SC-11-container-iac-security-report.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/GC-03-code-provenance-record.yaml"
+      - "stages/03-coding-implementation/artifacts/outputs/QC-04-pull-request-record.yaml"
+    status: complete
+    notes: "All 9 Stage 3 control artifacts present. QC-05: 20/20. GC-03: approved."
 
-  - doc: "STRIDE Threat Model (SC-05)"
-    required: true
-    status: present
-    location: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
-    content: "9 threats, 4 trust boundaries, T-01 CRITICAL + T-02/T-03 HIGH mitigated"
+  - id: DC-09
+    item: "Stage 4 artifacts — testing and documentation"
+    files:
+      - "stages/04-testing-documentation/artifacts/outputs/SC-12-sast-scan-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/SC-13-dast-scan-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/SC-14-api-security-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/SC-15-adversarial-robustness-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/QC-06-test-results-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/QC-07-ai-output-validation-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/AC-05-bias-fairness-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/QC-08-documentation-completeness-report.yaml"
+      - "stages/04-testing-documentation/artifacts/outputs/RC-05-risk-threshold-evaluation.yaml"
+    status: complete
+    notes: "All 9 Stage 4 control artifacts present (including this document and RC-05)."
 
-  - doc: "Privacy Impact Assessment (RC-03)"
-    required: true
-    status: present
-    location: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
-    content: >
-      APPLICABLE; DPIA not required; 4 processing activities (PA-01 relationship data,
-      PA-02 mental health, PA-03 DV disclosures, PA-04 SESSION_STATE); 5 privacy risks;
-      overall MEDIUM accepted; DV safety_flags most sensitive element.
-
-  - doc: "AI Component Design Review (AC-03)"
-    required: true
-    status: present
-    location: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
-    content: "LIMITED tier confirmed; HUMOR_PROTOCOL model-capability dependency documented as ACG-01; Art. 52/53/14 compliance"
-
-  - doc: "roles/registry.yaml — F.R.A.N.K. entry"
-    required: true
-    status: present
-    location: "roles/registry.yaml"
-    content: >
-      F.R.A.N.K. entry (id: frank) added under health category: version 1.0, status stable,
-      description, tags, usage, safety_notes, governance (FEAT-0005, medium, limited,
-      confidential, conditional Art. 9), provenance.
-
-  - doc: "HUMOR_PROTOCOL documentation (inline in prompt)"
-    required: true   # Novel component; requires explicit documentation
-    status: present
-    location: "roles/health/relationship-therapist/prompt.md — RULES_ENGINE → HUMOR_PROTOCOL"
-    content: >
-      GRAVITY_TOPICS list, PRE_RAPPORT_RULE, POST_RAPPORT_BEHAVIOR, WIT_PERMISSION_LEVELS
-      all documented inline. Open-source publication ensures auditable safety envelope
-      per AC-03 voluntary measure.
-
-  - doc: "Runbook"
-    required: false
-    status: not_applicable
-    rationale: "No deployment infrastructure; prompt is copy-paste or system-prompt injection. No operational runbook required."
-
-  - doc: "API documentation"
-    required: false
-    status: not_applicable
-    rationale: "No APIs exposed."
-
-  - doc: "Architecture Decision Records (ADRs)"
-    required: false
-    status: covered_by_rc04
-    rationale: "RC-04 decision log (8 decisions) covers all significant architectural and design decisions made in Stage 3."
-
-  - doc: "EU AI Act Annex IV technical documentation"
-    required: true    # Required for LIMITED tier (GPAI technical documentation)
-    status: present
-    location: "specs/FEAT-0005-*.yaml + A-SDLC artifact set (Stages 1–4)"
-    content: >
-      AC-03 documents Art. 52(1) transparency, Art. 53 GPAI documentation, and Art. 14
-      human oversight compliance. The full A-SDLC artifact set constitutes the technical
-      documentation package per AC-03 confirmation. Annex III/IV (high-risk) not applicable;
-      GPAI Art. 53 documentation satisfied. HUMOR_PROTOCOL documented as part of this
-      package per AC-03 voluntary measure.
-
-  - doc: "CONTRIBUTING.md"
-    required: true
-    status: present
-    location: "CONTRIBUTING.md"
-
+# ── Gaps ──────────────────────────────────────────────────────────────────────
 gaps: []
 
-overall_status: complete
-approved_by: "Jerry van Heerikhuize (QA)"
-approval_date: "2026-03-15"
+# ── Summary ───────────────────────────────────────────────────────────────────
+summary:
+  checks: 9
+  complete: 9
+  incomplete: 0
+  gaps: 0
+
+status: complete
+documentation_complete: true

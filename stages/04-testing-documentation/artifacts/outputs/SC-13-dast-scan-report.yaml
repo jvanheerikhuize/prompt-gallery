@@ -2,26 +2,24 @@
 # SC-13 — DAST Scan Report
 # Control:   SC-13 DAST
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    not_applicable (no deployed runtime)
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "SC-13-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 / SC-13"
+  id: "SC-13-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-13)"
   date: "2026-03-15"
   status: not_applicable
 
 applicable: false
 rationale: >
-  F.R.A.N.K. is a plain-text masterprompt. There is no deployed runtime, web
-  application, service endpoint, or network-accessible infrastructure. DAST
-  tooling requires a running target — none exists. Identical determination to
-  T.A.G. (FEAT-0001), C.R.A., and P.S.Y. (FEAT-0004).
+  A.T.L.A.S. is a prompt-only artefact with no running service, no HTTP endpoints,
+  no API surface, no database, and no network stack. Dynamic Application Security
+  Testing (DAST) requires a live application or service to probe at runtime.
+  There is no such runtime for a masterprompt text file. DAST does not apply.
 
-manual_testing_note: >
-  Adversarial robustness testing (prompt injection, safety-rule bypass) is
-  addressed in SC-15 (voluntarily executed) as the applicable substitute.
+  Runtime adversarial testing is covered instead by SC-15 (Adversarial AI Robustness
+  Testing), which tests the prompt's behaviour when instantiated in an LLM.
 
-blocker: false
+findings: 0
