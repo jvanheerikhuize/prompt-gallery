@@ -86,4 +86,17 @@ events:
     actor: "Claude Sonnet 4.6 (SC-04)"
     detail: "PUBLIC (default); conditional personal data if user provides private location coordinates; no Art. 9; DHR-01 notice required"
 
+  - event: "PO_REFINEMENT"
+    timestamp: "2026-03-15"
+    actor: "Jerry van Heerikhuize (Product Owner)"
+    detail: >
+      PO clarified that area boundaries do not have to be rectangular — any polygon
+      shape is valid. Interior locations (buildings, rooms) always have solid walls;
+      exterior locations do not necessarily have walls. Three new FRs added:
+      FR-13 (Area Boundary Polygon Input), FR-14 (Interior/Exterior Mode Declaration),
+      FR-15 (Wall Rendering for Interior Maps). Two new conflicts resolved:
+      CONF-05 (wall character set — OPT-B: orthogonal + 45° diagonals),
+      CONF-06 (interior/exterior detection — OPT-C: polygon present → interior default).
+      Stage 2 design updated accordingly (COMP-03f BOUNDARY_PARSER, COMP-03g WALL_RENDERER).
+
 stage_1_exit_clear: true

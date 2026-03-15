@@ -157,6 +157,48 @@ requirements:
         parseable, it renders; if not, it returns a structured error.
       priority: must
 
+    - id: FR-13
+      title: Area Boundary Polygon Input
+      description: >
+        Accepts an optional ordered list of coordinate vertices defining the boundary
+        of a mapped area (e.g., floor plan, site boundary, room outline). The polygon
+        may have any number of vertices (≥ 3) and any shape — not limited to rectangles.
+        Vertices are connected in order; the last vertex is automatically connected
+        back to the first to close the polygon. Polygon input is parsed using the
+        same coordinate system as POI input (WGS84, DMS, or abstract grid).
+      priority: should
+
+    - id: FR-14
+      title: Interior / Exterior Mode Declaration
+      description: >
+        Maps are rendered in one of two spatial modes:
+        (a) INTERIOR — the map represents the inside of an enclosed space (room, building,
+            warehouse, floor plan). Boundary walls are always rendered as solid lines.
+            POIs within the boundary are interior features.
+        (b) EXTERIOR — the map represents an open outdoor or unenclosed area. No solid
+            boundary walls are rendered. The map grid is open with optional dashed
+            perimeter if a bounding polygon is provided.
+        Default rule (CONF-06): if a boundary polygon is provided → INTERIOR mode;
+        no boundary polygon → EXTERIOR mode. User may override explicitly.
+      priority: should
+
+    - id: FR-15
+      title: Wall Rendering for Interior Maps
+      description: >
+        In INTERIOR mode, polygon boundary segments are rendered as ASCII wall
+        characters on the map grid:
+        - Horizontal segments:   - (hyphen)
+        - Vertical segments:     | (pipe)
+        - Corner and junction:   + (plus)
+        - 45° diagonal (/):      / (forward slash)
+        - 45° diagonal (\):      \ (backslash)
+        - Non-45° diagonals are approximated as stepped orthogonal segments.
+        POI symbol takes precedence over wall character when they share the same cell
+        (POI is noted in legend; wall gap is marked in metadata).
+        In EXTERIOR mode with a bounding polygon: perimeter rendered as dashed (.)
+        rather than solid wall characters to indicate a soft boundary.
+      priority: should
+
   non_functional:
 
     - id: NFR-01
@@ -218,12 +260,16 @@ requirements:
     - "Animated or dynamic map output"
     - "Projection systems beyond equirectangular (v1.0)"
     - "Maps spanning > ~1000 km (equirectangular distortion becomes significant)"
+    - "Curved wall segments (all curves approximated as stepped orthogonal segments in v1.0)"
+    - "Filled interior regions or floor textures"
+    - "Multi-storey / 3D rendering"
 
   dependencies:
     - "WGS84 coordinate system (EPSG:4326)"
     - "Equirectangular (plate carrée) projection for geographic coordinates"
     - "Haversine formula for geographic distance calculation"
     - "ASCII character grid geometry"
+    - "Bresenham-style line rasterisation algorithm for wall segment rendering"
 
 # ── Gaps and Flags ────────────────────────────────────────────────────────────
 gaps:

@@ -22,11 +22,15 @@ approval_package:
   artifacts:
     - path: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
       summary: >
-        10-component MVC/XML architecture (COMP-01 through COMP-06 across 5 sections).
-        All 17 requirements (12 FR + 5 NFR) mapped — 0 unmapped. Single-task stateless
-        REQUEST_LOOP (10 steps). Explicit equirectangular projection formula.
-        Deterministic label placement rules. 2 minor design gaps documented (high-latitude
-        distortion, dense-cluster label omission) — both deferred to Stage 3. DESIGN-01/02: compliant.
+        12-component MVC/XML architecture (COMP-01 through COMP-06g across 5 sections).
+        All 20 requirements (15 FR + 5 NFR) mapped — 0 unmapped. Single-task stateless
+        REQUEST_LOOP (12 steps, extended for boundary parsing and wall rendering).
+        Explicit equirectangular projection formula. Deterministic label placement rules.
+        COMP-03f BOUNDARY_PARSER (polygon vertex parsing, mode detection per CONF-06).
+        COMP-03g WALL_RENDERER (Bresenham-style rasterisation; |, -, +, /, \ charset per CONF-05;
+        POI_WINS_WALL rule). INTERIOR/EXTERIOR mode fully specified in MAP_CANVAS and RENDERING_RULES.
+        3 minor design gaps documented (DESIGN-01 high-latitude distortion, DESIGN-02 dense-cluster
+        label omission, DESIGN-03 non-45° diagonal approximation) — all deferred. 0 blockers.
 
     - path: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
       summary: >
@@ -58,11 +62,12 @@ approval_package:
 
   agent_recommendation: approve
   agent_recommendation_rationale: >
-    All 17 requirements are mapped — 0 unmapped. No unmitigated threats of any
-    severity. Design is clean, simple, and consistent with repository conventions.
-    The single-task stateless architecture is fit for purpose. The equirectangular
-    projection formula is explicitly specified (mitigating ACG-01). The two design
-    gaps are minor quality concerns deferred to Stage 3. Design is implementation-ready.
+    All 20 requirements (15 FR + 5 NFR) are mapped — 0 unmapped. No unmitigated threats
+    of any severity. PO refinement (2026-03-15) added FR-13/14/15 (polygon boundary input,
+    interior/exterior mode, wall rendering) and two new conflict resolutions (CONF-05, CONF-06).
+    Design is clean, consistent with repository conventions, and fully implementation-ready.
+    The equirectangular projection formula is explicitly specified (mitigating ACG-01).
+    The three design gaps are minor quality concerns — all deferred. No blockers.
 
 decision: approved
 decided_by: "Jerry van Heerikhuize (Lead Architect)"

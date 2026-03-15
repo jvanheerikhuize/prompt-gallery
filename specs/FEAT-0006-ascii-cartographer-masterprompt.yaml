@@ -67,6 +67,9 @@ requirements:
     - {id: FR-10, title: "Density / Resolution Control (compact / standard / detailed)", priority: should}
     - {id: FR-11, title: "Input Validation and Error Handling", priority: must}
     - {id: FR-12, title: "Stateless Single-Task Protocol", priority: must}
+    - {id: FR-13, title: "Area Boundary Polygon Input (any-shape vertex list)", priority: should}
+    - {id: FR-14, title: "Interior / Exterior Mode Declaration", priority: should}
+    - {id: FR-15, title: "Wall Rendering for Interior Maps (|, -, +, /, \\)", priority: should}
 
   non_functional:
     - {id: NFR-01, title: "Proportional Precision (±1 character)", priority: must}
@@ -88,6 +91,8 @@ conflict_resolutions:
   CONF-02: "OPT-A — Plot user-provided coordinates only; no inferred geography in v1.0"
   CONF-03: "OPT-C — Unparseable input: structured error; ambiguous: state interpretation then render; known locations: apply LLM world knowledge, state coordinates used"
   CONF-04: "OPT-C — 7-bit ASCII only for v1.0; Unicode variant deferred to v2.0"
+  CONF-05: "OPT-B — Orthogonal walls (|, -, +) plus 45° diagonals (/, \\); non-45° angles approximated as stepped orthogonal segments; metadata notes approximations"
+  CONF-06: "OPT-C — Boundary polygon present → INTERIOR mode (solid walls) by default; no boundary → EXTERIOR (open grid); user may override explicitly"
 
 # ── Stage History ─────────────────────────────────────────────────────────────
 stage_history:

@@ -136,9 +136,77 @@ conflicts:
       the OUTPUT_FORMAT component.
     approved_by: "Jerry van Heerikhuize (Product Owner)"
 
+  - id: CONF-05
+    title: "Polygon wall character set — orthogonal vs diagonal"
+    description: >
+      Boundary polygon segments can run at any angle across the ASCII grid.
+      Strictly orthogonal segments (horizontal, vertical) are unambiguous.
+      Diagonal segments (any angle other than 0°/90°) are a problem: strict
+      7-bit ASCII offers only / and \ for 45° diagonals; other angles have no
+      natural ASCII representation. Options:
+    options:
+      - id: OPT-A
+        description: >
+          Orthogonal only: force all boundary segments to horizontal or vertical
+          rendering (step diagonals with - and | characters). Simple but may
+          misrepresent angular walls.
+      - id: OPT-B
+        description: >
+          Orthogonal + 45° diagonals: use -, |, +, /, \ as appropriate.
+          Non-45° angles approximated as stepped orthogonal segments.
+          A metadata note identifies approximated segments.
+      - id: OPT-C
+        description: >
+          Full Bresenham rasterisation with character-angle selection from
+          a wider ASCII set (incl. _ and ' for shallow angles). Most accurate
+          but output is harder to read.
+    resolution: OPT-B
+    rationale: >
+      OPT-B provides the best balance of readability and geometric fidelity.
+      The /, \ characters are universally understood as diagonals in ASCII art.
+      Approximating non-45° angles as stepped segments is well-understood
+      practice in ASCII floor plans and maintains 7-bit compatibility (NFR-02).
+      Metadata transparently notes any approximated segments so the user can
+      assess fidelity. OPT-C's added complexity is not justified for v1.0.
+    approved_by: "Jerry van Heerikhuize (Product Owner)"
+
+  - id: CONF-06
+    title: "Interior vs exterior mode detection"
+    description: >
+      When a boundary polygon is provided, the rendered map can represent either
+      an interior space (room, building — walls are solid, POIs are inside) or an
+      exterior area (park, site boundary — walls are a soft perimeter, POIs may
+      be inside or outside). The agent must determine which mode to apply.
+    options:
+      - id: OPT-A
+        description: >
+          Always require the user to explicitly declare interior or exterior.
+          If not declared and a polygon is given, return an error requesting
+          clarification.
+      - id: OPT-B
+        description: >
+          Default to EXTERIOR mode for all polygon inputs. User can explicitly
+          request INTERIOR mode via keyword ("interior", "floor plan", "room").
+      - id: OPT-C
+        description: >
+          Default rule: boundary polygon present → INTERIOR mode (solid walls);
+          no boundary polygon → EXTERIOR mode (open grid). User may override
+          either direction explicitly (e.g., "exterior boundary" or "interior map").
+    resolution: OPT-C
+    rationale: >
+      OPT-C aligns with the product owner's original statement: "inside locations
+      always have walls." The heuristic — polygon present implies interior — is
+      natural and matches the most common use case (a user providing a floor plan
+      boundary expects walls, not a dashed perimeter). The override mechanism
+      handles the minority case where a user provides a soft exterior boundary
+      polygon. OPT-A breaks the stateless service contract by requiring additional
+      clarification. OPT-B's default is counterintuitive given PO intent.
+    approved_by: "Jerry van Heerikhuize (Product Owner)"
+
 stage_gate:
-  conflicts_identified: 4
-  conflicts_resolved: 4
+  conflicts_identified: 6
+  conflicts_resolved: 6
   conflicts_deferred: 0
   blocking_conflicts: 0
   status: pass
+  note: "2 new conflicts (CONF-05, CONF-06) added by PO refinement on 2026-03-15 — polygon wall rendering and interior/exterior mode."
