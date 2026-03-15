@@ -114,4 +114,4 @@ stage_history:
   - stage: 4
     status: complete
     completed: "2026-03-15"
-    commit: "—"   # populated after commit
+    commit: "fe04e44"
