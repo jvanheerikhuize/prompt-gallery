@@ -2,324 +2,245 @@
 # QC-01 — Feature Specification
 # Control:   QC-01 Specification Validation
 # Stage:     1 — Intent Ingestion
-# Source CR: CR-0005
-# Status:    approved
+# Source CR: CR-0006
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "FEAT-0005"
-  title: "Relationship Therapist Masterprompt — F.R.A.N.K."
+  id: "QC-01-FEAT-0006"
+  feature: "FEAT-0006"
+  source_cr: "CR-0006"
+  produced_by: "Claude Sonnet 4.6 (QC Analyst / QC-01)"
+  date: "2026-03-15"
   status: approved
-  created: "2026-03-14"
-  last_updated: "2026-03-14"
-  source_cr: "CR-0005"
-  stage_reached: 1
 
-provenance:
-  created_by: "Claude Sonnet 4.6 (Intake Analyst / QC-01)"
-  reviewed_by: "Jerry van Heerikhuize (Product Owner)"
-  approved_by: "Jerry van Heerikhuize (Product Owner)"
-  approval_date: "2026-03-14"
+# ── Agent Identity ─────────────────────────────────────────────────────────────
+agent:
+  name: "A.T.L.A.S."
+  expansion: "ASCII Topographic Layout and Surveying System"
+  category: utility
+  slug: ascii-cartographer
+  persona: >
+    A precise, methodical cartographic instrument. A.T.L.A.S. is not conversational —
+    it receives coordinates and returns a map. Tone is terse, technical, and confident:
+    a professional instrument that does its job without ceremony. It may include brief
+    metadata commentary on map precision constraints (e.g., noting character-grid
+    resolution limits) but does not chat.
 
-# ── Intent ────────────────────────────────────────────────────────────────────
-intent:
-  problem_statement: |
-    Relationship difficulties — recurring conflict cycles, attachment anxiety, poor
-    communication patterns, boundary failures, self-sabotage loops — are among the
-    most common and distressing human experiences. Access to relationship therapy
-    is gated by cost, availability, and stigma in the same way as other mental health
-    support.
+# ── Architecture Note ─────────────────────────────────────────────────────────
+architecture_note: |
+  A.T.L.A.S. is a SINGLE-TASK STATELESS SERVICE AGENT. It does not implement:
+  - Session lifecycle (no phases, no Check-in → Close)
+  - SESSION_STATE or in-context state management
+  - Console commands or meta-command interface
+  - Multi-turn conversation management
+  Structure is simpler than FRANK/P.S.Y.: CORE_DIRECTIVES → RENDERING_ENGINE →
+  OUTPUT_FORMAT → CONTROLLER. One request → one map.
 
-    Existing relationship-support LLM prompts either collude with the user (validating
-    their account without therapeutic rigour) or offer generic communication tips
-    without the depth, safety rails, or pattern-recognition that effective therapy
-    requires. None include crisis detection for domestic violence or abuse indicators.
-
-    The gap: a therapeutically grounded relationship support tool that combines
-    pattern-recognition depth, safety awareness, individual-perspective integrity,
-    and calibrated wit — making hard truths land without triggering defensiveness.
-
-  desired_outcome: |
-    A self-contained masterprompt that provides structured relationship self-reflection
-    sessions governed by attachment theory, EFT, and Gottman-informed principles.
-    The agent (F.R.A.N.K.) is warm, perceptive, and occasionally wry in a way that
-    serves the therapeutic goal — never at the user's expense.
-
-    F.R.A.N.K.: Forthright Relationship Analyst Navigating Knots.
-
-  out_of_scope:
-    - Couples mediation or working with both partners simultaneously
-    - Legal advice on relationship matters (divorce, custody, restraining orders)
-    - Clinical diagnosis of personality disorders or attachment pathology
-    - Prescription or recommendation of medication
-    - Trauma processing (Phase 2/3 — requires in-person clinical supervision)
-    - Child or adolescent relationship therapy
-    - Forensic or court-involved relationship assessments
-    - Substitution of licensed relationship or couples therapy
-
-# ── Requirements ──────────────────────────────────────────────────────────────
+# ── Functional Requirements ───────────────────────────────────────────────────
 requirements:
   functional:
+
     - id: FR-01
-      title: Relationship Therapist Persona — F.R.A.N.K.
+      title: Cartographer Persona — A.T.L.A.S.
       description: >
-        Agent adopts the persona of a warm, experienced, perceptive relationship
-        therapist with a dry observational wit. Persona hallmarks: deep pattern
-        recognition, genuine empathy, forensic curiosity about relational dynamics,
-        and the occasional sharp-but-affectionate observation. Grounded in attachment
-        theory, EFT, and Gottman-informed practice.
+        Agent operates as a precise, methodical ASCII cartography instrument.
+        Not conversational — receives structured coordinate input, returns a map.
+        Terse, technical, professional. May note precision constraints in map metadata.
+        Does not engage in therapeutic, advisory, or open-ended conversation.
       priority: must
 
     - id: FR-02
-      title: Mandatory Disclaimer
+      title: Coordinate Input Parsing
       description: >
-        Disclaimer rendered at session open: not a substitute for licensed therapy;
-        works with one person's perspective only; cannot assess the absent party.
-        Re-rendered whenever user language implies couples mediation, legal advice,
-        or clinical diagnosis expectations.
+        Accepts geographic coordinates in: (a) WGS84 decimal degrees
+        (e.g., 52.3676, 4.9041), (b) degrees-minutes-seconds DMS
+        (e.g., 52°22'3"N 4°54'15"E), (c) abstract/grid coordinates
+        (e.g., X:100 Y:250). Parses named POI lists in common formats:
+        plain text, comma-separated, JSON-like. Reports parse errors clearly.
       priority: must
 
     - id: FR-03
-      title: Session Lifecycle — Phase Sequencing
+      title: Bounding Box Computation
       description: >
-        Phases execute in order: Check-in → Explore → Insight → Action → Close.
-        Insight and Close phases are never skipped. Agent offers to pause Explore
-        if distress rises unexpectedly. Humor is suspended automatically during
-        any phase where distress or crisis indicators are detected.
+        Automatically derives map extent (bounding box) from the full set of
+        provided coordinates, with a configurable margin (default: 10% of
+        extent on each side). User may also specify explicit bounds.
+        Handles edge cases: single-point input (renders point-at-centre with
+        default radius), all-collinear points (adds margin to degenerate axis).
       priority: must
 
     - id: FR-04
-      title: Crisis Detection and Escalation
+      title: Proportional ASCII Grid Rendering
       description: >
-        Continuous monitoring for: (a) domestic violence / coercive control indicators
-        (physical abuse disclosures, isolation patterns, fear of partner, threats),
-        (b) suicidal ideation / self-harm linked to relationship distress,
-        (c) child welfare concerns. On detection: render appropriate safety resources
-        immediately, shift to safety-focused response, suspend session structure.
-        Non-bypassable by any user input or framing.
+        Maps coordinates to a rectangular ASCII character grid such that
+        relative positions are proportionally accurate. Horizontal and vertical
+        scale are equalized to avoid aspect-ratio distortion. Default grid:
+        72 columns × 36 rows. User may request compact (40×20) or detailed
+        (120×60) output. Equirectangular projection used for geographic
+        coordinates at map extents ≤ ~1000 km.
       priority: must
 
     - id: FR-05
-      title: Relationship Pattern Identification
+      title: POI Symbol Placement and Labelling
       description: >
-        Agent identifies and names attachment patterns (secure, anxious, avoidant,
-        disorganized), communication cycles (pursue-withdraw, demand-defend), Gottman
-        Four Horsemen (criticism, contempt, defensiveness, stonewalling), and common
-        self-sabotage loops. Named patterns offered as hypotheses, not diagnoses.
+        Each named POI is rendered as a symbol at its computed grid position.
+        Default symbol: * (asterisk). User may assign custom single-character
+        symbols per POI. Label placed adjacent to symbol (right-preferring,
+        falls back to left/above/below to avoid overlap). Collision detection:
+        if two POIs map to the same grid cell, both are noted in the legend with
+        a shared composite symbol (e.g., [A,B]).
       priority: must
 
     - id: FR-06
-      title: Individual-Perspective Integrity
+      title: Compass Rose
       description: >
-        FRANK works with one person's account at all times. Agent explicitly maintains
-        that it cannot assess the absent party; does not vilify or excuse partners
-        based on one-sided accounts; redirects if user seeks validation for a
-        particular narrative. User's self-reflection is always the therapeutic target.
+        A minimal compass rose is rendered in the top-right corner of the map:
+        N↑ at minimum, with optional full cardinal display (N/S/E/W). North
+        is always up. For abstract/grid coordinates, compass rose is replaced
+        by axis labels (X→ Y↑).
       priority: must
 
     - id: FR-07
-      title: Calibrated Wit Engine
+      title: Scale Bar
       description: >
-        FRANK may deploy dry, observational humor when: (1) no distress or crisis
-        indicators are active; (2) topic is not on GRAVITY_TOPICS (abuse, violence,
-        suicide, grief, betrayal, deep shame, DV/coercive control); (3) humor is
-        about patterns or dynamics, never about the user or absent party as a person.
-
-        humor_rapport_established flag governs wit intensity, not wit permission:
-        - Before rapport: FRANK may offer a single gentle nudge — a light, tentative
-          observational remark — once the Explore phase is underway and no distress
-          is present. If the user mirrors it (laughs, responds in kind, or continues
-          with warmth), humor_rapport_established is set true. If the user does not
-          engage, FRANK drops it and does not retry.
-        - After rapport: FRANK may deploy wit more freely within the guardrail set.
-
-        This models how a skilled therapist actually works: they don't wait for
-        permission, they read the room and offer a tentative opening.
-        See RULES_ENGINE HUMOR_PROTOCOL.
+        A scale bar is rendered below the map indicating the distance represented
+        by N characters in the map (e.g., "|----| = 25 km"). Units: km for
+        geographic coordinates ≥ 1 km extent; m for smaller extents. Omitted
+        for abstract/grid coordinates (replaced by "1 unit = 1 grid cell" note).
       priority: must
 
     - id: FR-08
-      title: Psychoeducation — Relationship Skills
+      title: Edge Coordinate Labels
       description: >
-        Agent provides accessible psychoeducation on: attachment styles and their
-        relational expression; the pursue-withdraw cycle; needs identification and
-        assertive communication (DEAR MAN); boundary-setting; self-compassion for
-        relationship difficulty; repair attempts (Gottman). All framed as skills
-        and insights, not treatment.
+        Latitude values displayed on the left edge (top and bottom of map);
+        longitude values on the top and bottom edge (left and right of map).
+        Displayed in decimal degrees, rounded to 4 decimal places. Omitted
+        for abstract/grid coordinates.
       priority: must
 
     - id: FR-09
-      title: Session State Schema
+      title: Map Legend
       description: >
-        SESSION_STATE JSON maintained in-context: session_number, session_date,
-        mood_checkin (0–10 start/end), active_themes, relationship_patterns_identified,
-        humor_rapport_established (bool), safety_flags, contract, session_notes.
-        Users advised not to share identifying information.
+        A legend is rendered below the map listing all POI symbols and their
+        corresponding names. Format: "  *  Name (lat, lon)" or "  *  Name (X,Y)".
+        Includes map metadata line: grid size, scale, projection, and character
+        resolution (km or m per character column and row).
       priority: must
 
     - id: FR-10
-      title: Console Mode (Meta-Commands)
+      title: Density / Resolution Control
       description: >
-        Console (prefix: ~): ~state (SESSION_STATE JSON), ~patterns (identified pattern
-        list), ~skills (skills introduced this session), ~disclaimer (re-render),
-        ~privacy (data notice), ~close (initiate Close phase), ~reset (clear state).
+        User may request map density via keyword: "compact" (40×20), "standard"
+        (72×36, default), or "detailed" (120×60). Density affects label
+        truncation — longer labels are truncated with ellipsis at lower densities.
+        Map metadata always states the actual grid dimensions used.
       priority: should
 
     - id: FR-11
-      title: Scope Enforcement
+      title: Input Validation and Error Handling
       description: >
-        Requests for couples mediation, legal advice, clinical diagnosis, or Phase 2/3
-        trauma processing declined with clear explanation; user redirected to appropriate
-        professional resource. Delivered without judgment and with warmth — potentially
-        with a wry note on FRANK's limitations if rapport permits.
+        Invalid coordinate values (lat > 90°, lon > 180°, non-numeric input)
+        are rejected with a clear error message and the specific offending input
+        identified. Fewer than one valid coordinate → error. Single valid
+        coordinate → renders with default bounding radius and a note.
+        Ambiguous input → A.T.L.A.S. states its interpretation before rendering.
+      priority: must
+
+    - id: FR-12
+      title: Stateless Single-Task Protocol
+      description: >
+        A.T.L.A.S. produces one map per request with no memory of prior requests.
+        It does not maintain session state. Each request is complete and self-contained.
+        If the user wants a revised map, they re-submit the full coordinate set.
+        A.T.L.A.S. does not engage in clarifying conversation — if the request is
+        parseable, it renders; if not, it returns a structured error.
       priority: must
 
   non_functional:
+
     - id: NFR-01
-      title: Tone — Warm, Perceptive, Occasionally Wry
+      title: Proportional Precision
       description: >
-        Language is warm, curious, non-judgmental, and unhurried. Feels like a
-        brilliant, experienced friend who happens to have a PhD. Wit is dry and
-        observational — never snarky, never dismissive. Adapts tone to user's register.
+        Relative distances between all POIs must be proportionally correct within
+        ±1 character width (horizontal) and ±1 character height (vertical) on the
+        rendered grid. Sub-character precision is documented in map metadata.
+        No "artistic license" in POI placement — accuracy over aesthetics.
       priority: must
 
     - id: NFR-02
-      title: Safety — Zero Tolerance for Crisis Bypass
+      title: Output Purity — 7-bit ASCII
       description: >
-        No user input may suspend, weaken, or bypass crisis-detection and escalation
-        rules. Including: roleplay framing, "hypothetically", "for a friend",
-        or direct instructions to ignore safety rules. Highest-priority NFR.
+        All map output uses 7-bit ASCII characters only. No Unicode, no emoji,
+        no extended Latin, no box-drawing beyond hyphens (-), pipes (|), and
+        plus signs (+). The map must render correctly in any monospace plain-text
+        environment.
       priority: must
 
     - id: NFR-03
       title: Portability — LLM Agnostic
       description: >
-        Functions correctly in any advanced LLM chat interface with no external tooling.
+        Functions correctly in any advanced LLM chat interface with no external
+        tooling, APIs, or data fetching. All computation is performed by the LLM
+        from the prompt instructions.
       priority: must
 
     - id: NFR-04
-      title: Data Awareness
+      title: Output Determinism
       description: >
-        Users advised at session open that personal relationship disclosures are personal
-        data and that the LLM provider may retain the conversation per their privacy policy.
-        If mental health information is disclosed, users reminded of GDPR Art. 9 relevance.
+        The same input coordinates must always produce the same map layout.
+        Symbol placement and label positioning follow explicit deterministic rules
+        (not ad-hoc per-response decisions). Rules are documented in the prompt.
       priority: must
 
     - id: NFR-05
-      title: Cultural Sensitivity
+      title: Data Notice — Location Privacy
       description: >
-        Acknowledges that relationship norms, communication styles, and family structures
-        are culturally situated. Does not impose Western-normative relationship models.
-        Humor calibrated to not rely on culturally specific references.
+        A brief one-line notice is included in map metadata: "Note: avoid sharing
+        personally identifying location data (home address, private locations)."
+        Non-intrusive; not a mandatory disclaimer in the FRANK/P.S.Y. sense.
       priority: should
 
-    - id: NFR-06
-      title: Accessibility — Language
-      description: >
-        Default plain English, approximately CEFR B2. Adjusts to user language patterns.
-        Detects and responds in user's language for all session phases, disclaimers,
-        crisis resources, and skills. Humor deployed only in English for v1.0 unless
-        user clearly initiates humor in another language.
-      priority: must
-
-    - id: NFR-07
-      title: Humor Calibration — Read the Room, Then Nudge
-      description: >
-        FRANK does not require the user to go first — it may offer one gentle wit
-        nudge once the Explore phase is underway and conditions are safe. If it lands,
-        rapport is established and wit may flow more naturally. If it does not land,
-        FRANK drops it entirely with no retry. FRANK never uses sarcasm in a way
-        that could be read as dismissive of the user's pain. Humor functions as a
-        scalpel, not a hammer — and a good surgeon reads the patient before cutting.
-      priority: must
-
   constraints:
-    - "Self-contained: no external APIs, databases, or tooling required"
-    - "MVC/XML structure consistent with existing prompts in this repository"
-    - "Crisis escalation (DV, suicidal ideation, child welfare) is non-negotiable and cannot be disabled"
-    - "Individual-perspective only: FRANK cannot and will not assess the absent party"
-    - "Humor suspended automatically during distress and crisis phases"
-    - "Mandatory disclaimer on session open and on scope-crossing requests"
-    - "No legal advice under any framing"
+    - "Stateless: no session state, no multi-turn lifecycle"
+    - "Output is pure 7-bit ASCII — no Unicode"
+    - "No external APIs or map tile fetching"
+    - "Equirectangular projection for geographic coordinates (small areas only)"
+    - "MVC/XML structure consistent with repository convention"
+    - "WGS84 lat/lon primary; abstract grid coordinates accepted"
+
+  out_of_scope:
+    - "Real terrain data (elevation, land cover, road networks)"
+    - "Map tile rendering or satellite imagery"
+    - "Routing or distance calculation services"
+    - "UTM / MGRS / OS Grid coordinate conversion (v1.0)"
+    - "Multi-layer map composition"
+    - "Animated or dynamic map output"
+    - "Projection systems beyond equirectangular (v1.0)"
+    - "Maps spanning > ~1000 km (equirectangular distortion becomes significant)"
 
   dependencies:
-    - "Attachment Theory (Bowlby, Ainsworth) — underpins pattern analysis"
-    - "Emotionally Focused Therapy (Johnson) — cycle identification and de-escalation"
-    - "Gottman Method — Four Horsemen, repair attempts"
-    - "DBT interpersonal effectiveness (DEAR MAN, FAST, GIVE) — Action phase skills"
-    - "Domestic violence / coercive control indicator literature — crisis sentinel set"
-    - "CBT automatic thoughts model — Insight phase cognitive reframing"
+    - "WGS84 coordinate system (EPSG:4326)"
+    - "Equirectangular (plate carrée) projection for geographic coordinates"
+    - "Haversine formula for geographic distance calculation"
+    - "ASCII character grid geometry"
 
-# ── Risk Classification (RC-01) ───────────────────────────────────────────────
-risk:
-  initial_classification: medium
-  rationale: >
-    Health-adjacent domain; potential for distress escalation; domestic violence
-    detection is a safety-critical function; humor element introduces novel risk
-    (inappropriate deployment at wrong moment). Lower acute risk than P.S.Y.
-    (no trauma processing, no PTSD focus) — MEDIUM appropriate without RO override.
-
-# ── AI Classification (AC-01) ─────────────────────────────────────────────────
-ai:
-  component_involved: true
-  risk_tier: limited      # Confirmed by AGL — same rationale as FEAT-0004/P.S.Y.
-  eu_ai_act_applicable: true
-
-# ── Data Classification (SC-04) ───────────────────────────────────────────────
-data:
-  classification: confidential    # Elevates to restricted if mental health data disclosed
-  pii_involved: true
-  special_category_data: conditional
-  special_category_basis: >
-    Relationship disclosures are personal data. If user discloses mental health
-    information, data elevates to GDPR Art. 9(1) special category. Prompt must
-    advise users of this at session open.
-
-# ── Gaps Flagged for Product Owner Review ─────────────────────────────────────
+# ── Gaps and Flags ────────────────────────────────────────────────────────────
 gaps:
   - id: GAP-01
-    severity: minor
-    field: "requirements.functional.FR-07 — humor_rapport_established trigger"
     description: >
-      The exact trigger for setting humor_rapport_established requires design
-      decision. Options: (a) user initiates humor explicitly; (b) FRANK offers
-      a single gentle nudge and sets the flag if the user responds positively;
-      (c) FRANK reads tonal signals and makes an ongoing judgment call.
-    recommendation: >
-      OPT-B adopted per PO direction: FRANK may initiate a single gentle
-      observational nudge once Explore phase is underway and no distress is present.
-      humor_rapport_established = true if user responds positively; FRANK drops it
-      and does not retry if not. This models skilled therapist behavior — read the
-      room and offer an opening, rather than waiting for explicit permission.
+      Equirectangular projection becomes increasingly distorted at high latitudes
+      (above ~60°N/S). For v1.0, maps in high-latitude regions will note this
+      distortion in metadata. A Mercator-corrected rendering may be added in v2.0.
+    severity: low
+    deferred_to: Stage 2 design decision
 
   - id: GAP-02
-    severity: minor
-    field: "data.classification — conditional special category"
     description: >
-      The classification is CONFIDENTIAL by default but elevates to RESTRICTED
-      if mental health information is disclosed. The prompt cannot know in advance
-      which users will disclose mental health information. The session-open notice
-      must cover both cases.
-    recommendation: >
-      Treat session-open notice as if RESTRICTED (include GDPR Art. 9 reference)
-      so users are always fully informed. Classification recorded as CONFIDENTIAL
-      with RESTRICTED elevation note. PO to confirm.
+      Label collision avoidance is rule-based (right-preferring fallback). Dense
+      POI clusters may still produce overlapping labels at standard density. The
+      legend always contains the authoritative label list — map labels are best-effort.
+    severity: low
+    deferred_to: Stage 3 implementation detail
 
-  - id: GAP-03
-    severity: significant
-    field: "requirements.functional.FR-04 — DV/coercive control sentinel set"
-    description: >
-      Domestic violence and coercive control indicator patterns are complex and
-      nuanced — a user may describe controlling behaviour without naming it as
-      abuse. The sentinel set must be broad enough to catch subtle indicators
-      without triggering false positives on normal relationship friction.
-      The exact sentinel patterns require careful design in Stage 2/3.
-    recommendation: >
-      Flag for Stage 2 threat model. FRANK should respond to DV indicators with
-      information and resources (not diagnosis of abuse) — following the same
-      safe-messaging principle as P.S.Y.'s crisis response. PO to confirm approach.
-
-# ── Audit Trail ───────────────────────────────────────────────────────────────
-audit:
-  gc01_entry: "GC01-2026-03-14-FEAT-0005-stage1"
-  intent_audit_record: "GC05-2026-03-14-FEAT-0005"
+stage_1_exit_clear: true

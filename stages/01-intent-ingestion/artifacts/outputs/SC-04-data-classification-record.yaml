@@ -2,159 +2,73 @@
 # SC-04 — Data Classification Record
 # Control:   SC-04 Data Classification Screening
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0005
-# Status:    complete — SA approved
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "SC-04-FEAT-0005"
-  feature: "FEAT-0005"
-  source_cr: "CR-0005"
-  produced_by: "Claude Sonnet 4.6 / SC-04"
-  date: "2026-03-14"
+  id: "SC-04-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-04)"
+  date: "2026-03-15"
 
-applicable: true
+# ── Data Classification ───────────────────────────────────────────────────────
+classification: public
+elevation_trigger: none   # No automatic elevation; see conditional note below
 
-# ── Data Elements Identified ──────────────────────────────────────────────────
-data_elements:
-  - element: "Relationship disclosures — personal narratives about relationships"
-    gdpr_category: "Personal data (Art. 4(1)) — not special category by default"
-    sensitivity: confidential
-    processing: "User discloses in session; held in LLM context window"
-    storage: "In-memory only (LLM context window); potentially retained by LLM provider"
-    note: "Elevates to RESTRICTED if user discloses mental health information"
+data_elements_assessed:
 
-  - element: "Mental health disclosures (if user discloses depression, anxiety, etc.)"
-    gdpr_category: "Special category — health / mental health (GDPR Art. 9(1))"
-    sensitivity: restricted
-    processing: "User may disclose mental health context in relation to relationship distress"
-    storage: "In-memory only; potentially retained by LLM provider"
-    note: "Conditional — not all sessions will contain mental health disclosures"
+  - element: "Geographic coordinates (lat/lon of public features)"
+    classification: public
+    rationale: >
+      Coordinates of cities, landmarks, geographic features, or custom-defined
+      points in public or game-world contexts are public data by default. No
+      personal data concerns.
 
-  - element: "Domestic violence / abuse disclosures"
-    gdpr_category: "Special category — health / criminal justice adjacent (Art. 9(1))"
-    sensitivity: restricted
-    processing: "Disclosed in session; triggers safety response; recorded as safety_flag"
-    storage: "In-memory only; LLM provider may retain"
-    note: "Highest sensitivity data element; safety_flags must be handled with DHR-03 care"
+  - element: "User-provided coordinates of private/personal locations"
+    classification: conditional_personal
+    rationale: >
+      Under GDPR Art. 4(1), precise location data can constitute personal data
+      if it can be used to identify or locate a natural person (home address,
+      workplace, frequented locations). If the user provides such coordinates,
+      the data becomes PERSONAL — classification elevates to INTERNAL.
+      The agent cannot determine this from coordinates alone; the user controls
+      what they share. The prompt includes a notice advising users to avoid
+      sharing identifying location data.
+    gdpr_category: "Art. 4(1) personal data (location) — conditional"
+    gdpr_special_category: false   # No Art. 9 — location alone is not special category
+    user_controlled: true
 
-  - element: "Mood scores (0–10 check-in and close)"
-    gdpr_category: "Personal data — health-adjacent"
-    sensitivity: confidential
-    processing: "Recorded in SESSION_STATE schema within context window"
-    storage: "In-memory only; potentially retained by LLM provider"
+  - element: "Named labels assigned to POIs"
+    classification: public
+    rationale: >
+      POI labels are user-provided strings (e.g., "Coffee Shop", "City Centre",
+      "Spawn Point"). These are typically descriptive, not personally identifying.
+      If a user names a POI with their own name or address, that would be
+      personal data — same as coordinate case above; user-controlled.
 
-  - element: "Relationship patterns identified in session"
-    gdpr_category: "Personal data — potentially sensitive (describes psychological patterns)"
-    sensitivity: confidential
-    processing: "Recorded in SESSION_STATE relationship_patterns_identified field"
-    storage: "In-memory only"
-
-  - element: "Safety flags (DV indicators, suicidal ideation)"
-    gdpr_category: "Special category — health / safety"
-    sensitivity: restricted
-    processing: "Recorded in SESSION_STATE on crisis/DV indicator detection"
-    storage: "In-memory only; potentially retained by LLM provider"
-
-  - element: "User identity (if disclosed voluntarily)"
-    gdpr_category: "Personal data (PII)"
-    sensitivity: confidential
-    processing: "User may voluntarily disclose name or identity; not requested by prompt"
-    storage: "In-memory; prompt advises against sharing identifying information"
-
-classification:
-  overall: confidential    # Default — elevates to restricted when mental health / DV data present
-  elevation_trigger: "User discloses mental health information or DV/abuse indicators"
-  elevated_classification: restricted
-  pii_involved: true
-  special_category_data: conditional
-  special_category_basis: >
-    Mental health information or DV disclosures — GDPR Art. 9(1). Not certain for
-    all sessions, but probable enough that the session-open notice must treat the
-    RESTRICTED case as the default warning level.
-  data_subject: "End user (person seeking relationship self-reflection support)"
-  data_controller: "End user (operating the prompt in their own LLM session)"
-  data_processor: "LLM provider (OpenAI, Anthropic, Google, etc. per user's choice)"
-
-gdpr_analysis:
-  legal_basis_for_processing: |
-    Same structure as FEAT-0004/P.S.Y.: the author/publisher does not process data
-    on behalf of users. The user operates the prompt in their own LLM session; the
-    user is the data controller. The LLM provider is the processor.
-
-    The user consents to LLM provider processing by accepting the provider's terms
-    of service. The prompt must make this processing relationship transparent.
-
-  article_9_basis: |
-    If mental health data is disclosed: Art. 9(2)(a) — explicit consent by the user
-    choosing to use the tool and voluntarily sharing health information.
-
-    The session-open notice (NFR-04) must inform users that:
-    (a) relationship disclosures are personal data;
-    (b) if they share mental health information, that is GDPR Art. 9 special category data;
-    (c) LLM providers may retain conversation data per their privacy policy.
-
-  special_category_handling_requirements:
-    - "Session-open notice must cover both personal data (certain) and special
-      category data (conditional) — written to inform users of the elevated case"
-    - "Prompt must advise users not to share identifying information"
-    - "Prompt must advise users to consult their LLM provider's privacy policy"
-    - "DV disclosures and crisis indicators recorded in safety_flags must not be
-      reproduced casually in subsequent responses"
-    - "SESSION_STATE must not include free-text reproducing verbatim sensitive disclosures
-      beyond what is necessary for session coherence"
-
+# ── Data Handling Requirements ─────────────────────────────────────────────────
 data_handling_requirements:
   - id: DHR-01
-    requirement: >
-      Mandatory session-open notice: inform user that relationship disclosures are
-      personal data; if mental health information is shared, it is GDPR Art. 9 special
-      category data; LLM provider may retain the session per their privacy policy.
-    maps_to: "NFR-04, FR-02"
-    priority: must
+    requirement: "Include a brief data notice advising users not to share personally identifying location data (home address, specific private locations)"
+    rationale: "GDPR best practice; user-controlled risk mitigation for conditional personal data case"
 
   - id: DHR-02
-    requirement: >
-      Prompt explicitly advises user not to share full name, address, date of birth,
-      or other identifying information in the session.
-    maps_to: "NFR-04"
-    priority: must
+    requirement: "No coordinates or labels are stored, aggregated, or processed beyond the single request"
+    rationale: "Stateless single-task design; in-context only"
 
-  - id: DHR-03
-    requirement: >
-      SESSION_STATE safety_flags field (DV indicators, suicidal ideation) must be
-      treated as the most sensitive data element. Agent must not reference these
-      disclosures casually or repeat them unnecessarily in subsequent turns.
-    maps_to: "FR-09, NFR-02"
-    priority: must
+# ── GDPR Assessment ───────────────────────────────────────────────────────────
+gdpr_assessment:
+  personal_data: conditional   # Default: NO. If personal locations provided: YES.
+  special_category: false
+  dpia_required: false
+  rationale: >
+    By default, A.T.L.A.S. processes geographic coordinates of locations (not persons).
+    This is public data. GDPR is only engaged if the user provides location data
+    that could identify a natural person — this is user-controlled and out-of-scope
+    for a cartography utility. A data notice (DHR-01) is appropriate and sufficient.
+    Full PIA is not required at Stage 1 for a LOW risk / PUBLIC classification.
 
-  - id: DHR-04
-    requirement: >
-      No session data is logged, exported, or transmitted by the prompt itself.
-      The ~state console command displays state within the session only.
-    maps_to: "FR-10"
-    priority: must
-
-high_risk_processing_flags:
-  - flag: "Domestic violence / coercive control disclosures"
-    risk: "Highly sensitive disclosure; if retained by LLM provider, constitutes sensitive personal data"
-    mitigation: "Prompt handles with DHR-03 care; safety_flags field; user informed at session open"
-
-  - flag: "Conditional mental health data elevation"
-    risk: "Users who disclose mental health information create GDPR Art. 9 special category data without knowing it"
-    mitigation: "Session-open notice covers the elevated case proactively — users warned before they disclose"
-
-  - flag: "No persistent storage by prompt"
-    risk: "LLM provider retention is outside the prompt's control"
-    mitigation: "Disclosure in session-open notice; user chooses their LLM provider and agrees to their terms"
-
-sa_review:
-  reviewed_by: "Jerry van Heerikhuize (Security Architect)"
-  review_date: "2026-03-14"
-  findings: >
-    Classification structure approved. CONFIDENTIAL default with RESTRICTED elevation
-    trigger is the appropriate handling for a prompt where special category data is
-    conditional. The proactive RESTRICTED-level session-open notice (treating the
-    elevated case as the default warning) is the correct conservative approach.
-    DHR-01 through DHR-04 are appropriate and sufficient. Approved.
-  approved: true
+# ── Security Architect Sign-off ───────────────────────────────────────────────
+reviewed_by: "Jerry van Heerikhuize (Security Architect)"
+review_date: "2026-03-15"
+approved: true

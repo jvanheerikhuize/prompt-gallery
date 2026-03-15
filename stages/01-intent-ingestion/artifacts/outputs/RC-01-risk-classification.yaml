@@ -2,136 +2,72 @@
 # RC-01 — Risk Classification
 # Control:   RC-01 Risk Classification
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0005
-# Status:    validated
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "RC-01-FEAT-0005"
-  feature: "FEAT-0005"
-  source_cr: "CR-0005"
-  produced_by: "Claude Sonnet 4.6 (Risk Assessor / RC-01)"
-  date: "2026-03-14"
-  status: validated
+  id: "RC-01-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Risk Analyst / RC-01)"
+  date: "2026-03-15"
 
-proposed_tier: medium    # Agent-proposed tier (pre-RO review)
-confirmed_tier: medium   # Risk Officer confirmed — no override required
+# ── Risk Tier Assessment ──────────────────────────────────────────────────────
+risk_tier: low
 
-governance_intensity:
-  enhanced_scrutiny: false
-  approval_authority: "Product Owner + Risk Officer (Jerry van Heerikhuize)"
-  testing_depth: standard
-  additional_controls_recommended:
-    - "Stage 2: DV/coercive control sentinel set — threat model focus area"
-    - "Stage 2: Humor engine design — CONF-01 OPT-C implementation"
-    - "Stage 4: Edge-case DV indicator testing across subtly-framed disclosures"
-    - "Stage 4: Humor deployment validation — confirm GRAVITY_TOPICS are honored"
+criteria_evaluated:
 
-dimensions:
-  user_harm:
-    score: medium
-    rationale: |
-      Users are in relationship distress — a vulnerable population, though generally
-      less acutely at-risk than trauma survivors (FEAT-0004/P.S.Y.). However, two
-      specific harm vectors exist:
+  - criterion: "Impact on natural persons — health, safety, financial, legal"
+    applies: false
+    rationale: >
+      A.T.L.A.S. is a cartography utility. It renders a visual representation of
+      coordinates as an ASCII map. It makes no decisions, recommendations, or
+      assessments affecting any person's health, safety, financial situation, or
+      legal standing. Output is a spatial visualisation — no real-world effects.
 
-      (1) Domestic violence / coercive control: if FRANK fails to detect DV indicators
-      and a user in an abusive relationship receives no safety resources, the harm
-      potential is serious. This is the highest-risk user harm vector.
+  - criterion: "Vulnerable user population"
+    applies: false
+    rationale: >
+      No specific vulnerable population is targeted or likely to be the primary
+      user group. Intended users: developers, planners, game designers, anyone
+      needing coordinate visualisation. No clinical, therapeutic, or crisis context.
 
-      (2) Humor misdeployment: if FRANK deploys wit at the wrong moment — when a user
-      is describing genuine pain — it could damage therapeutic alliance, invalidate the
-      user's experience, or in extreme cases cause re-hurt in an already distressed user.
+  - criterion: "Personal data processing"
+    applies: conditional
+    rationale: >
+      Coordinates provided by the user could — in principle — be personal data
+      under GDPR Art. 4 if they represent a person's location (home address, frequent
+      locations). However: (a) the agent has no mechanism to determine whether
+      coordinates represent private or public locations; (b) no coordinates are
+      stored, aggregated, or processed beyond the single request; (c) the typical
+      use case involves geographic features, cities, or game-world positions.
+      Conditional classification: PUBLIC by default; user-controlled elevation if
+      personal location data is provided.
 
-      Both vectors are mitigable by design (FR-04 crisis detection; FR-07 humor guardrails).
-      Residual risk is MEDIUM rather than HIGH because: no trauma processing in scope;
-      acute crisis scenarios less common than in P.S.Y.'s use case; humor guardrails
-      are rule-governed.
+  - criterion: "Regulated sector (financial, healthcare, critical infrastructure)"
+    applies: false
+    rationale: >
+      Cartography utility. Not operating in any regulated sector by default. Could
+      theoretically be used in regulated contexts (e.g., mapping hospital locations)
+      but the output itself carries no regulatory implication.
 
-  data_sensitivity:
-    score: medium
-    rationale: |
-      Relationship disclosures are personal data (GDPR applies). If mental health
-      information is disclosed (depression, anxiety linked to relationship distress),
-      data elevates to GDPR Art. 9(1) special category.
+  - criterion: "High volume or automated decision-making"
+    applies: false
+    rationale: "Single-task, single-output per request. No automated decision-making pipeline."
 
-      The conditional nature of special category data makes this MEDIUM: not all
-      sessions will involve mental health disclosures, but enough will that the
-      session-open notice must cover the RESTRICTED case. Unlike P.S.Y. where
-      special category data is certain, here it is probable but not guaranteed.
+  - criterion: "Reputational or operational risk to the organisation"
+    applies: false
+    rationale: >
+      Incorrect map rendering (positions out of proportion) is the primary failure
+      mode — this is a quality defect with no safety, legal, or reputational
+      consequence beyond user dissatisfaction.
 
-  reputational:
-    score: medium
-    rationale: |
-      Two reputational vectors: (a) if FRANK's humor is experienced as tone-deaf or
-      mocking in a widely-shared screenshot, it could damage the project's reputation;
-      (b) if FRANK mishandles a DV situation and fails to provide resources, the
-      reputational harm is significant and potentially legal in implication.
-      Both mitigated by design controls; residual risk is medium.
+risk_tier_rationale: |
+  A.T.L.A.S. is a LOW risk utility tool. No safety, health, legal, or financial
+  decisions are made. No vulnerable population is targeted. Personal data processing
+  is conditional and user-controlled. The worst-case failure mode is an inaccurate
+  map rendering — a quality issue, not a harm event. This is the lowest risk tier
+  in this repository.
 
-  legal_regulatory:
-    score: low
-    rationale: |
-      EU AI Act: LIMITED tier confirmed by AGL (same rationale as P.S.Y.) — no
-      conformity assessment required. GPAI transparency obligations apply.
-
-      GDPR: Personal data processing; conditional special category (Art. 9 if mental
-      health disclosed). User is data controller of their own session; LLM provider
-      is processor. Session-open notice addresses this.
-
-      No medical device classification risk: relationship therapy psychoeducation is
-      further from clinical medical territory than trauma psychology (P.S.Y.).
-      No diagnosis, no treatment, no clinical decision support.
-
-  blast_radius:
-    score: low
-    rationale: |
-      Standalone text file. No production systems, APIs, databases, or infrastructure
-      affected. Defective version affects only users who choose to use it; no
-      cascading system failures possible.
-
-  reversibility:
-    score: medium
-    rationale: |
-      Prompt file: fully reversible via git. However, as with P.S.Y., harm caused
-      to users during an exposure window (e.g. failed DV detection) may not be
-      reversible at the individual level. Reversibility of the deliverable: HIGH.
-      Reversibility of user harm in DV scenario: LOW.
-
-  dependency_count:
-    score: low
-    rationale: |
-      No runtime dependencies. Reference dependencies (attachment theory, Gottman,
-      EFT, DBT) are stable, widely accessible bodies of knowledge. No LLM-specific
-      tooling required.
-
-  team_complexity:
-    score: low
-    rationale: |
-      Solo project. All roles held by one person. No coordination overhead.
-
-classification_rationale: |
-  FEAT-0005 is classified MEDIUM risk without RO override. Unlike FEAT-0004 (P.S.Y.),
-  where the initial HIGH classification required Risk Officer override to MEDIUM, FRANK
-  is appropriately MEDIUM from the outset. The lower initial risk reflects:
-
-  - Relationship distress is less acutely dangerous than trauma / PTSD crisis scenarios
-  - No Phase 2/3 trauma processing in scope
-  - Data sensitivity is conditional (not certain) special category
-  - EU AI Act regulatory exposure is LOW (LIMITED tier confirmed; no Annex III)
-
-  MEDIUM risk retains meaningful governance intensity: Stage 2 threat model required,
-  standard-plus testing in Stage 4, documented DV detection approach, and humor
-  guardrail validation. The novel humor engine element justifies the upper MEDIUM
-  classification rather than LOW — there is no precedent in this repository for a
-  prompt with a wit component, and its safety properties must be tested carefully.
-
-validation:
-  validated_by: "Jerry van Heerikhuize (Risk Officer)"
-  validation_date: "2026-03-14"
-  override_tier: ""
-  override_rationale: >
-    No override required. MEDIUM classification is accurate and appropriate.
-    FRANK's lower acute risk profile (vs. P.S.Y.) is correctly captured at MEDIUM.
-    The DV detection requirement and humor engine novelty together justify MEDIUM
-    rather than LOW. Validated as proposed.
+risk_officer_override_required: false
+approved_by: "Jerry van Heerikhuize (Risk Analyst)"
+approval_date: "2026-03-15"

@@ -2,225 +2,143 @@
 # QC-02 — Conflict Resolution Record
 # Control:   QC-02 Coherence & Conflict Resolution
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0005
-# Status:    resolved
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "QC-02-FEAT-0005"
-  feature: "FEAT-0005"
-  source_cr: "CR-0005"
-  produced_by: "Claude Sonnet 4.6 (Conflict Analyst / QC-02)"
-  date: "2026-03-14"
-  status: resolved
-
-summary:
-  blocking_conflicts: 0
-  significant_conflicts: 2
-  minor_conflicts: 2
-  stage_blocked: false
-  note: >
-    All conflicts resolved. CONF-01 and CONF-02 decided by PO (Jerry van Heerikhuize)
-    on 2026-03-14. CONF-03 and CONF-04 recommendations confirmed. QC-02 complete.
+  id: "QC-02-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (QC Analyst / QC-02)"
+  date: "2026-03-15"
+  status: approved
 
 conflicts:
 
   - id: CONF-01
-    severity: significant
-    requirements_involved:
-      - "FR-07: Calibrated Wit Engine — humor deployment"
-      - "NFR-01: Tone — warm, perceptive, occasionally wry"
-      - "NFR-07: Humor calibration — never before rapport"
-      - "FR-03: Session Lifecycle — Insight phase delivery"
-    description: |
-      The central tension of this feature: humor can be a powerful therapeutic tool
-      (creating safety, surfacing blind spots, making hard truths accessible) but
-      becomes harmful if deployed without careful contextual control.
-
-      The conflict is between:
-      (a) giving FRANK enough latitude to use wit naturally as a skilled therapist would,
-          trusting its contextual judgment, and
-      (b) using rigid rule-based controls on when humor is permitted to prevent
-          inappropriate deployment — which may make the humor feel forced or mechanical.
-
-      If the humor trigger rules are too strict, FRANK's wit becomes a party trick
-      deployed on a timer rather than genuine therapeutic craft. If too loose, FRANK
-      risks a poorly-timed quip when the user is describing something genuinely painful.
-
-      This is particularly acute during the Insight phase — FRANK may want to deliver
-      an observation with a light touch precisely because the insight is difficult.
+    title: "Geographic precision vs ASCII character resolution"
+    description: >
+      The user requests "high precision" maps. Geographic precision (sub-metre
+      accuracy) is physically impossible to represent at ASCII character grid
+      resolution (each character represents potentially kilometres of real space).
+      There is a conceptual tension between the word "precision" and the medium.
     options:
       - id: OPT-A
         description: >
-          Fully rule-governed: humor permitted ONLY when humor_rapport_established = true
-          AND mood_checkin > 4 AND no crisis/distress signals in current turn AND
-          topic is not in the GRAVITY_TOPICS list (abuse, violence, grief, suicide,
-          betrayal). FRANK has no judgment override. Predictable but potentially stilted.
+          Define "precision" as proportional accuracy within the ASCII grid:
+          relative distances between all POIs are correct within ±1 character
+          of their true proportional position. Sub-character accuracy is
+          documented in map metadata.
       - id: OPT-B
         description: >
-          Trust-based: provide FRANK with guidelines and examples but allow contextual
-          judgment. Humor deployment is governed by principles rather than rules.
-          More natural; harder to test and validate.
+          Reject requests where coordinate separation is below the character
+          resolution threshold (cannot represent accurately) and report the
+          minimum resolvable separation for the requested map size.
       - id: OPT-C
         description: >
-          Hybrid: rule-governed safety floor (humor_rapport_established MUST be true;
-          GRAVITY_TOPICS absolutely prohibited) with principle-governed ceiling
-          (within those constraints, FRANK applies contextual judgment on timing and
-          delivery). The rules prevent harm; the principles enable craft.
-    resolution: >
-      OPT-C — Hybrid approach adopted, with one refinement from PO: FRANK does not
-      wait for the user to initiate humor. It may offer a single gentle observational
-      nudge once the Explore phase is underway and no distress is present.
-      humor_rapport_established is set true if the user responds positively (mirrors,
-      laughs, continues in kind); if not, FRANK drops it with no retry.
-
-      RULES_ENGINE defines a non-negotiable safety floor: GRAVITY_TOPICS list
-      prohibits humor in defined sensitive areas (abuse, violence, suicide, grief,
-      betrayal, deep shame, DV/coercive control) regardless of rapport status.
-      Within those constraints, FRANK reads the room, offers the nudge, and
-      applies contextual judgment once rapport is established.
-
-      The distinction: humor_rapport_established gates wit intensity, not wit
-      permission. FRANK can probe — it cannot flood.
-    resolved_by: "Jerry van Heerikhuize (Product Owner)"
-    resolution_date: "2026-03-14"
+          Both OPT-A + OPT-B: render at best-possible precision AND report
+          character resolution in metadata, rejecting/warning when inputs
+          are below resolvable threshold.
+    resolution: OPT-C
+    rationale: >
+      OPT-C is most honest and useful. "High precision" is redefined as
+      "proportionally correct within the limits of the ASCII medium," with full
+      transparency about those limits. If two POIs are closer than one character
+      width apart, A.T.L.A.S. warns the user and uses a shared composite symbol
+      rather than producing a misleading rendering. This is the only intellectually
+      honest resolution.
+    approved_by: "Jerry van Heerikhuize (Product Owner)"
 
   - id: CONF-02
-    severity: significant
-    requirements_involved:
-      - "FR-06: Individual-perspective integrity"
-      - "NFR-01: Tone — empathetic and supportive"
-      - "FR-05: Relationship pattern identification"
-    description: |
-      FRANK works with one person's account of a relationship. The therapeutic target
-      is the user's self-reflection — not the absent partner. But users in relationship
-      distress often want validation and often frame their partner in the worst possible
-      light. Two tensions arise:
-
-      (1) FRANK must support the user without colluding in a one-sided narrative that
-          demonises the absent partner — this would be therapeutically dishonest and
-          potentially harmful (it may, for example, escalate conflict rather than
-          support resolution).
-
-      (2) FRANK must NOT play devil's advocate for the absent partner so aggressively
-          that the user feels invalidated and unsupported — which breaks therapeutic
-          alliance and may cause users to disengage.
-
-      The conflict: how much does FRANK challenge the user's framing of the partner
-      versus how much does it simply hold and work with the user's experience?
+    title: "Real-world geographic data vs AI-computed rendering"
+    description: >
+      A.T.L.A.S. has no access to real map data (terrain, roads, buildings,
+      coastlines). Should the agent infer or approximate geographic context
+      (e.g., draw a coastline between two coastal cities based on LLM knowledge),
+      or should it strictly plot only user-provided coordinates?
     options:
       - id: OPT-A
         description: >
-          FRANK consistently redirects away from the absent partner entirely:
-          "I can only work with your experience and your patterns." Maintains strict
-          neutrality. Does not engage with characterisations of the partner at all.
-          Clean but may feel dismissive of the user's experience.
+          Plot only user-provided coordinates. No inferred geography. The map
+          is a precise representation of what the user gave — nothing more.
+          Background is empty grid. Output is accurate for what it shows.
       - id: OPT-B
         description: >
-          FRANK works with the user's account as presented — validating their feelings
-          without endorsing their interpretation of the partner. Gently names the
-          interpretive gap ("I hear how that landed for you — I wonder what was
-          happening for them in that moment?") without requiring a definitive answer.
-          Supports without colluding; curious without interrogating.
+          Infer approximate geographic context from LLM world knowledge
+          (coastlines, major rivers, country borders) and render as approximate
+          background features.
       - id: OPT-C
         description: >
-          FRANK explicitly names its epistemic position at session open and revisits
-          it when needed: "I only have your side of the story, and I'm absolutely
-          here to work with your experience. I'll sometimes wonder aloud about the
-          other perspective — not to defend them, but because that's often where the
-          useful stuff lives." Transparent and bounded.
-    resolution: >
-      OPT-B/C — Both approaches combined. FRANK establishes its individual-perspective
-      position at session open (OPT-C framing). Within sessions, it validates feelings
-      without endorsing interpretations (OPT-B approach), gently introducing the
-      absent party's possible perspective as a curiosity to explore rather than a
-      defence. The wry wit can be useful here — FRANK can acknowledge that it only
-      has one side of the story in a way that is warm rather than clinical.
-    resolved_by: "Jerry van Heerikhuize (Product Owner)"
-    resolution_date: "2026-03-14"
+          OPT-A default, with OPT-B as explicit opt-in via user request
+          ("with geographic context" or "with approximate background").
+    resolution: OPT-A (with OPT-C as future scope)
+    rationale: >
+      OPT-B carries significant accuracy risk: LLM-inferred geography may be
+      wrong, misleading, or inconsistent across requests (violating NFR-04
+      determinism). A map that shows incorrect coastlines is worse than a map
+      that shows no coastlines. OPT-A maintains honesty and determinism. OPT-C
+      is deferred to v2.0 — if implemented, inferred geography must be clearly
+      marked as "approximate" in the output.
+    approved_by: "Jerry van Heerikhuize (Product Owner)"
 
   - id: CONF-03
-    severity: minor
-    requirements_involved:
-      - "FR-04: Crisis detection — DV/coercive control"
-      - "FR-06: Individual-perspective integrity"
-    description: |
-      Domestic violence and coercive control indicators are tricky to detect from
-      a one-sided account. A user may describe behaviour that sounds controlling or
-      abusive but frames it neutrally ("he just gets very intense about where I go").
-      Conversely, a user may describe heated but non-abusive conflict in terms that
-      superficially resemble DV indicators.
-
-      FRANK must be sensitive enough to notice genuine risk indicators without
-      over-pathologising normal relationship conflict — and without making assumptions
-      about the partner's behaviour based solely on the user's framing.
-
-      The conflict: early DV detection vs. avoiding false positives that break rapport.
+    title: "Conversational clarification vs stateless rendering"
+    description: >
+      If the user's input is ambiguous (e.g., "Map Amsterdam" with no coordinates,
+      or mixed coordinate systems), should A.T.L.A.S. ask a clarifying question
+      or make a best-effort interpretation and proceed?
     options:
       - id: OPT-A
         description: >
-          FRANK responds to DV/control indicators by offering information and resources
-          without labelling the partner's behaviour as abuse. "What you're describing
-          sounds like it might be worth knowing about some resources — have you heard
-          of [X]?" User-led; no diagnosis of the situation.
+          Always ask one clarifying question before rendering, if input is ambiguous.
+          Adds a conversational turn but avoids rendering the wrong map.
       - id: OPT-B
         description: >
-          FRANK uses explicit DV sentinel phrases and responds with a structured
-          safety check — same pattern as P.S.Y.'s CRISIS_CHECK — naming the concern
-          clearly and providing resources. More direct; potentially alarming to users
-          who don't identify as DV victims.
-    resolution: >
-      OPT-A — Information and resource offering without labelling. FRANK's RULES_ENGINE
-      defines a tiered response: mild indicators trigger a gentle resource mention woven
-      into the session; clear DV disclosures (physical harm, explicit fear of partner,
-      isolation) trigger the full safety response with resources rendered immediately.
-      OPT-A's non-labelling approach preserves user agency; the tiered escalation
-      ensures serious situations are not understated. PO confirmed.
-    resolved_by: "Jerry van Heerikhuize (Product Owner)"
-    resolution_date: "2026-03-14"
+          State the interpretation and render immediately ("Interpreting 'Amsterdam'
+          as 52.3676°N, 4.9041°E — rendering..."). User can re-submit if wrong.
+      - id: OPT-C
+        description: >
+          For unparseable input: return structured error. For parseable-but-ambiguous:
+          OPT-B (state interpretation, render). For completely underspecified
+          (e.g., a city name only): apply LLM world knowledge to supply approximate
+          coordinates, state them, and render.
+    resolution: OPT-C
+    rationale: >
+      A.T.L.A.S. is a stateless service agent — asking clarifying questions
+      breaks the single-task contract (FR-12). OPT-B/C is consistent with the
+      service-agent pattern: be maximally helpful within one response. Stating
+      the interpretation before rendering gives the user the information they
+      need to re-submit if incorrect. LLM world knowledge for well-known locations
+      (city centres, famous landmarks) is appropriate and useful — A.T.L.A.S.
+      should note when it has applied this, and include approximate coordinates
+      in the legend so the user can verify.
+    approved_by: "Jerry van Heerikhuize (Product Owner)"
 
   - id: CONF-04
-    severity: minor
-    requirements_involved:
-      - "NFR-01: Tone — wit"
-      - "NFR-05: Cultural sensitivity"
-    description: |
-      Humour is deeply culturally specific. Dry British irony does not land the same
-      way across all cultures; self-deprecating wit reads differently in high-context
-      vs. low-context communication cultures; sarcasm — even gentle sarcasm — is
-      considered rude in some cultural contexts.
-
-      FRANK's humor could inadvertently alienate users from cultures where the wit
-      style is unfamiliar or offensive, without FRANK or the user understanding why
-      the interaction has gone flat.
+    title: "ASCII character set — box-drawing and decoration"
+    description: >
+      Rich box-drawing (Unicode ─ │ ┼ etc.) would produce cleaner-looking maps
+      but violates the 7-bit ASCII constraint (NFR-02). Basic ASCII (-, |, +)
+      produces functional but visually sparse borders.
     options:
       - id: OPT-A
-        description: >
-          FRANK's default wit style is kept mild and universal — observational
-          rather than ironic; warm rather than dry. Cultural context cues in the
-          conversation guide tone adaptation. Humor is offered tentatively and
-          only sustained if the user responds positively.
+        description: "Strict 7-bit ASCII only: -, |, + for borders; * for points."
       - id: OPT-B
-        description: >
-          Defer cultural humor adaptation to a future CR; document it as a known v1.0
-          limitation. Humor is an English-language feature only and is documented
-          as such.
-    resolution: >
-      OPT-A — Mild, universal default. Humor style is observational and warm by default.
-      FRANK reads tonal cues and does not sustain a wit style that the user does not
-      mirror. Sarcasm is specifically excluded from the default style — only irony
-      and wry observation are in-bounds, and only when user rapport is clear.
-      NFR-06 already limits humor to English for v1.0. PO confirmed.
-    resolved_by: "Jerry van Heerikhuize (Product Owner)"
-    resolution_date: "2026-03-14"
+        description: "Use Unicode box-drawing by default; ASCII-only mode on request."
+      - id: OPT-C
+        description: "ASCII-only for v1.0; Unicode variant deferred to v2.0."
+    resolution: OPT-C
+    rationale: >
+      NFR-02 requires 7-bit ASCII for universal compatibility across terminal
+      environments, email, log files, and legacy systems. Unicode box-drawing
+      renders incorrectly in many monospace environments. OPT-A/C satisfies this.
+      A Unicode-enhanced variant is a valid v2.0 scope item — the architecture
+      will make this easy to add by isolating border/symbol rendering in
+      the OUTPUT_FORMAT component.
+    approved_by: "Jerry van Heerikhuize (Product Owner)"
 
 stage_gate:
-  blocking_unresolved: false
-  stage_blocked: false
-  note: >
-    All conflicts resolved on 2026-03-14. CONF-01: OPT-C refined — FRANK may nudge
-    first; rapport gates intensity not permission; GRAVITY_TOPICS floor absolute.
-    CONF-02: OPT-B/C (validate feelings, not interpretations; transparent epistemic position).
-    CONF-03: OPT-A (tiered DV response, information not labelling). CONF-04: OPT-A
-    (observational warm default; no sustained sarcasm; English-only for v1.0). QC-02
-    exit criteria met.
+  conflicts_identified: 4
+  conflicts_resolved: 4
+  conflicts_deferred: 0
+  blocking_conflicts: 0
+  status: pass

@@ -2,166 +2,53 @@
 # AC-01 — AI Risk Tier Classification
 # Control:   AC-01 AI Risk Tier Classification
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0005
-# Status:    confirmed
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "AC-01-FEAT-0005"
-  feature: "FEAT-0005"
-  source_cr: "CR-0005"
-  produced_by: "Claude Sonnet 4.6 (AI Governance Analyst / AC-01)"
-  date: "2026-03-14"
-  status: confirmed
+  id: "AC-01-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (AI Governance Lead / AC-01)"
+  date: "2026-03-15"
 
-ai_component_involved: true
-component_description: |
-  The F.R.A.N.K. relationship therapist masterprompt is a system prompt that governs
-  LLM behaviour in a health-adjacent, emotionally sensitive context. When deployed,
-  it transforms an LLM into a relationship psychoeducation and self-reflection agent
-  with a calibrated therapeutic persona including a controlled wit component.
+# ── EU AI Act Tier Assessment ─────────────────────────────────────────────────
+ai_tier: minimal
 
-  The prompt defines the persona, session lifecycle, crisis-detection logic (DV/
-  coercive control, suicidal ideation), humor deployment rules (HUMOR_PROTOCOL), and
-  scope enforcement for the LLM's responses.
+annex_iii_high_risk_screening:
+  result: not_applicable
+  categories_checked:
+    - "Biometric identification: NO"
+    - "Critical infrastructure: NO"
+    - "Education: NO"
+    - "Employment / HR: NO"
+    - "Access to essential services: NO"
+    - "Law enforcement: NO"
+    - "Migration / border: NO"
+    - "Administration of justice: NO"
+    - "Democratic processes: NO"
+  conclusion: >
+    A.T.L.A.S. does not fall under any Annex III high-risk category. Cartography
+    and coordinate visualisation have no bearing on the enumerated high-risk domains.
 
-  This is health-adjacent in a similar manner to FEAT-0004/P.S.Y., but operates
-  with a narrower clinical scope (psychoeducation and self-reflection; no trauma
-  processing) and a novel persona element (calibrated wit) that has no precedent
-  in the existing prompt library.
+limited_risk_screening:
+  result: not_applicable
+  rationale: >
+    Art. 52(1) (transparency for AI interacting with natural persons in a way that
+    could deceive them) does not apply — A.T.L.A.S. is a utility tool that produces
+    map output, not a conversational agent that could be mistaken for a human.
+    Art. 52(3) (emotion recognition / biometric categorisation): not applicable.
+    Art. 52(4) (deepfakes): not applicable.
 
-proposed_tier: limited    # minimal | limited | high | unacceptable
-tier_confidence: high     # High confidence — same analysis as FEAT-0004 applies
+minimal_risk_rationale: |
+  A.T.L.A.S. is MINIMAL risk under the EU AI Act:
+  - Utility cartography tool with well-defined input (coordinates) and output (ASCII map).
+  - No automated decisions affecting persons' rights or interests.
+  - No interaction with vulnerable populations.
+  - No profiling, emotion recognition, or biometric processing.
+  - Failure mode: inaccurate map proportions — no safety or harm consequence.
+  - Precedent: T.A.G. (FEAT-0001) and C.R.A. (engineering prompt) are both MINIMAL.
+    A.T.L.A.S. is of equal or lower complexity and risk.
 
-eu_ai_act_analysis:
-  article_6_assessment: |
-    Art. 6(1): Is this a safety component of a product covered by EU harmonisation
-    legislation listed in Annex I? → NOT APPLICABLE.
-    Relationship psychoeducation tool; not a medical device or safety-critical system.
-    Explicit non-treatment scope (no diagnosis, no clinical decision support).
-    Art. 6(1): NOT APPLICABLE.
-
-    Art. 6(2): Annex III screening — see below.
-
-  annex_iii_screening:
-    - domain: "Biometric identification and categorisation"
-      applicable: false
-      note: "NOT APPLICABLE"
-
-    - domain: "Critical infrastructure"
-      applicable: false
-      note: "NOT APPLICABLE"
-
-    - domain: "Education and vocational training"
-      applicable: false
-      note: "Psychoeducation is educational in nature but not vocational training assessment"
-
-    - domain: "Employment and workers management"
-      applicable: false
-      note: "NOT APPLICABLE"
-
-    - domain: "Essential private/public services (credit, social benefits)"
-      applicable: false
-      note: "NOT APPLICABLE"
-
-    - domain: "Health and life sciences — point 5"
-      applicable: false
-      note: |
-        Analysis mirrors FEAT-0004/P.S.Y. determination (AGL, 2026-03-14).
-
-        The prompt provides relationship psychoeducation and self-reflection support
-        — not medical diagnosis, not treatment planning, not clinical decision support.
-        It explicitly prohibits clinical assessment, couples mediation, and legal advice.
-
-        Additional argument against Annex III point 5 (vs. P.S.Y.): relationship
-        therapy is further removed from "health services" than trauma psychology.
-        The primary context is relational wellbeing, not mental health treatment.
-
-        Crisis detection (DV indicators, suicidal ideation) are safety boundaries
-        that direct users to professional resources — not clinical functions of the
-        AI system itself.
-
-        AGL determination: Annex III point 5 does NOT apply. Tier: LIMITED.
-
-    - domain: "Law enforcement"
-      applicable: false
-      note: "NOT APPLICABLE"
-
-    - domain: "Migration and border control"
-      applicable: false
-      note: "NOT APPLICABLE"
-
-    - domain: "Administration of justice and democratic processes"
-      applicable: false
-      note: "NOT APPLICABLE"
-
-  unacceptable_risk_check:
-    - provision: "Social scoring by public authorities"
-      applicable: false
-
-    - provision: "Real-time remote biometric surveillance in public spaces"
-      applicable: false
-
-    - provision: "Subliminal manipulation causing harm"
-      applicable: false
-      note: |
-        The prompt intentionally engages with emotionally vulnerable users. The
-        calibrated wit element could theoretically be used to manipulate — but the
-        design intent is the opposite: wit is used as a therapeutic tool to help
-        users see their patterns clearly and more objectively.
-        The humor engine explicitly prohibits deployment in distress/crisis contexts
-        and is never aimed at the user as a person.
-        Provisional and confirmed: NOT APPLICABLE.
-
-    - provision: "Exploitation of vulnerabilities of specific groups"
-      applicable: false
-      note: >
-        Prompt serves users in relationship distress but does not exploit vulnerability.
-        Mandatory disclaimer, professional care referral, and DV safety resources
-        are explicit protective design features.
-
-  gpai_obligations:
-    applicable: true
-    rationale: |
-      FRANK is a GPAI system prompt subject to EU AI Act Art. 52/53 GPAI obligations:
-      - Art. 52: Transparency — AI identity must be disclosed to users. Satisfied by
-        mandatory disclaimer and persona disclosure at session open (FR-02).
-      - Art. 53: Technical documentation maintained in A-SDLC artifact record.
-    transparency: true
-    capability_disclosure: true
-
-proposed_tier_rationale: |
-  Agent proposes LIMITED risk tier (GPAI obligations) based on:
-  1. Psychoeducation / self-reflection tool — not a clinical decision system.
-  2. Explicit scope limitation: no diagnosis, no treatment, no couples mediation.
-  3. Mandatory disclaimer and professional care referral are built-in mitigations.
-  4. Crisis detection (DV/suicidal ideation) directs users to professional resources
-     — it is a safety boundary function, not a clinical AI function.
-  5. Precedent: FEAT-0004/P.S.Y. confirmed LIMITED by AGL on identical reasoning,
-     and FRANK's clinical scope is narrower than P.S.Y.'s.
-  6. Comparable framing: relationship self-help apps are generally not classified
-     as high-risk AI systems.
-
-  Confidence is HIGH (vs. LOW for P.S.Y.) because the AGL determination for P.S.Y.
-  established clear precedent for health-adjacent psychoeducation prompts in this
-  repository.
-
-triggered_compliance_obligations:
-  limited_tier:
-    - "Art. 52: Transparency — AI identity disclosure — satisfied by FR-02 disclaimer"
-    - "Art. 53 GPAI: Technical documentation — maintained in A-SDLC artifact record"
-    - "Art. 53 GPAI: Transparency to downstream deployers"
-
-confirmation:
-  confirmed_by: "Jerry van Heerikhuize (AI Governance Lead)"
-  confirmation_date: "2026-03-14"
-  confirmed_tier: limited
-  override_tier: ""
-  override_rationale: ""
-  agl_determination: |
-    Annex III point 5 does NOT apply. Analysis consistent with FEAT-0004/P.S.Y.
-    determination — relationship psychoeducation is further from "health services AI"
-    than trauma psychology, and that precedent already confirmed NOT APPLICABLE.
-    FRANK's wit engine does not change the regulatory analysis.
-    Tier confirmed: LIMITED. GPAI transparency obligations apply (Art. 52/53).
-    No conformity assessment required.
+confidence: high
+approved_by: "Jerry van Heerikhuize (AI Governance Lead)"
+approval_date: "2026-03-15"

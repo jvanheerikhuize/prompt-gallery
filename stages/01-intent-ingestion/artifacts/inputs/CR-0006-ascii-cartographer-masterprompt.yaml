@@ -1,0 +1,77 @@
+# =============================================================================
+# CR-0006 — Change Request
+# ASCII Cartographer Masterprompt — A.T.L.A.S.
+# =============================================================================
+
+meta:
+  id: "CR-0006"
+  title: "ASCII Cartographer Masterprompt — A.T.L.A.S."
+  submitted_by: "Jerry van Heerikhuize (Product Owner)"
+  submitted_date: "2026-03-15"
+  priority: standard
+
+# ── Description ───────────────────────────────────────────────────────────────
+description: |
+  Create a self-contained masterprompt for a precision ASCII cartography agent.
+  The agent receives a set of named coordinates (geographic or abstract grid),
+  computes their proportional layout, and renders a top-view ASCII map as output.
+
+  The agent is a single-task service agent — it does not manage sessions, phases,
+  or multi-turn state. One request produces one map. It should be usable by
+  developers, planners, game designers, and anyone who needs a quick spatial
+  visualisation from a list of coordinates.
+
+  Proposed agent name: A.T.L.A.S. — ASCII Topographic Layout and Surveying System.
+
+# ── Problem Statement ─────────────────────────────────────────────────────────
+problem_statement: |
+  Visualising the spatial relationship between a set of geographic or grid
+  coordinates is a common need with few frictionless options. Dedicated GIS tools
+  are heavyweight; graphing libraries require code; and asking an LLM to "draw a
+  map" typically produces imprecise, ad-hoc ASCII scribbles with no respect for
+  actual proportional distances.
+
+  The gap: a single-task LLM agent that takes coordinates as structured input
+  and produces a proportionally accurate, clearly labelled top-view ASCII map
+  as output — every time, consistently, with scale bar, legend, and compass rose.
+
+# ── Desired Outcome ───────────────────────────────────────────────────────────
+desired_outcome: |
+  A self-contained masterprompt that produces a correctly proportioned ASCII map
+  from a user-provided list of named coordinates. Supports WGS84 lat/lon (primary)
+  and abstract/grid coordinates. Output includes: the ASCII map grid, POI symbols
+  and labels, compass rose, scale bar, edge coordinate labels, and legend.
+
+  Stateless: no session management, no multi-turn lifecycle, no console commands.
+  One input → one map. Precision is defined as: correct relative proportions
+  within the ASCII character grid resolution, with sub-character accuracy
+  documented in map metadata.
+
+# ── Constraints ───────────────────────────────────────────────────────────────
+constraints:
+  - "Single-task stateless agent — no session state, no multi-phase lifecycle"
+  - "Output is pure ASCII (7-bit) — no Unicode, no special characters beyond basic box-drawing"
+  - "No external APIs, no map tile fetching — all rendering is AI-computed"
+  - "Proportional accuracy: relative positions correct within ASCII grid resolution"
+  - "MVC/XML structure consistent with existing prompts in this repository"
+  - "WGS84 lat/lon is the primary coordinate system; abstract grid coordinates accepted"
+
+# ── Dependencies ──────────────────────────────────────────────────────────────
+dependencies:
+  - "WGS84 coordinate system (EPSG:4326)"
+  - "Mercator-like projection approximation for small areas (equirectangular)"
+  - "ASCII character grid geometry"
+
+# ── AI Component ──────────────────────────────────────────────────────────────
+ai_component_involved: true
+ai_component_description: |
+  The AI performs coordinate-to-grid mapping (arithmetic), determines optimal
+  map bounds, places POI symbols proportionally, and renders the ASCII output.
+  No external model, tool, or training data is required.
+
+# ── Initial Risk Estimate ─────────────────────────────────────────────────────
+initial_risk_estimate: low
+rationale: |
+  Utility cartography tool. No personal data processed by default. No health,
+  safety, financial, or legal decisions made. Output is a visual rendering with
+  no real-world effects. No vulnerable population targeted.
