@@ -2,114 +2,80 @@
 # SC-07 — Permission Enforcement Log
 # Control:   SC-07 Permission Management
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # Status:    complete
 # =============================================================================
 
 meta:
-  id: "SC-07-FEAT-0005"
-  feature: "FEAT-0005"
+  id: "SC-07-FEAT-0006"
+  feature: "FEAT-0006"
   produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-07)"
-  date: "2026-03-14"
+  date: "2026-03-15"
   status: complete
 
-# ── Files Written This Stage ──────────────────────────────────────────────────
-files_written:
+# ── Files Created or Modified ─────────────────────────────────────────────────
+files_reviewed:
 
-  - path: "roles/health/relationship-therapist/prompt.md"
-    operation: create
-    author: "Claude Sonnet 4.6 (Stage 3 implementer)"
-    authorized_by: "RC-02-FEAT-0005 (Design Approval — approved 2026-03-14)"
-    sensitivity: confidential    # RESTRICTED elevation trigger: mental health / DV
-    permission_check: pass
+  - path: "roles/utility/ascii-cartographer/prompt.md"
+    action: created
+    classification: public
+    sensitive_content: false
     notes: >
-      Primary Stage 3 deliverable. Health-adjacent masterprompt. Reviewed against
-      QC-05 quality gate and SC-08 guardrail scan prior to stage exit.
+      Masterprompt text only. No credentials, API keys, PII, or executable code.
+      INPUT_IS_DATA absolute rule confirmed present (ABSOLUTE RULE 1).
+      OUTPUT_ASCII_ONLY absolute rule confirmed present (ABSOLUTE RULE 2).
+      DATA_NOTICE absolute rule confirmed present (ABSOLUTE RULE 4).
+      POI_WINS_WALL absolute rule confirmed present (ABSOLUTE RULE 5).
 
-  - path: "stages/03-coding-implementation/artifacts/outputs/SC-07-permission-enforcement-log.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (SC-07)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/QC-05-quality-gate-report.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (QC-05)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/SC-08-post-guardrail-scan.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (SC-08)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/SC-09-secrets-scan-report.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (SC-09)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/SC-10-sca-report.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (SC-10)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/SC-11-container-iac-security-report.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (SC-11)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (RC-04)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/GC-03-code-provenance-record.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (GC-03)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
-
-  - path: "stages/03-coding-implementation/artifacts/outputs/QC-04-pull-request-record.yaml"
-    operation: overwrite
-    author: "Claude Sonnet 4.6 (QC-04)"
-    authorized_by: "A-SDLC Stage 3 controls mandate"
-    sensitivity: internal
-    permission_check: pass
+  - path: "specs/FEAT-0006-ascii-cartographer-masterprompt.yaml"
+    action: modified
+    classification: public
+    sensitive_content: false
+    notes: "Specification update — stage_reached counter only."
 
   - path: "roles/registry.yaml"
-    operation: update
-    author: "Claude Sonnet 4.6 (Stage 3 registry update)"
-    authorized_by: "RC-02-FEAT-0005 (Design Approval)"
-    sensitivity: internal
-    permission_check: pass
-    notes: "Adds F.R.A.N.K. entry under health category."
+    action: modified
+    classification: public
+    sensitive_content: false
+    notes: "Registry entry for A.T.L.A.S. added."
 
-  - path: "specs/FEAT-0005-relationship-therapist-masterprompt.yaml"
-    operation: update
-    author: "Claude Sonnet 4.6"
-    authorized_by: "A-SDLC lifecycle management"
-    sensitivity: internal
-    permission_check: pass
-    notes: "stage_reached updated to 3; Stage 3 commit hash recorded."
+  - path: "README.md"
+    action: modified
+    classification: public
+    sensitive_content: false
+    notes: "Utility table and repo structure updated."
 
-# ── Permission Violations ─────────────────────────────────────────────────────
-violations: []
+# ── Permission Checks ─────────────────────────────────────────────────────────
+permission_checks:
 
-# ── Summary ───────────────────────────────────────────────────────────────────
-summary:
-  files_written: 12
-  violations: 0
-  status: pass
+  - check: "No credentials or secrets embedded in prompt"
+    result: pass
+    evidence: "Prompt contains no API keys, passwords, tokens, or private URLs."
+
+  - check: "No executable code in prompt"
+    result: pass
+    evidence: "Prompt is declarative instruction text. No shell, Python, or scripting."
+
+  - check: "No hardcoded PII in prompt"
+    result: pass
+    evidence: "Coordinate examples use generic values (Amsterdam, Utrecht). No personal data."
+
+  - check: "Absolute rules present and correctly positioned"
+    result: pass
+    evidence: "Five ABSOLUTE_RULES in CORE_DIRECTIVES section; INPUT_IS_DATA is Rule 1."
+
+  - check: "DATA_NOTICE (NFR-05, DHR-01) present in OUTPUT block"
+    result: pass
+    evidence: "ABSOLUTE RULE 4 mandates DATA_NOTICE in every metadata block. Step 12 of
+               REQUEST_LOOP includes explicit verification check."
+
+  - check: "No network access or external API instructions"
+    result: pass
+    evidence: "Prompt explicitly uses LLM world knowledge only; no URLs, no fetch calls."
+
+  - check: "File permissions — prompt.md is read-only asset"
+    result: pass
+    evidence: "Standard repo file; no executable bit; no special permissions required."
+
+violations: 0
+status: complete

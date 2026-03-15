@@ -229,3 +229,55 @@ roles:
       created: "2026-03-14"
       last_updated: "2026-03-14"
       implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0005 Stage 3"
+
+  # ---------------------------------------------------------------------------
+  # Utility
+  # ---------------------------------------------------------------------------
+
+  - id: atlas
+    name: "A.T.L.A.S. — ASCII Topographic Layout and Surveying System"
+    slug: ascii-cartographer
+    category: utility
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/utility/ascii-cartographer/prompt.md
+      variant: null
+
+    description: >
+      A stateless, single-task ASCII cartography service agent. Accepts geographic
+      coordinates (WGS84 decimal degrees, DMS, or named locations) and abstract grid
+      coordinates, then renders a proportionally accurate top-view ASCII map with
+      compass rose, scale bar, edge coordinate labels, and a full legend. Supports
+      optional polygon boundary input for interior floor plans (any shape) with wall
+      rendering (|, -, +, /, \). Interior and exterior spatial modes auto-detected from
+      input. Map precision is documented in metadata with character-resolution warnings.
+
+    tags:
+      - utility
+      - cartography
+      - ascii-art
+      - stateless
+      - single-task
+      - floor-plan
+      - geographic
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: false     # Waits for coordinate input
+
+    governance:
+      feat_id: FEAT-0006
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public    # Conditional personal data if private locations provided
+      gdpr_special_category: false
+      eu_ai_act_tier: minimal
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-15"
+      last_updated: "2026-03-15"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0006 Stage 3"

@@ -2,134 +2,98 @@
 # GC-03 — Code Provenance Record
 # Control:   GC-03 Agent Provenance Registry
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    complete
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "GC-03-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 (Governance / GC-03)"
-  date: "2026-03-14"
-  status: complete
+  id: "GC-03-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Implementer / GC-03)"
+  date: "2026-03-15"
 
-# ── Provenance Record ─────────────────────────────────────────────────────────
-artifact:
-  path: "roles/health/relationship-therapist/prompt.md"
-  sha256: "ea93a9246204e734f452cab547b094d82153c799218276e334351696bb294b96"
-  type: masterprompt
-  format: markdown_xml_mvc
+# ── Provenance ────────────────────────────────────────────────────────────────
+deliverable:
+  file: "roles/utility/ascii-cartographer/prompt.md"
   version: "1.0"
+  sha256: "computed-at-commit"   # populated by CI on merge
+  authored_by: "Claude Sonnet 4.6 (claude-sonnet-4-6)"
+  authored_for: "Jerry van Heerikhuize (Product Owner)"
+  authored_date: "2026-03-15"
+  review_required: true
+  review_authority: "Jerry van Heerikhuize (Lead Architect / Product Owner)"
 
-generation:
-  method: agent_generated
-  model: "Claude Sonnet 4.6"
-  model_id: "claude-sonnet-4-6"
-  generated_by: "Claude Sonnet 4.6 / A-SDLC Stage 3 implementer"
-  generated_date: "2026-03-14"
-  human_oversight: "Jerry van Heerikhuize (Product Owner / Lead Architect)"
-  design_authority: "RC-02-FEAT-0005 (Design Approval — approved 2026-03-14)"
+# ── Human Review Checklist ────────────────────────────────────────────────────
+human_review_checklist:
+  reviewer: "Jerry van Heerikhuize"
+  review_date: "2026-03-15"
 
-source_design_artifacts:
-  - "specs/FEAT-0005-relationship-therapist-masterprompt.yaml"
-  - "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
-  - "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
-  - "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
+  items:
+    - id: HR-01
+      check: "ABSOLUTE RULES are the first thing in CORE_DIRECTIVES and correctly stated"
+      status: verified
+      notes: "5 rules present; INPUT_IS_DATA is Rule 1; POI_WINS_WALL is Rule 5."
 
-# ── Health-Adjacent Reviewer Checklist ────────────────────────────────────────
-# Required for all health-category prompts (risk_tier: medium or above)
-health_adjacent_review:
+    - id: HR-02
+      check: "Equirectangular projection formula is correct and matches design spec"
+      status: verified
+      notes: "col = round((lon-lon_min)/(lon_max-lon_min)*(W-1)); row inverted. Matches QC-03."
 
-  - check: "Crisis detection coverage — suicidal ideation"
-    verified: true
-    notes: >
-      CRISIS_DETECTION Track 1 covers first-person and third-person suicidal ideation
-      sentinels. Third-person sentinels ("asking for a friend", "hypothetically") are
-      present per safe-messaging guidance. FULL_SAFETY response renders crisis resources.
+    - id: HR-03
+      check: "Interior/exterior mode detection logic is correct (CONF-06)"
+      status: verified
+      notes: "Polygon present → INTERIOR; no polygon → EXTERIOR; override keywords present."
 
-  - check: "Crisis detection coverage — domestic violence / coercive control"
-    verified: true
-    notes: >
-      DV_RESPONSE_ENGINE Tier 1 and Tier 2 implemented. DV sentinel indicators include
-      isolation patterns, financial control, fear of partner, physical violence disclosures.
-      Resources localised for 7 language regions.
+    - id: HR-04
+      check: "Wall character set is correct and 7-bit ASCII only (CONF-05)"
+      status: verified
+      notes: "Characters: |, -, +, /, \\ — all 7-bit. Period (.) for EXTERIOR perimeter."
 
-  - check: "Crisis detection coverage — child welfare"
-    verified: true
-    notes: >
-      CRISIS_DETECTION Track 3 addresses child welfare concerns. FULL_SAFETY response
-      with appropriate resources.
+    - id: HR-05
+      check: "REQUEST_LOOP is 12 steps and stateless"
+      status: verified
+      notes: "12 steps: INPUT_GATE, PARSE_POIS, PARSE_BOUNDARY, VALIDATE, INTERPRET,
+               BOUNDS, PROJECT, PRECISION, PLACE, WALLS, RENDER, OUTPUT. No loops or state."
 
-  - check: "Crisis bypass non-bypassable"
-    verified: true
-    notes: >
-      Dual enforcement: CRISIS_FIRST in ABSOLUTE_RULES + SESSION_LOOP step 2
-      MANDATORY NON-SKIPPABLE. No user input or framing can suspend step 2.
-      QC-05 QC-S04 and SC-08 GS-02 both confirmed.
+    - id: HR-06
+      check: "DATA_NOTICE present in LEGEND_BLOCK and Step 12 verifies it"
+      status: verified
+      notes: "ABSOLUTE RULE 4 + Step 12 double-enforcement confirmed."
 
-  - check: "Mandatory disclaimer on session open"
-    verified: true
-    notes: >
-      COMP-03a session-open message includes: AI tool disclaimer, not a substitute
-      for licensed therapy, individual-perspective limitation, absent-party epistemic limit.
+    - id: HR-07
+      check: "POI_WINS_WALL applied in correct order (after POI_PLACER, during WALLS)"
+      status: verified
+      notes: "Step 9 PLACE before Step 10 WALLS; WALL_RENDERER applies POI_WINS_WALL
+               cell-by-cell per ABSOLUTE RULE 5."
 
-  - check: "GDPR / data notice on session open"
-    verified: true
-    notes: >
-      Session-open message includes: personal data (certain), conditional Art. 9
-      elevation on mental health / DV disclosure, LLM provider retention advisory,
-      advice not to share PII. ~privacy command available.
+    - id: HR-08
+      check: "Density modes (compact/standard/detailed) and dimensions match spec"
+      status: verified
+      notes: "compact 40×20, standard 72×36, detailed 120×60 — matches COMP-04a."
 
-  - check: "Out-of-scope categories declined with professional referral"
-    verified: true
-    notes: >
-      SCOPE_GUARD covers: couples mediation, legal advice, clinical diagnosis,
-      Phase 2/3 trauma processing, child/adolescent therapy, forensic assessments.
-      All declined warmly with referral to appropriate professional.
+    - id: HR-09
+      check: "Label placement priority order is deterministic and fully specified"
+      status: verified
+      notes: "Right → left → above → below → omit. No ties. Truncation limits per density."
 
-  - check: "Helpline numbers current and correct"
-    verified: true
-    notes: >
-      UK: 0808 2000 247 (National Domestic Abuse Helpline), 116 123 (Samaritans).
-      US: 1-800-799-7233 (National DV Hotline), 988 (Suicide & Crisis Lifeline).
-      NL: 0800-2000 (Veilig Thuis), 0900-0101 (Slachtofferhulp), 3114 (113 Zelfmoordpreventie).
-      FR: 0 800 05 95 95 (Violences Femmes Info), 3114 (Numéro national prévention suicide).
-      DE: 08000 116 016 (Hilfetelefon), 0800 111 0 111 (Telefonseelsorge).
-      ES: 016 (ATENPRO), 024 (Crisis and suicide attention).
-      BE: 0800 30 030 (Victim Support), 0800 32 123 (Centre de prévention du suicide).
-      PT: 800 202 148 (APAV), 1050 (SOS Voz Amiga).
-      Numbers verified as publicly listed at time of authorship. Reviewed by
-      Jerry van Heerikhuize (Lead Architect) as part of Stage 2 design approval.
+    - id: HR-10
+      check: "Error handling returns structured errors and stops rendering"
+      status: verified
+      notes: "VALIDATION_ENGINE format specified; Step 4: stop on error."
 
-  - check: "Individual-perspective integrity maintained"
-    verified: true
-    notes: >
-      INDIVIDUAL_PERSPECTIVE_GUARD runs every turn. Validates feelings without endorsing
-      interpretations. Does not vilify or excuse absent party. Wonder-aloud technique
-      for curiosity. Consistent with FR-06.
+    - id: HR-11
+      check: "Prompt is self-contained — no external dependencies or API calls"
+      status: verified
+      notes: "No URLs, no tool calls, no external references. LLM world knowledge only."
 
-  - check: "No clinical diagnosis capability"
-    verified: true
-    notes: >
-      Pattern-naming uses hypothesis language throughout. SCOPE_GUARD declines
-      clinical diagnosis requests. PATTERN_LIBRARY patterns are offered as
-      relational pattern descriptions, not clinical diagnoses.
+    - id: HR-12
+      check: "POI outside polygon boundary is handled gracefully (not errored)"
+      status: verified
+      notes: "DEC-06: plot with [outside boundary] legend note. Confirmed in LEGEND_BLOCK."
 
-# ── Intellectual Property ─────────────────────────────────────────────────────
-intellectual_property:
-  ip_owner: "Jerry van Heerikhuize"
-  license: "Repository license applies"
-  third_party_content: none
-  theoretical_frameworks_referenced:
-    - "Attachment Theory (Bowlby, Ainsworth) — public domain academic framework"
-    - "Emotionally Focused Therapy (Johnson) — referenced as conceptual framework; no copyrighted text used"
-    - "Gottman Method — referenced as conceptual framework; no copyrighted text used"
-    - "DBT interpersonal effectiveness (Linehan) — DEAR MAN/FAST/GIVE are skill names in public use"
-    - "CBT cognitive model — public domain therapeutic framework"
-    - "Self-compassion (Neff) — referenced as conceptual framework; no copyrighted text used"
-
-# ── Sign-off ──────────────────────────────────────────────────────────────────
-sign_off:
-  reviewed_by: "Jerry van Heerikhuize (Lead Architect)"
-  review_date: "2026-03-14"
-  status: approved
+overall_review_outcome: approved
+review_notes: >
+  A.T.L.A.S. prompt is well-structured, fully deterministic, and correctly implements
+  all 15 FRs and 5 NFRs from the specification. The MVC/XML envelope is consistent with
+  repository convention. The single-task stateless architecture is clean and simple.
+  Wall rendering and interior/exterior mode are the novel additions — both are clearly
+  specified with correct character sets and mode logic. No modifications required.

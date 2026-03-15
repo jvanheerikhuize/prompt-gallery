@@ -10,7 +10,7 @@ meta:
   created: "2026-03-15"
   last_updated: "2026-03-15"
   source_cr: "CR-0006"
-  stage_reached: 2
+  stage_reached: 3
 
 provenance:
   created_by: "Claude Sonnet 4.6 (Intake Analyst / QC-01)"
@@ -102,6 +102,11 @@ stage_history:
     commit: "9d549c9"
 
   - stage: 2
+    status: complete
+    completed: "2026-03-15"
+    commit: "5ff9054"
+
+  - stage: 3
     status: complete
     completed: "2026-03-15"
     commit: "—"   # populated after commit

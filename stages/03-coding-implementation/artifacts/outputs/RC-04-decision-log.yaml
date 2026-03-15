@@ -2,163 +2,126 @@
 # RC-04 — Decision Log
 # Control:   RC-04 Decision Log
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    complete
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "RC-04-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 (RC-04)"
-  date: "2026-03-14"
-  status: complete
+  id: "RC-04-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Implementer / RC-04)"
+  date: "2026-03-15"
 
-# ── Implementation Decisions ──────────────────────────────────────────────────
 decisions:
 
   - id: DEC-01
-    title: "HUMOR_PROTOCOL as a named RULES_ENGINE component, not inline logic"
+    title: "Prompt output format — plain text, no markdown fences"
+    context: >
+      The design specified 7-bit ASCII output (NFR-02). The question arose whether the
+      prompt itself should be delivered in a markdown code block (as per repository
+      convention in prompt.md files) or whether the agent's runtime output should also
+      use a code block.
     decision: >
-      HUMOR_PROTOCOL was implemented as a dedicated <HUMOR_PROTOCOL> subsection
-      within <RULES_ENGINE>, with its own GRAVITY_TOPICS list, PRE_RAPPORT_RULE,
-      POST_RAPPORT_BEHAVIOR, and WIT_PERMISSION_LEVELS. It is not inlined into
-      SESSION_LOOP step logic.
-    rationale: >
-      Treating HUMOR_PROTOCOL as a named component makes it auditable as a safety
-      control: the GRAVITY_TOPICS list can be inspected, the PRE_RAPPORT_RULE can
-      be read in isolation, and the WIT_PERMISSION_LEVELS output is explicit.
-      Inlining it into SESSION_LOOP steps would make the safety envelope harder
-      to test and audit — a critical property given ACG-01 (humor quality must
-      be tested on multiple LLMs in Stage 4).
-    alternatives_considered:
-      - "Inline humor logic into SESSION_LOOP step 6 (rejected: audit surface reduced)"
-      - "Separate humor as a post-processing step (rejected: GRAVITY_TOPICS must
-         gate humor before content generation, not after)"
+      The prompt.md file wraps the masterprompt in a code block for readability (repository
+      convention). The agent's runtime output (the actual rendered map) is explicitly
+      specified as plain text only — Step 11 of REQUEST_LOOP states: "Output is plain text
+      only. No markdown fences, no HTML, no code blocks." This distinction prevents the
+      agent from wrapping its map in backticks, which would waste characters and potentially
+      misalign monospace rendering.
+    rationale: "Consistent with NFR-02 and prior masterprompts in this repository."
+    decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-02
-    title: "wit_permission_level as a SESSION_LOOP step output"
+    title: "Interior mode header line placement — above map, not inside border"
+    context: >
+      COMP-04a specified that INTERIOR mode should be identified in the map output.
+      Options were: (a) a header line above the map border, (b) a line inside the top border,
+      (c) metadata-only notation.
     decision: >
-      SESSION_LOOP step 3 (RULES_CHECK) explicitly produces wit_permission_level
-      as an output value (PROHIBITED / NUDGE_ONLY / FULL_WITHIN_GUARDRAILS).
-      SESSION_LOOP step 6 (GENERATE_RESPONSE) consumes this value.
+      One-line header above the map border: "[ INTERIOR MAP — {W}x{H} ]"
+      This is the clearest signal to the user that they are viewing an interior floor plan
+      before they start reading the map. Metadata also records mode for machine-readable use.
     rationale: >
-      Making wit_permission_level explicit between steps creates a testable
-      interface: given a known session state and input, the expected
-      wit_permission_level can be asserted in Stage 4 tests. This prevents
-      HUMOR_PROTOCOL logic from being re-evaluated during response generation
-      (which could lead to inconsistency between evaluation and output).
-    alternatives_considered:
-      - "Evaluate humor permission inline at step 6 (rejected: creates two evaluation
-         points; monotonic flag check must occur exactly once per turn)"
+      Placing text inside the border would consume an interior canvas row and push the compass
+      rose. Metadata-only notation is too subtle for a significant behavioural change (walls
+      vs no walls). Header above the border is unambiguous and costs nothing.
+    decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-03
-    title: "humor_rapport_established settable only by SESSION_LOOP step 5"
+    title: "Compass rose embedded in canvas — rendering layer order"
+    context: >
+      The compass rose occupies the top-right corner cells of the interior canvas. POI labels
+      placed in the same corner could collide. The design did not specify which takes precedence.
     decision: >
-      The humor_rapport_established flag transitions from false to true exclusively
-      in SESSION_LOOP step 5 (UPDATE_STATE), on detection of a positive user
-      response to the wit nudge. No console command can set it. No user assertion
-      ("I'm ok with humor") can set it. The CONTROLLER has no path to override it.
+      The MAP_CANVAS rendering order places the compass rose on layer 2 (after filling with
+      spaces but before walls and POIs). POI labels placed via POI_PLACER (layer 5) will
+      overwrite the compass rose characters if they collide. The right-preferring label
+      placement logic will attempt to avoid the top-right corner; if it cannot, the POI wins.
+      Compass rose degradation is noted in metadata if a POI label overwrites it.
     rationale: >
-      Monotonic flag with single write path is the strongest available defence
-      against T-02 (HUMOR_PROTOCOL bypass). The flag is not a user preference
-      setting — it records a user behaviour (positive response to a nudge).
-      Only SESSION_LOOP step 5 can observe that behaviour and record it.
-      This decision implements the zero-trust logical posture validated in SC-06.
-    alternatives_considered:
-      - "Allow ~state command to set humor_rapport_established (rejected: console
-         commands cannot override ABSOLUTE_RULES; humor state is safety-relevant)"
-      - "Allow user to opt in to humor explicitly (rejected: consistent with
-         PO decision that the flag gates intensity not permission — user opt-in
-         is not needed; FRANK may nudge first)"
+      POI accuracy is a MUST requirement (NFR-01, PRECISION_HONEST); compass rose is decorative.
+      POI information must always win over decoration.
+    decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-04
-    title: "DV_RESPONSE_ENGINE Tier 1/2 split"
+    title: "Abstract grid scale bar — omit bar, use text only"
+    context: >
+      For abstract grid coordinates, km_per_col is meaningless. The scale bar cannot use a
+      proportional bar since there is no real-world distance reference.
     decision: >
-      DV indicators split into Tier 1 (mild/ambiguous: isolation, controlling
-      behaviour descriptions, expressed fear of partner reaction) and Tier 2
-      (clear disclosures: physical violence, explicit threat descriptions, explicit
-      fear for safety). Tier 1 triggers warm information + resource offering without
-      labelling. Tier 2 triggers FULL_SAFETY immediately.
-    rationale: >
-      Consistent with CONF-03 resolution (OPT-A tiered) and T-04 mitigation.
-      A single-tier DV response at FULL_SAFETY for all indicators risks over-triggering
-      on ambiguous language common in relationship distress narratives (e.g., "he controls
-      everything" could be a personality complaint, not a coercive control disclosure).
-      Tier 1 allows resource offering without the stigmatising effect of being told
-      one is in an "abusive relationship" before the user has framed it that way.
-      At Tier 2, the safety imperative overrides all other considerations.
-    alternatives_considered:
-      - "Single-tier FULL_SAFETY for all indicators (rejected: false positive risk
-         on ambiguous language; may cause user to disengage)"
-      - "Three-tier system (rejected: added complexity without safety benefit
-         over two tiers; Tier 1 resources are appropriate for mid-range ambiguity)"
+      For abstract coordinates: omit the proportional bar entirely. Replace with a single text
+      line: "Scale: 1 grid unit = 1 cell". This is honest and informative without fabricating
+      a scale relationship that does not exist.
+    rationale: "PRECISION_HONEST (ABSOLUTE RULE 3) prohibits representing metrics that are not meaningful."
+    decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-05
-    title: "INDIVIDUAL_PERSPECTIVE_GUARD as per-turn evaluation, not phase-gated"
+    title: "Polygon vertex deduplication — silent or noted"
+    context: >
+      BOUNDARY_PARSER deduplicates adjacent vertices that project to the same grid cell.
+      The question was whether to note this in metadata or perform it silently.
     decision: >
-      INDIVIDUAL_PERSPECTIVE_GUARD runs in SESSION_LOOP step 3 every turn, not
-      only in specific session phases.
-    rationale: >
-      Consistent with T-03 mitigation design. The risk of individual-perspective
-      collapse exists in any phase — a user may demand partner validation during
-      Explore, Insight, or Action equally. Phase-gating the guard would create
-      a window in which the guard is not active, increasing T-03 likelihood.
-      Per-turn evaluation ensures continuous protection.
-    alternatives_considered:
-      - "Evaluate guard only during Explore phase (rejected: validation pressure
-         can arise in Insight and Action phases)"
+      Always note deduplicated vertices in metadata: "Vertex V[i] deduplicated — maps to same
+      cell as V[i-1] at projected resolution." This is consistent with PRECISION_HONEST and
+      the general transparency principle. The user should know their polygon was simplified.
+    rationale: "Silent simplification could mislead the user about their boundary shape."
+    decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-06
-    title: "DV helpline numbers localised for 7 languages"
+    title: "POI outside boundary polygon — render or error"
+    context: >
+      In INTERIOR mode, a user may provide POI coordinates that fall outside the defined
+      boundary polygon. Options: error (reject), silently plot, or plot with notation.
     decision: >
-      DV_RESPONSE_ENGINE includes localised helpline numbers for en, nl, fr, de,
-      es, pt, it + international default. Numbers are the same public-domain
-      resources used in P.S.Y. (FEAT-0004) plus extended DV-specific lines.
+      Plot the POI at its correct grid position and note in legend: "[X] [outside boundary]".
+      Do not error. The user may intentionally want to show an external reference point
+      relative to their interior space. PRECISION_HONEST is satisfied — the position is correct,
+      and the exterior relationship is disclosed.
     rationale: >
-      FRANK is a relationship support tool that may surface DV disclosures from
-      users in multiple European and English-speaking countries. Localised numbers
-      reduce friction in safety-critical moments. NFR-06 (multi-language) and
-      FR-04 (crisis escalation) jointly require this. Numbers verified as current
-      public-domain resources at time of authorship (SC-09 confirms public-domain
-      classification).
-    alternatives_considered:
-      - "Single international hotline only (rejected: many users cannot use
-         international lines; local lines have higher trust)"
+      Rejecting would be overly strict; silent plotting would hide useful information.
+      Notation is the minimal-friction, maximally-transparent approach.
+    decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-07
-    title: "Session lifecycle: 5 phases vs. P.S.Y.'s 5 phases"
+    title: "Wall character for EXTERIOR polygon — period (.) vs dashes"
+    context: >
+      EXTERIOR mode with a polygon was specified as "dashed perimeter". The exact character
+      was not specified in the design — options included . (period), ~ (tilde), or a
+      repeating - pattern.
     decision: >
-      FRANK session lifecycle: open → check_in → explore → insight → action → close.
-      P.S.Y. lifecycle: open → check_in → contract → explore → stabilise → close.
-      FRANK omits Contract (not appropriate for a session-discovery format) and
-      Stabilise (distress stabilisation is a trauma-care concern, less central to
-      relationship self-reflection). FRANK adds Action (skills and next steps).
-    rationale: >
-      Relationship self-reflection sessions are goal-oriented in a different way than
-      trauma support sessions. The Action phase is essential for FRANK to deliver on
-      FR-08 (skill delivery) and prevents sessions ending without practical takeaways.
-      The Contract phase from P.S.Y. is appropriate for trauma care (explicit
-      stabilisation goals) but overly clinical for relationship psychoeducation.
-    alternatives_considered:
-      - "Reuse P.S.Y. lifecycle exactly (rejected: Stabilise phase is trauma-specific;
-         Contract phase is clinically heavy for a relationship context)"
+      Use . (period) for all EXTERIOR perimeter cells. Period is the lightest ASCII character,
+      clearly distinct from the solid wall characters (|, -, +, /, \), and visually resembles
+      a soft or permeable boundary. Consistent with common ASCII art conventions.
+    rationale: "Distinct from INTERIOR wall characters; unambiguous; 7-bit clean."
+    decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-08
-    title: "Humor English-only in v1.0"
+    title: "Prompt file location — roles/utility/ (new category)"
+    context: >
+      A.T.L.A.S. is the first utility-category agent in this repository. No roles/utility/
+      directory existed. Options: place in an existing category or create roles/utility/.
     decision: >
-      HUMOR_PROTOCOL wit deployment restricted to English in v1.0. FRANK detects
-      and responds in the user's language for all other session content.
-    rationale: >
-      Consistent with NFR-06 and CONF-04 (OPT-A). Humor quality and appropriateness
-      are highly language- and culturally-specific. Dry observational wit in English
-      may not translate correctly into other languages and could create unintended
-      tone. Safer to restrict wit to English in v1.0 and evaluate multi-language
-      humor in a future version after testing.
-    alternatives_considered:
-      - "Allow humor in all session languages (rejected: cultural humor risk;
-         would require per-language humor testing in Stage 4)"
-
-# ── Summary ───────────────────────────────────────────────────────────────────
-decisions_total: 8
-decisions_with_alternatives: 8
-status: complete
+      Create roles/utility/ascii-cartographer/. The utility category was established in
+      Stage 1 (QC-01) and approved by the PO. Creating the directory at Stage 3 is the
+      correct implementation of that decision. Registry and README updated accordingly.
+    rationale: "Consistent with Stage 1 design decision; clean category separation."
+    decided_by: "Claude Sonnet 4.6 (Implementer)"

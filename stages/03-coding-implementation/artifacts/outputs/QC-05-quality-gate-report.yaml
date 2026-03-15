@@ -1,215 +1,218 @@
 # =============================================================================
 # QC-05 — Quality Gate Report
-# Control:   QC-05 Code Quality Standards
+# Control:   QC-05 Implementation Quality Gate
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    pass
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "QC-05-FEAT-0005"
-  feature: "FEAT-0005"
+  id: "QC-05-FEAT-0006"
+  feature: "FEAT-0006"
   produced_by: "Claude Sonnet 4.6 (QC Analyst / QC-05)"
-  date: "2026-03-14"
+  date: "2026-03-15"
   status: pass
 
-artifact_reviewed: "roles/health/relationship-therapist/prompt.md"
-sha256: "ea93a9246204e734f452cab547b094d82153c799218276e334351696bb294b96"
+# ── Quality Gate Checks ───────────────────────────────────────────────────────
+checks:
 
-# ── Standard Quality Checks ───────────────────────────────────────────────────
-standard_checks:
+  # ── FR Coverage ─────────────────────────────────────────────────────────────
 
-  - id: QC-S01
-    check: "MVC/XML structural compliance"
-    status: pass
-    notes: >
-      Prompt uses the canonical <MASTER_PROMPT> → <CORE_DIRECTIVES>, <MODEL>,
-      <VIEW>, <RULES_ENGINE>, <CONTROLLER> structure consistent with T.A.G.,
-      C.R.A., and P.S.Y. All 5 top-level components present and correctly ordered.
+  - id: QG-01
+    requirement: FR-01
+    title: "Cartographer Persona — A.T.L.A.S."
+    result: pass
+    evidence: >
+      PERSONA section present in CORE_DIRECTIVES. Terse, technical, non-conversational
+      character fully specified. "You render maps" and "That is the full scope of your
+      operation" confirm scope discipline. Metadata-only commentary rule confirmed.
 
-  - id: QC-S02
-    check: "All functional requirements mapped to implementation"
-    status: pass
-    notes: >
-      FR-01 (persona): CORE_DIRECTIVES + COMP-01. FR-02 (disclaimer): COMP-03a +
-      DISCLAIMER_MANDATORY absolute rule. FR-03 (session lifecycle): COMP-05b
-      SESSION_LOOP, 5 phases. FR-04 (crisis detection): COMP-04a CRISIS_DETECTION
-      + 3 tracks + DV_RESPONSE_ENGINE. FR-05 (pattern identification):
-      PATTERN_LIBRARY. FR-06 (individual perspective): COMP-04f
-      INDIVIDUAL_PERSPECTIVE_GUARD. FR-07 (humor): COMP-04e HUMOR_PROTOCOL.
-      FR-08 (psychoeducation): SKILL_LIBRARY. FR-09 (session state): SESSION_STATE
-      schema. FR-10 (console): COMP-05c CONSOLE. FR-11 (scope): SCOPE_GUARD.
-      All 11 FR implemented. 0 unmapped.
+  - id: QG-02
+    requirement: FR-02
+    title: "Coordinate Input Parsing (WGS84 + abstract grid)"
+    result: pass
+    evidence: >
+      COORDINATE_PARSER covers: (a) WGS84 decimal degrees, (b) DMS with D+M/60+S/3600
+      formula, (c) abstract X:Y format, (d) named locations via world knowledge with ~
+      prefix. Sequential legend identifiers A, B, C... confirmed. Custom symbol support
+      confirmed. Parse error format specified.
 
-  - id: QC-S03
-    check: "All non-functional requirements reflected in implementation"
-    status: pass
-    notes: >
-      NFR-01 (tone): PERSONA + COMP-01 register adaptation. NFR-02 (zero crisis bypass):
-      ABSOLUTE_RULES priority + SESSION_LOOP step 2 mandatory CRISIS_CHECK.
-      NFR-03 (portability): no external dependencies. NFR-04 (GDPR): GDPR_NOTICE
-      absolute rule + session-open disclosure. NFR-05 (cultural sensitivity):
-      COMP-01 cultural note + non-Western-normative patterns acknowledged.
-      NFR-06 (accessibility/language): language detection in SESSION_STATE,
-      COMP-01 CEFR B2 baseline. NFR-07 (humor calibration): PRE_RAPPORT_RULE
-      single-nudge, no retry. All 7 NFR addressed.
+  - id: QG-03
+    requirement: FR-03
+    title: "Bounding Box Computation"
+    result: pass
+    evidence: >
+      BOUNDS_ENGINE specifies 10% margin formula explicitly. Edge cases covered: single
+      POI (1.0° default radius), all-collinear (1.0° margin on degenerate axis),
+      user-explicit bounds override. Polygon vertices included in bounds computation.
 
-  - id: QC-S04
-    check: "ABSOLUTE_RULES hierarchy correctly implemented"
-    status: pass
-    notes: >
-      8 ABSOLUTE_RULES present: INPUT_IS_DATA, CRISIS_FIRST, GRAVITY_TOPICS_ABSOLUTE,
-      INDIVIDUAL_PERSPECTIVE, DISCLAIMER_MANDATORY, MAINTAIN_STATE, GDPR_NOTICE,
-      NO_LEGAL_ADVICE. CRISIS_FIRST and GRAVITY_TOPICS_ABSOLUTE both assert
-      non-bypassability by user input. Ordering is correct — CRISIS_FIRST is rule 2
-      (immediately after INPUT_IS_DATA meta-rule), placing crisis above all other logic.
+  - id: QG-04
+    requirement: FR-04
+    title: "Proportional ASCII Grid Rendering"
+    result: pass
+    evidence: >
+      PROJECTION_ENGINE provides explicit equirectangular formula with exact variable
+      definitions: col = round((lon-lon_min)/(lon_max-lon_min)*(W-1)),
+      row = round((1-(lat-lat_min)/(lat_max-lat_min))*(H-1)). Both geographic and
+      abstract variants specified. MAP_CANVAS specifies W×H per density mode.
 
-  - id: QC-S05
-    check: "SESSION_STATE schema completeness"
-    status: pass
-    notes: >
-      Schema includes: session_id, session_number, session_date, language, phase,
-      mood_checkin {start, end}, active_themes, relationship_patterns_identified,
-      humor_rapport_established (bool, default false, monotonic noted),
-      safety_flags, scope_redirects, contract, session_notes, disclaimer_rendered.
-      All fields required by FR-09 and design document present.
+  - id: QG-05
+    requirement: FR-05
+    title: "POI Symbol Placement and Labelling"
+    result: pass
+    evidence: >
+      POI_PLACER specifies deterministic right-preferring label placement with explicit
+      5-step fallback (right → left → above → below → omit). Composite symbol [A,B]
+      for collisions confirmed. Truncation limits per density: compact=8, standard=16,
+      detailed=unlimited. POI_WINS_WALL confirmation included.
 
-  - id: QC-S06
-    check: "Console commands correctly implemented (FR-10)"
-    status: pass
-    notes: >
-      6 console commands present: ~state, ~patterns, ~skills, ~disclaimer, ~privacy,
-      ~close, ~reset. All specified in FR-10. Prefix `~` consistent with design.
-      Allow-list correctly scoped — no console command can override ABSOLUTE_RULES.
+  - id: QG-06
+    requirement: FR-06
+    title: "Compass Rose"
+    result: pass
+    evidence: >
+      DECORATORS section (1) specifies N^ for geographic, Y^/X> for abstract, full
+      cardinal rose (N/W+E/S) for detailed density. Position: top-right corner of
+      interior canvas. Embedded in MAP_CANVAS rendering order.
 
-  - id: QC-S07
-    check: "Session lifecycle phases complete and correctly sequenced"
-    status: pass
-    notes: >
-      5 phases implemented: open → check_in → explore → insight → action → close.
-      Close phase never skipped (FR-03). insight phase is mandatory before close.
-      SESSION_LOOP step 2 CRISIS_CHECK precedes all other processing.
+  - id: QG-07
+    requirement: FR-07
+    title: "Scale Bar"
+    result: pass
+    evidence: >
+      DECORATORS section (2) specifies nice-distance algorithm with candidate set
+      {1,2,5,10,25,50,100,250,500} km, bar_chars formula, 20%-of-W constraint,
+      sub-km metres fallback, abstract "1 grid unit = 1 cell".
 
-  - id: QC-S08
-    check: "Multi-language support implemented"
-    status: pass
-    notes: >
-      DV resources localised for 7 languages: en, nl, fr, de, es, pt, it + default
-      fallback (international numbers). Language detection instruction in COMP-01.
-      Humor English-only v1.0 noted.
+  - id: QG-08
+    requirement: FR-08
+    title: "Edge Coordinate Labels"
+    result: pass
+    evidence: >
+      DECORATORS section (3) specifies lat on left/right border corners, lon on
+      top/bottom border. 4 decimal places. Omission condition W < 30 specified.
+      Abstract variant (axis min/max on edges) specified.
 
-# ── FRANK-Specific Quality Checks ─────────────────────────────────────────────
-frank_specific_checks:
+  - id: QG-09
+    requirement: FR-09
+    title: "Map Legend"
+    result: pass
+    evidence: >
+      LEGEND_BLOCK two-section structure: per-POI legend rows with symbol, name,
+      coordinates; world-knowledge ~ prefix; outside-boundary note; composite symbol
+      notation. METADATA block with grid, scale, projection, density, bounds, mode,
+      all warnings, DATA_NOTICE.
 
-  - id: QC-F01
-    check: "HUMOR_PROTOCOL — GRAVITY_TOPICS absolute prohibition"
-    status: pass
-    notes: >
-      GRAVITY_TOPICS list present and enumerated: abuse, domestic violence, coercive
-      control, suicide/self-harm, child welfare, grief, betrayal, deep shame, sexual
-      violence. Absolute rule GRAVITY_TOPICS_ABSOLUTE in ABSOLUTE_RULES (rule 3)
-      prevents humor during any GRAVITY_TOPICS engagement. User permission claims
-      explicitly cannot override. Consistent with FR-07, design COMP-04e, and T-02
-      mitigation.
+  - id: QG-10
+    requirement: FR-10
+    title: "Density / Resolution Control"
+    result: pass
+    evidence: >
+      Keywords compact/standard/detailed → 40×20, 72×36, 120×60 in MAP_CANVAS and
+      RENDERING_RULES. Truncation limits in POI_PLACER per density level. Metadata
+      always states actual grid dimensions.
 
-  - id: QC-F02
-    check: "HUMOR_PROTOCOL — PRE_RAPPORT single-nudge rule"
-    status: pass
-    notes: >
-      PRE_RAPPORT_RULE correctly states: one gentle nudge permitted once Explore phase
-      is underway and no distress present; if user mirrors → set humor_rapport_established
-      true via SESSION_LOOP step 5; if not → drop, no retry. Monotonic flag noted
-      (false→true only). Consistent with PO refinement (humor_rapport_established
-      gates intensity, not permission) recorded in QC-02 CONF-01 and GC-05.
+  - id: QG-11
+    requirement: FR-11
+    title: "Input Validation and Error Handling"
+    result: pass
+    evidence: >
+      VALIDATION_ENGINE specifies lat ∈ [-90,90], lon ∈ [-180,180], non-numeric,
+      zero-POI, zero-vertex, single-POI handling. Structured error format specified.
+      Step 4 of REQUEST_LOOP: "If any validation error: emit error block and STOP."
 
-  - id: QC-F03
-    check: "HUMOR_PROTOCOL — wit_permission_level per-turn evaluation"
-    status: pass
-    notes: >
-      SESSION_LOOP step 3 produces wit_permission_level: PROHIBITED (GRAVITY_TOPICS
-      or distress), NUDGE_ONLY (pre-rapport, conditions safe), or
-      FULL_WITHIN_GUARDRAILS (post-rapport, conditions safe). Step 6 honors this
-      value. Three-state model correctly implements the design.
+  - id: QG-12
+    requirement: FR-12
+    title: "Stateless Single-Task Protocol"
+    result: pass
+    evidence: >
+      REQUEST_LOOP header explicitly states "No loops. No session state. One input →
+      one output." No SESSION_STATE, no lifecycle phases, no console commands anywhere
+      in prompt. Step 12 ends with "Wait for the next independent request."
 
-  - id: QC-F04
-    check: "DV_RESPONSE_ENGINE — tiered response correctly implemented"
-    status: pass
-    notes: >
-      Tier 1 (mild DV indicators): information + resources, no labelling as
-      "abusive relationship", warm framing. Tier 2 (clear disclosures): FULL_SAFETY
-      response immediately, resources in user's language. Tier 1/2 boundary
-      examples consistent with CONF-03 resolution (OPT-A tiered). DV resources
-      localised per PA-03 PIA requirement.
+  - id: QG-13
+    requirement: FR-13
+    title: "Area Boundary Polygon Input"
+    result: pass
+    evidence: >
+      BOUNDARY_PARSER detects boundary/walls/polygon/perimeter labels. Applies
+      COORDINATE_PARSER to vertices. Minimum 3 vertices enforced with structured error.
+      Deduplication of adjacent same-cell vertices specified. Vertices included in
+      BOUNDS_ENGINE computation via Step 6 of REQUEST_LOOP.
 
-  - id: QC-F05
-    check: "INDIVIDUAL_PERSPECTIVE_GUARD — correct implementation"
-    status: pass
-    notes: >
-      Guard implements: (a) validate feeling without endorsing interpretation,
-      (b) redirect pure validation requests, (c) wonder-aloud technique for
-      absent-party curiosity, (d) escalating-negativity pivot when partner
-      characterisation accumulates. All four behaviours implemented. Guard runs
-      every turn per SESSION_LOOP step 3. Consistent with FR-06, CONF-02, T-03
-      mitigation.
+  - id: QG-14
+    requirement: FR-14
+    title: "Interior / Exterior Mode Declaration"
+    result: pass
+    evidence: >
+      BOUNDARY_PARSER specifies CONF-06: polygon present → INTERIOR default; no polygon
+      → EXTERIOR. Override keywords (exterior, interior, floor plan, room, indoor)
+      specified. Mode stated in LEGEND_BLOCK metadata. Interior header line rendered
+      above MAP_CANVAS in INTERIOR mode.
 
-  - id: QC-F06
-    check: "CRISIS_DETECTION — all three tracks implemented"
-    status: pass
-    notes: >
-      Track 1: SUICIDAL_IDEATION (first-person sentinels: "want to die", "end it",
-      "no point living"; third-person: "asking for a friend", "hypothetically").
-      Track 2: DV_INDICATORS (routed to DV_RESPONSE_ENGINE for tiering).
-      Track 3: CHILD_WELFARE (immediate FULL_SAFETY). All three tracks from FR-04
-      and design COMP-04a present. Session loop step 2 CRISIS_CHECK is
-      MANDATORY NON-SKIPPABLE per ABSOLUTE_RULES CRISIS_FIRST.
+  - id: QG-15
+    requirement: FR-15
+    title: "Wall Rendering for Interior Maps"
+    result: pass
+    evidence: >
+      WALL_RENDERER specifies character selection for horizontal (-), vertical (|),
+      45° rising (/), 45° falling (\), corners (+). Bresenham-style stepping for non-45°
+      with metadata note. INTERIOR vs EXTERIOR mode rendering (solid vs dashed).
+      POI_WINS_WALL applied cell-by-cell with gap noted in metadata.
 
-  - id: QC-F07
-    check: "Disclaimer renders at session open and on scope-crossing requests"
-    status: pass
-    notes: >
-      COMP-03a session-open message includes mandatory disclaimer: not a substitute
-      for licensed therapy, individual-perspective limitation, absent-party
-      epistemic limitation. SCOPE_GUARD re-renders disclaimer on couples mediation,
-      legal advice, clinical diagnosis, or Phase 2/3 trauma processing requests.
-      ~disclaimer console command re-renders on demand.
+  # ── NFR Coverage ────────────────────────────────────────────────────────────
 
-  - id: QC-F08
-    check: "GDPR/data notice rendered at session open"
-    status: pass
-    notes: >
-      Session-open message includes GDPR data notice: relationship disclosures are
-      personal data; mental health / DV disclosures are Art. 9 special category;
-      LLM provider retention advisory. Advice not to share PII. ~privacy console
-      command for on-demand access. Consistent with NFR-04, RC-03 safeguards.
+  - id: QG-16
+    requirement: NFR-01
+    title: "Proportional Precision ±1 character"
+    result: pass
+    evidence: >
+      PRECISION_HONEST absolute rule (Rule 3) enforces ±1 character tolerance explicitly.
+      PRECISION_ENGINE computes km_per_col/row and checks all POI pairs for below-
+      resolution proximity. Composite symbol used when two POIs share a cell.
 
-  - id: QC-F09
-    check: "PATTERN_LIBRARY covers all required patterns (FR-05)"
-    status: pass
-    notes: >
-      Implemented: attachment styles (secure, anxious-preoccupied, avoidant-dismissing,
-      disorganized/fearful), Four Horsemen (criticism, contempt, defensiveness,
-      stonewalling) + Gottman antidotes, pursue-withdraw cycle, demand-defend cycle,
-      unspoken expectations trap, self-sabotage loops. All FR-05 patterns present.
+  - id: QG-17
+    requirement: NFR-02
+    title: "Output Purity — 7-bit ASCII"
+    result: pass
+    evidence: >
+      OUTPUT_ASCII_ONLY absolute rule (Rule 2) lists exact permitted characters.
+      Step 11 of REQUEST_LOOP: "plain text only. No markdown fences, no HTML, no code
+      blocks." Wall characters (|, -, +, /, \) are all 7-bit ASCII.
 
-  - id: QC-F10
-    check: "SKILL_LIBRARY covers required skills (FR-08)"
-    status: pass
-    notes: >
-      Skills present: DEAR MAN, FAST, GIVE (DBT interpersonal effectiveness),
-      Gottman repair attempts, boundary setting, self-compassion (Neff). All FR-08
-      skills present. Skills framed as insights, not treatment — consistent with
-      FR-08 wording.
+  - id: QG-18
+    requirement: NFR-03
+    title: "Portability — LLM Agnostic"
+    result: pass
+    evidence: >
+      Prompt uses no model-specific APIs, tool calls, or function calling. All computation
+      described as explicit step-by-step arithmetic the LLM performs. No Claude-specific
+      or GPT-specific features referenced.
+
+  - id: QG-19
+    requirement: NFR-04
+    title: "Output Determinism"
+    result: pass
+    evidence: >
+      RENDERING_RULES: "No rule has conditional overrides. Rendering is fully
+      deterministic." 5-step label placement priority has no ties. Projection formula
+      is exact. Wall character selection is fully rule-based.
+
+  - id: QG-20
+    requirement: NFR-05
+    title: "Data Notice — Location Privacy"
+    result: pass
+    evidence: >
+      DATA_NOTICE is ABSOLUTE RULE 4. LEGEND_BLOCK metadata always includes:
+      "Note: avoid sharing personally identifying location data." Step 12 of
+      REQUEST_LOOP: "Verify DATA_NOTICE is present in the metadata block."
 
 # ── Summary ───────────────────────────────────────────────────────────────────
-checks_total: 18
-checks_passed: 18
-checks_failed: 0
-blockers: 0
-status: pass
+summary:
+  total_checks: 20
+  passed: 20
+  failed: 0
+  warnings: 0
+  blockers: 0
 
-notes: >
-  All 18 quality checks pass. FRANK-specific checks (QC-F01 to QC-F10) confirm
-  that the HUMOR_PROTOCOL, DV_RESPONSE_ENGINE, INDIVIDUAL_PERSPECTIVE_GUARD, and
-  CRISIS_DETECTION components are implemented correctly and consistently with the
-  design document (QC-03), threat model (SC-05), and conflict resolutions (QC-02).
-  Artifact is implementation-ready for Stage 4 testing.
+status: pass
+stage_3_quality_gate: pass

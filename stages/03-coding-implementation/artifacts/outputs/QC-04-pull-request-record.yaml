@@ -2,75 +2,71 @@
 # QC-04 — Pull Request Record
 # Control:   QC-04 Pull Request Creation & Review
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
-# Status:    approved
+# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
 # =============================================================================
 
 meta:
-  id: "QC-04-FEAT-0005"
-  feature: "FEAT-0005"
-  produced_by: "Claude Sonnet 4.6 (QC-04)"
-  date: "2026-03-14"
-  status: approved
+  id: "QC-04-FEAT-0006"
+  feature: "FEAT-0006"
+  produced_by: "Claude Sonnet 4.6 (Implementer / QC-04)"
+  date: "2026-03-15"
 
-# ── Risk-Gated Review Requirements ───────────────────────────────────────────
-risk_tier: medium
-review_slots_required: 2   # Medium risk tier → minimum 2 reviewer slots
+# ── PR Classification ─────────────────────────────────────────────────────────
+pr_tier: LOW
+tier_rationale: >
+  Risk tier LOW (confirmed RC-01). Utility category — no safety, health, or legal
+  decisions. No vulnerable population. No sensitive data processed. Single-file
+  prompt deliverable. Simpler than all prior masterprompts in this repository.
+  PR can be approved by Lead Architect alone; no additional safety reviewer required.
 
-reviewers:
-  - slot: 1
-    role: "Lead Architect / Product Owner"
-    reviewer: "Jerry van Heerikhuize"
-    review_date: "2026-03-14"
-    verdict: approved
-    notes: >
-      Design approval (RC-02) granted. Health-adjacent reviewer checklist (GC-03)
-      verified. Stage 3 artifacts reviewed. Prompt consistent with design
-      document and conflict resolutions. HUMOR_PROTOCOL, DV_RESPONSE_ENGINE,
-      and INDIVIDUAL_PERSPECTIVE_GUARD correctly implemented.
+required_approvals: 1
+required_approvers:
+  - "Jerry van Heerikhuize (Lead Architect)"
 
-  - slot: 2
-    role: "Implementer Self-Review (AI agent — QC-05 substitute)"
-    reviewer: "Claude Sonnet 4.6 (QC-05 quality gate)"
-    review_date: "2026-03-14"
-    verdict: approved
-    notes: >
-      QC-05 quality gate: 18/18 checks passed, 0 blockers. SC-08 guardrail scan:
-      0 critical/high/medium findings, 1 informational (ACG-01 carried to Stage 4).
-      Slot 2 is occupied by the formal QC-05 + SC-08 automated review process
-      per MEDIUM-tier review protocol. Human slot 1 remains the controlling authority.
+# ── Files in PR ───────────────────────────────────────────────────────────────
+files_changed:
+  - "roles/utility/ascii-cartographer/prompt.md"          # created
+  - "roles/registry.yaml"                                  # modified
+  - "README.md"                                            # modified
+  - "specs/FEAT-0006-ascii-cartographer-masterprompt.yaml" # stage_reached updated
+  - "stages/03-coding-implementation/artifacts/outputs/SC-07-permission-enforcement-log.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/QC-05-quality-gate-report.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/SC-08-post-guardrail-scan.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/SC-09-secrets-scan-report.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/SC-10-sca-report.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/SC-11-container-iac-security-report.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/GC-03-code-provenance-record.yaml"
+  - "stages/03-coding-implementation/artifacts/outputs/QC-04-pull-request-record.yaml"
 
-# ── Change Summary ────────────────────────────────────────────────────────────
-change_summary:
-  primary_deliverable: "roles/health/relationship-therapist/prompt.md"
-  sha256: "ea93a9246204e734f452cab547b094d82153c799218276e334351696bb294b96"
-  secondary_deliverables:
-    - "roles/registry.yaml (F.R.A.N.K. entry added)"
-    - "specs/FEAT-0005 (stage_reached updated to 3)"
-    - "stages/03-coding-implementation/artifacts/outputs/* (9 control artifacts)"
+# ── Pre-Merge Checklist ───────────────────────────────────────────────────────
+pre_merge_checklist:
+  - check: "QC-05 quality gate — 20/20 checks passed"
+    status: pass
+  - check: "SC-07 permission enforcement — 0 violations"
+    status: pass
+  - check: "SC-08 post-guardrail scan — 0 blockers"
+    status: pass
+  - check: "SC-09 secrets scan — clean"
+    status: pass
+  - check: "SC-10 SCA — N/A (prompt-only)"
+    status: pass
+  - check: "SC-11 container/IaC — N/A (prompt-only)"
+    status: pass
+  - check: "GC-03 human review — approved by Lead Architect"
+    status: pass
+  - check: "RC-04 decision log — 8 decisions recorded"
+    status: pass
+  - check: "roles/registry.yaml updated with A.T.L.A.S. entry"
+    status: pass
+  - check: "README.md updated with Utility table and repo structure"
+    status: pass
+  - check: "Canonical spec stage_reached updated to 3"
+    status: pass
 
-  risk_items:
-    - item: "HUMOR_PROTOCOL — novel component; no precedent in repository"
-      mitigation: "QC-F01/02/03 quality checks passed; SC-08 GS-03 bypass scan passed;
-        Stage 4 ACG-01 test requirement carried forward"
-    - item: "DV detection — health-adjacent sensitivity"
-      mitigation: "DV_RESPONSE_ENGINE tiered response; GC-03 health reviewer checklist
-        verified; SC-08 GS-05 passed"
-    - item: "Individual-perspective guard — per-turn evaluation required"
-      mitigation: "INDIVIDUAL_PERSPECTIVE_GUARD in SESSION_LOOP step 3; SC-08 GS-04 passed"
-
-# ── Stage 3 Exit Gate ─────────────────────────────────────────────────────────
-stage_3_exit_gate:
-  qc05_passed: true
-  sc07_passed: true
-  sc08_passed: true
-  sc09_passed: true
-  sc10_not_applicable: true
-  sc11_not_applicable: true
-  rc04_complete: true
-  gc03_complete: true
-  registry_updated: true
-  readme_updated: true
-  spec_updated: true
+# ── Review Outcome ────────────────────────────────────────────────────────────
+approved_by: "Jerry van Heerikhuize (Lead Architect)"
+approval_date: "2026-03-15"
+merge_commit: "—"   # populated after commit
 
 stage_3_exit_clear: true

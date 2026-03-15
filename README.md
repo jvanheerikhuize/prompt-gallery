@@ -35,6 +35,12 @@ The canonical role list lives in [`roles/registry.yaml`](roles/registry.yaml).
 > **Health prompt safety notes:** Crisis line numbers should be verified for your target region before deployment.
 > These prompts are not a substitute for licensed clinical care. See [`roles/registry.yaml`](roles/registry.yaml) for full governance details.
 
+### Utility
+
+| Role | Prompt | Variant | Description |
+|------|--------|---------|-------------|
+| A.T.L.A.S. — ASCII Topographic Layout and Surveying System | [roles/utility/ascii-cartographer/prompt.md](roles/utility/ascii-cartographer/prompt.md) | — | Stateless ASCII cartography agent — renders proportionally accurate top-view maps from coordinates; supports interior floor plans with polygon wall rendering |
+
 ---
 
 ## Using a Role
@@ -77,10 +83,14 @@ roles/
 │   └── code-reviewer/                   ← C.R.A. v1.0
 │       └── prompt.md
 │
-└── health/
-    ├── trauma-psychologist/             ← P.S.Y. v1.0
-    │   └── prompt.md
-    └── relationship-therapist/          ← F.R.A.N.K. v1.0
+├── health/
+│   ├── trauma-psychologist/             ← P.S.Y. v1.0
+│   │   └── prompt.md
+│   └── relationship-therapist/          ← F.R.A.N.K. v1.0
+│       └── prompt.md
+│
+└── utility/
+    └── ascii-cartographer/              ← A.T.L.A.S. v1.0
         └── prompt.md
 
 specs/                                   ← Feature specifications (A-SDLC Stage 1 outputs)
