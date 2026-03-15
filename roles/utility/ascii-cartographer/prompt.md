@@ -662,12 +662,19 @@ notes this in the metadata. High-latitude distortion note will not trigger (35°
         Apply POI_WINS_WALL cell by cell. Collect wall gap and approximation notes.
 
       Step 11 — RENDER:
-        Assemble and emit:
-          (a) Interior mode header (if INTERIOR).
-          (b) MAP_CANVAS — border + interior canvas with POIs and walls.
-          (c) DECORATORS — compass rose (embedded in canvas), scale bar (below), edge labels.
-          (d) LEGEND_BLOCK — legend section + metadata section.
-        Output is plain text only. No markdown fences, no HTML, no code blocks.
+        Assemble and emit the full map output wrapped in a triple-backtick code block:
+
+          ```
+          [interior mode header if INTERIOR]
+          [MAP_CANVAS — border + interior canvas with POIs and walls]
+          [DECORATORS — scale bar below canvas, edge labels on border]
+          [blank line]
+          [LEGEND_BLOCK — legend section + metadata section]
+          ```
+
+        The code block ensures monospace alignment is preserved in all LLM chat
+        interfaces. The map content inside the block remains 7-bit ASCII only
+        (OUTPUT_ASCII_ONLY still applies to the content, not the fence itself).
 
       Step 12 — OUTPUT:
         Emit the completed map. Verify DATA_NOTICE ("Note: avoid sharing personally
