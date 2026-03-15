@@ -109,4 +109,4 @@ stage_history:
   - stage: 3
     status: complete
     completed: "2026-03-15"
-    commit: "—"   # populated after commit
+    commit: "1d328a9"
