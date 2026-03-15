@@ -28,6 +28,151 @@ default. Add `exterior` to override.
 
 ---
 
+## Examples
+
+Copy any of the input blocks below and paste them into A.T.L.A.S. after loading the prompt.
+
+---
+
+### 1 — Geographic POIs (city map)
+
+```
+Amsterdam: 52.3676, 4.9041
+Rotterdam: 51.9225, 4.4792
+Utrecht: 52.0907, 5.1214
+The Hague: 52.0705, 4.3007
+Eindhoven: 51.4416, 5.4697
+```
+
+Renders a standard-density map of five Dutch cities with proportional distances,
+compass rose, scale bar, and edge coordinate labels.
+
+---
+
+### 2 — Named locations (world knowledge)
+
+```
+Tokyo
+New York
+London
+Sydney
+compact
+```
+
+A.T.L.A.S. resolves the city names via world knowledge, states the approximate coordinates
+it used, and renders a compact-density world map. All coordinates are marked `~` in the legend.
+
+---
+
+### 3 — DMS coordinates (landmark precision)
+
+```
+Eiffel Tower:     48°51'29"N  2°17'40"E
+Notre-Dame:       48°51'11"N  2°20'59"E
+Arc de Triomphe:  48°52'26"N  2°17'57"E
+Louvre:           48°51'37"N  2°20'13"E
+detailed
+```
+
+Parses degrees-minutes-seconds for four Parisian landmarks and renders a detailed
+120×60 map showing their relative positions within central Paris.
+
+---
+
+### 4 — Abstract grid (network / floor layout)
+
+```
+Server A:   X:10  Y:80
+Server B:   X:30  Y:80
+Switch:     X:20  Y:60
+Firewall:   X:20  Y:40
+Router:     X:20  Y:20
+```
+
+Uses abstract grid coordinates — no geographic projection, no compass rose.
+Scale bar reads "1 grid unit = 1 cell". Useful for data centre, network, or
+schematic layouts where coordinates are logical rather than geographic.
+
+---
+
+### 5 — Interior floor plan (rectangular room)
+
+```
+boundary:
+  V1: 0, 0
+  V2: 0, 30
+  V3: 80, 30
+  V4: 80, 0
+
+Entrance:   X:40  Y:0
+Desk A:     X:15  Y:20
+Desk B:     X:40  Y:20
+Desk C:     X:65  Y:20
+Meeting:    X:65  Y:10
+```
+
+Polygon boundary → INTERIOR mode. Solid walls rendered (-, |, + at corners).
+The Entrance POI sits on the bottom wall and demonstrates POI_WINS_WALL.
+All five POIs are listed in the legend with their abstract coordinates.
+
+---
+
+### 6 — Interior floor plan (L-shaped office)
+
+```
+boundary:
+  V1: 0,  0
+  V2: 0,  40
+  V3: 50, 40
+  V4: 50, 20
+  V5: 80, 20
+  V6: 80, 0
+
+Reception:    X:25  Y:35
+Open plan A:  X:15  Y:12
+Open plan B:  X:65  Y:10
+Kitchen:      X:40  Y:30
+Server room:  X:70  Y:15
+```
+
+A six-vertex L-shaped boundary. Tests inner-corner wall rendering at V4/V5.
+All POIs are inside the L-shape. Standard density.
+
+---
+
+### 7 — Exterior site boundary (soft perimeter)
+
+```
+boundary:
+  V1: 52.3720, 4.9020
+  V2: 52.3720, 4.9200
+  V3: 52.3600, 4.9200
+  V4: 52.3600, 4.9020
+exterior
+
+Main gate:      52.3720, 4.9110
+Parking:        52.3680, 4.9050
+Building:       52.3660, 4.9130
+Service road:   52.3700, 4.9180
+```
+
+Polygon provided but `exterior` keyword overrides interior mode. Boundary rendered
+as dashed `.` perimeter rather than solid walls. Geographic coordinates — scale bar
+and edge labels shown.
+
+---
+
+### 8 — Single POI (default radius)
+
+```
+Mount Fuji: 35.3606, 138.7274
+```
+
+Single-POI edge case: A.T.L.A.S. applies a default 1° radius bounding box and
+notes this in the metadata. High-latitude distortion note will not trigger (35°N is fine).
+
+---
+
 ## The Prompt
 
 ```text
