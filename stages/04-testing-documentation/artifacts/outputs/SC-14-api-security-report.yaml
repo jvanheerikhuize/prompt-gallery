@@ -2,21 +2,22 @@
 # SC-14 — API Security Test Report
 # Control:   SC-14 API Security Testing (OWASP API Top 10)
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
 # Status:    not_applicable
 # =============================================================================
 
 meta:
-  id: "SC-14-FEAT-0004"
-  feature: "FEAT-0004"
+  id: "SC-14-FEAT-0005"
+  feature: "FEAT-0005"
   produced_by: "Claude Sonnet 4.6 / SC-14"
-  date: "2026-03-14"
+  date: "2026-03-15"
+  status: not_applicable
 
 applicable: false
+rationale: >
+  F.R.A.N.K. is a plain-text masterprompt. No APIs are exposed, no endpoints are
+  defined, no authentication or authorisation mechanisms exist at the API layer.
+  OWASP API Top 10 testing requires API endpoints — none exist. Identical
+  determination to all prior masterprompts in this repository.
 
-rationale: |
-  P.S.Y. exposes no APIs. There are no REST, GraphQL, WebSocket, or RPC endpoints.
-  The prompt is consumed directly via an LLM chat interface chosen by the user.
-  OWASP API Security Top 10 testing is not applicable.
-
-overall_status: not_applicable
+blocker: false

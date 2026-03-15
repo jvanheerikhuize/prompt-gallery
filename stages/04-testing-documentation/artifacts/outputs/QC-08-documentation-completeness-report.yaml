@@ -2,57 +2,62 @@
 # QC-08 — Documentation Completeness Report
 # Control:   QC-08 Documentation Completeness
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
 # =============================================================================
 
 meta:
-  id: "QC-08-FEAT-0004"
-  feature: "FEAT-0004"
+  id: "QC-08-FEAT-0005"
+  feature: "FEAT-0005"
   produced_by: "Claude Sonnet 4.6 / QC-08"
-  date: "2026-03-14"
+  date: "2026-03-15"
 
 documentation_checks:
 
-  - doc: "README.md — Available Roles table"
+  - doc: "README.md — Health roles table"
     required: true
     status: present
-    location: "README.md — Available Roles table"
-    content: "P.S.Y. — Trauma-Specialised Psychologist row added with link to prompt-trauma-psychologist.md"
+    location: "README.md — Health section"
+    content: "F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots row added with link, description, and safety note"
 
-  - doc: "prompt-trauma-psychologist.md — Canonical prompt with inline documentation"
+  - doc: "roles/health/relationship-therapist/prompt.md — Canonical prompt"
     required: true
     status: present
-    location: "prompt-trauma-psychologist.md"
+    location: "roles/health/relationship-therapist/prompt.md"
     content: >
-      How to Use section, full prompt (MVC/XML structure), inline documentation of all
-      ABSOLUTE_RULES, RULES_ENGINE sections, SESSION_PHASES, SESSION_LOOP, CONSOLE commands.
-      Author, version, provenance, and date documented in file header.
+      Full MVC/XML masterprompt: CORE_DIRECTIVES (8 ABSOLUTE_RULES, SESSION_STATE schema,
+      PERSONA, LANGUAGE_DETECTION), MODEL (PATTERN_LIBRARY, SKILL_LIBRARY, CRISIS_DETECTION,
+      DV_RESPONSE_ENGINE), VIEW (phase templates + HUMOR_PROTOCOL), RULES_ENGINE
+      (HUMOR_PROTOCOL, INDIVIDUAL_PERSPECTIVE_GUARD, SCOPE_GUARD, SESSION_LOOP),
+      CONTROLLER. Author, version (1.0), feature (FEAT-0005), SHA-256, date documented
+      in file header.
+    sha256: "ea93a9246204e734f452cab547b094d82153c799218276e334351696bb294b96"
 
-  - doc: "Feature Specification (FEAT-0004)"
+  - doc: "Feature Specification (FEAT-0005)"
     required: true
     status: present
-    location: "specs/FEAT-0004-trauma-psychologist-masterprompt.yaml"
+    location: "specs/FEAT-0005-relationship-therapist-masterprompt.yaml"
     content: >
-      11 FR + 6 NFR requirements, risk classification (MEDIUM), AI tier (LIMITED),
-      data classification (RESTRICTED/GDPR Art. 9), constraints, dependencies,
-      audit trail. stage_reached: 3.
+      11 FR + 7 NFR requirements, risk classification (MEDIUM), AI tier (LIMITED),
+      data classification (CONFIDENTIAL / RESTRICTED elevation), constraints,
+      dependencies, conflict resolutions (CONF-01 through CONF-04), stage history.
+      stage_reached: 3.
 
-  - doc: "Change Request (CR-0004)"
+  - doc: "Change Request (CR-0005)"
     required: true
     status: present
-    location: "stages/01-intent-ingestion/artifacts/inputs/CR-0004-trauma-psychologist-masterprompt.yaml"
+    location: "stages/01-intent-ingestion/artifacts/inputs/CR-0005-relationship-therapist-masterprompt.yaml"
 
-  - doc: "Stage 1 artefacts (QC-01, QC-02, RC-01, AC-01, SC-04, GC-05)"
+  - doc: "Stage 1 artifacts (QC-01, QC-02, RC-01, AC-01, SC-04, GC-05)"
     required: true
     status: present
     location: "stages/01-intent-ingestion/artifacts/outputs/"
 
-  - doc: "Stage 2 artefacts (QC-03, SC-05, SC-06, RC-02, RC-03, AC-03, AC-04, SC-02)"
+  - doc: "Stage 2 artifacts (QC-03, SC-05, SC-06, RC-02, RC-03, AC-03, AC-04, SC-02)"
     required: true
     status: present
     location: "stages/02-system-design/artifacts/outputs/"
 
-  - doc: "Stage 3 artefacts (QC-04, QC-05, SC-07–11, RC-04, GC-03)"
+  - doc: "Stage 3 artifacts (QC-04, QC-05, SC-07–11, RC-04, GC-03)"
     required: true
     status: present
     location: "stages/03-coding-implementation/artifacts/outputs/"
@@ -61,30 +66,56 @@ documentation_checks:
     required: true
     status: present
     location: "stages/03-coding-implementation/artifacts/outputs/RC-04-decision-log.yaml"
-    content: "7 decisions documented: version, T-01 dual enforcement, crisis localisation, 2-tier disclaimer, SESSION_STATE + ~privacy, SCOPE_ENFORCEMENT graduated redirect, safety_flags append-only"
+    content: >
+      8 decisions documented: HUMOR_PROTOCOL as named component; wit_permission_level
+      as SESSION_LOOP step output; humor_rapport_established single write path;
+      DV_RESPONSE_ENGINE Tier 1/2 split; INDIVIDUAL_PERSPECTIVE_GUARD per-turn evaluation;
+      DV helpline localisation for 7 languages; 5-phase session lifecycle vs P.S.Y.;
+      humor English-only v1.0.
 
   - doc: "STRIDE Threat Model (SC-05)"
     required: true
     status: present
     location: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
-    content: "9 threats, 4 trust boundaries, T-01 CRITICAL mitigated, T-02/T-03 HIGH mitigated"
+    content: "9 threats, 4 trust boundaries, T-01 CRITICAL + T-02/T-03 HIGH mitigated"
 
   - doc: "Privacy Impact Assessment (RC-03)"
     required: true
     status: present
     location: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
-    content: "GDPR Art. 9 special category data, DPIA not required, 4 privacy risks assessed, overall MEDIUM accepted"
+    content: >
+      APPLICABLE; DPIA not required; 4 processing activities (PA-01 relationship data,
+      PA-02 mental health, PA-03 DV disclosures, PA-04 SESSION_STATE); 5 privacy risks;
+      overall MEDIUM accepted; DV safety_flags most sensitive element.
 
   - doc: "AI Component Design Review (AC-03)"
     required: true
     status: present
     location: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
-    content: "LIMITED tier confirmed, Art. 52/53/14 compliance, ACG-01 gap documented"
+    content: "LIMITED tier confirmed; HUMOR_PROTOCOL model-capability dependency documented as ACG-01; Art. 52/53/14 compliance"
+
+  - doc: "roles/registry.yaml — F.R.A.N.K. entry"
+    required: true
+    status: present
+    location: "roles/registry.yaml"
+    content: >
+      F.R.A.N.K. entry (id: frank) added under health category: version 1.0, status stable,
+      description, tags, usage, safety_notes, governance (FEAT-0005, medium, limited,
+      confidential, conditional Art. 9), provenance.
+
+  - doc: "HUMOR_PROTOCOL documentation (inline in prompt)"
+    required: true   # Novel component; requires explicit documentation
+    status: present
+    location: "roles/health/relationship-therapist/prompt.md — RULES_ENGINE → HUMOR_PROTOCOL"
+    content: >
+      GRAVITY_TOPICS list, PRE_RAPPORT_RULE, POST_RAPPORT_BEHAVIOR, WIT_PERMISSION_LEVELS
+      all documented inline. Open-source publication ensures auditable safety envelope
+      per AC-03 voluntary measure.
 
   - doc: "Runbook"
     required: false
     status: not_applicable
-    rationale: "No deployment infrastructure; prompt is copy-paste only. No operational runbook required."
+    rationale: "No deployment infrastructure; prompt is copy-paste or system-prompt injection. No operational runbook required."
 
   - doc: "API documentation"
     required: false
@@ -94,17 +125,18 @@ documentation_checks:
   - doc: "Architecture Decision Records (ADRs)"
     required: false
     status: covered_by_rc04
-    rationale: "RC-04 decision log (7 decisions) covers all significant architectural and design decisions made in Stage 3."
+    rationale: "RC-04 decision log (8 decisions) covers all significant architectural and design decisions made in Stage 3."
 
   - doc: "EU AI Act Annex IV technical documentation"
     required: true    # Required for LIMITED tier (GPAI technical documentation)
     status: present
-    location: "specs/FEAT-0004-*.yaml + A-SDLC artifact set (Stages 1–4)"
+    location: "specs/FEAT-0005-*.yaml + A-SDLC artifact set (Stages 1–4)"
     content: >
       AC-03 documents Art. 52(1) transparency, Art. 53 GPAI documentation, and Art. 14
       human oversight compliance. The full A-SDLC artifact set constitutes the technical
-      documentation package per AC-03 confirmation. Annex IV (high-risk) is not applicable;
-      GPAI Art. 53 documentation is satisfied.
+      documentation package per AC-03 confirmation. Annex III/IV (high-risk) not applicable;
+      GPAI Art. 53 documentation satisfied. HUMOR_PROTOCOL documented as part of this
+      package per AC-03 voluntary measure.
 
   - doc: "CONTRIBUTING.md"
     required: true
@@ -115,4 +147,4 @@ gaps: []
 
 overall_status: complete
 approved_by: "Jerry van Heerikhuize (QA)"
-approval_date: "2026-03-14"
+approval_date: "2026-03-15"

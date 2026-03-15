@@ -2,142 +2,178 @@
 # AC-05 — Bias & Fairness Report
 # Control:   AC-05 Bias & Fairness Testing
 # Stage:     4 — Testing & Documentation
-# Feature:   FEAT-0004 — Trauma-Specialised Psychologist Masterprompt
+# Feature:   FEAT-0005 — Relationship Therapist Masterprompt — F.R.A.N.K.
 # =============================================================================
 
 meta:
-  id: "AC-05-FEAT-0004"
-  feature: "FEAT-0004"
+  id: "AC-05-FEAT-0005"
+  feature: "FEAT-0005"
   ai_tier: limited
   produced_by: "Claude Sonnet 4.6 / AC-05"
-  date: "2026-03-14"
+  date: "2026-03-15"
 
 scope_note: |
-  P.S.Y. is a LIMITED-risk psychoeducation and emotional support prompt targeting adult
-  users with trauma histories. Bias analysis is proportionate to the LIMITED risk
-  classification and the vulnerable user population context.
+  F.R.A.N.K. is a LIMITED-risk relationship psychoeducation and self-reflection
+  prompt targeting adult users experiencing relationship difficulties. Bias analysis
+  is proportionate to the LIMITED risk classification and the context of potential
+  DV disclosures, which raises the stakes for any population-level bias.
 
-  Unlike systems that make decisions affecting real people's rights (employment, credit,
-  healthcare access), P.S.Y. provides psychoeducation and coping skill support.
-  It does not make recommendations that determine access to services or resources.
-  However, the health-adjacent context and vulnerable population mean that encoded
-  biases — even subtle ones — could undermine therapeutic value or cause harm.
+  Unlike systems making decisions affecting rights (employment, credit, healthcare
+  access), F.R.A.N.K. provides psychoeducation, pattern reflection, and skill
+  delivery. It does not make recommendations that determine access to services.
+  However, the relationship-and-DV context means encoded biases could undermine
+  therapeutic value or — in the worst case — cause harm if DV normalisation biases
+  exist.
 
   EU AI Act Art. 10(2)(f): No training data involved. Analysis is content-review based.
-  EU AI Act Art. 15 (accuracy, robustness, cybersecurity): bias-related robustness
-  assessed proportionately for LIMITED tier.
 
 content_bias_analysis:
 
-  - characteristic: "Gender and Sexual Orientation"
+  - id: BF-01
+    characteristic: "Gender and Sexual Orientation"
     finding: none
     detail: >
-      The prompt uses gender-neutral language throughout. SESSION_STATE does not
-      collect or require gender information. The agent does not ask for gender. There
-      are no gendered assumptions in technique guidance, psychoeducation content, or
-      session structure. The self-compassion break (Neff) and other techniques are
-      framed without gender assumptions. Relationship references use gender-neutral
-      language ('your partner', 'your relationships').
+      The prompt uses gender-neutral language throughout: "your partner", "they/them"
+      where referent is unspecified. SESSION_STATE does not collect or require gender
+      information. The INDIVIDUAL_PERSPECTIVE_GUARD and PATTERN_LIBRARY make no
+      gendered assumptions — pursue-withdraw, demand-defend, and attachment styles
+      apply across all relationship configurations. DV_RESPONSE_ENGINE: DV resources
+      include services for all genders and relationship types; no assumption that
+      DV is gendered. Relationship structure (monogamous, polyamorous, same-sex,
+      different-sex) is not assumed. The prompt explicitly does not impose normative
+      relationship models (NFR-05).
 
-  - characteristic: "Ethnicity and Cultural Background"
+  - id: BF-02
+    characteristic: "Ethnicity and Cultural Background"
     finding: low_noted
     detail: >
-      The SAMHSA 6-pillar framework and Herman (1992) phase-based trauma model
-      originate from Western psychological tradition. The prompt explicitly acknowledges
-      this in NFR-05 (Cultural Sensitivity) and the PERSONA, instructing the agent not
-      to impose Western-normative assumptions. Technique library includes cultural
-      context invitations per CONF-04 resolution. However, all psychoeducation concepts
-      (HPA axis, window of tolerance, CBT reframing) are from Western clinical traditions.
-      Non-Western trauma frameworks (e.g. collectivist healing, spiritual/religious
-      coping) are not represented in the PSYCHOEDUCATION_LIBRARY.
+      Attachment theory (Bowlby/Ainsworth), EFT (Johnson), and the Gottman Method
+      originate from Western psychological research traditions conducted primarily
+      with Western, educated, industrialised, rich, democratic (WEIRD) populations.
+      NFR-05 explicitly instructs the agent not to impose Western-normative relationship
+      models. The HUMOR_PROTOCOL avoids culturally specific references. However, the
+      conceptual framework (attachment styles, Four Horsemen, individual self-reflection
+      as a therapeutic mode) is culturally situated and may not resonate equally with
+      users from collectivist, communal, or non-Western relationship traditions.
     severity: low
     mitigation: >
-      NFR-05 instructs the agent to adapt framing when cultural context is disclosed.
-      Cultural context invitations in technique guidance allow users to redirect.
-      This is a structural limitation of a Phase 1 psychoeducation prompt rather
-      than an encoded discriminatory outcome. Accepted.
+      NFR-05 instructs FRANK to acknowledge cultural situatedness when disclosed.
+      No culturally specific references in humor. Pattern hypotheses use tentative
+      language ("this sounds like it could be...", "I wonder if...") rather than
+      prescriptive diagnosis — reducing forced fit. Structural limitation of current
+      psychoeducation framework, not discriminatory design choice. Accepted.
     accepted: true
 
-  - characteristic: "Age"
+  - id: BF-03
+    characteristic: "Language — Humor English Only"
     finding: low_noted
     detail: >
-      The prompt assumes adult users (stated in FEAT-0004 out_of_scope: "Child or
-      adolescent-specific adaptations — prompt assumes adult users"). No age-appropriate
-      adaptation is provided for younger adults (18–21) who may need different pacing
-      or language. The prompt does not verify or ask about age. No content is harmful
-      to adult users of any age; the limitation is absence of age-specific adaptation
-      rather than discriminatory content.
+      HUMOR_PROTOCOL restricts wit deployment to English in v1.0 (NFR-06, CONF-04).
+      Users who engage in non-English sessions receive full therapeutic content but
+      do not experience the HUMOR_PROTOCOL component in their language. This creates
+      a materially different session experience for non-English speakers — specifically,
+      the potential therapeutic benefit of calibrated wit (rapport building, tone
+      relief) is not available.
     severity: low
     mitigation: >
-      Out-of-scope statement is explicit. Adult users across age ranges can engage
-      meaningfully with the prompt. Age adaptation is a future enhancement scope item.
+      The limitation is explicit in the design (English-only v1.0) and documented
+      in NFR-06. Non-English users receive full warmth, pattern recognition, crisis
+      safety, and skill delivery — the HUMOR_PROTOCOL is a rapport enhancement, not
+      a core safety feature. The safety of non-English users is not compromised.
+      Multi-language humor is a v2.0 enhancement target. Accepted.
     accepted: true
 
-  - characteristic: "Disability"
-    finding: low_noted
-    detail: >
-      The 5-4-3-2-1 sensory grounding technique (TECHNIQUE_LIBRARY T-03) relies on
-      sensory modalities (sight, hearing, touch, smell, taste). Users with sensory
-      disabilities (visual impairment, hearing loss, limited touch sensitivity) may
-      find this technique less accessible. The cultural context invitation partially
-      mitigates this by allowing users to redirect. The body scan technique (T-07)
-      may be challenging for users with somatic dissociation or chronic pain conditions.
-      The prompt instructs that techniques are offered collaboratively and users always
-      choose — this reduces harm risk but does not fully address the accessibility gap.
-    severity: low
-    mitigation: >
-      Technique choice is always user-controlled. Cultural context invitations for each
-      technique allow users to opt out. Future enhancement: explicit adaptations for
-      sensory disabilities in technique guidance.
-    accepted: true
-
-  - characteristic: "Socioeconomic Status"
+  - id: BF-04
+    characteristic: "Relationship Structure and Family Form"
     finding: none
     detail: >
-      The prompt explicitly acknowledges systemic barriers to care (cost, scarcity,
-      stigma, waitlists, geography) in its problem framing (FEAT-0004 intent). The
-      session structure is designed to be accessible regardless of socioeconomic context.
-      No assumptions are made about users' access to therapists, medication, or other
-      resources. Crisis resources referenced are public emergency lines (free to access).
+      No assumption of monogamy, heterosexuality, nuclear family structure, or
+      marriage. Pattern names (pursue-withdraw, demand-defend, Four Horsemen) are
+      relational dynamics applicable across relationship configurations. DV resources
+      do not assume specific victim/perpetrator gender assignment. SCOPE_GUARD
+      covers "couples mediation" but this refers to the presence of two parties
+      in the session — not to relationship structure.
 
-  - characteristic: "Language and Literacy"
-    finding: none
-    detail: >
-      NFR-06 (multi-language, elevated to must): the agent detects and responds in the
-      user's language. Default complexity approximately CEFR B2; adjusts to user
-      language patterns. Crisis resources are localised. This design actively reduces
-      language-based barriers rather than introducing bias.
-
-  - characteristic: "Religion and Spirituality"
+  - id: BF-05
+    characteristic: "Disability"
     finding: low_noted
     detail: >
-      The safe-place visualisation technique (T-04) is a secular exercise. No religious
-      or spiritual content is embedded in the prompt. However, the absence of
-      spiritually-informed coping options (prayer, spiritual community, faith-based
-      resilience) may be perceived as exclusionary by users for whom spirituality is a
-      primary coping resource. NFR-05 Cultural Sensitivity instructs the agent to adapt
-      when spiritual context is disclosed.
+      No technique library with physical sensory requirements (unlike P.S.Y.'s
+      5-4-3-2-1 grounding technique). Relationship skills (DEAR MAN, FAST, GIVE,
+      boundary setting) are primarily verbal and cognitive — generally accessible.
+      Session structure relies on written text — users with visual impairments or
+      reading difficulties may face accessibility challenges at the LLM interface
+      level, outside the prompt's control. No explicit disability accommodations
+      in skill delivery.
     severity: low
     mitigation: >
-      NFR-05 and CONF-04 provide a mechanism for the agent to acknowledge and work with
-      spiritual framing when the user introduces it. The absence of explicit spiritual
-      content is a scope limit, not a discriminatory design choice. Accepted.
+      Skill delivery is always user-directed — FRANK presents options, user chooses
+      what is helpful. Interface accessibility is outside the prompt's scope (LLM
+      provider responsibility). The prompt does not introduce disability-based bias;
+      it inherits the accessibility characteristics of the LLM platform. Accepted.
+    accepted: true
+
+  - id: BF-06
+    characteristic: "Socioeconomic Status"
+    finding: none
+    detail: >
+      The prompt explicitly acknowledges that access to relationship therapy is gated
+      by cost, availability, and stigma (FEAT-0005 intent). Session structure and
+      skill delivery do not assume access to therapy, medical care, or other resources.
+      All crisis resources referenced are free public emergency services. No
+      assumptions about users' living situation, financial independence, or access
+      to support networks.
+
+  - id: BF-07
+    characteristic: "DV Normalisation Risk"
+    finding: none
+    detail: >
+      FRANK-specific concern: a relationship support tool could inadvertently normalise
+      controlling behaviour by validating user narratives uncritically. Analysis:
+      INDIVIDUAL_PERSPECTIVE_GUARD validates feelings without endorsing interpretations
+      — FRANK cannot affirm "he's allowed to do that" or "that's normal."
+      DV_RESPONSE_ENGINE Tier 1 provides resources for coercive control descriptions
+      without dismissing them as "just relationship problems." PATTERN_LIBRARY names
+      demand-defend and pursue-withdraw dynamics without normalising them as
+      acceptable. No DV-normalising content identified anywhere in the prompt.
+    severity: none
+
+  - id: BF-08
+    characteristic: "Religion and Spirituality"
+    finding: low_noted
+    detail: >
+      The prompt does not include spiritually-informed relationship models (faith-based
+      marriage frameworks, religious community support, spiritual counselling approaches).
+      Users for whom religious or spiritual values are central to their relationship
+      context may find the secular psychoeducation framework incomplete. NFR-05
+      instructs FRANK to acknowledge and work with spiritual framing when the user
+      introduces it — but spiritually-informed coping is not proactively offered.
+    severity: low
+    mitigation: >
+      NFR-05 mechanism allows FRANK to adapt framing when spiritual context is
+      disclosed. Absence of proactive spiritual content is a scope limit, not a
+      discriminatory choice. Accepted.
     accepted: true
 
 overall_assessment: no_discriminatory_outcomes_detected
 overall_note: |
-  No HIGH or CRITICAL bias findings. Five LOW findings are documented — all are structural
-  limitations of a Phase 1 psychoeducation prompt (Western clinical tradition, adult-only
-  scope, no sensory disability adaptations, no spiritual content) rather than discriminatory
-  encoding. All are accepted with documented rationale.
+  No HIGH or CRITICAL bias findings. Five LOW findings are documented — all are
+  structural limitations of a Western-tradition psychoeducation prompt (WEIRD research
+  base, English-only humor, secular framework, disability interface dependency) rather
+  than discriminatory encoding.
 
-  The core therapy-informed design (user always chooses, cultural context invitations,
-  multi-language support, explicit systemic barrier acknowledgement) actively reduces
-  disparate impact. No group receives a materially worse or harmful experience by design.
+  The DV normalisation risk (BF-07) — the most consequential potential bias in a
+  relationship support tool — was specifically examined and found to be not present.
+  INDIVIDUAL_PERSPECTIVE_GUARD and DV_RESPONSE_ENGINE actively prevent normalisation
+  of harmful relationship dynamics.
+
+  No group receives a materially worse or harmful therapeutic experience by design.
+  Non-English speakers receive a session without the HUMOR_PROTOCOL — this is a scope
+  limitation, not a safety gap.
 
 eu_ai_act_art10_compliance: >
   Art. 10(2)(f): No training data involved. Content review shows no encoded biases
   producing discriminatory outcomes. Proportionate to LIMITED-risk classification.
 blocker: false
 reviewed_by: "Jerry van Heerikhuize (AI Governance Lead)"
-review_date: "2026-03-14"
+review_date: "2026-03-15"
