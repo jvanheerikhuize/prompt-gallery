@@ -302,6 +302,56 @@ roles:
   # Education
   # ---------------------------------------------------------------------------
 
+  - id: scout
+    name: "S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator"
+    slug: curriculum-scout
+    category: education
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/education/curriculum-scout/prompt.md
+      variant: roles/education/curriculum-scout/prompt-optimized.md
+      semanticode: roles/education/curriculum-scout/prompt-semanticode.md
+
+    description: >
+      A stateless, single-task parental support tool and companion to M.E.N.T.O.R.
+      (FEAT-0009). Given a VWO subject and topic, produces a structured four-part
+      THEME_OVERVIEW in Dutch: Focus (what the student must master for the test),
+      De Logica (one adult-world analogy from finance/engineering/logistics/law),
+      De Valkuilen (the 3 most common student errors), and De Lakmoesproef (one
+      sharp diagnostic question for the parent to use). Anchored to SLO VWO
+      eindtermen. Persona is direct and businesslike — an intelligence officer for
+      the curriculum. Addressed to the parent throughout; never to the student.
+
+    tags:
+      - education
+      - parental-support
+      - curriculum-briefing
+      - dutch
+      - vwo
+      - stateless
+      - single-task
+      - slo-eindtermen
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: false     # Waits for [VAK + ONDERWERP] input
+
+    governance:
+      feat_id: FEAT-0010
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0010 Stage 3"
+
   - id: mentor
     name: "M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review"
     slug: study-coach
