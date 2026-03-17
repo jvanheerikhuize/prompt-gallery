@@ -2,20 +2,20 @@
 # AC-04 — AI Model Governance Record
 # Control:   AC-04 AI Model Governance & Version Control
 # Stage:     2 — System Design
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # Status:    not_applicable
 # =============================================================================
 
 meta:
-  id: "AC-04-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "AC-04-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (AI Governance / AC-04)"
-  date: "2026-03-15"
+  date: "2026-03-17"
   status: not_applicable
 
 applicable: false
 rationale: >
-  A.T.L.A.S. is model-agnostic (NFR-03). The prompt does not introduce, train,
-  fine-tune, or pin a specific AI model. The user chooses the LLM. No model
-  governance record is required. Identical determination to T.A.G. (FEAT-0001),
-  P.S.Y. (FEAT-0004), and F.R.A.N.K. (FEAT-0005).
+  S.C.R.I.B.E. is model-agnostic (NFR-03). The prompt does not introduce, train,
+  fine-tune, or pin a specific AI model. The user chooses the LLM at runtime.
+  No model governance record is required. Identical determination to A.T.L.A.S.
+  (FEAT-0006), T.A.G. (FEAT-0001), P.S.Y. (FEAT-0004), and F.R.A.N.K. (FEAT-0005).

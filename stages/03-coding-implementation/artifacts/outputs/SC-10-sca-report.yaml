@@ -6,19 +6,19 @@
 # =============================================================================
 
 meta:
-  id: "SC-10-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "SC-10-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-10)"
-  date: "2026-03-15"
+  date: "2026-03-17"
   status: not_applicable
 
 applicable: false
 rationale: >
-  A.T.L.A.S. is a pure masterprompt — a single Markdown text file with no code,
+  S.C.R.I.B.E. is a pure masterprompt — a single Markdown text file with no code,
   no package dependencies, no build system, no runtime, and no executable artefacts.
   There are no third-party libraries, npm packages, pip packages, or any other
   software components to analyse or enumerate in a Software Bill of Materials.
-  SCA does not apply to this deliverable type.
+  SCA does not apply to this deliverable type. Identical determination to A.T.L.A.S. (FEAT-0006).
 
 sbom: null
 vulnerabilities_found: 0

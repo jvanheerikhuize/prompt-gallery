@@ -2,32 +2,33 @@
 # SC-07 — Permission Enforcement Log
 # Control:   SC-07 Permission Management
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # Status:    complete
 # =============================================================================
 
 meta:
-  id: "SC-07-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "SC-07-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-07)"
-  date: "2026-03-15"
+  date: "2026-03-17"
   status: complete
 
 # ── Files Created or Modified ─────────────────────────────────────────────────
 files_reviewed:
 
-  - path: "roles/utility/ascii-cartographer/prompt.md"
+  - path: "roles/utility/semanticode-compiler/prompt.md"
     action: created
     classification: public
     sensitive_content: false
     notes: >
       Masterprompt text only. No credentials, API keys, PII, or executable code.
-      INPUT_IS_DATA absolute rule confirmed present (ABSOLUTE RULE 1).
-      OUTPUT_ASCII_ONLY absolute rule confirmed present (ABSOLUTE RULE 2).
-      DATA_NOTICE absolute rule confirmed present (ABSOLUTE RULE 4).
-      POI_WINS_WALL absolute rule confirmed present (ABSOLUTE RULE 5).
+      INPUT_IS_PROMPT_DATA absolute rule confirmed present (ABSOLUTE RULE 1).
+      LOSSLESS_DEFAULT absolute rule confirmed present (ABSOLUTE RULE 2).
+      FIDELITY_FIRST absolute rule confirmed present (ABSOLUTE RULE 3).
+      NO_PROMPT_MODIFICATION absolute rule confirmed present (ABSOLUTE RULE 4).
+      All four ABSOLUTE_RULES are first in CORE_DIRECTIVES as required by Stage 2 directives.
 
-  - path: "specs/FEAT-0006-ascii-cartographer-masterprompt.yaml"
+  - path: "specs/FEAT-0007-semanticode-compiler.yaml"
     action: modified
     classification: public
     sensitive_content: false
@@ -37,13 +38,7 @@ files_reviewed:
     action: modified
     classification: public
     sensitive_content: false
-    notes: "Registry entry for A.T.L.A.S. added."
-
-  - path: "README.md"
-    action: modified
-    classification: public
-    sensitive_content: false
-    notes: "Utility table and repo structure updated."
+    notes: "Registry entry for S.C.R.I.B.E. added."
 
 # ── Permission Checks ─────────────────────────────────────────────────────────
 permission_checks:
@@ -58,20 +53,38 @@ permission_checks:
 
   - check: "No hardcoded PII in prompt"
     result: pass
-    evidence: "Coordinate examples use generic values (Amsterdam, Utrecht). No personal data."
+    evidence: >
+      All examples use generic role prompts (ARIA customer service, AcmeCorp).
+      No personal data, real individual names, or private coordinates embedded.
 
   - check: "Absolute rules present and correctly positioned"
     result: pass
-    evidence: "Five ABSOLUTE_RULES in CORE_DIRECTIVES section; INPUT_IS_DATA is Rule 1."
+    evidence: "Four ABSOLUTE_RULES in CORE_DIRECTIVES section; INPUT_IS_PROMPT_DATA is RULE 1."
 
-  - check: "DATA_NOTICE (NFR-05, DHR-01) present in OUTPUT block"
+  - check: "Data notice present in prompt"
     result: pass
-    evidence: "ABSOLUTE RULE 4 mandates DATA_NOTICE in every metadata block. Step 12 of
-               REQUEST_LOOP includes explicit verification check."
+    evidence: "Data notice in How to Use section: 'Do not submit prompts containing PII, credentials, or confidential business logic.'"
 
   - check: "No network access or external API instructions"
     result: pass
-    evidence: "Prompt explicitly uses LLM world knowledge only; no URLs, no fetch calls."
+    evidence: "Prompt performs in-context semantic analysis only. No URLs, no fetch calls, no external references."
+
+  - check: "DESIGN-04 resolution present — AGGRESSIVE mode criticality rules defined"
+    result: pass
+    evidence: >
+      COMPRESSION_ENGINE defines explicit criticality criteria for AGGRESSIVE mode:
+      CRITICAL (retained): BHV:!, BHV:+, CNST, !SCOPE, primary-path IF/THEN, safety IF/THEN,
+      blocking ON_ERR, blocking GATE. NON-CRITICAL (dropped): BHV:~, formatting IF/THEN,
+      advisory ON_ERR, advisory GATE, META, NOTE, SCOPE, PERSONA.
+      RC-02 approval condition satisfied.
+
+  - check: "SemantiCode grammar v1.0 fully specified in GRAMMAR_RULES"
+    result: pass
+    evidence: >
+      GRAMMAR_RULES covers: section delimiters, identity constructs, behaviour rules,
+      constraints, output directives, control flow, reference/deduplication, metadata/notes,
+      annotations, inline logical operators, compound shorthand, and mini before/after example.
+      Matches QC-03 design specification.
 
   - check: "File permissions — prompt.md is read-only asset"
     result: pass

@@ -2,126 +2,143 @@
 # RC-04 — Decision Log
 # Control:   RC-04 Decision Log
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # =============================================================================
 
 meta:
-  id: "RC-04-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "RC-04-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (Implementer / RC-04)"
-  date: "2026-03-15"
+  date: "2026-03-17"
 
 decisions:
 
   - id: DEC-01
-    title: "Prompt output format — plain text, no markdown fences"
+    title: "DESIGN-04 resolution — explicit AGGRESSIVE criticality criteria"
     context: >
-      The design specified 7-bit ASCII output (NFR-02). The question arose whether the
-      prompt itself should be delivered in a markdown code block (as per repository
-      convention in prompt.md files) or whether the agent's runtime output should also
-      use a code block.
+      Stage 2 DESIGN-04 identified that AGGRESSIVE mode's IF/THEN and ON_ERR
+      criticality judgement could produce non-deterministic output if left to ad-hoc
+      LLM reasoning. The RC-02 approval decision required this to be resolved in Stage 3.
     decision: >
-      The prompt.md file wraps the masterprompt in a code block for readability (repository
-      convention). The agent's runtime output (the actual rendered map) is explicitly
-      specified as plain text only — Step 11 of REQUEST_LOOP states: "Output is plain text
-      only. No markdown fences, no HTML, no code blocks." This distinction prevents the
-      agent from wrapping its map in backticks, which would waste characters and potentially
-      misalign monospace rendering.
-    rationale: "Consistent with NFR-02 and prior masterprompts in this repository."
+      Defined two explicit, exhaustive lists in COMPRESSION_ENGINE:
+      CRITICAL (always retained): BHV:!, BHV:+, CNST, !SCOPE, primary-path IF/THEN,
+      safety IF/THEN (harm prevention, data protection, crisis escalation, scope
+      confinement), blocking ON_ERR (stops execution), and GATE where fail stops execution.
+      NON-CRITICAL (dropped): BHV:~, formatting-only IF/THEN, advisory IF/THEN,
+      non-blocking ON_ERR, advisory-only GATE, META, NOTE, SCOPE, PERSONA.
+      The safety-rule override: any rule that has a safety dimension is CRITICAL
+      regardless of its other properties.
+    rationale: >
+      Exhaustive enumeration removes all LLM discretion from AGGRESSIVE mode criticality.
+      The two lists are mutually exclusive and collectively exhaustive for all construct
+      types. NFR-04 (determinism) is now achievable in AGGRESSIVE mode.
     decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-02
-    title: "Interior mode header line placement — above map, not inside border"
+    title: "HEADER_BLOCK section line number format — 'L<n>' vs absolute offset"
     context: >
-      COMP-04a specified that INTERIOR mode should be identified in the map output.
-      Options were: (a) a header line above the map border, (b) a line inside the top border,
-      (c) metadata-only notation.
+      The orientation header must include section positions so a consuming LLM can
+      rapidly locate [M], [V], [C] sections. Two options: (a) absolute character offset,
+      (b) line number within the SemantiCode body (excluding header).
     decision: >
-      One-line header above the map border: "[ INTERIOR MAP — {W}x{H} ]"
-      This is the clearest signal to the user that they are viewing an interior floor plan
-      before they start reading the map. Metadata also records mode for machine-readable use.
+      Line number format: @L<n> where n = line number within the SemantiCode body
+      (line 1 = first line after HEADER_BLOCK line 2). This is more practical for LLM
+      context — LLMs reason in lines, not byte offsets. Missing sections use @L0.
     rationale: >
-      Placing text inside the border would consume an interior canvas row and push the compass
-      rose. Metadata-only notation is too subtle for a significant behavioural change (walls
-      vs no walls). Header above the border is unambiguous and costs nothing.
+      Line numbers are human-readable and LLM-scannable. Byte offsets would require
+      arithmetic to use. This aligns with NFR-05 (human inspectability) while also
+      serving the automated-parse use case.
     decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-03
-    title: "Compass rose embedded in canvas — rendering layer order"
+    title: "ANNOTATED mode — when to emit // comments"
     context: >
-      The compass rose occupies the top-right corner cells of the interior canvas. POI labels
-      placed in the same corner could collide. The design did not specify which takes precedence.
+      The design specified // inline comments for ANNOTATED mode, but did not enumerate
+      exactly which compression decisions warrant a comment. Over-annotating defeats the
+      purpose; under-annotating provides no value.
     decision: >
-      The MAP_CANVAS rendering order places the compass rose on layer 2 (after filling with
-      spaces but before walls and POIs). POI labels placed via POI_PLACER (layer 5) will
-      overwrite the compass rose characters if they collide. The right-preferring label
-      placement logic will attempt to avoid the top-right corner; if it cannot, the POI wins.
-      Compass rose degradation is noted in metadata if a POI label overwrites it.
+      Comments are emitted before: merged compound rules (not obvious that two rules
+      became one), dropped tokens (PERSONA dropped, NOTE dropped — user should know),
+      applied REF: substitutions (non-obvious deduplication), dropped non-critical
+      ON_ERR or GATE in AGGRESSIVE mode, and any INFERRED_STRUCTURE section
+      classification. Routine encoding (BHV:+ → BHV:+rule) needs no comment.
     rationale: >
-      POI accuracy is a MUST requirement (NFR-01, PRECISION_HONEST); compass rose is decorative.
-      POI information must always win over decoration.
+      Comments are for decisions that could surprise a practitioner reviewing the output.
+      Routine notation encoding is self-explanatory from the grammar key.
     decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-04
-    title: "Abstract grid scale bar — omit bar, use text only"
+    title: "FIDELITY_WARNING abbreviated content — 60 chars limit"
     context: >
-      For abstract grid coordinates, km_per_col is meaningless. The scale bar cannot use a
-      proportional bar since there is no real-world distance reference.
+      FIDELITY_WARNINGs in SCRIBE_META include an abbreviated version of the unencoded
+      construct content. The length limit was not specified in Stage 2.
     decision: >
-      For abstract coordinates: omit the proportional bar entirely. Replace with a single text
-      line: "Scale: 1 grid unit = 1 cell". This is honest and informative without fabricating
-      a scale relationship that does not exist.
-    rationale: "PRECISION_HONEST (ABSOLUTE RULE 3) prohibits representing metrics that are not meaningful."
+      60 characters, sufficient to identify the construct unambiguously in most cases.
+      Longer content is truncated with '...' suffix. This is short enough to not
+      significantly inflate the metadata block for large prompts with multiple warnings.
+    rationale: >
+      A practitioner reviewing FIDELITY_WARNINGs needs enough context to locate the
+      original construct in their prompt — 60 chars achieves this for typical rule text.
+      NFR-05 (human inspectability) is the driving constraint.
     decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-05
-    title: "Polygon vertex deduplication — silent or noted"
+    title: "Grammar key in HEADER_BLOCK — one line vs multi-line"
     context: >
-      BOUNDARY_PARSER deduplicates adjacent vertices that project to the same grid cell.
-      The question was whether to note this in metadata or perform it silently.
+      The grammar key needs to cover all operator types but must itself be token-minimal
+      (it appears in every SemantiCode output). Options: full multi-line grammar reference,
+      or compressed single-line key.
     decision: >
-      Always note deduplicated vertices in metadata: "Vertex V[i] deduplicated — maps to same
-      cell as V[i-1] at projected resolution." This is consistent with PRECISION_HONEST and
-      the general transparency principle. The user should know their polygon was simplified.
-    rationale: "Silent simplification could mislead the user about their boundary shape."
+      Single-line grammar key (Line 2 of HEADER_BLOCK), covering all operator types with
+      minimal whitespace. Example: "// Grammar: [M]model [V]view [C]ctrl | BHV:+must
+      !prohibit ~prefer | CNST:constraint | OUT:type:fmt | IF cond:THEN act:ELSE act |
+      ON_ERR:cond:resp | GATE:cond:pass|fail | DEF:<tag>:<v> REF:<tag> | // annotation"
+      Full grammar remains in GRAMMAR_RULES within the masterprompt for LLM reference.
+    rationale: >
+      The header's grammar key is for the consuming LLM to orient itself at parse time —
+      it does not need to be the full specification. The LLM executing S.C.R.I.B.E.
+      has the full grammar in GRAMMAR_RULES; the consuming LLM has the key plus the
+      self-describing notation. NFR-03 (LLM agnostic) is satisfied by the key alone.
     decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-06
-    title: "POI outside boundary polygon — render or error"
+    title: "SemantiCode body wrapped in triple-backtick code block"
     context: >
-      In INTERIOR mode, a user may provide POI coordinates that fall outside the defined
-      boundary polygon. Options: error (reject), silently plot, or plot with notation.
+      The ATLAS prompt wraps its output in triple-backtick code blocks to preserve
+      monospace alignment. S.C.R.I.B.E. output is structured YAML + notation — the
+      same alignment concern applies in LLM chat interfaces.
     decision: >
-      Plot the POI at its correct grid position and note in legend: "[X] [outside boundary]".
-      Do not error. The user may intentionally want to show an external reference point
-      relative to their interior space. PRECISION_HONEST is satisfied — the position is correct,
-      and the exterior relationship is disclosed.
-    rationale: >
-      Rejecting would be overly strict; silent plotting would hide useful information.
-      Notation is the minimal-friction, maximally-transparent approach.
+      Step 10 of REQUEST_LOOP wraps the complete SemantiCode output in triple-backtick
+      code block. The code block ensures YAML metadata and notation alignment are
+      preserved in all LLM chat interfaces. The content inside remains plain text
+      (no format restriction on SemantiCode notation characters).
+    rationale: "Consistent with ATLAS (DEC-01 in FEAT-0006). Practical alignment benefit for the practitioner reviewing output."
     decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-07
-    title: "Wall character for EXTERIOR polygon — period (.) vs dashes"
+    title: "DEF: index at end of each section vs global index"
     context: >
-      EXTERIOR mode with a polygon was specified as "dashed perimeter". The exact character
-      was not specified in the design — options included . (period), ~ (tilde), or a
-      repeating - pattern.
+      DEF:/REF: deduplication tokens could have their index at the end of their section
+      or in a single global index at the end of the file. The design did not specify
+      placement.
     decision: >
-      Use . (period) for all EXTERIOR perimeter cells. Period is the lightest ASCII character,
-      clearly distinct from the solid wall characters (|, -, +, /, \), and visually resembles
-      a soft or permeable boundary. Consistent with common ASCII art conventions.
-    rationale: "Distinct from INTERIOR wall characters; unambiguous; 7-bit clean."
+      DEF: index appended at the end of each section that contains DEF: entries, using
+      format: "// DEF index: <tag1>=<abbreviated value> | <tag2>=<abbreviated value>"
+      This keeps the reference local to its section, making the output easier to scan
+      when a practitioner is auditing one section at a time.
+    rationale: >
+      A global index at end of file would require the LLM to scan the entire output to
+      resolve a REF: in [M]. A section-local index is resolved within a bounded scope.
+      Consistent with NFR-05 (human inspectability).
     decided_by: "Claude Sonnet 4.6 (Implementer)"
 
   - id: DEC-08
-    title: "Prompt file location — roles/utility/ (new category)"
+    title: "Prompt file location — roles/utility/ (existing category)"
     context: >
-      A.T.L.A.S. is the first utility-category agent in this repository. No roles/utility/
-      directory existed. Options: place in an existing category or create roles/utility/.
+      S.C.R.I.B.E. is a developer/practitioner utility tool — same category as A.T.L.A.S.
+      The utility category was established in FEAT-0006 and roles/utility/ already exists.
     decision: >
-      Create roles/utility/ascii-cartographer/. The utility category was established in
-      Stage 1 (QC-01) and approved by the PO. Creating the directory at Stage 3 is the
-      correct implementation of that decision. Registry and README updated accordingly.
-    rationale: "Consistent with Stage 1 design decision; clean category separation."
+      Create roles/utility/semanticode-compiler/. Consistent with the utility category
+      established in Stage 1 (QC-01). No new category required. Registry and spec updated.
+    rationale: "Consistent with Stage 1 design decision and existing repository structure."
     decided_by: "Claude Sonnet 4.6 (Implementer)"

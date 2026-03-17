@@ -6,18 +6,19 @@
 # =============================================================================
 
 meta:
-  id: "SC-11-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "SC-11-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-11)"
-  date: "2026-03-15"
+  date: "2026-03-17"
   status: not_applicable
 
 applicable: false
 rationale: >
-  A.T.L.A.S. is a prompt-only deliverable. It requires no containers, Docker images,
+  S.C.R.I.B.E. is a prompt-only deliverable. It requires no containers, Docker images,
   Kubernetes manifests, Terraform modules, CloudFormation templates, Helm charts, or
   any other infrastructure-as-code artefacts. It runs entirely within an LLM session
   with no deployment infrastructure. Container and IaC scanning does not apply.
+  Identical determination to A.T.L.A.S. (FEAT-0006).
 
 container_scan: null
 iac_scan: null

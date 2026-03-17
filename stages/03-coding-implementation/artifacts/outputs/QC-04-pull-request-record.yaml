@@ -2,21 +2,21 @@
 # QC-04 — Pull Request Record
 # Control:   QC-04 Pull Request Creation & Review
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # =============================================================================
 
 meta:
-  id: "QC-04-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "QC-04-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (Implementer / QC-04)"
-  date: "2026-03-15"
+  date: "2026-03-17"
 
 # ── PR Classification ─────────────────────────────────────────────────────────
 pr_tier: LOW
 tier_rationale: >
   Risk tier LOW (confirmed RC-01). Utility category — no safety, health, or legal
-  decisions. No vulnerable population. No sensitive data processed. Single-file
-  prompt deliverable. Simpler than all prior masterprompts in this repository.
+  decisions. No vulnerable population. No sensitive data processed by default.
+  Single-file prompt deliverable. Consistent with A.T.L.A.S. (FEAT-0006) classification.
   PR can be approved by Lead Architect alone; no additional safety reviewer required.
 
 required_approvals: 1
@@ -25,10 +25,9 @@ required_approvers:
 
 # ── Files in PR ───────────────────────────────────────────────────────────────
 files_changed:
-  - "roles/utility/ascii-cartographer/prompt.md"          # created
-  - "roles/registry.yaml"                                  # modified
-  - "README.md"                                            # modified
-  - "specs/FEAT-0006-ascii-cartographer-masterprompt.yaml" # stage_reached updated
+  - "roles/utility/semanticode-compiler/prompt.md"                             # created
+  - "roles/registry.yaml"                                                       # modified
+  - "specs/FEAT-0007-semanticode-compiler.yaml"                                 # stage_reached updated
   - "stages/03-coding-implementation/artifacts/outputs/SC-07-permission-enforcement-log.yaml"
   - "stages/03-coding-implementation/artifacts/outputs/QC-05-quality-gate-report.yaml"
   - "stages/03-coding-implementation/artifacts/outputs/SC-08-post-guardrail-scan.yaml"
@@ -41,11 +40,11 @@ files_changed:
 
 # ── Pre-Merge Checklist ───────────────────────────────────────────────────────
 pre_merge_checklist:
-  - check: "QC-05 quality gate — 20/20 checks passed"
+  - check: "QC-05 quality gate — 19/19 checks passed"
     status: pass
   - check: "SC-07 permission enforcement — 0 violations"
     status: pass
-  - check: "SC-08 post-guardrail scan — 0 blockers"
+  - check: "SC-08 post-guardrail scan — 0 blockers (2 informational)"
     status: pass
   - check: "SC-09 secrets scan — clean"
     status: pass
@@ -57,16 +56,16 @@ pre_merge_checklist:
     status: pass
   - check: "RC-04 decision log — 8 decisions recorded"
     status: pass
-  - check: "roles/registry.yaml updated with A.T.L.A.S. entry"
+  - check: "DESIGN-04 resolved — AGGRESSIVE mode criticality criteria defined in prompt"
     status: pass
-  - check: "README.md updated with Utility table and repo structure"
+  - check: "roles/registry.yaml updated with S.C.R.I.B.E. entry"
     status: pass
   - check: "Canonical spec stage_reached updated to 3"
     status: pass
 
 # ── Review Outcome ────────────────────────────────────────────────────────────
 approved_by: "Jerry van Heerikhuize (Lead Architect)"
-approval_date: "2026-03-15"
+approval_date: "2026-03-17"
 merge_commit: "—"   # populated after commit
 
 stage_3_exit_clear: true

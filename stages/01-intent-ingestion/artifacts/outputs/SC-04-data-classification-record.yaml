@@ -2,73 +2,89 @@
 # SC-04 — Data Classification Record
 # Control:   SC-04 Data Classification Screening
 # Stage:     1 — Intent Ingestion
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # =============================================================================
 
 meta:
-  id: "SC-04-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "SC-04-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-04)"
-  date: "2026-03-15"
+  date: "2026-03-17"
 
 # ── Data Classification ───────────────────────────────────────────────────────
 classification: public
-elevation_trigger: none   # No automatic elevation; see conditional note below
+elevation_trigger: conditional   # Elevates to INTERNAL if input prompt contains PII
 
 data_elements_assessed:
 
-  - element: "Geographic coordinates (lat/lon of public features)"
+  - element: "Input prompt document (MVC-structured)"
     classification: public
     rationale: >
-      Coordinates of cities, landmarks, geographic features, or custom-defined
-      points in public or game-world contexts are public data by default. No
-      personal data concerns.
+      The primary input to S.C.R.I.B.E. is a masterprompt document containing
+      agent persona definitions, behavioural rules, output directives, and control
+      flow logic. These are system design artefacts — not personal data. By default,
+      prompt documents in this repository contain no personal information.
+      Classification: PUBLIC.
 
-  - element: "User-provided coordinates of private/personal locations"
-    classification: conditional_personal
+  - element: "Input prompt containing embedded PII (conditional)"
+    classification: conditional_internal
     rationale: >
-      Under GDPR Art. 4(1), precise location data can constitute personal data
-      if it can be used to identify or locate a natural person (home address,
-      workplace, frequented locations). If the user provides such coordinates,
-      the data becomes PERSONAL — classification elevates to INTERNAL.
-      The agent cannot determine this from coordinates alone; the user controls
-      what they share. The prompt includes a notice advising users to avoid
-      sharing identifying location data.
-    gdpr_category: "Art. 4(1) personal data (location) — conditional"
-    gdpr_special_category: false   # No Art. 9 — location alone is not special category
+      Under GDPR Art. 4(1), if a user submits a prompt that itself contains personal
+      data — for example, a customer-service prompt referencing real customer names,
+      a healthcare prompt with patient-scenario examples, or an HR prompt with
+      real employee information — that personal data is processed during compilation.
+      S.C.R.I.B.E. cannot determine from the prompt structure whether PII is present;
+      the user controls what they submit. If personal data is present, classification
+      elevates to INTERNAL. The prompt includes a notice advising users to avoid
+      embedding personal data in prompts submitted for compilation.
+    gdpr_category: "Art. 4(1) personal data — conditional; depends on prompt content"
+    gdpr_special_category: false   # No Art. 9 involvement by default
     user_controlled: true
 
-  - element: "Named labels assigned to POIs"
+  - element: "SemantiCode output stream"
     classification: public
     rationale: >
-      POI labels are user-provided strings (e.g., "Coffee Shop", "City Centre",
-      "Spawn Point"). These are typically descriptive, not personally identifying.
-      If a user names a POI with their own name or address, that would be
-      personal data — same as coordinate case above; user-controlled.
+      The SemantiCode output is a compressed notation encoding of the input prompt.
+      It inherits the classification of the input prompt: PUBLIC by default,
+      conditional elevation if the input contained PII. No new personal data is
+      introduced by the compilation process.
+
+  - element: "Compilation metadata (token counts, compression ratios, fidelity flags)"
+    classification: public
+    rationale: >
+      Metadata produced by S.C.R.I.B.E. (FR-07) contains only technical metrics
+      (character counts, compression percentages, construct counts). No personal
+      data. PUBLIC classification.
 
 # ── Data Handling Requirements ─────────────────────────────────────────────────
 data_handling_requirements:
   - id: DHR-01
-    requirement: "Include a brief data notice advising users not to share personally identifying location data (home address, specific private locations)"
-    rationale: "GDPR best practice; user-controlled risk mitigation for conditional personal data case"
+    requirement: >
+      Include a brief data notice in the S.C.R.I.B.E. prompt advising users
+      not to embed personal data (real individual names, contact details,
+      case-specific PII) in prompts submitted for compilation.
+    rationale: "GDPR best practice; user-controlled risk mitigation for conditional PII case"
 
   - id: DHR-02
-    requirement: "No coordinates or labels are stored, aggregated, or processed beyond the single request"
-    rationale: "Stateless single-task design; in-context only"
+    requirement: >
+      No input prompt content, SemantiCode output, or compilation metadata is
+      stored, aggregated, or processed beyond the single in-context request.
+    rationale: "Stateless single-task design; in-context only — consistent with all repository agents"
 
 # ── GDPR Assessment ───────────────────────────────────────────────────────────
 gdpr_assessment:
-  personal_data: conditional   # Default: NO. If personal locations provided: YES.
+  personal_data: conditional   # Default: NO. If PII embedded in input prompt: YES.
   special_category: false
   dpia_required: false
   rationale: >
-    By default, A.T.L.A.S. processes geographic coordinates of locations (not persons).
-    This is public data. GDPR is only engaged if the user provides location data
-    that could identify a natural person — this is user-controlled and out-of-scope
-    for a cartography utility. A data notice (DHR-01) is appropriate and sufficient.
-    Full PIA is not required at Stage 1 for a LOW risk / PUBLIC classification.
+    By default, S.C.R.I.B.E. processes prompt documents that are system design
+    artefacts — not personal data. GDPR is only engaged if the user embeds
+    personal data in the submitted prompt. This is user-controlled and analogous
+    to any text-processing tool that accepts user-supplied content.
+    A data notice (DHR-01) is appropriate and sufficient for a LOW risk / PUBLIC
+    default classification. Full PIA is not required at Stage 1.
 
 # ── Security Architect Sign-off ───────────────────────────────────────────────
 reviewed_by: "Jerry van Heerikhuize (Security Architect)"
-review_date: "2026-03-15"
+review_date: "2026-03-17"
 approved: true

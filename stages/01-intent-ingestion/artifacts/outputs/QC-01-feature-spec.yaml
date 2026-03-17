@@ -2,291 +2,307 @@
 # QC-01 — Feature Specification
 # Control:   QC-01 Specification Validation
 # Stage:     1 — Intent Ingestion
-# Source CR: CR-0006
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Source CR: CR-0007
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # =============================================================================
 
 meta:
-  id: "QC-01-FEAT-0006"
-  feature: "FEAT-0006"
-  source_cr: "CR-0006"
+  id: "QC-01-FEAT-0007"
+  feature: "FEAT-0007"
+  source_cr: "CR-0007"
   produced_by: "Claude Sonnet 4.6 (QC Analyst / QC-01)"
-  date: "2026-03-15"
+  date: "2026-03-17"
   status: approved
 
 # ── Agent Identity ─────────────────────────────────────────────────────────────
 agent:
-  name: "A.T.L.A.S."
-  expansion: "ASCII Topographic Layout and Surveying System"
+  name: "S.C.R.I.B.E."
+  expansion: "Semantic Compression and Reasoning-Informed Brevity Encoder"
   category: utility
-  slug: ascii-cartographer
+  slug: semanticode-compiler
   persona: >
-    A precise, methodical cartographic instrument. A.T.L.A.S. is not conversational —
-    it receives coordinates and returns a map. Tone is terse, technical, and confident:
-    a professional instrument that does its job without ceremony. It may include brief
-    metadata commentary on map precision constraints (e.g., noting character-grid
-    resolution limits) but does not chat.
+    A precise, methodical compilation instrument. S.C.R.I.B.E. is not
+    conversational — it receives a structured prompt and returns a SemantiCode
+    logic stream. Tone is terse, technical, and systematic: a professional
+    compiler that processes input and emits output without ceremony.
+    It may include brief metadata commentary on compression ratio and fidelity
+    warnings but does not engage in dialogue.
 
 # ── Architecture Note ─────────────────────────────────────────────────────────
 architecture_note: |
-  A.T.L.A.S. is a SINGLE-TASK STATELESS SERVICE AGENT. It does not implement:
+  S.C.R.I.B.E. is a SINGLE-TASK STATELESS SERVICE AGENT. It does not implement:
   - Session lifecycle (no phases, no Check-in → Close)
   - SESSION_STATE or in-context state management
   - Console commands or meta-command interface
   - Multi-turn conversation management
-  Structure is simpler than FRANK/P.S.Y.: CORE_DIRECTIVES → RENDERING_ENGINE →
-  OUTPUT_FORMAT → CONTROLLER. One request → one map.
+  Structure mirrors A.T.L.A.S.: CORE_DIRECTIVES → COMPILATION_ENGINE →
+  OUTPUT_FORMAT → CONTROLLER. One prompt in → one SemantiCode stream out.
 
 # ── Functional Requirements ───────────────────────────────────────────────────
 requirements:
   functional:
 
     - id: FR-01
-      title: Cartographer Persona — A.T.L.A.S.
+      title: "Compiler Persona — S.C.R.I.B.E."
       description: >
-        Agent operates as a precise, methodical ASCII cartography instrument.
-        Not conversational — receives structured coordinate input, returns a map.
-        Terse, technical, professional. May note precision constraints in map metadata.
-        Does not engage in therapeutic, advisory, or open-ended conversation.
+        Agent operates as a precise, methodical semantic compilation instrument.
+        Not conversational — receives MVC-structured prompt input, returns a
+        SemantiCode logic stream. Terse, technical, professional. May note
+        compression ratio and semantic fidelity warnings in output metadata.
+        Does not engage in advisory, clarifying, or open-ended conversation.
       priority: must
 
     - id: FR-02
-      title: Coordinate Input Parsing
+      title: "MVC Prompt Parser"
       description: >
-        Accepts geographic coordinates in: (a) WGS84 decimal degrees
-        (e.g., 52.3676, 4.9041), (b) degrees-minutes-seconds DMS
-        (e.g., 52°22'3"N 4°54'15"E), (c) abstract/grid coordinates
-        (e.g., X:100 Y:250). Parses named POI lists in common formats:
-        plain text, comma-separated, JSON-like. Reports parse errors clearly.
+        Accepts human-readable, MVC/XML-structured prompts as input. Identifies
+        and extracts the three canonical sections: (a) MODEL block — agent identity,
+        persona, core behaviours, and constraints; (b) VIEW block — output format
+        rules, presentation directives, and rendering instructions; (c) CONTROLLER
+        block — routing logic, decision trees, flow-control rules, and conditional
+        behaviours. Handles well-formed XML-like MVC tags and also common
+        variations (nested blocks, inline comments, section aliases).
+        Reports parse errors clearly, identifying the offending section.
       priority: must
 
     - id: FR-03
-      title: Bounding Box Computation
+      title: "Semantic Extraction"
       description: >
-        Automatically derives map extent (bounding box) from the full set of
-        provided coordinates, with a configurable margin (default: 10% of
-        extent on each side). User may also specify explicit bounds.
-        Handles edge cases: single-point input (renders point-at-centre with
-        default radius), all-collinear points (adds margin to degenerate axis).
+        For each parsed MVC section, extract all semantic constructs into a
+        normalised intermediate representation before compression:
+        - Identity declarations (role, name, persona)
+        - Behavioural rules (must/should/must-not)
+        - Output format directives (structure, sequence, formatting rules)
+        - Control flow logic (conditionals, loops, escalation paths)
+        - Constraints and prohibitions
+        - Dependencies and assumptions
+        Duplicate and redundant constructs are identified at this stage and
+        flagged for consolidation.
       priority: must
 
     - id: FR-04
-      title: Proportional ASCII Grid Rendering
+      title: "SemantiCode Logic Stream Compilation"
       description: >
-        Maps coordinates to a rectangular ASCII character grid such that
-        relative positions are proportionally accurate. Horizontal and vertical
-        scale are equalized to avoid aspect-ratio distortion. Default grid:
-        72 columns × 36 rows. User may request compact (40×20) or detailed
-        (120×60) output. Equirectangular projection used for geographic
-        coordinates at map extents ≤ ~1000 km.
+        Compiles the normalised intermediate representation into SemantiCode
+        notation — a structured, abbreviated logic stream using the SemantiCode
+        v1.0 grammar (defined in Stage 2). Compilation rules include:
+        - Section headers: [M], [V], [C] for MODEL, VIEW, CONTROLLER
+        - Role/identity: ROLE:, PERSONA:
+        - Behavioural rules: BHV: with + (required), ! (prohibited), ~ (preferred)
+        - Output directives: OUT: with type and format specifiers
+        - Control flow: IF/THEN/ELSE in condensed single-line form
+        - Repeated constructs: reference tokens →REF:<tag> to avoid duplication
+        - Constraints: CNST: prefix
+        Compression applies abbreviation, symbol substitution, and redundancy
+        elimination while preserving all semantic content.
       priority: must
 
     - id: FR-05
-      title: POI Symbol Placement and Labelling
+      title: "Compression Level Control"
       description: >
-        Each named POI is rendered as a symbol at its computed grid position.
-        Default symbol: * (asterisk). User may assign custom single-character
-        symbols per POI. Label placed adjacent to symbol (right-preferring,
-        falls back to left/above/below to avoid overlap). Collision detection:
-        if two POIs map to the same grid cell, both are noted in the legend with
-        a shared composite symbol (e.g., [A,B]).
+        Supports three compression modes, selected via keyword in the request:
+        (a) LOSSLESS (default) — full semantic fidelity; no content dropped;
+            target ≥35% token reduction vs original.
+        (b) BALANCED — minor elision of verbose rationale text and examples;
+            semantic behaviour unchanged; target ≥55% token reduction.
+        (c) AGGRESSIVE — maximum compression; elides all prose, merges
+            related rules, drops non-critical metadata; target ≥70% token
+            reduction; may require a more capable LLM to faithfully execute.
+        Default mode if not specified: LOSSLESS.
       priority: must
 
     - id: FR-06
-      title: Compass Rose
+      title: "SemantiCode Orientation Header"
       description: >
-        A minimal compass rose is rendered in the top-right corner of the map:
-        N↑ at minimum, with optional full cardinal display (N/S/E/W). North
-        is always up. For abstract/grid coordinates, compass rose is replaced
-        by axis labels (X→ Y↑).
+        Every SemantiCode output begins with a brief orientation block enabling
+        any capable LLM to parse and execute it without prior knowledge of the
+        format. The header includes: SemantiCode version, compression mode used,
+        section index ([M]/[V]/[C] positions), and a one-line grammar key.
+        The header itself is token-minimal and does not substantially inflate output size.
       priority: must
 
     - id: FR-07
-      title: Scale Bar
+      title: "Compression Ratio Reporting"
       description: >
-        A scale bar is rendered below the map indicating the distance represented
-        by N characters in the map (e.g., "|----| = 25 km"). Units: km for
-        geographic coordinates ≥ 1 km extent; m for smaller extents. Omitted
-        for abstract/grid coordinates (replaced by "1 unit = 1 grid cell" note).
+        After the SemantiCode output, S.C.R.I.B.E. appends a compact metadata block:
+        - Estimated original token count (chars ÷ 4 approximation)
+        - Estimated SemantiCode token count
+        - Compression ratio achieved (%)
+        - Compression mode used
+        - Semantic fidelity assessment (full / partial — with detail if partial)
+        - Count of constructs extracted per section (FR count, rule count, etc.)
       priority: must
 
     - id: FR-08
-      title: Edge Coordinate Labels
+      title: "Semantic Fidelity Validation"
       description: >
-        Latitude values displayed on the left edge (top and bottom of map);
-        longitude values on the top and bottom edge (left and right of map).
-        Displayed in decimal degrees, rounded to 4 decimal places. Omitted
-        for abstract/grid coordinates.
+        After compilation, S.C.R.I.B.E. performs an internal cross-check:
+        verifies that every extracted semantic construct from the intermediate
+        representation has a corresponding encoding in the SemantiCode output.
+        Any construct that could not be losslessly encoded is flagged with a
+        FIDELITY_WARNING in the metadata block. In LOSSLESS mode, any unresolved
+        fidelity warning is treated as a compilation error — output is still
+        emitted but marked status: PARTIAL.
       priority: must
 
     - id: FR-09
-      title: Map Legend
+      title: "Input Validation and Error Handling"
       description: >
-        A legend is rendered below the map listing all POI symbols and their
-        corresponding names. Format: "  *  Name (lat, lon)" or "  *  Name (X,Y)".
-        Includes map metadata line: grid size, scale, projection, and character
-        resolution (km or m per character column and row).
+        Validates input before compilation begins:
+        - Missing MODEL, VIEW, or CONTROLLER sections → WARNING (proceeds with
+          available sections; notes missing sections in metadata).
+        - Completely unstructured input with no MVC markers → ERROR with guidance
+          to restructure as MVC before resubmitting.
+        - Malformed XML-like tags (unclosed, mismatched) → WARNING; S.C.R.I.B.E.
+          applies best-effort parse and documents assumptions.
+        - Empty input → ERROR.
+        In WARNING cases, compilation proceeds with documented assumptions.
+        In ERROR cases, a structured error response is returned — no SemantiCode emitted.
       priority: must
 
     - id: FR-10
-      title: Density / Resolution Control
+      title: "Non-MVC Input Handling"
       description: >
-        User may request map density via keyword: "compact" (40×20), "standard"
-        (72×36, default), or "detailed" (120×60). Density affects label
-        truncation — longer labels are truncated with ellipsis at lower densities.
-        Map metadata always states the actual grid dimensions used.
+        For prompts that contain recognisable semantic content but no MVC structure,
+        S.C.R.I.B.E. applies best-effort extraction: attempts to classify constructs
+        as MODEL-type, VIEW-type, or CONTROLLER-type based on semantic content.
+        States its structural interpretation before emitting SemantiCode, marking
+        the output INFERRED_STRUCTURE in metadata. User may resubmit with explicit
+        MVC tagging to resolve ambiguity.
       priority: should
 
     - id: FR-11
-      title: Input Validation and Error Handling
+      title: "Annotation Mode"
       description: >
-        Invalid coordinate values (lat > 90°, lon > 180°, non-numeric input)
-        are rejected with a clear error message and the specific offending input
-        identified. Fewer than one valid coordinate → error. Single valid
-        coordinate → renders with default bounding radius and a note.
-        Ambiguous input → A.T.L.A.S. states its interpretation before rendering.
-      priority: must
+        Optional mode (keyword: "annotated" in request) that inserts brief inline
+        comments within the SemantiCode output, explaining non-obvious compressions
+        or notation choices. Increases output token count slightly but significantly
+        improves human inspectability. Annotations use the notation // comment.
+        Off by default in all compression modes.
+      priority: should
 
     - id: FR-12
-      title: Stateless Single-Task Protocol
+      title: "Stateless Single-Task Protocol"
       description: >
-        A.T.L.A.S. produces one map per request with no memory of prior requests.
-        It does not maintain session state. Each request is complete and self-contained.
-        If the user wants a revised map, they re-submit the full coordinate set.
-        A.T.L.A.S. does not engage in clarifying conversation — if the request is
-        parseable, it renders; if not, it returns a structured error.
+        S.C.R.I.B.E. produces one SemantiCode stream per request with no memory
+        of prior requests. Each request is complete and self-contained. If the user
+        wants a re-compilation at a different compression level, they resubmit the
+        full original prompt with the new mode keyword.
+        S.C.R.I.B.E. does not engage in clarifying conversation — if the input is
+        parseable, it compiles; if not, it returns a structured error.
       priority: must
-
-    - id: FR-13
-      title: Area Boundary Polygon Input
-      description: >
-        Accepts an optional ordered list of coordinate vertices defining the boundary
-        of a mapped area (e.g., floor plan, site boundary, room outline). The polygon
-        may have any number of vertices (≥ 3) and any shape — not limited to rectangles.
-        Vertices are connected in order; the last vertex is automatically connected
-        back to the first to close the polygon. Polygon input is parsed using the
-        same coordinate system as POI input (WGS84, DMS, or abstract grid).
-      priority: should
-
-    - id: FR-14
-      title: Interior / Exterior Mode Declaration
-      description: >
-        Maps are rendered in one of two spatial modes:
-        (a) INTERIOR — the map represents the inside of an enclosed space (room, building,
-            warehouse, floor plan). Boundary walls are always rendered as solid lines.
-            POIs within the boundary are interior features.
-        (b) EXTERIOR — the map represents an open outdoor or unenclosed area. No solid
-            boundary walls are rendered. The map grid is open with optional dashed
-            perimeter if a bounding polygon is provided.
-        Default rule (CONF-06): if a boundary polygon is provided → INTERIOR mode;
-        no boundary polygon → EXTERIOR mode. User may override explicitly.
-      priority: should
-
-    - id: FR-15
-      title: Wall Rendering for Interior Maps
-      description: >
-        In INTERIOR mode, polygon boundary segments are rendered as ASCII wall
-        characters on the map grid:
-        - Horizontal segments:   - (hyphen)
-        - Vertical segments:     | (pipe)
-        - Corner and junction:   + (plus)
-        - 45° diagonal (/):      / (forward slash)
-        - 45° diagonal (\):      \ (backslash)
-        - Non-45° diagonals are approximated as stepped orthogonal segments.
-        POI symbol takes precedence over wall character when they share the same cell
-        (POI is noted in legend; wall gap is marked in metadata).
-        In EXTERIOR mode with a bounding polygon: perimeter rendered as dashed (.)
-        rather than solid wall characters to indicate a soft boundary.
-      priority: should
 
   non_functional:
 
     - id: NFR-01
-      title: Proportional Precision
+      title: "Compression Ratio Targets"
       description: >
-        Relative distances between all POIs must be proportionally correct within
-        ±1 character width (horizontal) and ±1 character height (vertical) on the
-        rendered grid. Sub-character precision is documented in map metadata.
-        No "artistic license" in POI placement — accuracy over aesthetics.
+        LOSSLESS mode: ≥35% token reduction vs original.
+        BALANCED mode: ≥55% token reduction.
+        AGGRESSIVE mode: ≥70% token reduction.
+        Ratio measured as: (1 − SemantiCode_tokens / original_tokens) × 100%.
+        Token estimation: character_count ÷ 4 (standard approximation).
       priority: must
 
     - id: NFR-02
-      title: Output Purity — 7-bit ASCII
+      title: "Semantic Fidelity — Behavioural Equivalence"
       description: >
-        All map output uses 7-bit ASCII characters only. No Unicode, no emoji,
-        no extended Latin, no box-drawing beyond hyphens (-), pipes (|), and
-        plus signs (+). The map must render correctly in any monospace plain-text
-        environment.
+        An LLM given only the LOSSLESS SemantiCode output must produce responses
+        behaviourally equivalent to the same LLM given the full original prompt.
+        "Behaviourally equivalent" means: same persona, same behavioural rules,
+        same output format, same control flow execution. BALANCED and AGGRESSIVE
+        modes may tolerate minor stylistic variation; core behavioural rules must
+        remain intact.
       priority: must
 
     - id: NFR-03
-      title: Portability — LLM Agnostic
+      title: "LLM Agnostic Executability"
       description: >
-        Functions correctly in any advanced LLM chat interface with no external
-        tooling, APIs, or data fetching. All computation is performed by the LLM
-        from the prompt instructions.
+        SemantiCode output must be executable by any modern advanced LLM
+        (Claude, GPT-4 class and above) without additional tooling, APIs, or
+        prior training. The orientation header (FR-06) is sufficient context
+        for a capable LLM to correctly parse and execute the stream.
       priority: must
 
     - id: NFR-04
-      title: Output Determinism
+      title: "Deterministic Output"
       description: >
-        The same input coordinates must always produce the same map layout.
-        Symbol placement and label positioning follow explicit deterministic rules
-        (not ad-hoc per-response decisions). Rules are documented in the prompt.
+        The same input prompt at the same compression mode must always produce
+        the same SemantiCode output. Compilation rules are fully specified in
+        the prompt — no ad-hoc or creative decisions in the compression step.
+        Notation and abbreviation choices are deterministic, not aesthetic.
       priority: must
 
     - id: NFR-05
-      title: Data Notice — Location Privacy
+      title: "Human Inspectability"
       description: >
-        A brief one-line notice is included in map metadata: "Note: avoid sharing
-        personally identifying location data (home address, private locations)."
-        Non-intrusive; not a mandatory disclaimer in the FRANK/P.S.Y. sense.
+        SemantiCode output in LOSSLESS and BALANCED modes must be interpretable
+        by an experienced prompt engineer without additional tooling. Grammar key
+        in the orientation header provides sufficient context for a practitioner
+        to audit the compiled output.
       priority: should
+
+    - id: NFR-06
+      title: "SemantiCode Format Versioning"
+      description: >
+        The SemantiCode notation grammar is versioned (v1.0 for initial release).
+        The orientation header (FR-06) always declares the grammar version used.
+        Future grammar revisions are backwards-incompatible only if the notation
+        symbols change; additive extensions are minor-version increments.
+      priority: must
 
   constraints:
     - "Stateless: no session state, no multi-turn lifecycle"
-    - "Output is pure 7-bit ASCII — no Unicode"
-    - "No external APIs or map tile fetching"
-    - "Equirectangular projection for geographic coordinates (small areas only)"
+    - "Input format: MVC/XML-structured prompt (canonical); non-MVC handled best-effort"
+    - "No external APIs or model calls during compilation"
+    - "LOSSLESS mode is the default; lossy modes require explicit opt-in"
+    - "SemantiCode notation is versioned (v1.0); format defined in Stage 2"
     - "MVC/XML structure consistent with repository convention"
-    - "WGS84 lat/lon primary; abstract grid coordinates accepted"
 
   out_of_scope:
-    - "Real terrain data (elevation, land cover, road networks)"
-    - "Map tile rendering or satellite imagery"
-    - "Routing or distance calculation services"
-    - "UTM / MGRS / OS Grid coordinate conversion (v1.0)"
-    - "Multi-layer map composition"
-    - "Animated or dynamic map output"
-    - "Projection systems beyond equirectangular (v1.0)"
-    - "Maps spanning > ~1000 km (equirectangular distortion becomes significant)"
-    - "Curved wall segments (all curves approximated as stepped orthogonal segments in v1.0)"
-    - "Filled interior regions or floor textures"
-    - "Multi-storey / 3D rendering"
+    - "Decompilation: reconstructing the original full prompt from SemantiCode (v1.0)"
+    - "Binary or machine-code format output (SemantiCode is human-readable notation)"
+    - "Automated semantic fidelity testing against a live LLM (all validation is in-context)"
+    - "Multi-language support (v1.0 processes English-language prompts only)"
+    - "Prompt optimisation or improvement beyond compression (no rewriting of logic)"
+    - "SemantiCode execution / interpretation (S.C.R.I.B.E. compiles; execution is the consuming LLM's role)"
+    - "Batch compilation of multiple prompts in a single request"
+    - "Diff/patch output (showing what changed between original and SemantiCode)"
 
   dependencies:
-    - "WGS84 coordinate system (EPSG:4326)"
-    - "Equirectangular (plate carrée) projection for geographic coordinates"
-    - "Haversine formula for geographic distance calculation"
-    - "ASCII character grid geometry"
-    - "Bresenham-style line rasterisation algorithm for wall segment rendering"
+    - "MVC/XML masterprompt structure convention (this repository)"
+    - "SemantiCode v1.0 notation grammar (to be defined in Stage 2)"
+    - "Token estimation heuristic: character_count ÷ 4"
 
 # ── Gaps and Flags ────────────────────────────────────────────────────────────
 gaps:
   - id: GAP-01
     description: >
-      Equirectangular projection becomes increasingly distorted at high latitudes
-      (above ~60°N/S). For v1.0, maps in high-latitude regions will note this
-      distortion in metadata. A Mercator-corrected rendering may be added in v2.0.
+      The SemantiCode v1.0 notation grammar is not yet defined. It is the
+      primary deliverable of Stage 2 (System Design). S.C.R.I.B.E. Stage 3
+      implementation depends on a stable grammar specification. This is a
+      known dependency, not a blocking gap — Stage 1 can proceed with
+      grammar shape described in functional requirements.
     severity: low
-    deferred_to: Stage 2 design decision
+    deferred_to: Stage 2 design
 
   - id: GAP-02
     description: >
-      Label collision avoidance is rule-based (right-preferring fallback). Dense
-      POI clusters may still produce overlapping labels at standard density. The
-      legend always contains the authoritative label list — map labels are best-effort.
+      Semantic fidelity cannot be formally verified in-context — S.C.R.I.B.E.
+      cross-checks constructs (FR-08) but cannot execute the SemantiCode against
+      a live LLM to confirm behavioural equivalence. Fidelity validation in
+      Stage 4 testing will require manual human evaluation against a reference
+      LLM interaction set.
     severity: low
-    deferred_to: Stage 3 implementation detail
+    deferred_to: Stage 4 testing methodology
+
+  - id: GAP-03
+    description: >
+      Token count estimation uses a character ÷ 4 approximation which is
+      imprecise for non-Latin scripts and code-heavy content. For v1.0,
+      this approximation is sufficient for ratio reporting but should not
+      be treated as an exact token count.
+    severity: low
+    deferred_to: Stage 3 implementation note
 
 stage_1_exit_clear: true

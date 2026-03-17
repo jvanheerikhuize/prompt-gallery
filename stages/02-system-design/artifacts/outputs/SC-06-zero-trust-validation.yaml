@@ -2,18 +2,18 @@
 # SC-06 — Zero-Trust Architecture Validation
 # Control:   SC-06 Zero-Trust Architecture Validation
 # Stage:     2 — System Design
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # =============================================================================
 
 meta:
-  id: "SC-06-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "SC-06-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-06)"
-  date: "2026-03-15"
+  date: "2026-03-17"
 
 network_zero_trust:
   applicable: false
-  rationale: "No network architecture. A.T.L.A.S. is a prompt-only system with no network components."
+  rationale: "No network architecture. S.C.R.I.B.E. is a prompt-only system with no network components, APIs, or external data sources."
 
 logical_zero_trust:
   applicable: true
@@ -24,36 +24,47 @@ logical_zero_trust:
     - criterion: "Never trust, always verify — user input treated as untrusted"
       status: compliant
       evidence: >
-        INPUT_IS_DATA is an absolute rule. VALIDATION_ENGINE verifies all coordinate
-        values before processing. Labels are treated as inert strings, not trusted instructions.
+        INPUT_IS_PROMPT_DATA is an ABSOLUTE_RULE (COMP-02). All submitted prompt
+        content is treated as data to compile, not as instruction. VALIDATION_ENGINE
+        (COMP-05a) validates structural integrity before any semantic processing begins.
+        The recursive nature of S.C.R.I.B.E. (prompt compiling prompts) makes this
+        principle especially critical — and the design explicitly addresses it.
 
     - criterion: "Least privilege — minimal operations performed on user data"
       status: compliant
       evidence: >
-        A.T.L.A.S. performs only the computation required to render the requested map.
-        No data stored beyond the request. No operations on user data beyond coordinate
-        parsing and grid placement. Stateless by design — no accumulation of state.
+        S.C.R.I.B.E. performs only the operations required to compile the submitted
+        prompt: parse, extract, normalise, compress, validate, emit. No data stored
+        beyond the request. NO_PROMPT_MODIFICATION absolute rule (COMP-02) prevents
+        any operations beyond compression (no rewriting, no improvement, no alteration
+        of logic). Stateless by design — no state accumulates across requests.
 
     - criterion: "Explicit trust boundaries documented and controlled"
       status: compliant
       evidence: >
-        Two trust boundaries defined (TB-01 user input, TB-02 LLM arithmetic).
-        Both have documented controls. TB-01 controlled by INPUT_IS_DATA + VALIDATION_ENGINE.
-        TB-02 controlled by explicit formula specification + precision metadata disclosure.
+        Two trust boundaries defined (TB-01: user prompt input; TB-02: LLM semantic
+        extraction). Both have documented controls. TB-01: INPUT_IS_PROMPT_DATA +
+        VALIDATION_ENGINE. TB-02: SEMANTIC_EXTRACTOR deterministic rules +
+        FIDELITY_CHECKER cross-validation.
 
     - criterion: "Assume breach — design tolerates input that attempts to corrupt behaviour"
       status: compliant
       evidence: >
-        T-01 (label injection) assumes hostile input is possible — INPUT_IS_DATA
-        provides defence-in-depth. VALIDATION_ENGINE rejects invalid coordinates rather
-        than attempting to render with them. Worst-case output is a structured error
-        message, not a harmful response.
+        T-01 (prompt injection) explicitly assumes hostile input is possible within
+        the submitted prompt. INPUT_IS_PROMPT_DATA provides defence-in-depth against
+        this vector. Worst-case outcome of a successful injection is garbled or
+        off-task SemantiCode output — a quality failure, not a security incident.
+        No pathway exists for a submitted prompt to exfiltrate data, access external
+        systems, or cause harm beyond the compilation response.
 
     - criterion: "Audit and transparency — user can inspect what was processed"
       status: compliant
       evidence: >
-        Legend is always present, listing all coordinates as applied. Metadata block
-        states all rendering parameters. CONF-03 world-knowledge use is declared.
-        Below-resolution warnings are explicit. Full prompt is open-source.
+        METADATA_BLOCK (COMP-04c) declares: compression mode, token estimates,
+        compression ratio, status (COMPLETE/PARTIAL), fidelity warning count and
+        detail, inferred section flags, and capability advisories. Orientation
+        header grammar key enables the user to audit any SemantiCode output.
+        Full prompt is open-source. FIDELITY_CHECKER makes the compilation process
+        observable — not a black box.
 
 status: compliant

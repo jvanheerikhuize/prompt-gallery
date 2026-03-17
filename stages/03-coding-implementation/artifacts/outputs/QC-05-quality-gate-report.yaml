@@ -2,14 +2,14 @@
 # QC-05 — Quality Gate Report
 # Control:   QC-05 Implementation Quality Gate
 # Stage:     3 — Coding & Implementation
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # =============================================================================
 
 meta:
-  id: "QC-05-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "QC-05-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (QC Analyst / QC-05)"
-  date: "2026-03-15"
+  date: "2026-03-17"
   status: pass
 
 # ── Quality Gate Checks ───────────────────────────────────────────────────────
@@ -19,197 +19,206 @@ checks:
 
   - id: QG-01
     requirement: FR-01
-    title: "Cartographer Persona — A.T.L.A.S."
+    title: "Compiler Persona — S.C.R.I.B.E."
     result: pass
     evidence: >
       PERSONA section present in CORE_DIRECTIVES. Terse, technical, non-conversational
-      character fully specified. "You render maps" and "That is the full scope of your
-      operation" confirm scope discipline. Metadata-only commentary rule confirmed.
+      character fully specified. "You do not chat. You do not offer feedback, suggestions,
+      or improvements. You compress it." and "That is the full scope of your operation."
+      confirm scope discipline. Metadata-only commentary rule confirmed.
 
   - id: QG-02
     requirement: FR-02
-    title: "Coordinate Input Parsing (WGS84 + abstract grid)"
+    title: "MVC Prompt Parser (MODEL / VIEW / CONTROLLER)"
     result: pass
     evidence: >
-      COORDINATE_PARSER covers: (a) WGS84 decimal degrees, (b) DMS with D+M/60+S/3600
-      formula, (c) abstract X:Y format, (d) named locations via world knowledge with ~
-      prefix. Sequential legend identifiers A, B, C... confirmed. Custom symbol support
-      confirmed. Parse error format specified.
+      MVC_PARSER covers all three recognition strategies: (a) XML-like tags with common
+      aliases (CORE_DIRECTIVES, OUTPUT_FORMAT, RULES_ENGINE), (b) markdown heading
+      delimiters (case-insensitive), (c) inferred structure by semantic content.
+      Validation outcomes for all four cases (all found, partial, inferred, empty) specified.
+      INFERRED_STRUCTURE flag defined.
 
   - id: QG-03
     requirement: FR-03
-    title: "Bounding Box Computation"
+    title: "Semantic Extraction to Normalised Intermediate Representation"
     result: pass
     evidence: >
-      BOUNDS_ENGINE specifies 10% margin formula explicitly. Edge cases covered: single
-      POI (1.0° default radius), all-collinear (1.0° margin on degenerate axis),
-      user-explicit bounds override. Polygon vertices included in bounds computation.
+      SEMANTIC_EXTRACTOR specifies extraction rules per section:
+      MODEL → ROLE, NAME, VER, PERSONA, BHV:!, BHV:+, BHV:~, CNST, SCOPE, !SCOPE, NOTE.
+      VIEW → OUT, FMT, LANG, CNST.
+      CONTROLLER → IF/THEN, ON_ERR, GATE, LOOP, META.
+      Rationale text and examples explicitly excluded from IR (dropped in all modes).
 
   - id: QG-04
     requirement: FR-04
-    title: "Proportional ASCII Grid Rendering"
+    title: "SemantiCode Logic Stream Compilation"
     result: pass
     evidence: >
-      PROJECTION_ENGINE provides explicit equirectangular formula with exact variable
-      definitions: col = round((lon-lon_min)/(lon_max-lon_min)*(W-1)),
-      row = round((1-(lat-lat_min)/(lat_max-lat_min))*(H-1)). Both geographic and
-      abstract variants specified. MAP_CANVAS specifies W×H per density mode.
+      COMPRESSION_ENGINE specifies encoding rules for all IR token types using GRAMMAR_RULES.
+      DEF:/REF: deduplication encoding specified. Mode-specific retention confirmed:
+      LOSSLESS (all tokens), BALANCED (drops PERSONA/NOTE/META/SCOPE), AGGRESSIVE (drops
+      BHV:~ and non-critical flow). ANNOTATED mode inline // comments specified.
+      Determinism guarantee: identical input + identical mode = identical output.
 
   - id: QG-05
     requirement: FR-05
-    title: "POI Symbol Placement and Labelling"
+    title: "Compression Level Control (LOSSLESS / BALANCED / AGGRESSIVE)"
     result: pass
     evidence: >
-      POI_PLACER specifies deterministic right-preferring label placement with explicit
-      5-step fallback (right → left → above → below → omit). Composite symbol [A,B]
-      for collisions confirmed. Truncation limits per density: compact=8, standard=16,
-      detailed=unlimited. POI_WINS_WALL confirmation included.
+      Three modes fully specified in COMPRESSION_ENGINE with distinct retention rules.
+      Default LOSSLESS enforced by ABSOLUTE RULE 2. AGGRESSIVE mode criticality criteria
+      explicitly defined (DESIGN-04 resolution). Token targets ≥35% / ≥55% / ≥70% referenced.
+      MODE_SELECTOR implements keyword recognition with conflict resolution (LOSSLESS wins).
 
   - id: QG-06
     requirement: FR-06
-    title: "Compass Rose"
+    title: "SemantiCode Orientation Header"
     result: pass
     evidence: >
-      DECORATORS section (1) specifies N^ for geographic, Y^/X> for abstract, full
-      cardinal rose (N/W+E/S) for detailed density. Position: top-right corner of
-      interior canvas. Embedded in MAP_CANVAS rendering order.
+      HEADER_BLOCK specifies exact two-line format: Line 1 with version, mode, and
+      section line-number index. Line 2 with full grammar key covering all operator types.
+      Format is fixed — no variation permitted. Token-minimal confirmed (two lines only).
 
   - id: QG-07
     requirement: FR-07
-    title: "Scale Bar"
+    title: "Compression Ratio Reporting"
     result: pass
     evidence: >
-      DECORATORS section (2) specifies nice-distance algorithm with candidate set
-      {1,2,5,10,25,50,100,250,500} km, bar_chars formula, 20%-of-W constraint,
-      sub-km metres fallback, abstract "1 grid unit = 1 cell".
+      METADATA_BLOCK specifies: original_tokens_est (chars÷4), semanticode_tokens_est,
+      compression_ratio (%), mode, grammar_version, status, fidelity_warnings count,
+      construct counts (model_rules, view_rules, controller_rules, deduplication_refs),
+      inferred_sections, warnings list. Capability advisory for AGGRESSIVE mode specified.
 
   - id: QG-08
     requirement: FR-08
-    title: "Edge Coordinate Labels"
+    title: "Semantic Fidelity Validation with FIDELITY_WARNING"
     result: pass
     evidence: >
-      DECORATORS section (3) specifies lat on left/right border corners, lon on
-      top/bottom border. 4 decimal places. Omission condition W < 30 specified.
-      Abstract variant (axis min/max on edges) specified.
+      FIDELITY_CHECKER specifies systematic per-token cross-check procedure.
+      FIDELITY_WARNING format defined with token type, section, abbreviated content, reason.
+      LOSSLESS PARTIAL status rule confirmed (ABSOLUTE RULE 3 enforced at Step 8 of REQUEST_LOOP).
+      Mode-specific expected vs. unexpected warning classification specified.
 
   - id: QG-09
     requirement: FR-09
-    title: "Map Legend"
-    result: pass
-    evidence: >
-      LEGEND_BLOCK two-section structure: per-POI legend rows with symbol, name,
-      coordinates; world-knowledge ~ prefix; outside-boundary note; composite symbol
-      notation. METADATA block with grid, scale, projection, density, bounds, mode,
-      all warnings, DATA_NOTICE.
-
-  - id: QG-10
-    requirement: FR-10
-    title: "Density / Resolution Control"
-    result: pass
-    evidence: >
-      Keywords compact/standard/detailed → 40×20, 72×36, 120×60 in MAP_CANVAS and
-      RENDERING_RULES. Truncation limits in POI_PLACER per density level. Metadata
-      always states actual grid dimensions.
-
-  - id: QG-11
-    requirement: FR-11
     title: "Input Validation and Error Handling"
     result: pass
     evidence: >
-      VALIDATION_ENGINE specifies lat ∈ [-90,90], lon ∈ [-180,180], non-numeric,
-      zero-POI, zero-vertex, single-POI handling. Structured error format specified.
-      Step 4 of REQUEST_LOOP: "If any validation error: emit error block and STOP."
+      VALIDATION_ENGINE specifies four cases: empty input (E001), unstructured input (E002),
+      partial MVC (W001), malformed tags (W002). SCRIBE_ERROR stops compilation. SCRIBE_WARN
+      continues with documented assumptions. All error/warning formats specified in YAML.
+
+  - id: QG-10
+    requirement: FR-10
+    title: "Non-MVC Input Handling (best-effort, INFERRED_STRUCTURE)"
+    result: pass
+    evidence: >
+      MVC_PARSER strategy (c) specifies best-effort semantic classification by content type.
+      INFERRED_STRUCTURE flag set. W001/W002 warnings emitted. Proceeds with inferred
+      sections. SCRIBE_META.inferred_sections list populated. User can resubmit with
+      explicit MVC tagging to resolve. (CONF-03 OPT-C implemented.)
+
+  - id: QG-11
+    requirement: FR-11
+    title: "Annotation Mode (inline // comments)"
+    result: pass
+    evidence: >
+      ANNOTATED flag detected by MODE_SELECTOR ("annotated" / "with annotations" keywords).
+      GRAMMAR_RULES defines "// <comment>" notation for ANNOTATED mode only.
+      COMPRESSION_ENGINE specifies: emit "// <rationale>" before non-obvious encoding decisions.
+      SEMANTICODE_BODY specifies // DEF index notation. Examples in DEC-03.
 
   - id: QG-12
     requirement: FR-12
     title: "Stateless Single-Task Protocol"
     result: pass
     evidence: >
-      REQUEST_LOOP header explicitly states "No loops. No session state. One input →
-      one output." No SESSION_STATE, no lifecycle phases, no console commands anywhere
-      in prompt. Step 12 ends with "Wait for the next independent request."
-
-  - id: QG-13
-    requirement: FR-13
-    title: "Area Boundary Polygon Input"
-    result: pass
-    evidence: >
-      BOUNDARY_PARSER detects boundary/walls/polygon/perimeter labels. Applies
-      COORDINATE_PARSER to vertices. Minimum 3 vertices enforced with structured error.
-      Deduplication of adjacent same-cell vertices specified. Vertices included in
-      BOUNDS_ENGINE computation via Step 6 of REQUEST_LOOP.
-
-  - id: QG-14
-    requirement: FR-14
-    title: "Interior / Exterior Mode Declaration"
-    result: pass
-    evidence: >
-      BOUNDARY_PARSER specifies CONF-06: polygon present → INTERIOR default; no polygon
-      → EXTERIOR. Override keywords (exterior, interior, floor plan, room, indoor)
-      specified. Mode stated in LEGEND_BLOCK metadata. Interior header line rendered
-      above MAP_CANVAS in INTERIOR mode.
-
-  - id: QG-15
-    requirement: FR-15
-    title: "Wall Rendering for Interior Maps"
-    result: pass
-    evidence: >
-      WALL_RENDERER specifies character selection for horizontal (-), vertical (|),
-      45° rising (/), 45° falling (\), corners (+). Bresenham-style stepping for non-45°
-      with metadata note. INTERIOR vs EXTERIOR mode rendering (solid vs dashed).
-      POI_WINS_WALL applied cell-by-cell with gap noted in metadata.
+      REQUEST_LOOP header: "One prompt in → one SemantiCode stream out."
+      Step 10 ends: "S.C.R.I.B.E. retains no memory of previous requests."
+      No SESSION_STATE, no lifecycle phases, no console commands anywhere in prompt.
+      ABSOLUTE RULE 1 prevents compiled prompt content from altering the pipeline.
 
   # ── NFR Coverage ────────────────────────────────────────────────────────────
 
-  - id: QG-16
+  - id: QG-13
     requirement: NFR-01
-    title: "Proportional Precision ±1 character"
+    title: "Compression Ratio Targets (≥35% / ≥55% / ≥70%)"
     result: pass
     evidence: >
-      PRECISION_HONEST absolute rule (Rule 3) enforces ±1 character tolerance explicitly.
-      PRECISION_ENGINE computes km_per_col/row and checks all POI pairs for below-
-      resolution proximity. Composite symbol used when two POIs share a cell.
+      GRAMMAR_RULES mini example demonstrates token reduction pattern. COMPRESSION_ENGINE
+      specifies drop rules per mode that structurally achieve the targets: LOSSLESS drops
+      rationale/examples/prose; BALANCED additionally drops PERSONA/NOTE/META/SCOPE;
+      AGGRESSIVE drops BHV:~ and all non-critical flow control. Ratio reported in SCRIBE_META.
+
+  - id: QG-14
+    requirement: NFR-02
+    title: "Semantic Fidelity — Behavioural Equivalence"
+    result: pass
+    evidence: >
+      ABSOLUTE RULE 3 (FIDELITY_FIRST) and ABSOLUTE RULE 4 (NO_PROMPT_MODIFICATION)
+      together enforce semantic equivalence in LOSSLESS mode. FIDELITY_CHECKER is a
+      systematic cross-check. PARTIAL status flags any deviation. Design gap DESIGN-01
+      (fidelity false-positive risk) accepted and deferred to Stage 4 testing.
+
+  - id: QG-15
+    requirement: NFR-03
+    title: "LLM Agnostic Executability"
+    result: pass
+    evidence: >
+      Prompt uses no model-specific APIs, tool calls, or function calling. GRAMMAR_RULES
+      orientation header is self-describing — any capable LLM can parse SemantiCode
+      output using the grammar key alone. No Claude-specific or GPT-specific features.
+
+  - id: QG-16
+    requirement: NFR-04
+    title: "Deterministic Output"
+    result: pass
+    evidence: >
+      COMPRESSION_ENGINE: "Encoding decisions are governed by these rules. No construct
+      may be encoded in a way not specified here." IR_NORMALISER ordering is fully
+      specified and deterministic. AGGRESSIVE mode criticality is now fully rule-based
+      (DESIGN-04 resolved) — no ad-hoc judgement permitted. GRAMMAR_RULES mini example
+      provides a calibration reference.
 
   - id: QG-17
-    requirement: NFR-02
-    title: "Output Purity — 7-bit ASCII"
+    requirement: NFR-05
+    title: "Human Inspectability (LOSSLESS / BALANCED modes)"
     result: pass
     evidence: >
-      OUTPUT_ASCII_ONLY absolute rule (Rule 2) lists exact permitted characters.
-      Step 11 of REQUEST_LOOP: "plain text only. No markdown fences, no HTML, no code
-      blocks." Wall characters (|, -, +, /, \) are all 7-bit ASCII.
+      HEADER_BLOCK grammar key (Line 2) provides a one-line reference sufficient for
+      any practitioner to read SemantiCode. ANNOTATED mode adds full inline commentary.
+      GRAMMAR_RULES mini example provides a readable before/after calibration.
+      METADATA_BLOCK is standard YAML — human-readable without tooling.
 
   - id: QG-18
-    requirement: NFR-03
-    title: "Portability — LLM Agnostic"
+    requirement: NFR-06
+    title: "SemantiCode Format Versioning"
     result: pass
     evidence: >
-      Prompt uses no model-specific APIs, tool calls, or function calling. All computation
-      described as explicit step-by-step arithmetic the LLM performs. No Claude-specific
-      or GPT-specific features referenced.
+      HEADER_BLOCK Line 1 always declares "SCRIBE v1.0". GRAMMAR_RULES comments state
+      "SemantiCode v1.0 — complete notation grammar." SCRIBE_META declares grammar_version: v1.0.
+      Self-describing format confirmed. Major version increment required for breaking changes.
+
+  # ── Stage 2 Directive Coverage ───────────────────────────────────────────────
 
   - id: QG-19
-    requirement: NFR-04
-    title: "Output Determinism"
+    requirement: "SC-02 Stage 3 directives"
+    title: "All Stage 2 injected directives implemented"
     result: pass
     evidence: >
-      RENDERING_RULES: "No rule has conditional overrides. Rendering is fully
-      deterministic." 5-step label placement priority has no ties. Projection formula
-      is exact. Wall character selection is fully rule-based.
-
-  - id: QG-20
-    requirement: NFR-05
-    title: "Data Notice — Location Privacy"
-    result: pass
-    evidence: >
-      DATA_NOTICE is ABSOLUTE RULE 4. LEGEND_BLOCK metadata always includes:
-      "Note: avoid sharing personally identifying location data." Step 12 of
-      REQUEST_LOOP: "Verify DATA_NOTICE is present in the metadata block."
+      INPUT_IS_PROMPT_DATA: ABSOLUTE RULE 1. ✓
+      LOSSLESS_DEFAULT: ABSOLUTE RULE 2. ✓
+      FIDELITY_FIRST: ABSOLUTE RULE 3. ✓
+      NO_PROMPT_MODIFICATION: ABSOLUTE RULE 4. ✓
+      DESIGN-04 AGGRESSIVE criticality criteria: defined in COMPRESSION_ENGINE. ✓
+      Orientation header format matches QC-03 spec. ✓
+      METADATA_BLOCK includes status (COMPLETE/PARTIAL), fidelity_warnings, compression_ratio,
+      mode, inferred_sections. ✓
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 summary:
-  total_checks: 20
-  passed: 20
+  total_checks: 19
+  passed: 19
   failed: 0
   warnings: 0
   blockers: 0

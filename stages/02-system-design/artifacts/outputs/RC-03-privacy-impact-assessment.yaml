@@ -2,22 +2,24 @@
 # RC-03 — Privacy Impact Assessment
 # Control:   RC-03 Privacy Impact Assessment Gate
 # Stage:     2 — System Design
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # Status:    minimal
 # =============================================================================
 
 meta:
-  id: "RC-03-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "RC-03-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 / RC-03"
-  date: "2026-03-15"
+  date: "2026-03-17"
 
 applicable: true
 trigger: |
-  A.T.L.A.S. processes geographic coordinates. Under GDPR Art. 4(1), precise
-  location data can constitute personal data if it identifies or locates a natural
-  person. This is CONDITIONAL — by default, the coordinates processed represent
-  geographic features, not persons. A minimal PIA is appropriate.
+  S.C.R.I.B.E. processes prompt documents that are, by default, system design
+  artefacts — not personal data. However, if a user submits a prompt containing
+  personal data (e.g., a customer-service prompt referencing real individuals,
+  a healthcare prompt with patient-scenario examples), that personal data would
+  be processed during compilation. SC-04 established this as a conditional
+  personal data risk. A minimal PIA is appropriate.
 
 # ── GDPR Art. 35 DPIA Trigger Assessment ─────────────────────────────────────
 dpia_trigger_assessment:
@@ -25,38 +27,39 @@ dpia_trigger_assessment:
   triggers_evaluated:
     - trigger: "Systematic and extensive profiling with significant effects"
       applies: false
-      rationale: "No profiling. A.T.L.A.S. renders a map from the coordinates provided in a single request — no aggregation, comparison, or scoring."
+      rationale: "No profiling. S.C.R.I.B.E. compresses a prompt document — it does not profile individuals or produce outputs affecting persons' rights."
 
     - trigger: "Processing of special category data at large scale (Art. 9)"
       applies: false
-      rationale: "Geographic coordinates are not Art. 9 special category data. Precise location may become Art. 4(1) personal data if tied to a natural person, but this is user-controlled and not systematic."
+      rationale: "No Art. 9 special category data involved by design. If a user embeds special category data in a submitted prompt, that is user-controlled and out of scope for the tool."
 
     - trigger: "Systematic monitoring of publicly accessible areas"
       applies: false
-      rationale: "No monitoring. Single-request map rendering."
+      rationale: "No monitoring. Single-request compilation of a prompt document."
 
     - trigger: "High-risk AI processing (Art. 35(3)(a))"
       applies: false
       rationale: "AC-01 confirmed MINIMAL risk tier. No high-risk AI processing."
 
   dpia_rationale: >
-    Full DPIA not required. Processing is a single-request utility task.
-    Coordinates are public geographic data by default. If the user provides
-    personal location data, this is user-controlled and out of scope for a
-    cartography utility. A data notice (DHR-01) is appropriate and sufficient.
+    Full DPIA not required. Processing is a single-request developer utility task.
+    Input is a prompt document — system design data by default. If the user embeds
+    personal data in the submitted prompt, this is user-controlled, out of scope
+    for a compilation tool, and mitigated by the data notice (DHR-01). A minimal
+    PIA is proportionate.
 
 # ── Processing Activities ─────────────────────────────────────────────────────
 processing_activities:
 
   - id: PA-01
-    activity: "User provides coordinate list for map rendering"
-    data_elements: ["Named coordinates (lat/lon or abstract)", "POI labels"]
-    gdpr_category: "Public geographic data (default); Art. 4(1) personal data (conditional)"
+    activity: "User submits MVC-structured prompt for semantic compilation"
+    data_elements: ["Prompt document content (system design artefact by default)", "Any PII embedded by user in prompt (conditional)"]
+    gdpr_category: "Non-personal (default); Art. 4(1) personal data (conditional — user-controlled)"
     data_controller: "End user (self-directed)"
     data_processor: "LLM provider (user's chosen platform)"
-    legal_basis: "Art. 6(1)(b) — necessary for service delivery (user initiates request)"
-    necessity: "Coordinates are necessary for map rendering — no extraneous data collected"
-    minimisation: "A.T.L.A.S. uses only the coordinates provided; requests nothing more"
+    legal_basis: "Art. 6(1)(b) — necessary for service delivery (user initiates compilation request)"
+    necessity: "Full prompt content is necessary for compilation — no extraneous data requested"
+    minimisation: "S.C.R.I.B.E. processes only the submitted prompt; requests nothing more"
     retention: "In-context only — no persistence beyond the single LLM request"
     recipient: "LLM provider (per their data policy)"
 
@@ -64,40 +67,43 @@ processing_activities:
 privacy_risks:
 
   - id: PR-01
-    risk: "User provides coordinates of private locations (home, personal routines)"
+    risk: "User embeds personal data (real names, contact details, case-specific PII) in submitted prompt"
     likelihood: low
     severity: low
     current_controls:
-      - "DHR-01: brief data notice in map metadata advising against sharing private location data"
-      - "DHR-02: A.T.L.A.S. does not ask for location context beyond what the user volunteers"
+      - "DHR-01: data notice advising users not to embed personal data in prompts submitted for compilation"
+      - "DHR-02: S.C.R.I.B.E. stores no data beyond the single request"
     residual_risk: low
     residual_risk_accepted: true
     acceptance_rationale: >
-      A.T.L.A.S. is a utility tool that renders coordinates it is given. It cannot
-      assess whether coordinates are personal — this is user-controlled. The data
-      notice (DHR-01) is the appropriate and proportionate control for this residual.
+      S.C.R.I.B.E. is a developer tool — users are practitioners with reasonable
+      awareness of data handling. The data notice (DHR-01) provides appropriate
+      guidance. S.C.R.I.B.E. cannot determine from prompt content whether PII is
+      present — this is user-controlled. The risk is equivalent to submitting any
+      document to a summarisation tool.
 
   - id: PR-02
-    risk: "LLM provider retains coordinate data per their data policy"
+    risk: "LLM provider retains submitted prompt content per their data policy"
     likelihood: high   # LLM providers routinely retain conversation data
-    severity: low      # Coordinates of public features have minimal privacy impact
+    severity: low      # Prompt documents are system design artefacts — low sensitivity by default
     current_controls:
-      - "DHR-01 data notice mentions LLM provider retention"
+      - "DHR-01 data notice references LLM provider context"
     residual_risk: low
     residual_risk_accepted: true
 
 overall_privacy_risk: low
 overall_risk_accepted: true
 acceptance_rationale: >
-  A.T.L.A.S. processes public geographic data in a stateless, single-request
-  context. The conditional personal data risk (private location coordinates) is
-  low-likelihood and mitigated by a data notice. Overall privacy risk is LOW.
+  S.C.R.I.B.E. processes prompt documents — system design artefacts — in a stateless,
+  single-request context. The conditional personal data risk (PII embedded in submitted
+  prompts) is low-likelihood, user-controlled, and mitigated by a data notice.
+  Overall privacy risk is LOW — equivalent to A.T.L.A.S.'s profile.
 
 lad_review:
   reviewed_by: "Jerry van Heerikhuize (Lead Architect)"
-  review_date: "2026-03-15"
+  review_date: "2026-03-17"
   findings: >
     PIA accepted. DPIA not required. The conditional Art. 4(1) risk is appropriately
-    managed by DHR-01. No Art. 9 data involved. Privacy risk profile is the lowest
-    in this repository.
+    managed by DHR-01. No Art. 9 data involved. Privacy risk profile is LOW and
+    consistent with other utility tools in this repository.
   approved: true

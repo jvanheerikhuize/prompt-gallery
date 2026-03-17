@@ -2,17 +2,17 @@
 # RC-02 — Design Approval Decision
 # Control:   RC-02 Design Approval (HUMAN REQUIRED)
 # Stage:     2 — System Design
-# Feature:   FEAT-0006 — ASCII Cartographer Masterprompt — A.T.L.A.S.
+# Feature:   FEAT-0007 — SemantiCode Compiler — S.C.R.I.B.E.
 # Status:    approved
 # =============================================================================
 # Risk tier: LOW → required authority: Lead Architect
 # =============================================================================
 
 meta:
-  id: "RC-02-FEAT-0006"
-  feature: "FEAT-0006"
+  id: "RC-02-FEAT-0007"
+  feature: "FEAT-0007"
   produced_by: "Claude Sonnet 4.6 (approval package prepared)"
-  date: "2026-03-15"
+  date: "2026-03-17"
   status: approved
 
 approval_package:
@@ -22,57 +22,57 @@ approval_package:
   artifacts:
     - path: "stages/02-system-design/artifacts/outputs/QC-03-design-document.yaml"
       summary: >
-        12-component MVC/XML architecture (COMP-01 through COMP-06g across 5 sections).
-        All 20 requirements (15 FR + 5 NFR) mapped — 0 unmapped. Single-task stateless
-        REQUEST_LOOP (12 steps, extended for boundary parsing and wall rendering).
-        Explicit equirectangular projection formula. Deterministic label placement rules.
-        COMP-03f BOUNDARY_PARSER (polygon vertex parsing, mode detection per CONF-06).
-        COMP-03g WALL_RENDERER (Bresenham-style rasterisation; |, -, +, /, \ charset per CONF-05;
-        POI_WINS_WALL rule). INTERIOR/EXTERIOR mode fully specified in MAP_CANVAS and RENDERING_RULES.
-        3 minor design gaps documented (DESIGN-01 high-latitude distortion, DESIGN-02 dense-cluster
-        label omission, DESIGN-03 non-45° diagonal approximation) — all deferred. 0 blockers.
+        13-component MVC/XML architecture (COMP-01 through COMP-06 across 5 sections).
+        All 18 requirements (12 FR + 6 NFR) mapped — 0 unmapped. Single-task stateless
+        REQUEST_LOOP (10 steps). SemantiCode v1.0 grammar fully specified (section
+        delimiters, 8 construct categories, 3 compression modes, orientation header format).
+        4 design gaps documented (DESIGN-01 fidelity false-positive, DESIGN-02 token
+        estimation approximation, DESIGN-03 SESSION_STATE v1.0 gap, DESIGN-04 AGGRESSIVE
+        mode criticality — medium severity, deferred to Stage 3). 0 blockers.
 
     - path: "stages/02-system-design/artifacts/outputs/SC-05-stride-threat-model.yaml"
       summary: >
-        5 threats across 2 trust boundaries. No CRITICAL or HIGH threats. 1 MEDIUM
-        (T-01: prompt injection via POI label — mitigated by INPUT_IS_DATA absolute rule;
-        residual LOW). 4 LOW (invalid coordinates, dense cluster degradation, world-knowledge
-        inaccuracy, arithmetic drift). 0 unmitigated threats. 0 stage blockers. Lowest
-        threat profile in this repository.
+        5 threats across 2 trust boundaries. No CRITICAL or HIGH threats. 3 MEDIUM
+        (T-01 prompt injection via compiled content — mitigated by INPUT_IS_PROMPT_DATA;
+        T-02 fidelity drift — mitigated by FIDELITY_CHECKER, deferred Stage 4 validation;
+        T-03 AGGRESSIVE non-determinism — accepted, AGGRESSIVE mode only).
+        2 LOW (T-04 large prompt, T-05 metadata disclosure). 0 unmitigated threats. 0 blockers.
 
     - path: "stages/02-system-design/artifacts/outputs/SC-06-zero-trust-validation.yaml"
       summary: >
-        Network zero-trust: NOT APPLICABLE. Logical trust posture: COMPLIANT across
-        all 5 criteria. No novel zero-trust concerns — simpler than any prior masterprompt.
+        Network zero-trust: NOT APPLICABLE. Logical trust posture: COMPLIANT across all
+        5 criteria. INPUT_IS_PROMPT_DATA specifically addresses the recursive threat
+        (prompt compiling prompts). Zero-trust profile consistent with A.T.L.A.S.
 
     - path: "stages/02-system-design/artifacts/outputs/AC-03-ai-component-design-review.yaml"
       summary: >
         MINIMAL AI tier confirmed. Model-agnostic. No EU AI Act Art. 52 obligations.
-        One minor gap (ACG-01: LLM arithmetic accuracy) — quality concern, not safety.
-        Explicit projection formula in Stage 3 mitigates.
+        Two minor gaps (ACG-01: semantic extraction accuracy; ACG-02: AGGRESSIVE mode
+        criticality criteria). Both quality concerns; both with Stage 3 actions defined.
 
     - path: "stages/02-system-design/artifacts/outputs/AC-04-ai-model-governance-record.yaml"
       summary: "NOT APPLICABLE — model-agnostic."
 
     - path: "stages/02-system-design/artifacts/outputs/RC-03-privacy-impact-assessment.yaml"
       summary: >
-        APPLICABLE (conditional personal data if private locations provided). DPIA not
-        required. 2 privacy risks — both LOW, both accepted. DHR-01 data notice
-        sufficient. Overall privacy risk: LOW. Lowest privacy risk in this repository.
+        APPLICABLE (conditional personal data if user embeds PII in submitted prompt).
+        DPIA not required. 2 privacy risks — both LOW, both accepted. DHR-01 data notice
+        sufficient. Overall privacy risk: LOW. Consistent with A.T.L.A.S. profile.
 
   agent_recommendation: approve
   agent_recommendation_rationale: >
-    All 20 requirements (15 FR + 5 NFR) are mapped — 0 unmapped. No unmitigated threats
-    of any severity. PO refinement (2026-03-15) added FR-13/14/15 (polygon boundary input,
-    interior/exterior mode, wall rendering) and two new conflict resolutions (CONF-05, CONF-06).
-    Design is clean, consistent with repository conventions, and fully implementation-ready.
-    The equirectangular projection formula is explicitly specified (mitigating ACG-01).
-    The three design gaps are minor quality concerns — all deferred. No blockers.
+    All 18 requirements (12 FR + 6 NFR) are mapped — 0 unmapped. No unmitigated threats
+    of any severity. SemantiCode v1.0 grammar is fully specified — the primary Stage 2
+    deliverable (GAP-01 from Stage 1) is complete. DESIGN-04 (AGGRESSIVE mode
+    criticality rules) is flagged medium severity but is a Stage 3 implementation detail,
+    not a design blocker — explicit criteria will be defined in the Stage 3 prompt.
+    The design is architecturally clean, consistent with repository conventions,
+    and fully implementation-ready. No blockers.
 
 decision: approved
 decided_by: "Jerry van Heerikhuize (Lead Architect)"
-decision_date: "2026-03-15"
-conditions: ""
+decision_date: "2026-03-17"
+conditions: "Stage 3 must address DESIGN-04: define explicit criticality criteria for AGGRESSIVE mode IF/THEN and ON_ERR rule selection before AGGRESSIVE mode is considered production-ready."
 rejection_reason: ""
 
 stage_2_exit_clear: true
