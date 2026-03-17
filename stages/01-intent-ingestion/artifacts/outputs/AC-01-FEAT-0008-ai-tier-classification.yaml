@@ -1,0 +1,74 @@
+# =============================================================================
+# AC-01 — AI Risk Tier Classification
+# Control:   AC-01 AI Risk Tier Classification
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0008 — V.I.T.A. Personal Lifestyle Coach
+# =============================================================================
+
+meta:
+  id: "AC-01-FEAT-0008"
+  feature: "FEAT-0008"
+  produced_by: "Claude Sonnet 4.6 (AI Governance Lead / AC-01)"
+  date: "2026-03-17"
+
+# ── EU AI Act Tier Assessment ─────────────────────────────────────────────────
+ai_tier: limited
+
+annex_iii_high_risk_screening:
+  result: not_applicable
+  categories_checked:
+    - "Biometric identification: NO"
+    - "Critical infrastructure: NO"
+    - "Education / vocational training: NO (lifestyle coaching is informal, not regulated education)"
+    - "Employment / HR: NO"
+    - "Access to essential services (credit, insurance, healthcare): CONDITIONAL — if deployed in
+       occupational health or insurance context, this category could apply; default deployment does not"
+    - "Law enforcement: NO"
+    - "Migration / border: NO"
+    - "Administration of justice: NO"
+    - "Democratic processes: NO"
+  conclusion: >
+    In its default deployment context (personal lifestyle coaching), V.I.T.A. does not
+    fall under any Annex III high-risk category. A conditional flag is noted for
+    access-to-essential-services if the prompt is deployed within regulated healthcare,
+    occupational health, or insurance contexts — that would require a conformity
+    assessment. Default classification: NOT HIGH RISK.
+
+limited_risk_screening:
+  result: applicable
+  rationale: >
+    Art. 52(1) (transparency for AI interacting with natural persons): APPLICABLE.
+    V.I.T.A. interacts with natural persons in a health-adjacent coaching capacity.
+    Users could perceive the coaching responses as coming from a human coach.
+    The role must disclose its AI nature at session open (implemented as
+    BHV:![DISCLAIMER_MANDATORY] and the SESSION_OPEN template), satisfying
+    the Art. 52(1) transparency obligation.
+    Art. 52(3) (emotion recognition): not applicable — V.I.T.A. does not perform
+    technical emotion recognition; it responds to user self-reported emotional state.
+    Art. 52(4) (deepfakes): not applicable.
+    Art. 50 (GPAI transparency): not applicable — V.I.T.A. is a task-specific
+    masterprompt, not a GPAI system or foundation model.
+
+limited_risk_rationale: |
+  V.I.T.A. is LIMITED risk under the EU AI Act:
+  - Interacts with natural persons on health-adjacent topics (wellbeing, habits, emotional state).
+  - Art. 52(1) transparency obligation applies — AI nature must be disclosed at session open.
+  - Users may be vulnerable (burnout, distress, mental health concerns); human oversight warranted.
+  - Crisis detection and safe messaging are mandatory safety controls, not optional features.
+  - No automated decisions affecting rights, services, or opportunities are produced.
+  - Precedent: P.S.Y. (FEAT-0004) and F.R.A.N.K. (FEAT-0005) are both LIMITED tier —
+    V.I.T.A. is of equal risk profile as a health-adjacent conversational agent.
+
+transparency_obligations:
+  - "Art. 52(1): Disclose AI nature at session open — implemented via SESSION_OPEN template"
+  - "Art. 52(1): Do not deceive users into thinking they are speaking with a human coach"
+
+human_oversight_recommendation: |
+  For production deployments, a human oversight mechanism is recommended:
+  - Monitoring of CRISIS_DETECTION firing rates and CRISIS_TEMPLATE responses
+  - Periodic review of session transcripts for scope boundary compliance
+  - Human escalation pathway for users who disclose clinical-level distress
+
+confidence: high
+approved_by: "Jerry van Heerikhuize (AI Governance Lead)"
+approval_date: "2026-03-17"

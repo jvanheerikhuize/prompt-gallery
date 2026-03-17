@@ -1,0 +1,132 @@
+# =============================================================================
+# SC-04 — Data Classification Record
+# Control:   SC-04 Data Classification Screening
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0008 — V.I.T.A. Personal Lifestyle Coach
+# =============================================================================
+
+meta:
+  id: "SC-04-FEAT-0008"
+  feature: "FEAT-0008"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-04)"
+  date: "2026-03-17"
+
+# ── Data Classification ───────────────────────────────────────────────────────
+classification: restricted
+elevation_trigger: "RESTRICTED unconditionally — Mental Health is a core pillar; Art. 9(1) engaged in every session. Further elevation considerations: DV or clinical crisis disclosure."
+
+data_elements_assessed:
+
+  - element: "User name (optional, self-provided)"
+    classification: confidential
+    rationale: >
+      If a user provides their name at session open, this is personal data under
+      GDPR Art. 4(1). Provision is optional and user-controlled. The agent uses
+      the name to personalise coaching responses — it is not stored beyond the
+      in-context session.
+
+  - element: "Mood check-in scores (0–10, start and end of session)"
+    classification: confidential
+    rationale: >
+      Mood self-assessments are health-adjacent personal data. They are not
+      clinical assessments but reflect a user's subjective emotional state.
+      If low mood scores co-occur with crisis sentinels, classification elevates.
+      Retained only in-session (SESSION_STATE); not persisted beyond context.
+
+  - element: "Lifestyle pillar self-assessments (Food / Activity / Mental Health, 0–10)"
+    classification: restricted
+    rationale: >
+      With Mental Health as an explicit core pillar, pillar self-assessment scores
+      are GDPR Art. 9(1) health data in every session — not just conditionally.
+      A Mental Health score of 1/10 combined with open exploration of mental health
+      themes constitutes processing of special category data. Food and Activity
+      scores are health-adjacent personal data (CONFIDENTIAL); the Mental Health
+      score elevates the overall session data classification to RESTRICTED.
+    gdpr_category: "Art. 9(1) — health data (mental health self-assessment)"
+
+  - element: "Personal goals and micro-habit commitments"
+    classification: confidential
+    rationale: >
+      Goals and commitments may reveal personal circumstances, health intentions,
+      and values. Personal data under GDPR Art. 4(1). Retained in-session only.
+
+  - element: "Emotional disclosures (distress, struggles, setbacks)"
+    classification: confidential
+    rationale: >
+      Users may disclose emotional distress, personal challenges, relationship
+      difficulties, or workplace struggles during coaching sessions. These are
+      personal data and potentially sensitive. If disclosures reference mental
+      health symptoms (anxiety, depression, burnout), classification elevates
+      to RESTRICTED (GDPR Art. 9(1) — mental health special category data).
+
+  - element: "Mental Health pillar exploration content"
+    classification: restricted
+    condition: "Always — Mental Health is a core pillar explored in every session"
+    rationale: >
+      Mental health information is GDPR Art. 9(1) special category data. Unlike
+      P.S.Y. and F.R.A.N.K. where this was conditional, V.I.T.A. explicitly invites
+      Mental Health as a coaching pillar in every session. The session will routinely
+      explore stress, mood, emotional wellbeing, anxiety, and related themes.
+      Classification is RESTRICTED unconditionally. CRISIS_DETECTION fires on
+      first-person or third-person crisis sentinels; the GDPR Art. 9 notice at
+      session open is mandatory and non-suppressible.
+    gdpr_category: "Art. 9(1) — health data (mental health) — unconditional"
+
+  - element: "Domestic violence / safeguarding disclosures (conditional)"
+    classification: restricted
+    condition: "If user discloses domestic violence, abuse, or safeguarding concern"
+    rationale: >
+      DV/safeguarding disclosures elevate classification to RESTRICTED and trigger
+      CRISIS_DETECTION tiered response protocol. Same handling as F.R.A.N.K.
+      (FEAT-0005) benchmark.
+    gdpr_category: "Art. 9(1) conditional — if health/medical detail disclosed alongside DV"
+
+# ── Data Handling Requirements ─────────────────────────────────────────────────
+data_handling_requirements:
+  - id: DHR-01
+    requirement: >
+      GDPR Art. 9 notice rendered at session open: advise the user that
+      lifestyle and wellbeing information is health-adjacent personal data;
+      LLM provider may retain data per their policy; advise against sharing
+      full name, address, or date of birth; reference ~privacy console command.
+    rationale: "GDPR Art. 9 obligation; consistent with P.S.Y. and F.R.A.N.K. pattern"
+
+  - id: DHR-02
+    requirement: >
+      No SESSION_STATE or user disclosures to be output verbatim in responses
+      or logged outside the in-context session without explicit user consent.
+    rationale: "GDPR Art. 5(1)(c) data minimisation; in-context only design"
+
+  - id: DHR-03
+    requirement: >
+      Crisis resource phone numbers in CNST:CRISIS_RESOURCES must be retained
+      verbatim in all SemantiCode compilations — classified as critical CNST;
+      never dropped or compressed.
+    rationale: "Safety-critical data; accuracy is a safety requirement"
+
+  - id: DHR-04
+    requirement: >
+      Production deployments handling mental health disclosures should implement
+      a DPIA (Data Protection Impact Assessment) per GDPR Art. 35.
+    rationale: >
+      Art. 35 mandates DPIA for large-scale processing of Art. 9 special category data.
+      A lifestyle coaching agent at scale likely meets this threshold.
+
+# ── GDPR Assessment ───────────────────────────────────────────────────────────
+gdpr_assessment:
+  personal_data: true
+  special_category: true          # Art. 9(1) unconditional — Mental Health is a core pillar
+  dpia_required: true             # Art. 35 DPIA required for production (large-scale Art. 9 processing)
+  art9_disclosure: true           # GDPR Art. 9 notice required at session open
+  rationale: >
+    V.I.T.A. processes GDPR Art. 9(1) special category health data unconditionally
+    — Mental Health is a core coaching pillar explored in every session. This
+    distinguishes V.I.T.A. from P.S.Y. and F.R.A.N.K. where Art. 9 engagement
+    was conditional on user disclosure. A DPIA under Art. 35 is required for any
+    production deployment given the systematic, large-scale processing of mental
+    health data. The Art. 9 notice at session open is mandatory and non-suppressible.
+
+# ── Security Architect Sign-off ───────────────────────────────────────────────
+reviewed_by: "Jerry van Heerikhuize (Security Architect)"
+review_date: "2026-03-17"
+approved: true

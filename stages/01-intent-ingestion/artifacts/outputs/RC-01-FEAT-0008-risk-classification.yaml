@@ -1,0 +1,91 @@
+# =============================================================================
+# RC-01 — Risk Classification
+# Control:   RC-01 Risk Classification
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0008 — V.I.T.A. Personal Lifestyle Coach
+# =============================================================================
+
+meta:
+  id: "RC-01-FEAT-0008"
+  feature: "FEAT-0008"
+  produced_by: "Claude Sonnet 4.6 (Risk Analyst / RC-01)"
+  date: "2026-03-17"
+
+# ── Risk Tier Assessment ──────────────────────────────────────────────────────
+risk_tier: medium
+
+criteria_evaluated:
+
+  - criterion: "Impact on natural persons — health, safety, financial, legal"
+    applies: true
+    rationale: >
+      V.I.T.A. is a lifestyle coaching agent that engages users on personal
+      health-adjacent topics: sleep quality, nutrition habits, physical activity,
+      emotional wellbeing, and social connection. Users seeking lifestyle coaching
+      may be in distress (burnout, chronic stress, poor sleep, social isolation).
+      The agent influences behaviours related to physical and mental health through
+      advice, reflection, and micro-habit commitments. While it does not prescribe
+      clinical treatment, its outputs can directly affect a user's health-related
+      decisions and emotional state. This criterion applies at MEDIUM level — the
+      impact is real but bounded by the non-clinical scope.
+
+  - criterion: "Vulnerable user population"
+    applies: true
+    rationale: >
+      Users seeking personal lifestyle coaching are disproportionately likely to
+      be experiencing stress, burnout, poor sleep, or emotional difficulties. The
+      agent's crisis detection mandate recognises that lifestyle conversations
+      frequently surface mental health disclosures. This is not a purely technical
+      or professional tool — it targets a consumer audience that includes
+      vulnerable individuals. Consistent with P.S.Y. (FEAT-0004) and F.R.A.N.K.
+      (FEAT-0005) as the risk benchmark for this category.
+
+  - criterion: "Personal data processing"
+    applies: true
+    rationale: >
+      V.I.T.A. processes: user name (optional), mood scores (0–10), lifestyle
+      self-assessments across five pillars, personal goals, micro-habit commitments,
+      and emotional disclosures during sessions. These are personal data under
+      GDPR Art. 4(1). If mental health content is disclosed (anxiety, depression,
+      burnout), GDPR Art. 9(1) special category data is engaged.
+      Classification: CONFIDENTIAL by default; elevates to RESTRICTED on
+      mental health / DV disclosure.
+
+  - criterion: "Regulated sector (financial, healthcare, critical infrastructure)"
+    applies: conditional
+    rationale: >
+      V.I.T.A. is health-adjacent but not operating in a regulated clinical context
+      by design. The prompt explicitly limits scope to lifestyle coaching and
+      excludes clinical diagnosis, medical advice, and therapeutic treatment.
+      However, if deployed in a healthcare, occupational health, or insurance
+      context, additional regulatory obligations would apply. The prompt's
+      non-clinical scope limits regulatory exposure in default deployment.
+
+  - criterion: "High volume or automated decision-making"
+    applies: false
+    rationale: >
+      V.I.T.A. is a conversational coaching companion — it does not make automated
+      decisions, produce scores, or affect any third-party system. All actions
+      (goal-setting, micro-habit commitments) are voluntary and user-initiated.
+      No profiling, aggregation, or automated decision-making output is produced.
+
+  - criterion: "Reputational or operational risk to the organisation"
+    applies: medium
+    rationale: >
+      A health-adjacent role that fails to detect a crisis, provides inappropriate
+      medical advice, or breaches safe messaging guidelines carries reputational
+      risk. These risks are mitigated by: mandatory crisis detection (same standard
+      as P.S.Y.), explicit disclaimer at session open and on clinical-expectation
+      triggers, and clear non-clinical scope enforcement in the prompt design.
+
+risk_tier_rationale: |
+  V.I.T.A. is MEDIUM risk. It targets a potentially vulnerable consumer audience,
+  processes health-adjacent personal data, and operates in a domain where crisis
+  disclosures are foreseeable. However, it is explicitly non-clinical (no diagnosis,
+  no treatment, no prescriptions), which distinguishes it from HIGH risk.
+  Classification is consistent with P.S.Y. (FEAT-0004) and F.R.A.N.K. (FEAT-0005)
+  as benchmark health-category peers at MEDIUM tier.
+
+risk_officer_override_required: false
+approved_by: "Jerry van Heerikhuize (Risk Analyst)"
+approval_date: "2026-03-17"
