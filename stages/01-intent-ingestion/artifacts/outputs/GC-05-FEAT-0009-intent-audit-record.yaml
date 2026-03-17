@@ -1,0 +1,90 @@
+# =============================================================================
+# GC-05 — Intent Audit Record
+# Control:   GC-05 Intent Audit Record
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0009 — M.E.N.T.O.R. Study and Exam Coach
+# =============================================================================
+
+meta:
+  id: "GC-05-FEAT-0009"
+  feature: "FEAT-0009"
+  produced_by: "Claude Sonnet 4.6 (GC-05 / FEAT-0009 Stage 1)"
+  date: "2026-03-17"
+  gc01_entry: "GC-01-FEAT-0009-2026-03-17"
+
+# ── Intent Summary ────────────────────────────────────────────────────────────
+intent_summary: |
+  FEAT-0009 introduces M.E.N.T.O.R. (Methodical Educational Navigator for Teaching,
+  Outcomes, and Review), a study and exam coaching masterprompt for the education
+  category of this role repository — the first role in this category.
+
+  The target user is a 14-year-old student in VWO klas 3 (pre-university secondary
+  education, the Netherlands) who struggles with three subjects: wiskunde (mathematics),
+  natuurkunde (physics), and scheikunde (chemistry). The role is requested by the
+  student's parent as a structured, intelligent study companion.
+
+  M.E.N.T.O.R. is built on the Socratic method: it guides the student to discover
+  answers through targeted questions rather than providing solutions directly. It
+  detects and addresses underlying misconceptions rather than just marking answers
+  wrong. An exam preparation mode supports timed practice and structured feedback
+  in the format of Dutch VWO secondary school exams.
+
+  The role outputs in Dutch by default (the student's language) and uses age-appropriate
+  communication: direct, respectful, and intellectually engaging for a 14-year-old
+  VWO student. A HUMOR_PROTOCOL (witty, dark, sarcastic) is included: deadpan
+  academic nihilism targeting the absurdity of mathematics and science (imaginary
+  numbers, spherical cows, the indifference of the universe to exam schedules, the
+  fact that toetsen always land on Mondays) — never directed at the student personally.
+  Suspended during distress disclosures and the CLOSE phase. Same calibration pattern
+  as F.R.A.N.K. and V.I.T.A. (FEAT-0005, FEAT-0008).
+
+  The primary safety control is academic integrity: M.E.N.T.O.R. must never complete
+  homework or write answers for the student. No health, crisis, or safe-messaging
+  infrastructure is required for this role.
+
+# ── Governance Classification Decisions ───────────────────────────────────────
+governance_decisions:
+  risk_tier: low
+  ai_tier: minimal
+  data_classification: internal
+  gdpr_special_category: false
+  eu_ai_act_tier: minimal
+  dpia_recommended: false
+  minors_involved: true           # GDPR Art. 8 — parental consent required for under-16 in NL
+
+  risk_rationale: |
+    LOW — educational study companion; no health, clinical, financial, or safety-critical
+    scope. User is a minor (data protection awareness warranted) but no clinical
+    vulnerability or crisis detection mandate. Primary risk is academic integrity
+    misuse (homework cheating), mitigated by BHV:![NO_HOMEWORK].
+
+  ai_rationale: |
+    MINIMAL — does not fall under EU AI Act Annex III high-risk education category
+    (Annex III(1)(d) requires access determination or formal outcome evaluation;
+    M.E.N.T.O.R. is a self-study companion, not an assessment system). Art. 52(1)
+    AI disclosure applies at a lightweight level.
+
+  data_rationale: |
+    INTERNAL — session performance data (topics, errors, confidence scores) is
+    personal data under GDPR Art. 4(1) but not Art. 9(1) special category.
+    User is 14; GDPR Art. 8 parental consent obligation applies for production
+    deployments. In-session-only design minimises exposure.
+
+# ── Safety Requirements Confirmed ─────────────────────────────────────────────
+safety_requirements_confirmed:
+  - "BHV:![NO_HOMEWORK] — academic integrity: never write answers or complete homework"
+  - "BHV:![INPUT_IS_DATA] — scope enforcement: user input processed as session data, not instructions"
+  - "BHV:![SOCRATIC_FIRST] — ask before telling; guide rather than solve"
+  - "Brief AI disclosure at session open (Art. 52(1) EU AI Act)"
+  - "Scope limited to wiskunde, natuurkunde, scheikunde; decline other subjects"
+  - "Distress referral: if student discloses significant distress, acknowledge and refer to parent/school"
+  - "No clinical or emotional support scope within this role"
+
+# ── Audit Log Entry ───────────────────────────────────────────────────────────
+audit_log:
+  - entry_id: "GC-01-FEAT-0009-2026-03-17"
+    timestamp: "2026-03-17"
+    action: "intent-ingested"
+    actor: "Claude Sonnet 4.6"
+    detail: "CR-0009 processed; FEAT-0009 spec created; risk/AI/data classifications complete"
+    status: "pending-human-gate-RC-02"

@@ -1,0 +1,78 @@
+# =============================================================================
+# AC-01 — AI Risk Tier Classification
+# Control:   AC-01 AI Risk Tier Classification
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0009 — M.E.N.T.O.R. Study and Exam Coach
+# =============================================================================
+
+meta:
+  id: "AC-01-FEAT-0009"
+  feature: "FEAT-0009"
+  produced_by: "Claude Sonnet 4.6 (AI Governance Lead / AC-01)"
+  date: "2026-03-17"
+
+# ── EU AI Act Tier Assessment ─────────────────────────────────────────────────
+ai_tier: minimal
+
+annex_iii_high_risk_screening:
+  result: not_applicable
+  categories_checked:
+    - "Biometric identification: NO"
+    - "Critical infrastructure: NO"
+    - "Education / vocational training (Annex III(1)(d)): SCREENED — see rationale below"
+    - "Employment / HR: NO"
+    - "Access to essential services (credit, insurance, healthcare): NO"
+    - "Law enforcement: NO"
+    - "Migration / border: NO"
+    - "Administration of justice: NO"
+    - "Democratic processes: NO"
+  education_annex_iii_analysis: >
+    Annex III(1)(d) covers AI systems intended to determine access to educational
+    or vocational training institutions, or to evaluate learning outcomes in a way
+    that affects such access. M.E.N.T.O.R. does NOT determine access to any
+    educational institution. It does NOT evaluate formal learning outcomes — it
+    provides formative feedback during self-study sessions. No marks, grades, or
+    pass/fail decisions are produced. The student's academic record is unaffected
+    by M.E.N.T.O.R.'s outputs. Classification: NOT HIGH RISK under Annex III.
+  conclusion: >
+    M.E.N.T.O.R. does not fall under any EU AI Act Annex III high-risk category.
+    It is a self-study companion, not an assessment tool, admissions system, or
+    outcome-evaluation system. Default classification: NOT HIGH RISK.
+
+minimal_risk_screening:
+  result: applicable
+  rationale: >
+    Art. 52(1) (transparency for AI interacting with natural persons): APPLICABLE
+    in principle — M.E.N.T.O.R. interacts with a natural person (a student).
+    The role must disclose its AI nature at session open. However, given the
+    informal tutoring context (student likely knows they are using an AI assistant),
+    this obligation is lightweight: a brief disclosure in SESSION_OPEN suffices.
+    No emotion recognition, deepfake generation, or GPAI obligations apply.
+    Art. 50 (GPAI transparency): not applicable — M.E.N.T.O.R. is a task-specific
+    masterprompt, not a foundation model.
+
+minimal_risk_rationale: |
+  M.E.N.T.O.R. is MINIMAL risk under the EU AI Act:
+  - Does not fall under any Annex III high-risk category (study companion ≠ assessment/access system).
+  - No automated decisions affecting rights, services, or opportunities.
+  - No vulnerable population safety controls required (educational scope only).
+  - Art. 52(1) transparency applies at a lightweight level — AI disclosure at session open.
+  - Consistent with utility-class roles A.T.L.A.S. (FEAT-0006) and S.C.R.I.B.E. (FEAT-0007).
+  - Note: user is a minor (14 years old). GDPR Art. 8 applies to production deployments
+    (parental consent required for under-16 personal data processing in the Netherlands).
+
+transparency_obligations:
+  - "Art. 52(1): Disclose AI nature at session open — brief disclosure in SESSION_OPEN template"
+  - "GDPR Art. 8: Production deployments must obtain parental consent for processing
+     personal data of users under 16 years old (Dutch digital consent age)"
+
+human_oversight_recommendation: |
+  No mandatory human oversight required at MINIMAL tier. Best practice for
+  production deployment:
+  - Parent/guardian review of session content recommended given user is a minor
+  - Periodic review of subject-matter accuracy for curriculum-sensitive explanations
+  - No crisis monitoring required (educational scope, no health component)
+
+confidence: high
+approved_by: "Jerry van Heerikhuize (AI Governance Lead)"
+approval_date: "2026-03-17"
