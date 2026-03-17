@@ -25,6 +25,7 @@ roles:
     files:
       prompt: roles/entertainment/text-adventure/prompt.md
       variant: roles/entertainment/text-adventure/prompt-compressed.md
+      semanticode: roles/entertainment/text-adventure/prompt-semanticode.md
 
     description: >
       A stateful text adventure game master. Takes any setting, lore, and player
@@ -71,6 +72,7 @@ roles:
     files:
       prompt: roles/engineering/code-reviewer/prompt.md
       variant: null
+      semanticode: roles/engineering/code-reviewer/prompt-semanticode.md
 
     description: >
       A structured code review agent grounded in security (OWASP, CWE), correctness,
@@ -118,6 +120,7 @@ roles:
     files:
       prompt: roles/health/trauma-psychologist/prompt.md
       variant: null
+      semanticode: roles/health/trauma-psychologist/prompt-semanticode.md
 
     description: >
       A trauma-informed psychoeducation and emotional support companion grounded in
@@ -175,6 +178,7 @@ roles:
     files:
       prompt: roles/health/relationship-therapist/prompt.md
       variant: null
+      semanticode: roles/health/relationship-therapist/prompt-semanticode.md
 
     description: >
       A relationship psychoeducation and self-reflection agent grounded in attachment
@@ -244,6 +248,7 @@ roles:
     files:
       prompt: roles/utility/ascii-cartographer/prompt.md
       variant: null
+      semanticode: roles/utility/ascii-cartographer/prompt-semanticode.md
 
     description: >
       A stateless, single-task ASCII cartography service agent. Accepts geographic
@@ -281,3 +286,53 @@ roles:
       created: "2026-03-15"
       last_updated: "2026-03-15"
       implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0006 Stage 3"
+
+  - id: scribe
+    name: "S.C.R.I.B.E. — Semantic Compression and Reasoning-Informed Brevity Encoder"
+    slug: semanticode-compiler
+    category: utility
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/utility/semanticode-compiler/prompt.md
+      variant: null
+      semanticode: roles/utility/semanticode-compiler/prompt-semanticode.md
+
+    description: >
+      A stateless, single-task semantic compilation agent. Accepts any MVC/XML-structured
+      masterprompt and compiles it into a SemantiCode logic stream — a token-efficient,
+      abbreviated notation that retains full semantic fidelity and is directly executable
+      by any advanced LLM. Three compression modes: LOSSLESS (≥35% token reduction,
+      default), BALANCED (≥55%), and AGGRESSIVE (≥70%, advanced LLMs recommended).
+      Optional ANNOTATED mode adds inline // comments explaining compression decisions.
+      Outputs a self-describing orientation header, the compiled stream, and a YAML
+      metadata block with compression ratio, fidelity status, and construct counts.
+
+    tags:
+      - utility
+      - compiler
+      - compression
+      - stateless
+      - single-task
+      - prompt-engineering
+      - semanticode
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: false     # Waits for a prompt to compile
+
+    governance:
+      feat_id: FEAT-0007
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public    # Conditional internal if submitted prompt contains PII
+      gdpr_special_category: false
+      eu_ai_act_tier: minimal
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-17"
+      last_updated: "2026-03-17"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0007 Stage 3"
