@@ -33,10 +33,18 @@
 meta:
   document_id: "DAG-001"
   title: "New Role Introduction — DAG Execution Specification"
-  version: "1.0"
+  version: "1.1"
   status: active
   created: "2026-03-17"
+  last_updated: "2026-03-17"
   author: "Claude Sonnet 4.6 / FEAT-0007"
+  changelog:
+    - version: "1.1"
+      date: "2026-03-17"
+      change: "Added N-15B COMPILE_SEMANTICODE_OPTIMIZED — BALANCED mode compilation to prompt-optimized.md; registered as variant in roles/registry.yaml"
+    - version: "1.0"
+      date: "2026-03-17"
+      change: "Initial release"
 
 # =============================================================================
 # ENTRY POINT — agents start here
@@ -89,7 +97,8 @@ consumer_config:
 file_conventions:
   spec:         "specs/{FEAT_ID}-{role_slug}.yaml"
   prompt:       "roles/{role_category}/{role_slug}/prompt.md"
-  semanticode:  "roles/{role_category}/{role_slug}/prompt-semanticode.md"
+  semanticode:  "roles/{role_category}/{role_slug}/prompt-semanticode.md"   # LOSSLESS — full fidelity
+  optimized:    "roles/{role_category}/{role_slug}/prompt-optimized.md"     # BALANCED — token-efficient variant
   registry:     "roles/registry.yaml"
   spec_template: "specs/FEAT-0000-template.yaml"
   semanticode_compiler_prompt: "roles/utility/semanticode-compiler/prompt.md"
@@ -499,11 +508,66 @@ dag:
       artifacts_created:
         - "roles/{role_category}/{role_slug}/prompt-semanticode.md"
 
+    - id: N-15B
+      name: COMPILE_SEMANTICODE_OPTIMIZED
+      stage: 3
+      description: "Compile prompt.md to SemantiCode v1.0 via S.C.R.I.B.E. BALANCED — token-efficient variant"
+      depends_on: [N-13, N-14]
+      controls: []
+      human_gate: false
+      blocking: true
+      note: "Runs in parallel with N-15. Both read prompt.md independently; fan-in at N-16."
+      agent_action: |
+        Load S.C.R.I.B.E. masterprompt: roles/utility/semanticode-compiler/prompt.md
+        Apply S.C.R.I.B.E. BALANCED compilation to roles/{role_category}/{role_slug}/prompt.md.
+
+        BALANCED mode drops: PERSONA (abbreviated to ROLE+NAME only), NOTE blocks, META blocks,
+          SCOPE blocks, BHV:~ (preferred behaviours). Retains: all BHV:+, all BHV:!, all CNST,
+          all !SCOPE, all primary-path IF/THEN, all safety IF/THEN, all blocking ON_ERR/GATE.
+        Compression target: ≥55% token reduction vs source prompt.md.
+
+        Output file structure for prompt-optimized.md:
+          Line 1:   # {Role Name} — SemantiCode (Optimized)
+          Lines 2+: > Compiled by: S.C.R.I.B.E. — Claude Sonnet 4.6 / {FEAT_ID} / {today}
+                    > Source: roles/{role_category}/{role_slug}/prompt.md (v{version})
+                    > Mode: BALANCED
+                    > Grammar: SemantiCode v1.0
+                    > [Safety note if health role: crisis resource phone numbers retained verbatim]
+          Blank line, ---
+          ## How to Use
+          This is the token-optimised variant (BALANCED mode). Use for resource-constrained
+          inference contexts. For human review or editing use the source prompt.md.
+          For maximum fidelity use prompt-semanticode.md (LOSSLESS).
+          ---
+          ## SemantiCode
+          ```
+          [SCRIBE v1.0 | mode:BALANCED | sections:[M]@L{n},[V]@L{n},[C]@L{n}]
+          // Grammar line
+          [M] ... [V] ... [C] ...
+          ---
+          SCRIBE_META: { grammar_version, mode, status, original_tokens_est,
+                         semanticode_tokens_est, compression_ratio, fidelity_warnings,
+                         constructs: {...}, inferred_sections, warnings,
+                         capability_advisory, fidelity_warning_detail }
+          ```
+
+        Verification requirements:
+          SCRIBE_META.status MUST be "COMPLETE" (BHV:+/!/CNST/flow constructs all retained).
+          BALANCED fidelity: warn only on unexpected drops of BHV:+, BHV:!, CNST, or primary flow.
+          Dropped constructs (BHV:~, NOTE, META, PERSONA, SCOPE) do NOT trigger warnings in BALANCED.
+          If health role: CRISIS_RESOURCES verbatim phone numbers must appear unchanged in
+            CNST:CRISIS_RESOURCES{...} — these are classified as critical CNST and must not be dropped.
+          Record compression_ratio; it should be ≥55% and typically higher than LOSSLESS.
+          CAPABILITY_ADVISORY in SCRIBE_META must note: "BALANCED mode — validate behaviour
+            against prompt.md before deployment in production contexts."
+      artifacts_created:
+        - "roles/{role_category}/{role_slug}/prompt-optimized.md"
+
     - id: N-16
       name: RECORD_IMPLEMENTATION_AUDIT
       stage: 3
       description: "GC-03: Record implementation completion; update spec to stage 3"
-      depends_on: [N-15]
+      depends_on: [N-15, N-15B]
       controls: [GC-03]
       human_gate: false
       blocking: true
@@ -514,9 +578,10 @@ dag:
           meta.status        = "in-progress"
         Append GC-03 audit entry:
           FEAT_ID, date, action=implementation-complete,
-          files_created=[prompt.md, prompt-semanticode.md],
+          files_created=[prompt.md, prompt-semanticode.md, prompt-optimized.md],
           security_controls=[SC-02:pass, SC-03:pass, SC-06:pass, SC-07:?, SC-08:?],
-          compression_ratio={actual_ratio}
+          lossless_compression_ratio={N-15 actual_ratio},
+          balanced_compression_ratio={N-15B actual_ratio}
 
     - id: N-17
       name: HUMAN_GATE_STAGE3
@@ -529,10 +594,12 @@ dag:
       agent_action: |
         PAUSE. Present to human for review:
           - roles/{role_category}/{role_slug}/prompt.md
-          - roles/{role_category}/{role_slug}/prompt-semanticode.md
+          - roles/{role_category}/{role_slug}/prompt-semanticode.md  (LOSSLESS — full fidelity)
+          - roles/{role_category}/{role_slug}/prompt-optimized.md    (BALANCED — token-efficient)
           - Security control pass/fail summary (SC-02/03/06 + SC-07/08 if applicable)
-          - Compression ratio achieved and SCRIBE_META.status
-          - Any fidelity warnings from S.C.R.I.B.E.
+          - LOSSLESS compression ratio and SCRIBE_META.status (N-15)
+          - BALANCED compression ratio and SCRIBE_META.status (N-15B)
+          - Any fidelity warnings from either compilation
         On APPROVAL:  proceed to N-18.
         On CHANGES:   update prompt.md per feedback; re-execute N-12 → N-17.
 
@@ -654,7 +721,7 @@ dag:
 
             files:
               prompt: roles/{role_category}/{role_slug}/prompt.md
-              variant: null
+              variant: roles/{role_category}/{role_slug}/prompt-optimized.md
               semanticode: roles/{role_category}/{role_slug}/prompt-semanticode.md
 
             description: >
@@ -704,6 +771,7 @@ dag:
           - specs/{FEAT_ID}-{role_slug}.yaml
           - roles/{role_category}/{role_slug}/prompt.md
           - roles/{role_category}/{role_slug}/prompt-semanticode.md
+          - roles/{role_category}/{role_slug}/prompt-optimized.md
           - roles/registry.yaml
           - Any GC audit record files created during the pipeline
         Commit with the following message format:
@@ -757,7 +825,7 @@ dag:
       agent_action: |
         PAUSE. Present to human:
           - Commit hash ({COMMIT_HASH}) and commit message
-          - Files deployed: prompt.md, prompt-semanticode.md, registry entry
+          - Files deployed: prompt.md, prompt-semanticode.md (LOSSLESS), prompt-optimized.md (BALANCED), registry entry
           - Push confirmation (origin/main)
         Human acknowledges the role is now live on main branch.
 
@@ -777,10 +845,13 @@ dag:
         Verify the following files exist and are non-empty:
           - roles/{role_category}/{role_slug}/prompt.md
           - roles/{role_category}/{role_slug}/prompt-semanticode.md
+          - roles/{role_category}/{role_slug}/prompt-optimized.md
           - specs/{FEAT_ID}-{role_slug}.yaml
-        Verify roles/registry.yaml contains an entry with id = ROLE_ID.
+        Verify roles/registry.yaml entry for ROLE_ID has:
+          files.semanticode pointing to prompt-semanticode.md (LOSSLESS)
+          files.variant pointing to prompt-optimized.md (BALANCED)
         Verify asdlc-consumer.yaml next_id = FEAT_NUM + 1 (counter was incremented).
-        Verify SCRIBE_META.status in prompt-semanticode.md = "COMPLETE".
+        Verify SCRIBE_META.status = "COMPLETE" in both prompt-semanticode.md and prompt-optimized.md.
         If any check fails: classify as DEPLOYMENT_DEFECT; remediate before N-28.
 
     - id: N-28
@@ -835,10 +906,13 @@ dag:
     # Stage 3 — parallel security checks
     - [N-12, N-13]
     - [N-12, N-14]
-    # Stage 3 — security fan-in → compile → audit → gate
+    # Stage 3 — security fan-in → parallel compile (LOSSLESS + BALANCED) → audit → gate
     - [N-13, N-15]
     - [N-14, N-15]
-    - [N-15, N-16]
+    - [N-13, N-15B]
+    - [N-14, N-15B]
+    - [N-15,  N-16]
+    - [N-15B, N-16]
     - [N-16, N-17]
     # Stage 3 → 4
     - [N-17, N-18]
@@ -912,10 +986,10 @@ dag:
       action: "Update design and threat model; re-execute N-09 → N-10 → N-11"
 
     - trigger: "N-17 CHANGES REQUESTED"
-      action: "Update prompt.md; re-execute N-12 → N-13 → N-14 → N-15 → N-16 → N-17"
+      action: "Update prompt.md; re-execute N-12 → N-13 → N-14 → [N-15, N-15B in parallel] → N-16 → N-17"
 
     - trigger: "N-18 blocking test failure (TC-03/04/05/06)"
-      action: "Fix prompt.md; re-execute N-12 → N-15 → N-16 → N-17 → N-18"
+      action: "Fix prompt.md; re-execute N-12 → [N-15, N-15B in parallel] → N-16 → N-17 → N-18"
 
     - trigger: "N-21 REMEDIATION REQUESTED"
       action: "If prompt fix required: return to N-12. If re-test only: return to N-18. Re-execute to N-21."
@@ -936,7 +1010,12 @@ dag:
     - group: "Stage 3 — security verification"
       nodes: [N-13, N-14]
       condition: "N-14 executes only if health/crisis scope detected"
-      note: "Both read prompt.md independently; fan-in at N-15"
+      note: "Both read prompt.md independently; fan-in at N-15 and N-15B"
+
+    - group: "Stage 3 — SemantiCode compilation"
+      nodes: [N-15, N-15B]
+      condition: "Always; both read the same prompt.md independently"
+      note: "N-15 = LOSSLESS (→ prompt-semanticode.md); N-15B = BALANCED (→ prompt-optimized.md); fan-in at N-16"
 
     - group: "Stage 4 — testing and documentation"
       nodes: [N-18, N-19]
