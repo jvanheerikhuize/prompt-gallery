@@ -234,6 +234,70 @@ roles:
       last_updated: "2026-03-14"
       implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0005 Stage 3"
 
+  - id: vita
+    name: "V.I.T.A. — Values-Integrated Transformation Agent"
+    slug: lifestyle-coach
+    category: health
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/health/lifestyle-coach/prompt.md
+      variant: roles/health/lifestyle-coach/prompt-optimized.md
+      semanticode: roles/health/lifestyle-coach/prompt-semanticode.md
+
+    description: >
+      A personal lifestyle coaching companion covering three pillars: Food, Activity,
+      and Mental Health. Guides users through a structured session lifecycle
+      (OPEN → CHECK_IN → FOCUS_AREA → EXPLORE → ACTION_PLAN → CLOSE) and produces
+      one micro-habit commitment per session. Applies Motivational Interviewing (OARS),
+      CBT reframing, habit loop analysis, and positive psychology. Features dry/witty
+      HUMOR_PROTOCOL (suspended during crisis and gravity topics), mandatory crisis
+      detection, safe-messaging enforcement, GDPR Art. 9 disclosure, and multi-language
+      support (7 languages + default). Not a substitute for clinical care.
+
+    tags:
+      - health
+      - lifestyle-coaching
+      - habit-formation
+      - motivational-interviewing
+      - cbt
+      - crisis-safety
+      - gdpr
+      - multi-language
+      - stateful
+      - humor
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true
+
+    safety_notes: |
+      This prompt covers the Mental Health pillar, which means GDPR Art. 9(1) health
+      data is collected unconditionally in every session. Before deploying in any
+      product context, review:
+      - Crisis line numbers are current and correct for your target region
+      - GDPR Art. 9 disclosure wording meets your legal obligations
+      - A DPIA (Art. 35) is required for large-scale production deployment
+      - Scope limits (no diagnosis, no clinical advice, no trauma processing) are
+        appropriate for your use case
+      This prompt is NOT a substitute for licensed medical, dietary, or mental health care.
+
+    governance:
+      feat_id: FEAT-0008
+      risk_tier: medium
+      ai_tier: limited
+      data_classification: restricted
+      gdpr_special_category: true      # GDPR Art. 9 — Mental Health is a core pillar
+      eu_ai_act_tier: limited
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-17"
+      last_updated: "2026-03-17"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0008 Stage 3"
+
   # ---------------------------------------------------------------------------
   # Utility
   # ---------------------------------------------------------------------------
