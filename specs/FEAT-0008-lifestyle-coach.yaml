@@ -8,11 +8,11 @@
 meta:
   id: "FEAT-0008"
   title: "V.I.T.A. — Personal Lifestyle Coach masterprompt"
-  status: in-progress        # draft | approved | in-progress | complete | cancelled
+  status: complete           # draft | approved | in-progress | complete | cancelled
   created: "2026-03-17"
   last_updated: "2026-03-17"
   source_cr: "CR-0008"
-  stage_reached: 5
+  stage_reached: 6
 
 provenance:
   created_by: "Claude Sonnet 4.6 (QC-01 / FEAT-0008 Stage 1)"
