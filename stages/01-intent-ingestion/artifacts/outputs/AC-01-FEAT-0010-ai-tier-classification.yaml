@@ -1,0 +1,34 @@
+# =============================================================================
+# AC-01 — AI Risk Tier Classification
+# Control:   AC-01 AI Risk Tier Classification
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0010 — S.C.O.U.T. Curriculum Scout
+# =============================================================================
+
+meta:
+  id: "AC-01-FEAT-0010"
+  feature: "FEAT-0010"
+  produced_by: "Claude Sonnet 4.6 (AI Governance Lead / AC-01)"
+  date: "2026-03-18"
+
+ai_tier: minimal
+
+annex_iii_high_risk_screening:
+  result: not_applicable
+  education_annex_iii_analysis: >
+    Annex III(1)(d) covers systems determining access to educational institutions
+    or evaluating formal learning outcomes. S.C.O.U.T. does neither — it summarises
+    public curriculum information for parents. Not high risk.
+  conclusion: "NOT HIGH RISK. Stateless public-information tool."
+
+minimal_risk_rationale: |
+  S.C.O.U.T. is MINIMAL risk. Stateless, single-task, no personal data, no automated
+  decisions, no student interaction. Art. 52(1) transparency applies (AI disclosure).
+  Consistent with A.T.L.A.S. (FEAT-0006) and S.C.R.I.B.E. (FEAT-0007).
+
+transparency_obligations:
+  - "Art. 52(1): Brief AI disclosure on first use"
+
+confidence: high
+approved_by: "Jerry van Heerikhuize (AI Governance Lead)"
+approval_date: "2026-03-18"

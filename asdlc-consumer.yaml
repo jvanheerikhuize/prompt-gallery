@@ -65,9 +65,9 @@ governance:
 # ── Feature Tracking ─────────────────────────────────────────────────────────
 features:
   id_prefix: FEAT                  # Prefix for feature specification IDs
-  next_id: 10                      # Increment after each new feature spec is created
+  next_id: 11                      # Increment after each new feature spec is created
   cr_prefix: CR                    # Prefix for change request IDs
-  next_cr_id: 10                   # Increment after each new change request
+  next_cr_id: 11                   # Increment after each new change request
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 paths:

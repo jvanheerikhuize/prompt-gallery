@@ -1,0 +1,43 @@
+# =============================================================================
+# SC-04 — Data Classification Record
+# Control:   SC-04 Data Classification Screening
+# Stage:     1 — Intent Ingestion
+# Feature:   FEAT-0010 — S.C.O.U.T. Curriculum Scout
+# =============================================================================
+
+meta:
+  id: "SC-04-FEAT-0010"
+  feature: "FEAT-0010"
+  produced_by: "Claude Sonnet 4.6 (Security Analyst / SC-04)"
+  date: "2026-03-18"
+
+classification: public
+elevation_trigger: "None — no personal data processed"
+
+data_elements_assessed:
+  - element: "Subject and topic input"
+    classification: public
+    rationale: >
+      VWO subject names (wiskunde, scheikunde, etc.) and topic names are public
+      curriculum information published by SLO. Not personal data.
+
+  - element: "Optional klas level or child name mentioned incidentally"
+    classification: internal
+    condition: "If parent mentions child's name or klas"
+    rationale: >
+      A name mentioned in passing is personal data under GDPR Art. 4(1) but is
+      not processed, stored, or acted upon beyond the single in-context request.
+      No collection mechanism, no persistence. Practical risk: negligible.
+
+gdpr_assessment:
+  personal_data: false
+  special_category: false
+  dpia_required: false
+  art9_disclosure: false
+  rationale: >
+    S.C.O.U.T. operates on public curriculum information. No personal data
+    collection, processing, or storage occurs. Lowest possible data footprint.
+
+reviewed_by: "Jerry van Heerikhuize (Security Architect)"
+review_date: "2026-03-18"
+approved: true
