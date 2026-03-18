@@ -44,6 +44,7 @@ Each role in this library is:
 | Role | What it does |
 |------|-------------|
 | [**C.R.A.**](roles/engineering/code-reviewer/prompt.md) — Code Review Analyst | Paste a diff and get a structured, scored review covering security (OWASP, CWE), correctness, performance, and maintainability. Issues a clear verdict: merge or not. |
+| [**Q.A.V.E.**](roles/engineering/qa-engineer/prompt.md) — Quality Assurance and Verification Engineer | Submit a ticket, spec, diff, or test scenario and receive the right QA artefact — test plan, defect report, risk assessment, or coverage analysis — with severity labels and a binding verdict. |
 
 ### 🩺 Health
 

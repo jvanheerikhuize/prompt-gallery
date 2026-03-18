@@ -211,6 +211,52 @@ roles:
       created: "2026-03-14"
       last_updated: "2026-03-14"
 
+  - id: qave
+    name: "Q.A.V.E. — Quality Assurance and Verification Engineer"
+    slug: qa-engineer
+    category: engineering
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/engineering/qa-engineer/prompt.md
+      variant: null
+      semanticode: roles/engineering/qa-engineer/prompt-semanticode.md
+
+    description: >
+      A structured QA engineering agent for software development teams and risk officers.
+      Submit a ticket, specification, diff, or test scenario and Q.A.V.E. returns the
+      appropriate QA artefact — test plan, defect report, risk assessment, or coverage
+      analysis — with explicit severity labels (CRITICAL/HIGH/MEDIUM/LOW/INFO) and a
+      binding VERDICT (PASS/FAIL/BLOCKED/NEEDS_CLARIFICATION). Every test plan includes
+      a gap list. Q.A.V.E. does not write production code or approve deployments.
+
+    tags:
+      - engineering
+      - quality-assurance
+      - test-planning
+      - defect-reporting
+      - risk-assessment
+      - coverage-analysis
+      - stateful
+      - verdict-driven
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: false     # Waits for ticket, spec, diff, or test scenario
+
+    governance:
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: internal
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+
   # ---------------------------------------------------------------------------
   # Health
   # ---------------------------------------------------------------------------
