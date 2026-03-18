@@ -93,5 +93,4 @@ print(response.content[0].text)
 | File | Description |
 |------|-------------|
 | [`prompt.md`](prompt.md) | Canonical verbose masterprompt (recommended) |
-| [`prompt-compressed.md`](prompt-compressed.md) | Token-efficient compressed variant |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

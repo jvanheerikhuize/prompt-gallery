@@ -17,10 +17,9 @@ module:
   author: "Jerry van Heerikhuize"
   repository: https://github.com/jvanheerikhuize/tag-role-test
 
-# Prompt variants available per role.
+# Prompt files available per role.
 # - prompt:      Canonical full-length prompt. Most readable; uncompressed.
-# - variant:     Optimised or compressed variant. Reduced token count (~55-75%).
-#                null if no variant exists for this role.
+# - variant:     Always null. Reserved for future use.
 # - semanticode: SemantiCode logic stream. Lossless compression (~35% reduction).
 #                Directly executable by any advanced LLM.
 
@@ -39,15 +38,14 @@ roles:
 
     files:
       prompt: roles/entertainment/text-adventure/prompt.md
-      variant: roles/entertainment/text-adventure/prompt-compressed.md
+      variant: null
       semanticode: roles/entertainment/text-adventure/prompt-semanticode.md
 
     description: >
       A stateful text adventure game master. Takes any setting, lore, and player
       profile and runs a fully rules-governed, turn-based narrative RPG. Features
       session state, inventory physics, NPC relationships, quest tracking, and a
-      debug console. The compressed variant is token-efficient for resource-constrained
-      contexts.
+      debug console.
 
     tags:
       - entertainment
@@ -80,7 +78,7 @@ roles:
 
     files:
       prompt: roles/entertainment/heist-master/prompt.md
-      variant: roles/entertainment/heist-master/prompt-optimized.md
+      variant: null
       semanticode: roles/entertainment/heist-master/prompt-semanticode.md
 
     description: >
@@ -128,7 +126,7 @@ roles:
 
     files:
       prompt: roles/entertainment/detective-mystery/prompt.md
-      variant: roles/entertainment/detective-mystery/prompt-optimized.md
+      variant: null
       semanticode: roles/entertainment/detective-mystery/prompt-semanticode.md
 
     description: >
@@ -343,7 +341,7 @@ roles:
 
     files:
       prompt: roles/health/lifestyle-coach/prompt.md
-      variant: roles/health/lifestyle-coach/prompt-optimized.md
+      variant: null
       semanticode: roles/health/lifestyle-coach/prompt-semanticode.md
 
     description: >
@@ -406,7 +404,7 @@ roles:
 
     files:
       prompt: roles/education/curriculum-scout/prompt.md
-      variant: roles/education/curriculum-scout/prompt-optimized.md
+      variant: null
       semanticode: roles/education/curriculum-scout/prompt-semanticode.md
 
     description: >
@@ -452,7 +450,7 @@ roles:
 
     files:
       prompt: roles/education/study-coach/prompt.md
-      variant: roles/education/study-coach/prompt-optimized.md
+      variant: null
       semanticode: roles/education/study-coach/prompt-semanticode.md
 
     description: >
@@ -596,7 +594,7 @@ roles:
 
     files:
       prompt: roles/productivity/ai-governance-lead/prompt.md
-      variant: roles/productivity/ai-governance-lead/prompt-optimized.md
+      variant: null
       semanticode: roles/productivity/ai-governance-lead/prompt-semanticode.md
 
     description: >
@@ -640,7 +638,7 @@ roles:
 
     files:
       prompt: roles/productivity/product-owner/prompt.md
-      variant: roles/productivity/product-owner/prompt-optimized.md
+      variant: null
       semanticode: roles/productivity/product-owner/prompt-semanticode.md
 
     description: >

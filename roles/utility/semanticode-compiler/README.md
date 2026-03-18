@@ -82,7 +82,7 @@ S.C.R.I.B.E. compresses to rules-only form and adds inline `// comments` explain
 
 ### 4 — Compile this library's own prompts
 
-S.C.R.I.B.E. was used to generate all `prompt-semanticode.md` and `prompt-optimized.md` files in this repository. To recompile any role:
+S.C.R.I.B.E. was used to generate all `prompt-semanticode.md` files in this repository. To recompile any role:
 
 1. Load S.C.R.I.B.E.
 2. Paste the canonical `prompt.md` content.

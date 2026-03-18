@@ -116,5 +116,4 @@ D.I.C.E. is stateful — maintain the full `messages` array across turns to pres
 | File | Description |
 |------|-------------|
 | [`prompt.md`](prompt.md) | Canonical masterprompt |
-| [`prompt-optimized.md`](prompt-optimized.md) | BALANCED SemantiCode variant (token-efficient) |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

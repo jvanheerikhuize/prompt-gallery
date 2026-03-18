@@ -92,5 +92,4 @@ Maintain the full `messages` array across turns — H.E.I.S.T. tracks all sessio
 | File | Description |
 |------|-------------|
 | [`prompt.md`](prompt.md) | Canonical masterprompt |
-| [`prompt-optimized.md`](prompt-optimized.md) | BALANCED SemantiCode variant (token-efficient) |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

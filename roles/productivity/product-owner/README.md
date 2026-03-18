@@ -152,5 +152,4 @@ P.R.I.M.E. is stateless — each review request is independent. No session histo
 | File | Description |
 |------|-------------|
 | [`prompt.md`](prompt.md) | Canonical masterprompt |
-| [`prompt-optimized.md`](prompt-optimized.md) | BALANCED SemantiCode variant (token-efficient) |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

@@ -55,14 +55,6 @@ process:
       Use LOSSLESS mode (≥35% token reduction). Follow the SemantiCode v1.0 grammar
       defined in `outputs.semanticode_md`. Target: fully executable by any advanced LLM.
 
-  - id: STEP-05
-    name: COMPILE_OPTIMIZED
-    type: agent
-    description: >
-      If the canonical prompt exceeds ~600 tokens: compile roles/<category>/<slug>/prompt-optimized.md
-      using BALANCED mode (≥55% token reduction). Same header structure as semanticode_md.
-      If the prompt is short (≤600 tokens), skip this step and set files.variant: null in index.yaml.
-
   - id: STEP-06
     name: WRITE_README
     type: agent
@@ -286,43 +278,6 @@ outputs:
       define: "DEF:<tag>:<value>"
       reference: "REF:<tag>"
 
-  optimized_md:
-    path: "roles/<category>/<slug>/prompt-optimized.md"
-    description: "BALANCED SemantiCode variant. ≥55% token reduction. Produced for most roles."
-    mode: BALANCED
-    when: "Canonical prompt exceeds ~600 tokens. When in doubt, produce it."
-    header_template: |
-      # [Full Role Name] ([ACRONYM]) — Optimized
-
-      > **Compiled by:** S.C.R.I.B.E. — Claude Sonnet 4.6 / [YYYY-MM-DD]
-      > **Source:** roles/[category]/[slug]/prompt.md (v1.0)
-      > **Mode:** BALANCED
-      > **Grammar:** SemantiCode v1.0
-
-      ---
-
-      ## How to Use
-
-      This is a BALANCED SemantiCode compiled version of [ACRONYM] v1.0. Approximately 55% fewer
-      tokens than the canonical prompt. Retains full semantic fidelity — directly executable by
-      any advanced LLM (GPT-4 class / Claude Sonnet class and above).
-
-      Use `prompt.md` for human review or editing.
-
-      ---
-
-      ## SemantiCode
-
-      ```
-      [SCRIBE v1.0 | mode:BALANCED | sections:[M]@L1,[V]@LXX,[C]@LXX]
-      // Grammar: [M]model [V]view [C]ctrl | BHV:+must !prohibit ~prefer | ...
-      ...
-      ```
-    prohibitions:
-      - "Do NOT append a SCRIBE_META block, --- separator, or any trailing metadata inside or after the code block"
-      - "All SemantiCode content must be inside a single fenced code block opened with ``` and closed with ```"
-      - "No content may appear after the closing ``` of the code block"
-
   role_readme:
     path: "roles/<category>/<slug>/README.md"
     description: "Per-role human documentation."
@@ -390,7 +345,7 @@ outputs:
       - version           # "1.0"
       - status            # "stable"
       - files.prompt
-      - files.variant     # null if no optimized variant produced
+      - files.variant     # always null — no optimized or compressed variants are produced
       - files.semanticode
       - description       # 3-5 sentences, same content as README overview paragraph 1
       - tags              # minimum 4, drawn from category + key role attributes
@@ -415,8 +370,8 @@ outputs:
   readme_update:
     file: README.md
     action: "Add one row to the role table under the correct category heading"
-    row_format: "| [name] | [prompt link] | [variant link or —] | [one-line description] |"
-    health_row_format: "| [name] | [prompt link] | [variant link or —] | [description] | ⚠️ See safety notes |"
+    row_format: "| [name] | [prompt link] | [one-line description] |"
+    health_row_format: "| [name] | [prompt link] | [description] | ⚠️ See safety notes |"
     link_format: "[prompt](roles/<category>/<slug>/prompt.md)"
 
 # ── Validation ────────────────────────────────────────────────────────────────
@@ -461,10 +416,13 @@ validation:
     check: "index.yaml entry description matches the first paragraph of the role README.md Overview section"
 
   - id: V-13
-    check: "No SCRIBE_META block appears anywhere in any produced file — prompt.md, prompt-semanticode.md, or prompt-optimized.md"
+    check: "No SCRIBE_META block appears anywhere in any produced file — prompt.md or prompt-semanticode.md"
 
   - id: V-14
     check: "prompt.md contains exactly one fenced code block opened with ```text and closed with ``` — all prompt XML is inside it, nothing after the closing ```"
 
   - id: V-15
-    check: "prompt-semanticode.md and prompt-optimized.md each contain exactly one fenced code block opened with ``` and closed with ``` — all SemantiCode content is inside it, nothing after the closing ```"
+    check: "prompt-semanticode.md contains exactly one fenced code block opened with ``` and closed with ``` — all SemantiCode content is inside it, nothing after the closing ```"
+
+  - id: V-16
+    check: "No prompt-optimized.md or prompt-compressed.md file was created — these variants are permanently retired; files.variant in index.yaml must be null"
