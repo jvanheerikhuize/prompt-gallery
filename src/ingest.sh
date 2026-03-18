@@ -34,9 +34,9 @@ else
   Y='\033[0;33m'  # yellow
   R='\033[0;31m'  # red
   Z='\033[0m'     # reset
-  TICK='✓'  CROSS='✗'  PROMPT_CHAR='›'
-  HR=$(printf '%*s' "$COLS" '' | tr ' ' '═')
-  THIN_HR=$(printf '%*s' "$COLS" '' | tr ' ' '─')
+  TICK='✓'  CROSS='✗'  PROMPT_CHAR='>'
+  HR=$(printf '%*s' "$COLS" '' | tr ' ' '=')
+  THIN_HR=$(printf '%*s' "$COLS" '' | tr ' ' '-')
 fi
 
 # ── Signal handling ───────────────────────────────────────────────────────────
