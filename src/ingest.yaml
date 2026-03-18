@@ -29,9 +29,26 @@ process:
     name: COLLECT
     type: human_gate
     description: >
-      Ask the user for all required inputs defined in the `inputs` block below.
-      Do not proceed to STEP-02 until all required fields are provided.
+      Collect all required inputs defined in the `inputs` block below by asking
+      for each field ONE AT A TIME in the order listed. For each field:
+        1. Show the field name and a short description of what it is.
+        2. Show the example or allowed values from the inputs spec.
+        3. Wait for the user's answer before moving to the next field.
+      Do not bundle multiple fields into a single prompt.
+      Do not proceed to STEP-02 until every required field has a confirmed value.
       Derived values (acronym, id, slug) are generated in STEP-02 — do not ask the user for them.
+
+      Field order:
+        1. concept        — show the example from the inputs spec
+        2. category       — list the allowed values
+        3. target_user    — show the example from the inputs spec
+        4. persona.tone   — list allowed values; ask for one
+        5. persona.humor  — list allowed values; ask for one
+        6. persona.verbosity — list allowed values; ask for one
+        7. persona.voice  — describe what is expected and give a brief example
+        8. constraints    — go through each sub-field one by one, show its description,
+                            and ask the user to answer true/false (or provide the value
+                            for language_requirements and scope_limits)
 
   - id: STEP-02
     name: DESIGN

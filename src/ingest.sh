@@ -17,8 +17,9 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
 
 PROMPT="Read src/ingest.yaml and execute the role ingestion process from STEP-01.
-Guide me through each step, pause at COLLECT and REVIEW, and do not
-proceed until I confirm."
+For STEP-01 (COLLECT), ask for each input field one at a time with its
+description and example before moving on. Pause at every COLLECT and
+REVIEW gate and do not proceed until I confirm."
 
 # ── Dry run ───────────────────────────────────────────────────────────────────
 if [[ "${1:-}" == "--dry-run" ]]; then
