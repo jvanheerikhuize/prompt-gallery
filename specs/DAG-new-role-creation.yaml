@@ -33,12 +33,15 @@
 meta:
   document_id: "DAG-001"
   title: "New Role Introduction — DAG Execution Specification"
-  version: "1.4"
+  version: "1.5"
   status: active
   created: "2026-03-17"
   last_updated: "2026-03-18"
   author: "Claude Sonnet 4.6 / FEAT-0007"
   changelog:
+    - version: "1.5"
+      date: "2026-03-18"
+      change: "N-12: mandate <MASTER_PROMPT> XML wrapper + code block in prompt.md; N-19 renamed CREATE_ROLE_README — creates per-role README.md with overview, quick start, examples, API snippet, file table, safety notes; N-23 stages role README.md; N-27 verifies README.md presence"
     - version: "1.4"
       date: "2026-03-18"
       change: "Added 'productivity' to role_category allowed values; added to N-22B category insertion order"
@@ -411,8 +414,34 @@ dag:
         Create directory: roles/{role_category}/{role_slug}/
         Write roles/{role_category}/{role_slug}/prompt.md as a full MVC/XML masterprompt.
 
-        Structure:
-          Header comment: role name, version, FEAT_ID, governance reference
+        MANDATORY FILE STRUCTURE — prompt.md must follow this layout exactly:
+
+          1. Human-readable header block (outside the code block):
+               # {Role Full Name} ({ACRONYM})
+               > **Author:** [Jerry van Heerikhuize](https://github.com/jvanheerikhuize)
+               > **Version:** 1.0
+               > **Provenance:** Agent-assisted implementation — Claude Sonnet 4.6 / {FEAT_ID} Stage 3 / {today}
+               ---
+               ## How to Use
+               1. Copy everything inside the code block below.
+               2. Open any advanced LLM chat (Claude, ChatGPT, Gemini, etc.) in a **fresh conversation**.
+               3. Paste and send. {one sentence describing the opening behaviour}
+               Alternatively, use the prompt directly as a `system` message in any API or agent framework.
+               {Safety note paragraph if role_category == 'health'}
+               ---
+               ## The Prompt
+
+          2. A fenced code block (```text ... ```) containing the entire masterprompt:
+               The masterprompt MUST open with:
+                 <MASTER_PROMPT version="1.0" api_role="system">
+               and close with:
+                 </MASTER_PROMPT>
+               Inside the MASTER_PROMPT wrapper, use the MVC structure:
+                 <MODEL> ... </MODEL>
+                 <VIEW> ... </VIEW>
+                 <CONTROLLER> ... </CONTROLLER>
+
+        MVC CONTENT — inside the MASTER_PROMPT wrapper:
           <MODEL> section:
             - Identity: NAME, ROLE, VERSION, PERSONA
             - Absolute prohibitions: BHV:! rules for scope, safety, input handling
@@ -677,19 +706,51 @@ dag:
           description: "List of test case records"
 
     - id: N-19
-      name: DOCUMENT_INPUT_EXAMPLES
+      name: CREATE_ROLE_README
       stage: 4
-      description: "Add usage examples to prompt.md"
+      description: "QC-08: Create per-role README.md with human-readable instructions and examples"
       depends_on: [N-18]
-      controls: []
+      controls: [QC-08]
       human_gate: false
       blocking: false
       agent_action: |
-        If prompt.md has an examples, usage, or input_examples section: add ≥3 representative
-          input examples with brief expected-output descriptions.
-        If no such section exists: add a comment block at the top of the file with 2–3 examples.
-        Examples should cover: standard use, edge case, and (where safe) adversarial pattern.
-        These serve as documentation for future users and maintainers.
+        Write roles/{role_category}/{role_slug}/README.md.
+
+        MANDATORY SECTIONS:
+
+        # {Role Full Name} ({ACRONYM})
+        > One-sentence description of what the role does.
+
+        ## Overview
+          2–4 sentences: what the role is, what it does, who it is for, what it is NOT.
+          If health role: include a clear "not a substitute for licensed care" statement.
+
+        ## Quick Start
+          Numbered steps:
+          1. Copy the contents of `prompt.md` (everything inside the code block).
+          2. Open a fresh conversation in [Claude / ChatGPT / Gemini / any advanced LLM].
+          3. Paste and send.
+          4. {Describe the opening behaviour — what happens first}
+
+        ## Usage Examples
+          ≥3 examples. Each example must include:
+            **Input** — the message the user sends
+            **Expected behaviour** — what the role does in response
+          Cover: standard happy path, edge case or ambiguous input, adversarial/scope-boundary input.
+          For health roles: include a crisis input example and a scope-boundary example.
+
+        ## API / Agent Framework
+          Python snippet using the Anthropic SDK showing how to inject the prompt as a system message.
+          Use model: claude-opus-4-6.
+
+        ## Files
+          Table listing all files in the role directory with a one-line description of each.
+
+        ## Safety Notes  [include ONLY if role_category == 'health' or data.special_category_data == true]
+          List deployment prerequisites: crisis line verification, GDPR obligations, scope limits.
+          Final line must read: "This prompt is NOT a substitute for licensed [clinical/therapeutic] care."
+      artifacts_created:
+        - "roles/{role_category}/{role_slug}/README.md"
 
     - id: N-20
       name: UPDATE_SPEC_STAGE4
@@ -825,6 +886,7 @@ dag:
           - roles/{role_category}/{role_slug}/prompt.md
           - roles/{role_category}/{role_slug}/prompt-semanticode.md
           - roles/{role_category}/{role_slug}/prompt-optimized.md
+          - roles/{role_category}/{role_slug}/README.md
           - roles/registry.yaml
           - README.md
           - Any GC audit record files created during the pipeline
@@ -900,6 +962,7 @@ dag:
           - roles/{role_category}/{role_slug}/prompt.md
           - roles/{role_category}/{role_slug}/prompt-semanticode.md
           - roles/{role_category}/{role_slug}/prompt-optimized.md
+          - roles/{role_category}/{role_slug}/README.md
           - specs/{FEAT_ID}-{role_slug}.yaml
         Verify roles/registry.yaml entry for ROLE_ID has:
           files.semanticode pointing to prompt-semanticode.md (LOSSLESS)

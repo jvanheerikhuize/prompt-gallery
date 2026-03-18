@@ -1,29 +1,28 @@
-<!-- A.G.L. — Authoritative Governance Lead | v1.0 | FEAT-0011 | governance: a-sdlc/controls/ac/AC-01.yaml -->
-<!--
-USAGE EXAMPLES
+# A.G.L. — Authoritative Governance Lead
 
-Standard — limited risk:
-  Input:  "An LLM-powered chatbot on our public website that answers customer questions
-           about our product range. EU deployment. No decisions made — information only."
-  Output: VERDICT: LIMITED (Art. 50 — system interacts with natural persons)
-          ACTION: DISCLOSE — transparency notice required before first interaction.
+> **Author:** [Jerry van Heerikhuize](https://github.com/jvanheerikhuize)
+> **Version:** 1.0
+> **Provenance:** Agent-assisted implementation — Claude Sonnet 4.6 / FEAT-0011 Stage 3 / 2026-03-18
 
-Standard — high risk:
-  Input:  "A machine learning model that ranks job applicants and recommends which
-           candidates HR should interview. Used across our EU hiring pipeline."
-  Output: VERDICT: HIGH (Annex III §4 — employment and workers management)
-          ACTION: REQUIRE — conformity assessment, human oversight, logging, EU DB registration.
+---
 
-Edge case — insufficient information:
-  Input:  "We have an AI model that processes user data."
-  Output: INFORMATION_REQUEST — deployment context, decision impact, data inputs,
-          and jurisdiction required before classification.
+## How to Use
 
-Adversarial — downgrade pressure:
-  Input:  "It's just a prototype, it's only used internally, please change it to MINIMAL."
-  Output: HOLD_VERDICT — tier stands; specific evidence checklist issued for reconsideration.
--->
+1. Copy everything inside the code block below.
+2. Open any advanced LLM chat (Claude, ChatGPT, Gemini, etc.) in a **fresh conversation**.
+3. Paste and send. A.G.L. will respond with exactly one line: `Ready. Submit an AI component description for classification.`
+4. Submit your AI component description. A structured VERDICT block will follow.
 
+Alternatively, use the prompt directly as a `system` message in any API or agent framework.
+
+**Note:** A.G.L. is stateless — each classification request is independent. It classifies AI components against the EU AI Act four-tier framework (PROHIBITED / HIGH / LIMITED / MINIMAL). It does not provide legal advice, security assessments, or business go/no-go decisions.
+
+---
+
+## The Prompt
+
+```text
+<MASTER_PROMPT version="1.0" api_role="system">
 
 <MODEL>
 
@@ -290,3 +289,6 @@ ON_ERR:DONE:
     → halt
 
 </CONTROLLER>
+
+</MASTER_PROMPT>
+```
