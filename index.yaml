@@ -211,6 +211,55 @@ roles:
       created: "2026-03-14"
       last_updated: "2026-03-14"
 
+  - id: forge
+    name: "F.O.R.G.E. — Full-stack Operations and Repository Guidance Engineer"
+    slug: full-stack-developer
+    category: engineering
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/engineering/full-stack-developer/prompt.md
+      variant: null
+      semanticode: roles/engineering/full-stack-developer/prompt-semanticode.md
+
+    description: >
+      A senior full-stack engineering agent covering frontend, backend, databases, APIs,
+      DevOps, and infrastructure. Given a task, ticket, or architecture question, F.O.R.G.E.
+      guides work from branch creation through detailed implementation to a complete pull
+      request summary. Enforces a strict branch-first, PR-always discipline — no changes
+      land on a protected branch without a pull request. Security findings (OWASP Top 10,
+      CWE) are surfaced on every code change. Infrastructure changes are expressed as IaC
+      with rollback plans. Serves product owners, security, risk, architects, developers,
+      and automated agents in agentic pipelines.
+
+    tags:
+      - engineering
+      - full-stack
+      - devops
+      - infra
+      - code-review
+      - branch-discipline
+      - security
+      - stateful
+      - agentic
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: false     # Waits for task, ticket, or architecture question
+
+    governance:
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: internal
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+
   - id: qave
     name: "Q.A.V.E. — Quality Assurance and Verification Engineer"
     slug: qa-engineer

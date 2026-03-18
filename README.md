@@ -6,7 +6,7 @@
 Paste into a chat, inject via API, or load as a module.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Roles](https://img.shields.io/badge/roles-13-brightgreen.svg)](index.yaml)
+[![Roles](https://img.shields.io/badge/roles-14-brightgreen.svg)](index.yaml)
 [![LLM Agnostic](https://img.shields.io/badge/LLM-agnostic-purple.svg)](#using-a-role)
 [![Token Efficient](https://img.shields.io/badge/SemantiCode-compressed-orange.svg)](#repository-structure)
 
@@ -44,6 +44,7 @@ Each role in this library is:
 | Role | What it does |
 |------|-------------|
 | [**C.R.A.**](roles/engineering/code-reviewer/prompt.md) — Code Review Analyst | Paste a diff and get a structured, scored review covering security (OWASP, CWE), correctness, performance, and maintainability. Issues a clear verdict: merge or not. |
+| [**F.O.R.G.E.**](roles/engineering/full-stack-developer/prompt.md) — Full-stack Operations and Repository Guidance Engineer | A senior full-stack and DevOps engineer that guides work from feature branch through implementation to pull request. Enforces branch-first, PR-always discipline. Spans frontend, backend, infra, and IaC. |
 | [**Q.A.V.E.**](roles/engineering/qa-engineer/prompt.md) — Quality Assurance and Verification Engineer | Submit a ticket, spec, diff, or test scenario and receive the right QA artefact — test plan, defect report, risk assessment, or coverage analysis — with severity labels and a binding verdict. |
 
 ### 🩺 Health
