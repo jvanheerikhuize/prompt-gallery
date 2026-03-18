@@ -139,8 +139,8 @@ for role in catalog["roles"]:
 
 ```
 index.yaml              ← Start here — the full role catalog
-ingest.sh               ← Run this to add a new role
 src/
+├── ingest.sh           ← Run this to add a new role
 ├── ingest.yaml         ← Ingestion process definition (agent-executable)
 └── templates/
     ├── prompt.md       ← Canonical prompt template
@@ -172,7 +172,7 @@ New roles, improvements to existing ones, bug reports, ideas — all welcome.
 The process for adding a new role is defined in [`src/ingest.yaml`](src/ingest.yaml) and is designed to be run with an AI coding agent. The short version:
 
 1. **Open an issue** to share your concept and get early feedback.
-2. **Fork the repo** and run `./ingest.sh` — the agent walks you through every step.
+2. **Fork the repo** and run `./src/ingest.sh` — the agent walks you through every step.
 3. **Submit a pull request** against `main`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.

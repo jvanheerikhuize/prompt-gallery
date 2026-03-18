@@ -12,7 +12,7 @@ version: "1.0"
 # ── Invoke ────────────────────────────────────────────────────────────────────
 # To start role ingestion, run from the repository root:
 #
-#   ./ingest.sh
+#   ./src/ingest.sh
 #
 # Or paste the following into any AI coding agent manually:
 #
