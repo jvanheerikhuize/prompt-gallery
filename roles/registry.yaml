@@ -58,6 +58,56 @@ roles:
       last_updated: "2026-03-14"
       implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0001 Stage 3"
 
+  - id: dice
+    name: "D.I.C.E. — Detective Investigation and Case Engine"
+    slug: detective-mystery
+    category: entertainment
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/entertainment/detective-mystery/prompt.md
+      variant: roles/entertainment/detective-mystery/prompt-optimized.md
+      semanticode: roles/entertainment/detective-mystery/prompt-semanticode.md
+
+    description: >
+      A stateful murder mystery game master. Generates a unique, self-consistent case
+      at every session start — victim, 3-5 suspects, motive, means, clues, red herrings
+      — and locks the truth before the first player input. Features a per-suspect
+      deception model (levels 1-5) with a CRACK mechanic triggered by presenting the
+      right evidence. Two wrong accusations end the game. Language-adaptive: mirrors
+      the player's input language for the full session. Tone: dry, witty, sarcastic
+      Infocom narrator. Win condition: correct ACCUSATION matched against hidden
+      TRUTH_RECORD.
+
+    tags:
+      - entertainment
+      - murder-mystery
+      - stateful
+      - social-deduction
+      - multi-turn
+      - language-adaptive
+      - infocom
+      - humor
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true      # Generates and renders opening scene without user input
+
+    governance:
+      feat_id: FEAT-0013
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0013 Stage 3"
+
   # ---------------------------------------------------------------------------
   # Engineering
   # ---------------------------------------------------------------------------

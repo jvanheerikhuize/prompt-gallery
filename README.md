@@ -18,6 +18,7 @@ The canonical role list lives in [`roles/registry.yaml`](roles/registry.yaml).
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
 | T.A.G. — Text Adventure Generator | [roles/entertainment/text-adventure/prompt.md](roles/entertainment/text-adventure/prompt.md) | [compressed](roles/entertainment/text-adventure/prompt-compressed.md) | Game master for an immersive, stateful text adventure |
+| D.I.C.E. — Detective Investigation and Case Engine | [roles/entertainment/detective-mystery/prompt.md](roles/entertainment/detective-mystery/prompt.md) | [optimized](roles/entertainment/detective-mystery/prompt-optimized.md) | Stateful murder mystery game master — generates a unique locked case per session, plays all NPCs with deception modelling, issues VERDICT on accusation; language-adaptive |
 
 ### Engineering
 
@@ -91,9 +92,11 @@ roles/
 ├── registry.yaml                        ← Masterprompt registry (start here)
 │
 ├── entertainment/
-│   └── text-adventure/                  ← T.A.G. v2.2
-│       ├── prompt.md                    ← Canonical verbose prompt
-│       └── prompt-compressed.md         ← Token-efficient variant
+│   ├── text-adventure/                  ← T.A.G. v2.2
+│   │   ├── prompt.md                    ← Canonical verbose prompt
+│   │   └── prompt-compressed.md         ← Token-efficient variant
+│   └── detective-mystery/               ← D.I.C.E. v1.0
+│       └── prompt.md
 │
 ├── engineering/
 │   └── code-reviewer/                   ← C.R.A. v1.0
