@@ -16,7 +16,7 @@ Each BRIEFING covers: what the student must be able to do (Focus), the concept l
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. S.C.O.U.T. is stateless — send your first request immediately.
 
@@ -94,5 +94,5 @@ S.C.O.U.T. is stateless — each request is independent. No session history is r
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

@@ -14,7 +14,7 @@ Output is in Dutch. M.E.N.T.O.R. addresses the student directly — it is a comp
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. M.E.N.T.O.R. will introduce itself and ask which subject and topic to work on.
 
@@ -84,5 +84,5 @@ Maintain the full `messages` array across turns — M.E.N.T.O.R. tracks session 
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

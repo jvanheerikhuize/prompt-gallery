@@ -14,7 +14,7 @@ Tone is classic Infocom: dry, witty, sarcastic narrator. Two wrong accusations a
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. D.I.C.E. generates a case and drops you at the scene immediately.
 4. Investigate. File your accusation when you're ready.
@@ -115,5 +115,5 @@ D.I.C.E. is stateful — maintain the full `messages` array across turns to pres
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

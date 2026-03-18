@@ -16,7 +16,7 @@ It supports two rendering modes:
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. A.T.L.A.S. is ready immediately — submit coordinates as your first message.
 
@@ -109,5 +109,5 @@ A.T.L.A.S. is stateless — each map request is independent.
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

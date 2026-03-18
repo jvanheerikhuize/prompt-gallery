@@ -16,7 +16,7 @@ A.G.L. does not soften verdicts, negotiate tiers, or engage in conversation beyo
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. A.G.L. responds with exactly one line: `Ready. Submit an AI component description for classification.`
 4. Submit your component description. A VERDICT block follows.
@@ -114,5 +114,5 @@ A.G.L. is stateless — each classification request is independent. No session h
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

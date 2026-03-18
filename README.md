@@ -1,189 +1,159 @@
-# Agent Role Library — Masterprompt Collection
+# AI Role Library
 
-A collection of structured masterprompts that define specific agent roles for any LLM or agentic pipeline.
-Each prompt is self-contained: paste into a fresh LLM session, inject as a system prompt, or load dynamically
-from your agent framework. No external infrastructure required.
+**Ready-to-use AI personas for any LLM — paste into a chat, inject via API, or load as a module.**
 
-Clone or fork this repository to get a complete, ready-made library of agent role masterprompts for any
-agentic project. Licensed under the [MIT License](LICENSE).
+13 handcrafted roles across entertainment, education, health, productivity, engineering, and utility. Each one gives an AI a specific job, personality, and set of rules — and works with Claude, ChatGPT, Gemini, or any other capable LLM. No accounts, no infrastructure, no setup.
 
----
-
-## Getting Started
-
-```bash
-git clone https://github.com/jvanheerikhuize/tag-role-test.git
-cd tag-role-test
-```
-
-The canonical role catalog is [`index.yaml`](index.yaml) — parse it to discover all available roles and
-their prompt file paths.
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Roles](https://img.shields.io/badge/roles-13-green.svg)](index.yaml)
 
 ---
 
-## Role Registry
+## What is a "role"?
+
+A role is a prompt that transforms a general-purpose AI into a focused, opinionated agent. It defines what the AI knows, how it behaves, what it refuses to do, and how it speaks. Paste one into a fresh chat and the AI immediately becomes that character — no fine-tuning, no plugins, no API keys required.
+
+Each role in this library is:
+- **Self-contained** — one file, copy and paste, done
+- **LLM-agnostic** — works with any capable model
+- **Structured** — consistent behaviour across sessions, not just vibe
+- **Token-efficient** — every role ships with a compressed SemantiCode variant for API use
+
+---
+
+## Roles
 
 ### Entertainment
 
-| Role | Prompt | Description |
-|------|--------|-------------|
-| T.A.G. — Text Adventure Generator | [prompt](roles/entertainment/text-adventure/prompt.md) | Stateful text adventure game master — rules-governed narrative RPG with session state, inventory, NPCs, and quest tracking |
-| H.E.I.S.T. — High-stakes Extraction and Infiltration Strategy Tactician | [prompt](roles/entertainment/heist-master/prompt.md) | Three-phase heist game master — RECON, PLAN, EXECUTE against a locked security layout; ends in CLEAN, DIRTY, or BURNED |
-| D.I.C.E. — Detective Investigation and Case Engine | [prompt](roles/entertainment/detective-mystery/prompt.md) | Stateful murder mystery game master — generates a unique locked case per session, plays all NPCs with deception modelling, language-adaptive |
+| Role | Description |
+|------|-------------|
+| **[T.A.G.](roles/entertainment/text-adventure/prompt.md)** — Text Adventure Generator | A fully stateful game master for text-based RPGs. Drop in any setting, and T.A.G. runs the world: inventory, NPCs, quests, consequences — all tracked across the session. |
+| **[H.E.I.S.T.](roles/entertainment/heist-master/prompt.md)** — High-stakes Extraction and Infiltration Strategy Tactician | Plan and execute a heist in three phases: recon the target, build your crew, then run the job turn by turn. Every session ends in Clean, Dirty, or Burned. |
+| **[D.I.C.E.](roles/entertainment/detective-mystery/prompt.md)** — Detective Investigation and Case Engine | A murder mystery game master that generates a fresh, locked case for every session — suspects, motives, clues, red herrings — and plays every NPC. Accuse wisely. |
 
 ### Engineering
 
-| Role | Prompt | Description |
-|------|--------|-------------|
-| C.R.A. — Code Review Analyst | [prompt](roles/engineering/code-reviewer/prompt.md) | Structured code review with security (OWASP, CWE), correctness, performance, and maintainability focus |
+| Role | Description |
+|------|-------------|
+| **[C.R.A.](roles/engineering/code-reviewer/prompt.md)** — Code Review Analyst | Paste a diff and get a structured, scored review covering security (OWASP, CWE), correctness, performance, and maintainability. Issues a clear verdict: merge or not. |
 
 ### Health
 
-| Role | Prompt | Description | Notes |
-|------|--------|-------------|-------|
-| P.S.Y. — Trauma-Specialised Psychologist | [prompt](roles/health/trauma-psychologist/prompt.md) | Trauma-informed psychoeducation and emotional support — Phase 1 stabilisation only, crisis escalation, GDPR Art. 9 | ⚠️ See safety notes |
-| F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots | [prompt](roles/health/relationship-therapist/prompt.md) | Relationship self-reflection and psychoeducation — attachment theory, EFT, Gottman-informed, DV crisis detection | ⚠️ See safety notes |
-| V.I.T.A. — Values-Integrated Transformation Agent | [prompt](roles/health/lifestyle-coach/prompt.md) | Personal lifestyle coaching covering Food, Activity, and Mental Health — Motivational Interviewing, CBT, habit loops | ⚠️ See safety notes |
+> **Important:** The health roles are educational and supportive tools — they are not a substitute for professional care. Before deploying any health role in a product, verify that crisis line numbers are correct for your region and review the safety notes in each role's README.
 
-> **Health prompt safety notes:** Crisis line numbers must be verified for your target region before deployment.
-> These prompts are not a substitute for licensed clinical care. See `safety_notes` in [`index.yaml`](index.yaml) for full details.
+| Role | Description |
+|------|-------------|
+| **[P.S.Y.](roles/health/trauma-psychologist/prompt.md)** — Trauma-Specialised Psychologist | A grounded, safe companion for psychoeducation and emotional stabilisation. Based on the SAMHSA trauma-informed care framework. Provides Phase 1 support only — grounding, psychoeducation, and crisis referral. |
+| **[F.R.A.N.K.](roles/health/relationship-therapist/prompt.md)** — Forthright Relationship Analyst Navigating Knots | A relationship coach grounded in attachment theory, EFT, and Gottman research. Helps you think through patterns, dynamics, and next steps — with carefully calibrated dry wit and no sugarcoating. |
+| **[V.I.T.A.](roles/health/lifestyle-coach/prompt.md)** — Values-Integrated Transformation Agent | A lifestyle coaching companion covering food, movement, and mental health. Runs structured sessions using Motivational Interviewing and CBT. Each session ends with one concrete micro-habit commitment. |
 
 ### Education
 
-| Role | Prompt | Description |
-|------|--------|-------------|
-| M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review | [prompt](roles/education/study-coach/prompt.md) | Study and exam coaching for VWO students — Socratic method, misconception diagnosis, exam prep mode; Dutch output |
-| S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator | [prompt](roles/education/curriculum-scout/prompt.md) | Stateless parental support tool: structured curriculum briefings per VWO subject and topic, anchored to SLO eindtermen; Dutch output |
+| Role | Description |
+|------|-------------|
+| **[M.E.N.T.O.R.](roles/education/study-coach/prompt.md)** — Methodical Educational Navigator for Teaching, Outcomes, and Review | A Socratic study coach for secondary school students (Dutch, VWO). Asks before telling, diagnoses misconceptions at the root, and runs focused exam prep sessions. Never gives away answers. |
+| **[S.C.O.U.T.](roles/education/curriculum-scout/prompt.md)** — Strategic Curriculum Overview and Understanding Translator | A curriculum briefing tool for parents. Give it a subject and topic, and it returns exactly what your child needs to master — including the most common mistakes and a sharp diagnostic question to test understanding. Dutch output. |
 
 ### Productivity
 
-| Role | Prompt | Description |
-|------|--------|-------------|
-| A.G.L. — Authoritative Governance Lead | [prompt](roles/productivity/ai-governance-lead/prompt.md) | Stateless EU AI Act tier classifier — issues binding VERDICT blocks with tier, rationale, and obligations |
-| P.R.I.M.E. — Product Requirements and Intent Management Executive | [prompt](roles/productivity/product-owner/prompt.md) | Stateless Product Owner — reviews feature specs and issues APPROVED / REJECTED / NEEDS_CLARIFICATION verdicts |
+| Role | Description |
+|------|-------------|
+| **[A.G.L.](roles/productivity/ai-governance-lead/prompt.md)** — Authoritative Governance Lead | An EU AI Act classifier. Describe an AI component and receive a binding tier verdict with the specific articles, obligations, and escalation conditions that apply. Terse, professional, non-negotiable. |
+| **[P.R.I.M.E.](roles/productivity/product-owner/prompt.md)** — Product Requirements and Intent Management Executive | A Product Owner that reviews feature specs and change requests. Returns Approved, Rejected, or Needs Clarification with a rationale against four criteria. Urgency is not a criterion. |
 
 ### Utility
 
-| Role | Prompt | Description |
-|------|--------|-------------|
-| A.T.L.A.S. — ASCII Topographic Layout and Surveying System | [prompt](roles/utility/ascii-cartographer/prompt.md) | Stateless ASCII cartography agent — proportionally accurate top-view maps from coordinates; supports interior floor plans |
-| S.C.R.I.B.E. — Semantic Compression and Reasoning-Informed Brevity Encoder | [prompt](roles/utility/semanticode-compiler/prompt.md) | Stateless prompt compiler — converts any masterprompt into a token-efficient SemantiCode logic stream |
+| Role | Description |
+|------|-------------|
+| **[A.T.L.A.S.](roles/utility/ascii-cartographer/prompt.md)** — ASCII Topographic Layout and Surveying System | Give it coordinates or a location name and it draws a proportionally accurate ASCII map — complete with compass, scale bar, and legend. Supports interior floor plans too. |
+| **[S.C.R.I.B.E.](roles/utility/semanticode-compiler/prompt.md)** — Semantic Compression and Reasoning-Informed Brevity Encoder | Compresses any structured AI prompt into a token-efficient SemantiCode stream. Three compression modes. Full semantic fidelity. Used to generate the SemantiCode variants in this library. |
 
 ---
 
-## Using a Role
+## Using a role
 
-### As a system prompt (API / agent framework)
+### Paste into a chat (no setup required)
+
+1. Open any role's `prompt.md` file and copy everything inside the code block.
+2. Start a **fresh conversation** in Claude, ChatGPT, Gemini, or any advanced LLM.
+3. Paste and send. The role introduces itself and takes it from there.
+
+That's it. No account, no API key, no configuration.
+
+### Inject via API
+
+Each role ships as a plain markdown file — load it as a system prompt and go:
 
 ```python
 import anthropic, pathlib
 
-role_prompt = pathlib.Path("roles/engineering/code-reviewer/prompt.md").read_text()
+system_prompt = pathlib.Path("roles/entertainment/heist-master/prompt.md").read_text()
 
 client = anthropic.Anthropic()
 response = client.messages.create(
     model="claude-opus-4-6",
-    system=role_prompt,
-    messages=[{"role": "user", "content": "Review the attached diff..."}],
+    system=system_prompt,
+    messages=[{"role": "user", "content": "Start a new job."}],
 )
 ```
 
-### Discovering roles programmatically
+Works with any API that accepts a system prompt — Anthropic, OpenAI, Google, or your own hosted model.
+
+### Use as a module
+
+Add this library as a git submodule to pull roles into your project:
+
+```bash
+git submodule add https://github.com/jvanheerikhuize/tag-role-test.git roles-lib
+git submodule update --init
+```
+
+Then load the role catalog at runtime:
 
 ```python
 import yaml, pathlib
 
-index = yaml.safe_load(pathlib.Path("index.yaml").read_text())
-for role in index["roles"]:
-    prompt_path = role["files"]["prompt"]
-    print(f"{role['id']}: {prompt_path}")
+base = pathlib.Path("roles-lib")
+catalog = yaml.safe_load((base / "index.yaml").read_text())
+
+for role in catalog["roles"]:
+    path = base / role["files"]["prompt"]
+    print(f"{role['id']}: {path}")
 ```
 
-### As a paste-in session prompt
-
-1. Open the masterprompt file and copy the content of its code block.
-2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
-3. Paste and send. The agent will adopt its role and guide you from there.
+`index.yaml` is the single entrypoint — it lists every role with its file paths, metadata, tags, and usage flags. No scraping, no discovery logic required.
 
 ---
 
-## Repository Structure
+## Repository structure
 
 ```text
-index.yaml                               ← Module entrypoint — start here
-│
+index.yaml          ← Start here — the full role catalog with file paths and metadata
+ingest.yaml         ← Process definition for adding new roles (agent-executable)
 roles/
-├── entertainment/
-│   ├── text-adventure/                  ← T.A.G. v2.2
-│   │   ├── prompt.md
-│   │   └── prompt-semanticode.md
-│   ├── heist-master/                    ← H.E.I.S.T. v1.0
-│   │   ├── prompt.md
-│   │   └── prompt-semanticode.md
-│   └── detective-mystery/               ← D.I.C.E. v1.0
-│       ├── prompt.md
-│       └── prompt-semanticode.md
-│
-├── engineering/
-│   └── code-reviewer/                   ← C.R.A. v1.0
-│       ├── prompt.md
-│       └── prompt-semanticode.md
-│
-├── health/
-│   ├── trauma-psychologist/             ← P.S.Y. v1.0
-│   │   ├── prompt.md
-│   │   └── prompt-semanticode.md
-│   ├── relationship-therapist/          ← F.R.A.N.K. v1.0
-│   │   ├── prompt.md
-│   │   └── prompt-semanticode.md
-│   └── lifestyle-coach/                 ← V.I.T.A. v1.0
-│       ├── prompt.md
-│       └── prompt-semanticode.md
-│
-├── education/
-│   ├── study-coach/                     ← M.E.N.T.O.R. v1.0
-│   │   ├── prompt.md
-│   │   └── prompt-semanticode.md
-│   └── curriculum-scout/               ← S.C.O.U.T. v1.0
-│       ├── prompt.md
-│       └── prompt-semanticode.md
-│
-├── utility/
-│   ├── ascii-cartographer/              ← A.T.L.A.S. v1.0
-│   │   ├── prompt.md
-│   │   └── prompt-semanticode.md
-│   └── semanticode-compiler/            ← S.C.R.I.B.E. v1.0
-│       ├── prompt.md
-│       └── prompt-semanticode.md
-│
-└── productivity/
-    ├── ai-governance-lead/              ← A.G.L. v1.0
-    │   ├── prompt.md
-    │   └── prompt-semanticode.md
-    └── product-owner/                   ← P.R.I.M.E. v1.0
-        ├── prompt.md
-        └── prompt-semanticode.md
+├── entertainment/  ← T.A.G., H.E.I.S.T., D.I.C.E.
+├── engineering/    ← C.R.A.
+├── health/         ← P.S.Y., F.R.A.N.K., V.I.T.A.
+├── education/      ← M.E.N.T.O.R., S.C.O.U.T.
+├── productivity/   ← A.G.L., P.R.I.M.E.
+└── utility/        ← A.T.L.A.S., S.C.R.I.B.E.
 ```
+
+Each role directory contains:
+- `prompt.md` — the full, readable prompt. Copy this into a chat.
+- `prompt-semanticode.md` — a compressed variant (~35% fewer tokens) for API and agent use.
+- `README.md` — usage examples, API code, and any safety notes.
 
 ---
 
-## Adding a New Role
+## Contributing
 
-The ingestion process is fully defined in [`ingest.yaml`](ingest.yaml). Open it in any AI
-coding agent and run:
+New roles, improvements to existing ones, bug reports, ideas — all welcome.
 
-```
-Read ingest.yaml and execute the role ingestion process from STEP-01.
-Guide me through each step, pause at COLLECT and REVIEW, and do not
-proceed until I confirm.
-```
-
-The agent collects your concept, category, persona, and constraints — then produces all
-required files autonomously (prompt, SemantiCode variants, README, index entry, docs update)
-with two mandatory pause points for your review.
+See [CONTRIBUTING.md](CONTRIBUTING.md) to get started. The short version: open an issue to discuss your idea, fork the repo, and submit a pull request. Adding a new role is guided by an agent using [`ingest.yaml`](ingest.yaml) — it walks you through the whole process.
 
 ---
 
 ## License
 
-[MIT](LICENSE) — © 2026 Jerry van Heerikhuize
+[MIT](LICENSE) — use these prompts in any project, commercial or otherwise. Attribution appreciated but not required.

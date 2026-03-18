@@ -1,34 +1,40 @@
 # Security Policy
 
+## What this repository contains
+
+This is a library of plain-text AI prompt files. It contains no executable code, no credentials, no runtime services, and no external dependencies. The primary security consideration is **prompt content** — what the prompts instruct an AI to do, and whether that could cause harm when deployed.
+
 ## Scope
 
-This is a **public, open-source repository** (MIT License). It contains no application code, no credentials, and no runtime services. The attack surface is limited to:
+Security concerns relevant to this repository:
 
-- Template files copied into sibling projects
-- The `a-sdlc/` governance submodule (maintained separately at [jvanheerikhuize/a-sdlc](https://github.com/jvanheerikhuize/a-sdlc))
+- **Prompt injection vectors** — a role prompt that could be manipulated to override safety constraints or produce harmful output
+- **Unsafe defaults in health roles** — crisis detection, safe-messaging guidelines, or GDPR disclosures that are missing, incorrect, or misleading
+- **Misinformation risk** — a role that makes false authoritative claims (medical, legal, financial) without appropriate scope limits
+- **Privacy risk** — a role that inadvertently encourages users to share sensitive personal data without disclosure
 
-## Reporting a Vulnerability
+Out of scope: issues with the LLM itself, the platform you run the prompts on, or your own deployment infrastructure.
 
-If you discover a security issue in this template (e.g. a file that could introduce a vulnerability into projects created from it), please **do not open a public issue**.
+## Reporting a vulnerability
 
-Report privately via [GitHub Security Advisories](../../security/advisories/new) or by emailing the repository owner directly.
+If you find a security issue in any role prompt, **do not open a public issue**.
+
+Report privately via [GitHub Security Advisories](../../security/advisories/new) or email the repository owner directly.
 
 Please include:
-
+- Which role is affected
 - A description of the issue and its potential impact
-- Steps to reproduce or a proof of concept
-- Any suggested remediation
+- Steps to reproduce or an example of the problematic behaviour
+- A suggested fix if you have one
 
 You can expect an acknowledgement within 5 business days.
 
-## Security in Sibling Projects
+## Health role safety
 
-Projects created from this template are governed by the A-SDLC framework (`a-sdlc/`), which includes:
+The health roles (P.S.Y., F.R.A.N.K., V.I.T.A.) include:
+- Mandatory crisis detection with tiered response
+- Safe-messaging guidelines for sensitive topics
+- GDPR Art. 9 disclosure for health data
+- Explicit scope limits (these roles are not a substitute for clinical care)
 
-- **SC-01** — Core Directive Injection (immutable behavioural constraints)
-- **SC-09** — Secrets scanning
-- **SC-10** — Software composition analysis
-- **SC-12 / SC-13** — SAST and DAST
-- **GC-01** — Audit trail
-
-See `a-sdlc/controls/sc/` for full security control definitions.
+Before deploying a health role in a product, verify that crisis line numbers are current and correct for your target region. The defaults are placeholders.

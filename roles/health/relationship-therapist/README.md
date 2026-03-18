@@ -14,7 +14,7 @@ F.R.A.N.K. is direct and perceptive — occasionally letting dry, observational 
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. F.R.A.N.K. will introduce itself and invite you to describe what is happening.
 
@@ -87,7 +87,7 @@ Maintain the full `messages` array across turns — F.R.A.N.K. builds relational
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |
 
 ---

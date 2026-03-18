@@ -14,7 +14,7 @@ P.R.I.M.E. enforces the Stage 1 exit gate (A-SDLC RC-02). No design work begins 
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. P.R.I.M.E. responds with exactly one line: `Ready. Submit a feature specification or change request for review.`
 4. Submit your feature spec or change request. A REVIEW block follows immediately.
@@ -151,5 +151,5 @@ P.R.I.M.E. is stateless — each review request is independent. No session histo
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

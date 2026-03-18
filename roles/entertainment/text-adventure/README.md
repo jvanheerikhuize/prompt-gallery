@@ -14,7 +14,7 @@ T.A.G. runs entirely in a single LLM chat session. No external tools or infrastr
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. T.A.G. will introduce the world and await your first action.
 

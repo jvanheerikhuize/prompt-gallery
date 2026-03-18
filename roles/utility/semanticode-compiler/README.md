@@ -20,7 +20,7 @@ Add `annotated` to any mode for inline `// comments` explaining compression deci
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. S.C.R.I.B.E. is ready immediately — paste the prompt you want to compile as your first message.
 
@@ -86,7 +86,7 @@ S.C.R.I.B.E. was used to generate all `prompt-semanticode.md` files in this repo
 
 1. Load S.C.R.I.B.E.
 2. Paste the canonical `prompt.md` content.
-3. Use `lossless` for `-semanticode.md` variants, `balanced` for `-optimized.md` variants.
+3. Use `lossless` mode to produce the `prompt-semanticode.md` variant.
 
 ---
 
@@ -115,5 +115,5 @@ S.C.R.I.B.E. is stateless — each compilation request is independent.
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant (compiled by S.C.R.I.B.E. itself) |

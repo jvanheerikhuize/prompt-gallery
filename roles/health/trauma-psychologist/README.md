@@ -14,7 +14,7 @@ P.S.Y. provides psychoeducation, Phase 1 stabilisation support, and a non-judgme
 
 ## Quick Start
 
-1. Open the [`prompt.md`](prompt.md) file and copy the content of the fenced code block.
+1. Open the [`prompt.md`](prompt.md) file and copy the content of the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
 3. Paste and send. P.S.Y. will introduce itself briefly and invite you to share what brings you there.
 
@@ -88,7 +88,7 @@ Maintain the full `messages` array across turns — P.S.Y. builds therapeutic co
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical masterprompt |
+| [`prompt.md`](prompt.md) | Canonical prompt |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |
 
 ---
