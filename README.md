@@ -9,54 +9,64 @@ agentic project. Licensed under the [MIT License](LICENSE).
 
 ---
 
-## Role Registry
+## Getting Started
 
-The canonical role list lives in [`roles/registry.yaml`](roles/registry.yaml).
+```bash
+git clone https://github.com/jvanheerikhuize/tag-role-test.git
+cd tag-role-test
+```
+
+The canonical role catalog is [`index.yaml`](index.yaml) — parse it to discover all available roles and
+their prompt file paths.
+
+---
+
+## Role Registry
 
 ### Entertainment
 
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
-| T.A.G. — Text Adventure Generator | [roles/entertainment/text-adventure/prompt.md](roles/entertainment/text-adventure/prompt.md) | [compressed](roles/entertainment/text-adventure/prompt-compressed.md) | Game master for an immersive, stateful text adventure |
-| D.I.C.E. — Detective Investigation and Case Engine | [roles/entertainment/detective-mystery/prompt.md](roles/entertainment/detective-mystery/prompt.md) | [optimized](roles/entertainment/detective-mystery/prompt-optimized.md) | Stateful murder mystery game master — generates a unique locked case per session, plays all NPCs with deception modelling, issues VERDICT on accusation; language-adaptive |
+| T.A.G. — Text Adventure Generator | [prompt](roles/entertainment/text-adventure/prompt.md) | [compressed](roles/entertainment/text-adventure/prompt-compressed.md) | Stateful text adventure game master — rules-governed narrative RPG with session state, inventory, NPCs, and quest tracking |
+| D.I.C.E. — Detective Investigation and Case Engine | [prompt](roles/entertainment/detective-mystery/prompt.md) | [optimized](roles/entertainment/detective-mystery/prompt-optimized.md) | Stateful murder mystery game master — generates a unique locked case per session, plays all NPCs with deception modelling, language-adaptive |
 
 ### Engineering
 
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
-| C.R.A. — Code Review Analyst | [roles/engineering/code-reviewer/prompt.md](roles/engineering/code-reviewer/prompt.md) | — | Structured code review with security, quality, and architecture focus |
+| C.R.A. — Code Review Analyst | [prompt](roles/engineering/code-reviewer/prompt.md) | — | Structured code review with security (OWASP, CWE), correctness, performance, and maintainability focus |
 
 ### Health
 
 | Role | Prompt | Variant | Description | Notes |
 |------|--------|---------|-------------|-------|
-| P.S.Y. — Trauma-Specialised Psychologist | [roles/health/trauma-psychologist/prompt.md](roles/health/trauma-psychologist/prompt.md) | — | Trauma-informed psychoeducation and emotional support session agent | ⚠️ See safety notes |
-| F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots | [roles/health/relationship-therapist/prompt.md](roles/health/relationship-therapist/prompt.md) | — | Relationship self-reflection and psychoeducation agent — attachment theory, EFT, Gottman-informed, with calibrated wit | ⚠️ See safety notes |
-| V.I.T.A. — Values-Integrated Transformation Agent | [roles/health/lifestyle-coach/prompt.md](roles/health/lifestyle-coach/prompt.md) | [optimized](roles/health/lifestyle-coach/prompt-optimized.md) | Personal lifestyle coaching companion covering Food, Activity, and Mental Health — Motivational Interviewing, CBT, habit loop analysis | ⚠️ See safety notes |
+| P.S.Y. — Trauma-Specialised Psychologist | [prompt](roles/health/trauma-psychologist/prompt.md) | — | Trauma-informed psychoeducation and emotional support — Phase 1 stabilisation only, crisis escalation, GDPR Art. 9 | ⚠️ See safety notes |
+| F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots | [prompt](roles/health/relationship-therapist/prompt.md) | — | Relationship self-reflection and psychoeducation — attachment theory, EFT, Gottman-informed, DV crisis detection | ⚠️ See safety notes |
+| V.I.T.A. — Values-Integrated Transformation Agent | [prompt](roles/health/lifestyle-coach/prompt.md) | [optimized](roles/health/lifestyle-coach/prompt-optimized.md) | Personal lifestyle coaching covering Food, Activity, and Mental Health — Motivational Interviewing, CBT, habit loops | ⚠️ See safety notes |
 
-> **Health prompt safety notes:** Crisis line numbers should be verified for your target region before deployment.
-> These prompts are not a substitute for licensed clinical care. See [`roles/registry.yaml`](roles/registry.yaml) for full governance details.
+> **Health prompt safety notes:** Crisis line numbers must be verified for your target region before deployment.
+> These prompts are not a substitute for licensed clinical care. See `safety_notes` in [`index.yaml`](index.yaml) for full details.
 
 ### Education
 
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
-| M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review | [roles/education/study-coach/prompt.md](roles/education/study-coach/prompt.md) | [optimized](roles/education/study-coach/prompt-optimized.md) | Study and exam coaching companion for VWO students — Socratic method, misconception diagnosis, exam prep mode; Dutch output |
-| S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator | [roles/education/curriculum-scout/prompt.md](roles/education/curriculum-scout/prompt.md) | [optimized](roles/education/curriculum-scout/prompt-optimized.md) | Stateless parental support tool: produces structured curriculum briefings per VWO subject and topic, anchored to SLO eindtermen; Dutch output |
+| M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review | [prompt](roles/education/study-coach/prompt.md) | [optimized](roles/education/study-coach/prompt-optimized.md) | Study and exam coaching for VWO students — Socratic method, misconception diagnosis, exam prep mode; Dutch output |
+| S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator | [prompt](roles/education/curriculum-scout/prompt.md) | [optimized](roles/education/curriculum-scout/prompt-optimized.md) | Stateless parental support tool: structured curriculum briefings per VWO subject and topic, anchored to SLO eindtermen; Dutch output |
 
 ### Productivity
 
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
-| A.G.L. — Authoritative Governance Lead | [roles/productivity/ai-governance-lead/prompt.md](roles/productivity/ai-governance-lead/prompt.md) | [optimized](roles/productivity/ai-governance-lead/prompt-optimized.md) | Stateless EU AI Act tier classifier — issues binding VERDICT blocks (tier + rationale + obligations) for any AI component; refuses downgrade without evidence |
-| P.R.I.M.E. — Product Requirements and Intent Management Executive | [roles/productivity/product-owner/prompt.md](roles/productivity/product-owner/prompt.md) | [optimized](roles/productivity/product-owner/prompt-optimized.md) | Stateless Product Owner role — reviews feature specs and change requests, issues APPROVED / REJECTED / NEEDS_CLARIFICATION verdicts, enforces Stage 1 exit gate |
+| A.G.L. — Authoritative Governance Lead | [prompt](roles/productivity/ai-governance-lead/prompt.md) | [optimized](roles/productivity/ai-governance-lead/prompt-optimized.md) | Stateless EU AI Act tier classifier — issues binding VERDICT blocks with tier, rationale, and obligations |
+| P.R.I.M.E. — Product Requirements and Intent Management Executive | [prompt](roles/productivity/product-owner/prompt.md) | [optimized](roles/productivity/product-owner/prompt-optimized.md) | Stateless Product Owner — reviews feature specs and issues APPROVED / REJECTED / NEEDS_CLARIFICATION verdicts |
 
 ### Utility
 
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
-| A.T.L.A.S. — ASCII Topographic Layout and Surveying System | [roles/utility/ascii-cartographer/prompt.md](roles/utility/ascii-cartographer/prompt.md) | — | Stateless ASCII cartography agent — renders proportionally accurate top-view maps from coordinates; supports interior floor plans with polygon wall rendering |
-| S.C.R.I.B.E. — Semantic Compression and Reasoning-Informed Brevity Encoder | [roles/utility/semanticode-compiler/prompt.md](roles/utility/semanticode-compiler/prompt.md) | — | Stateless prompt compiler — converts any masterprompt into a token-efficient SemantiCode logic stream with three compression modes (LOSSLESS / BALANCED / AGGRESSIVE) |
+| A.T.L.A.S. — ASCII Topographic Layout and Surveying System | [prompt](roles/utility/ascii-cartographer/prompt.md) | — | Stateless ASCII cartography agent — proportionally accurate top-view maps from coordinates; supports interior floor plans |
+| S.C.R.I.B.E. — Semantic Compression and Reasoning-Informed Brevity Encoder | [prompt](roles/utility/semanticode-compiler/prompt.md) | — | Stateless prompt compiler — converts any masterprompt into a token-efficient SemantiCode logic stream |
 
 ---
 
@@ -77,6 +87,17 @@ response = client.messages.create(
 )
 ```
 
+### Discovering roles programmatically
+
+```python
+import yaml, pathlib
+
+index = yaml.safe_load(pathlib.Path("index.yaml").read_text())
+for role in index["roles"]:
+    prompt_path = role["files"]["prompt"]
+    print(f"{role['id']}: {prompt_path}")
+```
+
 ### As a paste-in session prompt
 
 1. Open the masterprompt file and copy the content of its code block.
@@ -88,127 +109,63 @@ response = client.messages.create(
 ## Repository Structure
 
 ```text
-roles/
-├── registry.yaml                        ← Masterprompt registry (start here)
+index.yaml                               ← Module entrypoint — start here
 │
+roles/
 ├── entertainment/
 │   ├── text-adventure/                  ← T.A.G. v2.2
-│   │   ├── prompt.md                    ← Canonical verbose prompt
-│   │   └── prompt-compressed.md         ← Token-efficient variant
+│   │   ├── prompt.md
+│   │   ├── prompt-compressed.md
+│   │   └── prompt-semanticode.md
 │   └── detective-mystery/               ← D.I.C.E. v1.0
-│       └── prompt.md
+│       ├── prompt.md
+│       ├── prompt-optimized.md
+│       └── prompt-semanticode.md
 │
 ├── engineering/
 │   └── code-reviewer/                   ← C.R.A. v1.0
-│       └── prompt.md
+│       ├── prompt.md
+│       └── prompt-semanticode.md
 │
 ├── health/
 │   ├── trauma-psychologist/             ← P.S.Y. v1.0
-│   │   └── prompt.md
+│   │   ├── prompt.md
+│   │   └── prompt-semanticode.md
 │   ├── relationship-therapist/          ← F.R.A.N.K. v1.0
-│   │   └── prompt.md
+│   │   ├── prompt.md
+│   │   └── prompt-semanticode.md
 │   └── lifestyle-coach/                 ← V.I.T.A. v1.0
 │       ├── prompt.md
-│       └── prompt-optimized.md
+│       ├── prompt-optimized.md
+│       └── prompt-semanticode.md
 │
 ├── education/
 │   ├── study-coach/                     ← M.E.N.T.O.R. v1.0
 │   │   ├── prompt.md
-│   │   └── prompt-optimized.md
+│   │   ├── prompt-optimized.md
+│   │   └── prompt-semanticode.md
 │   └── curriculum-scout/               ← S.C.O.U.T. v1.0
 │       ├── prompt.md
-│       └── prompt-optimized.md
+│       ├── prompt-optimized.md
+│       └── prompt-semanticode.md
 │
 ├── utility/
 │   ├── ascii-cartographer/              ← A.T.L.A.S. v1.0
-│   │   └── prompt.md
+│   │   ├── prompt.md
+│   │   └── prompt-semanticode.md
 │   └── semanticode-compiler/            ← S.C.R.I.B.E. v1.0
-│       └── prompt.md
+│       ├── prompt.md
+│       └── prompt-semanticode.md
 │
 └── productivity/
     ├── ai-governance-lead/              ← A.G.L. v1.0
-    │   └── prompt.md
+    │   ├── prompt.md
+    │   ├── prompt-optimized.md
+    │   └── prompt-semanticode.md
     └── product-owner/                   ← P.R.I.M.E. v1.0
-        └── prompt.md
-```
-
----
-
-## Getting Started
-
-```bash
-git clone https://github.com/jvanheerikhuize/tag-role-test.git
-cd tag-role-test
-```
-
----
-
-## Adding a New Role
-
-New roles are introduced through a deterministic, agent-executed pipeline defined in
-[`specs/DAG-new-role-creation.yaml`](specs/DAG-new-role-creation.yaml).
-Open that file in any AI coding agent (Claude Code, Cursor, Copilot, etc.) and use the
-prompt below. The agent reads the DAG and guides you step by step — it will not proceed
-past human-approval gates without your explicit sign-off.
-
-### Invoke the pipeline
-
-```
-Read specs/DAG-new-role-creation.yaml and execute the New Role Introduction pipeline
-from node N-00. Guide me through each stage in order, pause at every human_gate, and
-do not proceed until I approve.
-```
-
-### What the agent will ask you
-
-At **N-01 (COLLECT_INPUTS)** the agent collects the following before doing any work:
-
-| Input | Example |
-|-------|---------|
-| Role concept | "A negotiation coach grounded in Harvard principled negotiation" |
-| Intended category | `entertainment` / `engineering` / `health` / `education` / `utility` / `productivity` |
-| Target user | Who will interact with this role and in what context |
-| Communication style | Tone (`formal` / `casual` / `warm` / `direct` / `clinical` / `playful`), humor (`none` / `dry` / `sarcastic` / `dark` / `witty`), verbosity (`concise` / `balanced` / `detailed`), and a free-text persona note describing the voice and character |
-| Special constraints | GDPR sensitivity, minors, crisis risk, language requirements, etc. |
-
-Everything else — the acronym, slug, masterprompt, SemantiCode variants, registry entry,
-README update, commits, and push — is produced by the agent.
-
-### Human gates
-
-The pipeline has three mandatory pause points where you review and approve before work continues:
-
-| Gate | Node | What you review |
-|------|------|-----------------|
-| Stage 1 approval | N-08 | Feature spec — scope, risk tier, constraints |
-| Stage 2 approval | N-11 | System design and threat model |
-| Stage 4 approval | N-21 | Test results and documentation completeness |
-| Stage 5 acknowledgement | N-26 | Deployed files and commit confirmation |
-
-### Pipeline output
-
-A completed run produces:
-
-- `roles/<category>/<slug>/prompt.md` — canonical masterprompt
-- `roles/<category>/<slug>/prompt-semanticode.md` — LOSSLESS SemantiCode variant
-- `roles/<category>/<slug>/prompt-optimized.md` — BALANCED SemantiCode variant
-- `roles/registry.yaml` — updated with the new role entry
-- `README.md` — role table and structure tree updated
-- `specs/FEAT-XXXX-<slug>.yaml` — full governance record
-
-See [`specs/DAG-new-role-creation.yaml`](specs/DAG-new-role-creation.yaml) for the complete node-by-node specification.
-
----
-
-## Keeping Governance Current
-
-This project tracks the [A-SDLC governance framework](https://github.com/jvanheerikhuize/a-sdlc) as a git
-submodule. To pull in the latest framework updates:
-
-```bash
-git submodule update --remote a-sdlc
-git add a-sdlc
-git commit -m "chore: update a-sdlc governance framework"
+        ├── prompt.md
+        ├── prompt-optimized.md
+        └── prompt-semanticode.md
 ```
 
 ---

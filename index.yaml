@@ -1,13 +1,28 @@
 # =============================================================================
-# Masterprompt Registry
-# Single source of truth for all agent roles in this library.
+# Module Index — tag-role-library
 # =============================================================================
-# Each entry describes one role: its location, purpose, version, usage notes,
-# and governance provenance. Keep this file in sync when adding, updating, or
-# deprecating a role.
+# Single entrypoint for consuming repositories.
+# Parse this file to discover all available roles and their prompt file paths.
 # =============================================================================
 
-schema_version: "1"
+module:
+  name: tag-role-library
+  version: "1.0.0"
+  description: >
+    A library of structured LLM agent masterprompts. Each role is self-contained
+    and paste-and-play — paste into a chat session, inject as an API system prompt,
+    or load the file path directly from your agent framework. No external
+    infrastructure required.
+  license: MIT
+  author: "Jerry van Heerikhuize"
+  repository: https://github.com/jvanheerikhuize/tag-role-test
+
+# Prompt variants available per role.
+# - prompt:      Canonical full-length prompt. Most readable; uncompressed.
+# - variant:     Optimised or compressed variant. Reduced token count (~55-75%).
+#                null if no variant exists for this role.
+# - semanticode: SemantiCode logic stream. Lossless compression (~35% reduction).
+#                Directly executable by any advanced LLM.
 
 roles:
 
@@ -46,7 +61,6 @@ roles:
       auto_init: true      # Agent initialises itself without user input
 
     governance:
-      feat_id: FEAT-0001
       risk_tier: low
       ai_tier: minimal
       data_classification: public
@@ -56,7 +70,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-11"
       last_updated: "2026-03-14"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0001 Stage 3"
 
   - id: dice
     name: "D.I.C.E. — Detective Investigation and Case Engine"
@@ -96,7 +109,6 @@ roles:
       auto_init: true      # Generates and renders opening scene without user input
 
     governance:
-      feat_id: FEAT-0013
       risk_tier: low
       ai_tier: minimal
       data_classification: public
@@ -106,7 +118,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-18"
       last_updated: "2026-03-18"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0013 Stage 3"
 
   # ---------------------------------------------------------------------------
   # Engineering
@@ -144,7 +155,6 @@ roles:
       auto_init: false     # Waits for diff input
 
     governance:
-      feat_id: null        # Human-authored; predates FEAT-0002
       risk_tier: low
       ai_tier: minimal
       data_classification: internal
@@ -154,7 +164,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-14"
       last_updated: "2026-03-14"
-      implementation: "Human-authored"
 
   # ---------------------------------------------------------------------------
   # Health
@@ -205,7 +214,6 @@ roles:
       This prompt is NOT a substitute for licensed clinical care.
 
     governance:
-      feat_id: FEAT-0004
       risk_tier: medium
       ai_tier: limited
       data_classification: restricted
@@ -216,7 +224,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-14"
       last_updated: "2026-03-14"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0004 Stage 3"
 
   - id: frank
     name: "F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots"
@@ -238,8 +245,6 @@ roles:
       relationship pattern identification (Four Horsemen, pursue-withdraw, attachment
       styles), domestic violence crisis detection with tiered response, individual-
       perspective integrity guard, and multi-language support (7 languages + default).
-      Wit is deployed with a single-nudge pre-rapport rule and suspended automatically
-      during distress and GRAVITY_TOPICS engagement.
 
     tags:
       - health
@@ -265,16 +270,14 @@ roles:
       and suicidal ideation disclosures. Before deploying in any product context, review:
       - Crisis and DV helpline numbers are current and correct for your target region
       - GDPR Art. 9 disclosure wording meets your legal obligations
-      - Individual-perspective scope limits are appropriate for your use case (FRANK
+      - Individual-perspective scope limits are appropriate for your use case (F.R.A.N.K.
         works with one person's account only — it is not a couples therapy tool)
-      - HUMOR_PROTOCOL behavior has been tested on your chosen LLM (Stage 4 ACG-01)
       This prompt is NOT a substitute for licensed relationship or couples therapy.
 
     governance:
-      feat_id: FEAT-0005
       risk_tier: medium
       ai_tier: limited
-      data_classification: confidential    # RESTRICTED elevation trigger: mental health / DV
+      data_classification: confidential
       gdpr_special_category: conditional   # Art. 9(1) if mental health / DV data disclosed
       eu_ai_act_tier: limited
 
@@ -282,7 +285,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-14"
       last_updated: "2026-03-14"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0005 Stage 3"
 
   - id: vita
     name: "V.I.T.A. — Values-Integrated Transformation Agent"
@@ -302,9 +304,8 @@ roles:
       (OPEN → CHECK_IN → FOCUS_AREA → EXPLORE → ACTION_PLAN → CLOSE) and produces
       one micro-habit commitment per session. Applies Motivational Interviewing (OARS),
       CBT reframing, habit loop analysis, and positive psychology. Features dry/witty
-      HUMOR_PROTOCOL (suspended during crisis and gravity topics), mandatory crisis
-      detection, safe-messaging enforcement, GDPR Art. 9 disclosure, and multi-language
-      support (7 languages + default). Not a substitute for clinical care.
+      HUMOR_PROTOCOL, mandatory crisis detection, safe-messaging enforcement, GDPR
+      Art. 9 disclosure, and multi-language support (7 languages + default).
 
     tags:
       - health
@@ -330,12 +331,9 @@ roles:
       - Crisis line numbers are current and correct for your target region
       - GDPR Art. 9 disclosure wording meets your legal obligations
       - A DPIA (Art. 35) is required for large-scale production deployment
-      - Scope limits (no diagnosis, no clinical advice, no trauma processing) are
-        appropriate for your use case
       This prompt is NOT a substitute for licensed medical, dietary, or mental health care.
 
     governance:
-      feat_id: FEAT-0008
       risk_tier: medium
       ai_tier: limited
       data_classification: restricted
@@ -346,7 +344,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-17"
       last_updated: "2026-03-17"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0008 Stage 3"
 
   # ---------------------------------------------------------------------------
   # Education
@@ -366,13 +363,11 @@ roles:
 
     description: >
       A stateless, single-task parental support tool and companion to M.E.N.T.O.R.
-      (FEAT-0009). Given a VWO subject and topic, produces a structured four-part
-      THEME_OVERVIEW in Dutch: Focus (what the student must master for the test),
-      De Logica (one adult-world analogy from finance/engineering/logistics/law),
-      De Valkuilen (the 3 most common student errors), and De Lakmoesproef (one
-      sharp diagnostic question for the parent to use). Anchored to SLO VWO
-      eindtermen. Persona is direct and businesslike — an intelligence officer for
-      the curriculum. Addressed to the parent throughout; never to the student.
+      Given a VWO subject and topic, produces a structured four-part THEME_OVERVIEW
+      in Dutch: Focus (what the student must master for the test), De Logica (one
+      adult-world analogy), De Valkuilen (the 3 most common student errors), and
+      De Lakmoesproef (one sharp diagnostic question for the parent). Anchored to
+      SLO VWO eindtermen. Addressed to the parent throughout; never to the student.
 
     tags:
       - education
@@ -390,7 +385,6 @@ roles:
       auto_init: false     # Waits for [VAK + ONDERWERP] input
 
     governance:
-      feat_id: FEAT-0010
       risk_tier: low
       ai_tier: minimal
       data_classification: public
@@ -400,7 +394,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-18"
       last_updated: "2026-03-18"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0010 Stage 3"
 
   - id: mentor
     name: "M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review"
@@ -419,11 +412,9 @@ roles:
       natuurkunde, and scheikunde. Guides through a structured session lifecycle
       (OPEN → TOPIC_SELECT → DIAGNOSE → TEACH → PRACTICE → REVIEW → CLOSE) using the
       Socratic method — asks before telling, never gives answers outright. Detects and
-      addresses root misconceptions, not just surface errors. Includes exam preparation
-      mode with VWO-format questions and structured feedback. Dutch output by default.
-      HUMOR_PROTOCOL: dark, sarcastic, deadpan academic nihilism targeting abstract
-      concepts and the curriculum — never the student. Academic integrity enforced:
-      will not complete homework or write answers for the student.
+      addresses root misconceptions, not just surface errors. Dutch output by default.
+      HUMOR_PROTOCOL: dark, sarcastic, deadpan academic nihilism — never targeting
+      the student. Academic integrity enforced.
 
     tags:
       - education
@@ -441,18 +432,16 @@ roles:
       auto_init: true
 
     governance:
-      feat_id: FEAT-0009
       risk_tier: low
       ai_tier: minimal
       data_classification: internal
       gdpr_special_category: false
-      minors_involved: true         # User is 14; GDPR Art. 8 parental consent applies in production
+      minors_involved: true         # GDPR Art. 8 parental consent applies in production
 
     provenance:
       author: "Jerry van Heerikhuize"
       created: "2026-03-17"
       last_updated: "2026-03-17"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0009 Stage 3"
 
   # ---------------------------------------------------------------------------
   # Utility
@@ -475,9 +464,7 @@ roles:
       coordinates (WGS84 decimal degrees, DMS, or named locations) and abstract grid
       coordinates, then renders a proportionally accurate top-view ASCII map with
       compass rose, scale bar, edge coordinate labels, and a full legend. Supports
-      optional polygon boundary input for interior floor plans (any shape) with wall
-      rendering (|, -, +, /, \). Interior and exterior spatial modes auto-detected from
-      input. Map precision is documented in metadata with character-resolution warnings.
+      optional polygon boundary input for interior floor plans with wall rendering.
 
     tags:
       - utility
@@ -494,18 +481,15 @@ roles:
       auto_init: false     # Waits for coordinate input
 
     governance:
-      feat_id: FEAT-0006
       risk_tier: low
       ai_tier: minimal
-      data_classification: public    # Conditional personal data if private locations provided
+      data_classification: public
       gdpr_special_category: false
-      eu_ai_act_tier: minimal
 
     provenance:
       author: "Jerry van Heerikhuize"
       created: "2026-03-15"
       last_updated: "2026-03-15"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0006 Stage 3"
 
   - id: scribe
     name: "S.C.R.I.B.E. — Semantic Compression and Reasoning-Informed Brevity Encoder"
@@ -520,14 +504,11 @@ roles:
       semanticode: roles/utility/semanticode-compiler/prompt-semanticode.md
 
     description: >
-      A stateless, single-task semantic compilation agent. Accepts any MVC/XML-structured
+      A stateless, single-task semantic compilation agent. Accepts any structured
       masterprompt and compiles it into a SemantiCode logic stream — a token-efficient,
       abbreviated notation that retains full semantic fidelity and is directly executable
       by any advanced LLM. Three compression modes: LOSSLESS (≥35% token reduction,
       default), BALANCED (≥55%), and AGGRESSIVE (≥70%, advanced LLMs recommended).
-      Optional ANNOTATED mode adds inline // comments explaining compression decisions.
-      Outputs a self-describing orientation header, the compiled stream, and a YAML
-      metadata block with compression ratio, fidelity status, and construct counts.
 
     tags:
       - utility
@@ -544,18 +525,15 @@ roles:
       auto_init: false     # Waits for a prompt to compile
 
     governance:
-      feat_id: FEAT-0007
       risk_tier: low
       ai_tier: minimal
-      data_classification: public    # Conditional internal if submitted prompt contains PII
+      data_classification: public
       gdpr_special_category: false
-      eu_ai_act_tier: minimal
 
     provenance:
       author: "Jerry van Heerikhuize"
       created: "2026-03-17"
       last_updated: "2026-03-17"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0007 Stage 3"
 
   # ---------------------------------------------------------------------------
   # Productivity
@@ -577,10 +555,8 @@ roles:
       A stateless, single-purpose EU AI Act tier classifier. Given any AI component
       description or change request, issues a structured VERDICT block (tier, rationale
       citing specific EU AI Act articles, control obligations, and escalation conditions).
-      Refuses downgrade requests without documented evidence. Issues INFORMATION_REQUEST
-      when input is insufficient. Designed for use by developers and agentic SDLC
-      pipelines executing Stage 1 AC-01 classification. Persona: a regulator, not a
-      collaborator — terse, professional, binding.
+      Refuses downgrade requests without documented evidence. Persona: a regulator,
+      not a collaborator — terse, professional, binding.
 
     tags:
       - productivity
@@ -589,7 +565,6 @@ roles:
       - classifier
       - stateless
       - single-task
-      - asdlc
       - compliance
 
     usage:
@@ -598,7 +573,6 @@ roles:
       auto_init: true      # Outputs "Ready." on session start without user input
 
     governance:
-      feat_id: FEAT-0011
       risk_tier: low
       ai_tier: minimal
       data_classification: internal
@@ -608,7 +582,6 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-18"
       last_updated: "2026-03-18"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0011 Stage 3"
 
   - id: prime
     name: "P.R.I.M.E. — Product Requirements and Intent Management Executive"
@@ -623,14 +596,11 @@ roles:
       semanticode: roles/productivity/product-owner/prompt-semanticode.md
 
     description: >
-      A stateless Product Owner role for agentic SDLC pipelines and development teams.
+      A stateless Product Owner role for agentic pipelines and development teams.
       Given a feature specification or change request, issues a structured REVIEW block
       (APPROVED / REJECTED / NEEDS_CLARIFICATION) with verdict, rationale against four
       evaluation criteria (completeness, consistency, scope clarity, business value), and
-      a named open-items list. Enforces the Stage 1 exit gate (A-SDLC RC-02). Refuses
-      approval for incomplete, self-contradictory, or problem-free specifications.
-      Urgency and seniority are not criteria. A companion to A.G.L. in the productivity
-      category — A.G.L. classifies AI risk; P.R.I.M.E. approves intent and scope.
+      a named open-items list. Refuses approval for incomplete or self-contradictory specs.
 
     tags:
       - productivity
@@ -639,8 +609,6 @@ roles:
       - spec-review
       - stateless
       - single-task
-      - asdlc
-      - rc-02
 
     usage:
       paste_in: true
@@ -648,7 +616,6 @@ roles:
       auto_init: true      # Outputs "Ready." on session start without user input
 
     governance:
-      feat_id: FEAT-0012
       risk_tier: low
       ai_tier: minimal
       data_classification: internal
@@ -658,4 +625,3 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-18"
       last_updated: "2026-03-18"
-      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0012 Stage 3"
