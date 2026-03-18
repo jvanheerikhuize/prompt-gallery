@@ -52,13 +52,13 @@ Early feedback saves rework later.
 
 Once the concept is aligned, fork the repo and run:
 
-```
-Read ingest.yaml and execute the role ingestion process from STEP-01.
-Guide me through each step, pause at COLLECT and REVIEW, and do not
-proceed until I confirm.
+```bash
+./ingest.sh
 ```
 
-The agent walks you through the process and produces all required files: `prompt.md`, `prompt-semanticode.md`, `README.md`, and the `index.yaml` entry.
+This launches a guided session with Claude Code. The agent reads `ingest.yaml`, walks you through each step, and pauses at the two human gates (COLLECT and REVIEW) for your input. It produces all required files: `prompt.md`, `prompt-semanticode.md`, `README.md`, and the `index.yaml` entry.
+
+If you prefer a different agent (Cursor, Copilot, etc.), run `./ingest.sh --dry-run` to print the prompt and paste it manually.
 
 **Step 3 — Open a pull request**
 

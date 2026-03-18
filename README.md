@@ -166,7 +166,7 @@ New roles, improvements to existing ones, bug reports, ideas — all welcome.
 The process for adding a new role is defined in [`ingest.yaml`](ingest.yaml) and is designed to be run with an AI coding agent. The short version:
 
 1. **Open an issue** to share your concept and get early feedback.
-2. **Fork the repo** and run the ingestion process — the agent walks you through every step.
+2. **Fork the repo** and run `./ingest.sh` — the agent walks you through every step.
 3. **Submit a pull request** against `main`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
