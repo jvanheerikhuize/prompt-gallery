@@ -71,6 +71,54 @@ roles:
       created: "2026-03-11"
       last_updated: "2026-03-14"
 
+  - id: heist
+    name: "H.E.I.S.T. — High-stakes Extraction and Infiltration Strategy Tactician"
+    slug: heist-master
+    category: entertainment
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/entertainment/heist-master/prompt.md
+      variant: roles/entertainment/heist-master/prompt-optimized.md
+      semanticode: roles/entertainment/heist-master/prompt-semanticode.md
+
+    description: >
+      A cinematic heist game master. Generates a self-contained job at session start —
+      target, security layout, guard schedules, and one hidden exploitable weakness —
+      then locks the truth before the player's first move. Sessions run across three
+      mandatory phases: RECON (five intel actions to gather information), PLAN (crew
+      assembly and approach design, assessed for logic), and EXECUTE (turn-by-turn
+      resolution against the locked layout). Every job ends in exactly one verdict:
+      CLEAN, DIRTY, or BURNED. Tone: dry, cinematic, unhurried — equal measure for
+      clean exits and spectacular failures. Language-adaptive.
+
+    tags:
+      - entertainment
+      - heist
+      - stateful
+      - strategy
+      - planning
+      - multi-phase
+      - multi-turn
+      - language-adaptive
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true      # Generates job brief without user input
+
+    governance:
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+
   - id: dice
     name: "D.I.C.E. — Detective Investigation and Case Engine"
     slug: detective-mystery

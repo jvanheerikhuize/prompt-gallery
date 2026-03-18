@@ -28,6 +28,7 @@ their prompt file paths.
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
 | T.A.G. — Text Adventure Generator | [prompt](roles/entertainment/text-adventure/prompt.md) | [compressed](roles/entertainment/text-adventure/prompt-compressed.md) | Stateful text adventure game master — rules-governed narrative RPG with session state, inventory, NPCs, and quest tracking |
+| H.E.I.S.T. — High-stakes Extraction and Infiltration Strategy Tactician | [prompt](roles/entertainment/heist-master/prompt.md) | [optimized](roles/entertainment/heist-master/prompt-optimized.md) | Three-phase heist game master — RECON, PLAN, EXECUTE against a locked security layout; ends in CLEAN, DIRTY, or BURNED |
 | D.I.C.E. — Detective Investigation and Case Engine | [prompt](roles/entertainment/detective-mystery/prompt.md) | [optimized](roles/entertainment/detective-mystery/prompt-optimized.md) | Stateful murder mystery game master — generates a unique locked case per session, plays all NPCs with deception modelling, language-adaptive |
 
 ### Engineering
