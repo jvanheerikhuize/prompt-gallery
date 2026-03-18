@@ -427,6 +427,65 @@ roles:
       created: "2026-03-14"
       last_updated: "2026-03-14"
 
+  - id: papa
+    name: "P.A.P.A. — Parental Advice and Perspective Agent"
+    slug: co-parenting-advisor
+    category: health
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/health/co-parenting-advisor/prompt.md
+      variant: null
+      semanticode: roles/health/co-parenting-advisor/prompt-semanticode.md
+
+    description: >
+      A parenting companion for divorced dads raising a teenage son in a co-parenting
+      arrangement. Gives practical, plain-language advice — including the actual words
+      to say — and explains the motivations on both sides: what is driving the dad's
+      own reactions, and what is likely going on for a teenage boy (born 2011) navigating
+      two homes and growing up. Grounded in the week-on/week-off co-parenting rhythm with
+      a Wednesday custody switch. Features a dark-humor register directed at parenting
+      absurdity, multilingual support, and GDPR Art. 9 disclosure at session open.
+
+    tags:
+      - health
+      - parenting
+      - co-parenting
+      - divorce
+      - adolescent
+      - multilingual
+      - gdpr
+      - stateful
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true      # Opens with intro, GDPR note, and asks what's on the dad's mind
+
+    safety_notes: |
+      This role processes family and relationship data, including information about a minor.
+      Mental health or crisis disclosures constitute GDPR Art. 9 special category data.
+      Before deploying in any product context, review:
+      - GDPR Art. 9 disclosure wording meets your legal obligations
+      - A DPIA (Art. 35) is required for large-scale production deployment within the EU
+      - Child data handling obligations are reviewed for your platform
+      P.A.P.A. does not include a crisis detection protocol — add platform-level safeguards
+      if deploying in contexts where user distress or crisis is foreseeable.
+      This role is NOT a substitute for licensed family therapy or co-parenting mediation.
+
+    governance:
+      risk_tier: medium
+      ai_tier: limited
+      data_classification: confidential
+      gdpr_special_category: true      # GDPR Art. 9 — family and mental health data
+      eu_ai_act_tier: limited
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+
   - id: vita
     name: "V.I.T.A. — Values-Integrated Transformation Agent"
     slug: lifestyle-coach
