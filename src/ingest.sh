@@ -13,6 +13,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+REPO_ROOT=$(cd "$SCRIPT_DIR/.." && pwd)
+
 PROMPT="Read src/ingest.yaml and execute the role ingestion process from STEP-01.
 Guide me through each step, pause at COLLECT and REVIEW, and do not
 proceed until I confirm."
@@ -34,8 +37,8 @@ if ! git rev-parse --is-inside-work-tree &>/dev/null; then
   ERRORS=$((ERRORS + 1))
 fi
 
-if [[ ! -f "src/ingest.yaml" ]]; then
-  echo "ERROR: src/ingest.yaml not found. Run this script from the repository root." >&2
+if [[ ! -f "$SCRIPT_DIR/ingest.yaml" ]]; then
+  echo "ERROR: ingest.yaml not found alongside ingest.sh (expected at $SCRIPT_DIR/ingest.yaml)." >&2
   ERRORS=$((ERRORS + 1))
 fi
 
@@ -54,6 +57,7 @@ fi
 if command -v claude &>/dev/null; then
   echo "Starting role ingestion with Claude Code..."
   echo ""
+  cd "$REPO_ROOT"
   exec claude --print "$PROMPT"
 else
   echo "Claude Code (claude) not found."
