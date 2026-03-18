@@ -506,3 +506,56 @@ roles:
       created: "2026-03-17"
       last_updated: "2026-03-17"
       implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0007 Stage 3"
+
+  # ---------------------------------------------------------------------------
+  # Productivity
+  # ---------------------------------------------------------------------------
+
+  - id: agl
+    name: "A.G.L. — Authoritative Governance Lead"
+    slug: ai-governance-lead
+    category: productivity
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/productivity/ai-governance-lead/prompt.md
+      variant: roles/productivity/ai-governance-lead/prompt-optimized.md
+      semanticode: roles/productivity/ai-governance-lead/prompt-semanticode.md
+
+    description: >
+      A stateless, single-purpose EU AI Act tier classifier. Given any AI component
+      description or change request, issues a structured VERDICT block (tier, rationale
+      citing specific EU AI Act articles, control obligations, and escalation conditions).
+      Refuses downgrade requests without documented evidence. Issues INFORMATION_REQUEST
+      when input is insufficient. Designed for use by developers and agentic SDLC
+      pipelines executing Stage 1 AC-01 classification. Persona: a regulator, not a
+      collaborator — terse, professional, binding.
+
+    tags:
+      - productivity
+      - governance
+      - eu-ai-act
+      - classifier
+      - stateless
+      - single-task
+      - asdlc
+      - compliance
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true      # Outputs "Ready." on session start without user input
+
+    governance:
+      feat_id: FEAT-0011
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: internal
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0011 Stage 3"

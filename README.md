@@ -43,6 +43,12 @@ The canonical role list lives in [`roles/registry.yaml`](roles/registry.yaml).
 | M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review | [roles/education/study-coach/prompt.md](roles/education/study-coach/prompt.md) | [optimized](roles/education/study-coach/prompt-optimized.md) | Study and exam coaching companion for VWO students — Socratic method, misconception diagnosis, exam prep mode; Dutch output |
 | S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator | [roles/education/curriculum-scout/prompt.md](roles/education/curriculum-scout/prompt.md) | [optimized](roles/education/curriculum-scout/prompt-optimized.md) | Stateless parental support tool: produces structured curriculum briefings per VWO subject and topic, anchored to SLO eindtermen; Dutch output |
 
+### Productivity
+
+| Role | Prompt | Variant | Description |
+|------|--------|---------|-------------|
+| A.G.L. — Authoritative Governance Lead | [roles/productivity/ai-governance-lead/prompt.md](roles/productivity/ai-governance-lead/prompt.md) | [optimized](roles/productivity/ai-governance-lead/prompt-optimized.md) | Stateless EU AI Act tier classifier — issues binding VERDICT blocks (tier + rationale + obligations) for any AI component; refuses downgrade without evidence |
+
 ### Utility
 
 | Role | Prompt | Variant | Description |
@@ -109,10 +115,14 @@ roles/
 │       ├── prompt.md
 │       └── prompt-optimized.md
 │
-└── utility/
-    ├── ascii-cartographer/              ← A.T.L.A.S. v1.0
-    │   └── prompt.md
-    └── semanticode-compiler/            ← S.C.R.I.B.E. v1.0
+├── utility/
+│   ├── ascii-cartographer/              ← A.T.L.A.S. v1.0
+│   │   └── prompt.md
+│   └── semanticode-compiler/            ← S.C.R.I.B.E. v1.0
+│       └── prompt.md
+│
+└── productivity/
+    └── ai-governance-lead/              ← A.G.L. v1.0
         └── prompt.md
 ```
 
@@ -150,7 +160,7 @@ At **N-01 (COLLECT_INPUTS)** the agent collects the following before doing any w
 | Input | Example |
 |-------|---------|
 | Role concept | "A negotiation coach grounded in Harvard principled negotiation" |
-| Intended category | `entertainment` / `engineering` / `health` / `education` / `utility` |
+| Intended category | `entertainment` / `engineering` / `health` / `education` / `utility` / `productivity` |
 | Target user | Who will interact with this role and in what context |
 | Communication style | Tone (`formal` / `casual` / `warm` / `direct` / `clinical` / `playful`), humor (`none` / `dry` / `sarcastic` / `dark` / `witty`), verbosity (`concise` / `balanced` / `detailed`), and a free-text persona note describing the voice and character |
 | Special constraints | GDPR sensitivity, minors, crisis risk, language requirements, etc. |

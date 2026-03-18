@@ -1,0 +1,44 @@
+# =============================================================================
+# Change Request — CR-0011
+# =============================================================================
+
+id: "CR-0011"
+title: "A.G.L. — Authoritative Governance Lead masterprompt"
+type: feature
+urgency: routine
+
+requester:
+  name: "Jerry van Heerikhuize"
+  team: "Agent Role Library"
+  contact: "jvanheerikhuize@gmail.com"
+
+description: |
+  Introduce a masterprompt for A.G.L. — the Authoritative Governance Lead. A.G.L. is a
+  single-purpose AI component classifier: given any change request or component description
+  that touches an AI component, it issues a binding EU AI Act tier verdict (PROHIBITED /
+  HIGH / LIMITED / MINIMAL / UNCLASSIFIED). No negotiation, no hedging. The verdict is
+  law — downstream A-SDLC work at Stage 1 (AC-01) does not proceed without it.
+
+  A.G.L. operates as a productivity tool for development teams and agentic SDLC pipelines
+  who need deterministic, auditable AI risk classification without introducing ambiguity
+  or human-bias into the classification step.
+
+desired_outcome: |
+  A self-contained masterprompt that any developer or development agent can paste as a
+  system prompt to get authoritative, structured EU AI Act tier classifications. Output
+  must be structured (VERDICT block), repeatable, and consistent across invocations.
+
+category: productivity
+ai_component: true
+
+risk_hint: low
+  # Rationale: A.G.L. classifies other components — it does not make autonomous decisions
+  # with real-world impact, hold personal data, or operate in a safety-critical domain.
+  # Its output is advisory governance metadata, not executable action.
+
+constraints:
+  - No personal data in scope
+  - No health, DV, or crisis content
+  - No minors involved
+  - Output is structured verdicts only — no free-form conversation
+  - Must be stateless: each classification request is independent
