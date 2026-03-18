@@ -7,11 +7,11 @@
 meta:
   id: "FEAT-0013"
   title: "D.I.C.E. — Detective Investigation and Case Engine"
-  status: in-progress
+  status: complete
   created: "2026-03-18"
   last_updated: "2026-03-18"
   source_cr: "CR-0013"
-  stage_reached: 4
+  stage_reached: 6
 
 provenance:
   created_by: "Claude Sonnet 4.6 / DAG-001 N-03"
@@ -159,4 +159,18 @@ stage_history:
       TC-06: pass  # language mirror — Dutch input → Dutch output throughout
     blocking_defects: none
     examples_added: true
+    commit: ~
+  - stage: 5
+    status: complete
+    completed: "2026-03-18"
+    commit: 91217aa
+  - stage: 6
+    status: complete
+    completed: "2026-03-18"
+    post_deploy_checks:
+      files_present: pass
+      files_non_empty: pass
+      registry_entry: pass
+      scribe_meta_complete: pass
+      consumer_counter_incremented: pass
     commit: ~
