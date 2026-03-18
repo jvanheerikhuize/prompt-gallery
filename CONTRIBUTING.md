@@ -12,7 +12,7 @@ There are several ways to contribute, from fixing a typo to proposing an entirel
 
 Have an idea for an AI persona that belongs in this library? The ingestion process handles all the heavy lifting. Open an issue to share your concept and get early feedback, then follow the guided process to build it out.
 
-See [Adding a new role](#adding-a-new-role) below for the full workflow.
+See [Adding a new role](#adding-a-new-role) below for the full workflow. The process definition and role templates live in [`src/`](src/).
 
 ### Improve an existing role
 
@@ -36,7 +36,7 @@ Spotted something unclear, outdated, or missing? Documentation PRs are just as v
 
 ## Adding a new role
 
-The process for adding a role is defined in [`ingest.yaml`](ingest.yaml) and is designed to be run with an AI coding agent (Claude Code, Cursor, Copilot, etc.).
+The process for adding a role is defined in [`src/ingest.yaml`](src/ingest.yaml) and is designed to be run with an AI coding agent (Claude Code, Cursor, Copilot, etc.). Role file templates live in [`src/templates/`](src/templates/) — the agent uses these as a structural baseline and fills in the placeholders.
 
 **Step 1 — Open an issue first**
 
@@ -74,7 +74,7 @@ Submit your PR against `main`. Fill in the template with:
 - **One concern per PR** — a new role, a prompt fix, or a docs update. Not all three at once.
 - **Test your prompt** — paste it into at least one LLM and verify it behaves as intended before submitting.
 - **Keep `prompt.md` and `prompt-semanticode.md` in sync** — if you change the canonical prompt, update the SemantiCode variant too.
-- **No SCRIBE_META blocks** — do not add metadata sections to prompt files. See [ingest.yaml](ingest.yaml) validation rules V-13 through V-16.
+- **No SCRIBE_META blocks** — do not add metadata sections to prompt files. See [`src/ingest.yaml`](src/ingest.yaml) validation rules V-13 through V-16.
 - **Health and sensitive roles** — if your role touches mental health, crisis risk, minors, or GDPR Art. 9 data, follow the safety notes pattern in existing health roles.
 
 ---

@@ -138,15 +138,21 @@ for role in catalog["roles"]:
 ## Repository structure
 
 ```
-index.yaml          ← Start here — the full role catalog
-ingest.yaml         ← Process definition for adding new roles (agent-executable)
+index.yaml              ← Start here — the full role catalog
+ingest.sh               ← Run this to add a new role
+src/
+├── ingest.yaml         ← Ingestion process definition (agent-executable)
+└── templates/
+    ├── prompt.md       ← Canonical prompt template
+    ├── prompt-semanticode.md  ← SemantiCode template
+    └── README.md       ← Per-role README template
 roles/
-├── entertainment/  ← T.A.G., H.E.I.S.T., D.I.C.E.
-├── engineering/    ← C.R.A.
-├── health/         ← P.S.Y., F.R.A.N.K., V.I.T.A.
-├── education/      ← M.E.N.T.O.R., S.C.O.U.T.
-├── productivity/   ← A.G.L., P.R.I.M.E.
-└── utility/        ← A.T.L.A.S., S.C.R.I.B.E.
+├── entertainment/      ← T.A.G., H.E.I.S.T., D.I.C.E.
+├── engineering/        ← C.R.A.
+├── health/             ← P.S.Y., F.R.A.N.K., V.I.T.A.
+├── education/          ← M.E.N.T.O.R., S.C.O.U.T.
+├── productivity/       ← A.G.L., P.R.I.M.E.
+└── utility/            ← A.T.L.A.S., S.C.R.I.B.E.
 ```
 
 Each role directory contains:
@@ -163,7 +169,7 @@ Each role directory contains:
 
 New roles, improvements to existing ones, bug reports, ideas — all welcome.
 
-The process for adding a new role is defined in [`ingest.yaml`](ingest.yaml) and is designed to be run with an AI coding agent. The short version:
+The process for adding a new role is defined in [`src/ingest.yaml`](src/ingest.yaml) and is designed to be run with an AI coding agent. The short version:
 
 1. **Open an issue** to share your concept and get early feedback.
 2. **Fork the repo** and run `./ingest.sh` — the agent walks you through every step.

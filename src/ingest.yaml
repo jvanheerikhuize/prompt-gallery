@@ -10,9 +10,13 @@
 version: "1.0"
 
 # ── Invoke ────────────────────────────────────────────────────────────────────
-# To start role ingestion, say:
+# To start role ingestion, run from the repository root:
 #
-#   Read ingest.yaml and execute the role ingestion process from STEP-01.
+#   ./ingest.sh
+#
+# Or paste the following into any AI coding agent manually:
+#
+#   Read src/ingest.yaml and execute the role ingestion process from STEP-01.
 #   Guide me through each step, pause at COLLECT and REVIEW, and do not
 #   proceed until I confirm.
 # =============================================================================
@@ -173,30 +177,11 @@ outputs:
   prompt_md:
     path: "roles/<category>/<slug>/prompt.md"
     description: "Canonical masterprompt. Full-length, maximally readable, uncompressed."
-    header_template: |
-      # [Full Role Name] ([ACRONYM])
-
-      > **Author:** Jerry van Heerikhuize
-      > **Version:** 1.0
-      > **Provenance:** Agent-assisted implementation — Claude Sonnet 4.6 / [YYYY-MM-DD]
-
-      ---
-
-      ## How to [Play|Use|Start]
-
-      1. Copy everything inside the code block below.
-      2. Open any advanced LLM chat (Claude, ChatGPT, Gemini, etc.) in a **fresh conversation**.
-      3. Paste and send. [ACRONYM] will [describe auto-init behaviour or "ask for your input to begin"].
-
-      ---
-
-      ## The Prompt
-
-      ```text
-      <MASTER_PROMPT version="1.0" api_role="system">
-      ...
-      </MASTER_PROMPT>
-      ```
+    template_file: "src/templates/prompt.md"
+    template_note: >
+      Use src/templates/prompt.md as the structural baseline. Replace all {{PLACEHOLDER}}
+      tokens with role-specific content. Remove optional blocks that do not apply.
+      The file contains inline comments explaining each section and placeholder.
     structure:
       mvc_sections:
         - name: CORE_DIRECTIVES
@@ -243,34 +228,11 @@ outputs:
     path: "roles/<category>/<slug>/prompt-semanticode.md"
     description: "LOSSLESS SemantiCode variant. ≥35% token reduction. Always produced."
     mode: LOSSLESS
-    header_template: |
-      # [Full Role Name] ([ACRONYM]) — SemantiCode
-
-      > **Compiled by:** S.C.R.I.B.E. — Claude Sonnet 4.6 / [YYYY-MM-DD]
-      > **Source:** roles/[category]/[slug]/prompt.md (v1.0)
-      > **Mode:** LOSSLESS
-      > **Grammar:** SemantiCode v1.0
-
-      ---
-
-      ## How to Use
-
-      This is a SemantiCode compiled version of [ACRONYM] v1.0. It is token-efficient and directly
-      executable by any advanced LLM (GPT-4 class / Claude Sonnet class and above).
-
-      Paste the content of the code block below as a `system` message in any API or agent framework.
-      This format is optimised for inference-time token efficiency — use the source `prompt.md` for
-      human review or editing.
-
-      ---
-
-      ## SemantiCode
-
-      ```
-      [SCRIBE v1.0 | mode:LOSSLESS | sections:[M]@L1,[V]@LXX,[C]@LXX]
-      // Grammar: [M]model [V]view [C]ctrl | BHV:+must !prohibit ~prefer | CNST:constraint | OUT:type:fmt | IF cond:THEN act:ELSE act | ON_ERR:cond:resp | GATE:cond:pass|fail | DEF:<tag>:<v> REF:<tag>
-      ...
-      ```
+    template_file: "src/templates/prompt-semanticode.md"
+    template_note: >
+      Use src/templates/prompt-semanticode.md as the structural baseline. Replace all
+      {{PLACEHOLDER}} tokens with compressed role-specific content. The [M]/[V]/[C] section
+      line numbers (@LXX) must reflect actual line positions in the produced file.
     prohibitions:
       - "Do NOT append a SCRIBE_META block, --- separator, or any trailing metadata inside or after the code block"
       - "All SemantiCode content must be inside a single fenced code block opened with ``` and closed with ```"
@@ -290,58 +252,16 @@ outputs:
   role_readme:
     path: "roles/<category>/<slug>/README.md"
     description: "Per-role human documentation."
-    sections:
-      - name: title
-        format: "# [ACRONYM] — [Full Expanded Name]"
-        required: true
-
-      - name: metadata
-        format: "> **Version:** 1.0 | **Category:** [Category]"
-        required: true
-        note: "No governance/FEAT reference — this is a module file, not a governance artifact"
-
-      - name: overview
-        heading: "## Overview"
-        required: true
-        guidance: "2-3 paragraphs. What the role does, who it is for, what makes it distinctive."
-
-      - name: quick_start
-        heading: "## Quick Start"
-        required: true
-        guidance: "3-step numbered list. Step 3 describes what happens after paste (auto-init or waiting for input)."
-
-      - name: usage_examples
-        heading: "## Usage Examples"
-        required: true
-        guidance: >
-          2-4 concrete scenarios. Each is a subsection (### N — Name) with an input example
-          in a code block and 1-2 sentences describing the role's response behaviour.
-          For non-English roles, show examples in the target language.
-
-      - name: api_framework
-        heading: "## API / Agent Framework"
-        required: true
-        guidance: >
-          Python code block using the Anthropic SDK. Path must match the canonical prompt.md.
-          Add a note about stateful vs. stateless behaviour (whether to preserve messages array).
-
-      - name: files
-        heading: "## Files"
-        required: true
-        guidance: >
-          Markdown table: File | Description.
-          List prompt.md, prompt-semanticode.md, and prompt-optimized.md if it exists.
-          Only list files that exist. No null entries.
-
+    template_file: "src/templates/README.md"
+    template_note: >
+      Use src/templates/README.md as the structural baseline. Replace all {{PLACEHOLDER}}
+      tokens with role-specific content. The Safety Notes section is commented out in the
+      template — uncomment and complete it when constraints.crisis_risk or
+      constraints.gdpr_special_category is true. Remove the comment block entirely otherwise.
+    required_sections: [title, metadata, overview, quick_start, usage_examples, api_framework, files]
+    conditional_sections:
       - name: safety_notes
-        heading: "## Safety Notes"
         required_when: "constraints.crisis_risk is true OR constraints.gdpr_special_category is true"
-        guidance: >
-          Bullet list of deployment obligations. Include:
-          - Crisis line number verification instruction (for crisis_risk roles)
-          - GDPR Art. 9 DPIA requirement (for gdpr_special_category roles)
-          - Scope limit reminder
-          - "NOT a substitute for licensed [clinical/legal/etc.] care" disclaimer
 
   index_entry:
     file: index.yaml

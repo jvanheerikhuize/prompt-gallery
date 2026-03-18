@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-PROMPT="Read ingest.yaml and execute the role ingestion process from STEP-01.
+PROMPT="Read src/ingest.yaml and execute the role ingestion process from STEP-01.
 Guide me through each step, pause at COLLECT and REVIEW, and do not
 proceed until I confirm."
 
@@ -34,8 +34,8 @@ if ! git rev-parse --is-inside-work-tree &>/dev/null; then
   ERRORS=$((ERRORS + 1))
 fi
 
-if [[ ! -f "ingest.yaml" ]]; then
-  echo "ERROR: ingest.yaml not found. Run this script from the repository root." >&2
+if [[ ! -f "src/ingest.yaml" ]]; then
+  echo "ERROR: src/ingest.yaml not found. Run this script from the repository root." >&2
   ERRORS=$((ERRORS + 1))
 fi
 
