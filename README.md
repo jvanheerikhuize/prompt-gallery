@@ -165,6 +165,53 @@ Each role directory contains:
 
 ---
 
+## Creating a new role
+
+The fastest way is to run the guided ingestion script from the repo root:
+
+```bash
+./src/ingest.sh
+```
+
+This launches an AI coding agent that reads [`src/ingest.yaml`](src/ingest.yaml) and walks you through the full process, pausing at two human checkpoints — once to collect your inputs, and once for a final review before committing.
+
+### What you'll be asked
+
+| Input | Description | Options |
+|-------|-------------|---------|
+| **concept** | What the role does — its primary function and purpose | Free text |
+| **category** | Which category this role belongs to | `entertainment` `engineering` `health` `education` `utility` `productivity` |
+| **target_user** | Who will interact with this role and in what context | Free text |
+| **persona** | Tone, humor style, verbosity, and character voice | See below |
+| **constraints** | Safety and compliance flags | `gdpr_special_category` `minors_involved` `crisis_risk` `language_requirements` `scope_limits` |
+
+Persona options: tone (`formal` `casual` `warm` `direct` `clinical` `playful`), humor (`none` `dry` `sarcastic` `dark` `witty`), verbosity (`concise` `balanced` `detailed`), plus a free-text voice description.
+
+### What the agent produces
+
+1. `roles/<category>/<slug>/prompt.md` — the full canonical masterprompt
+2. `roles/<category>/<slug>/prompt-semanticode.md` — a LOSSLESS compressed variant (≥35% fewer tokens)
+3. `roles/<category>/<slug>/README.md` — usage examples, API code, and safety notes
+4. An entry appended to `index.yaml`
+5. A new row in the role table in this README
+
+After the REVIEW checkpoint the agent stages all files and commits with the message:
+```
+feat(<slug>): introduce [ACRONYM] — [short description] — [category] masterprompt v1.0
+```
+
+### Without Claude Code
+
+If you don't have the `claude` CLI installed, paste the following into any AI coding agent (Cursor, Copilot, etc.):
+
+```
+Read src/ingest.yaml and execute the role ingestion process from STEP-01.
+Guide me through each step, pause at COLLECT and REVIEW, and do not
+proceed until I confirm.
+```
+
+---
+
 ## Contributing
 
 New roles, improvements to existing ones, bug reports, ideas — all welcome.
