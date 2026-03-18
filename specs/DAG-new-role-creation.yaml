@@ -33,12 +33,15 @@
 meta:
   document_id: "DAG-001"
   title: "New Role Introduction — DAG Execution Specification"
-  version: "1.1"
+  version: "1.2"
   status: active
   created: "2026-03-17"
-  last_updated: "2026-03-17"
+  last_updated: "2026-03-18"
   author: "Claude Sonnet 4.6 / FEAT-0007"
   changelog:
+    - version: "1.2"
+      date: "2026-03-18"
+      change: "Added N-22B UPDATE_README — update README.md role registry table and repo structure tree after registry registration; README.md added to N-23 staged files"
     - version: "1.1"
       date: "2026-03-17"
       change: "Added N-15B COMPILE_SEMANTICODE_OPTIMIZED — BALANCED mode compilation to prompt-optimized.md; registered as variant in roles/registry.yaml"
@@ -757,11 +760,35 @@ dag:
       artifacts_modified:
         - "roles/registry.yaml"
 
+    - id: N-22B
+      name: UPDATE_README
+      stage: 5
+      description: "QC-08: Add new role to README.md role registry table"
+      depends_on: [N-22]
+      controls: [QC-08]
+      human_gate: false
+      blocking: true
+      agent_action: |
+        Open README.md and locate the Role Registry section.
+        If the role's category does not yet have a section, add one in this order:
+          Entertainment → Engineering → Health → Education → Utility
+        Add a row to the correct category table:
+
+          | {role_name} | [roles/{role_category}/{role_slug}/prompt.md](...) | [optimized](...) or — | {one-line description} |
+
+        Rules:
+          - For health roles, add a Notes column with "⚠️ See safety notes" if gdpr_special_category = true.
+          - Use "—" in Variant column when no prompt-optimized.md exists.
+          - Keep the existing table format and column order for the category.
+        Also update the Repository Structure tree to include the new directory under its category.
+      artifacts_modified:
+        - "README.md"
+
     - id: N-23
       name: GIT_COMMIT_ALL
       stage: 5
       description: "Stage and commit all artifacts with conventional commit"
-      depends_on: [N-22]
+      depends_on: [N-22B]
       controls: []
       human_gate: false
       blocking: true
@@ -773,6 +800,7 @@ dag:
           - roles/{role_category}/{role_slug}/prompt-semanticode.md
           - roles/{role_category}/{role_slug}/prompt-optimized.md
           - roles/registry.yaml
+          - README.md
           - Any GC audit record files created during the pipeline
         Commit with the following message format:
           feat({FEAT_ID}): introduce {role_name} — {role_category} masterprompt v1.0
@@ -924,7 +952,8 @@ dag:
     # Stage 4 → 5
     - [N-21, N-22]
     # Stage 5
-    - [N-22, N-23]
+    - [N-22, N-22B]
+    - [N-22B, N-23]
     - [N-23, N-24]
     - [N-24, N-25]
     - [N-25, N-26]
