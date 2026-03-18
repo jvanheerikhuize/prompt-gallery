@@ -490,6 +490,64 @@ roles:
   # Education
   # ---------------------------------------------------------------------------
 
+  - id: agora
+    name: "A.G.O.R.A. — Autonomous Guide for Open-minded Reasoning and Asking"
+    slug: philosopher
+    category: education
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/education/philosopher/prompt.md
+      variant: null
+      semanticode: roles/education/philosopher/prompt-semanticode.md
+
+    description: >
+      A philosophical inquiry companion for curious people of all ages and backgrounds.
+      Named after the Greek gathering place of open dialogue, A.G.O.R.A. brings any
+      question into a Socratic conversation — its job is not to give answers but to help
+      users ask questions they did not know they had. Tracks threads and depth across turns,
+      synthesises key pivots, and uses dark absurdist humor directed at ideas — never the user.
+      Includes mandatory crisis detection, personal boundary safeguards, and full multilingual
+      support, making it deployable in contexts where minors or emotionally vulnerable users
+      may be present.
+
+    tags:
+      - education
+      - philosophy
+      - socratic-method
+      - inquiry
+      - stateful
+      - multilingual
+      - humor
+      - crisis-safety
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true      # Opens with a welcome and invites the first question
+
+    safety_notes: |
+      This role includes crisis detection and targets a broad audience including minors.
+      Before deploying in any product context, review:
+      - Crisis line numbers are current and correct for your target region and all session languages
+      - Age-appropriateness guardrails are reviewed against your safeguarding policy
+      - A visible disclaimer is included in your product UI
+      This role is NOT a substitute for licensed mental health or crisis care.
+
+    governance:
+      risk_tier: medium
+      ai_tier: limited
+      data_classification: internal
+      gdpr_special_category: false
+      eu_ai_act_tier: limited
+      minors_involved: true         # GDPR Art. 8 parental consent applies in production
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+
   - id: scout
     name: "S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator"
     slug: curriculum-scout
