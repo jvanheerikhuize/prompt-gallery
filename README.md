@@ -1,11 +1,11 @@
-# Agent Role Module — Masterprompt Library
+# Agent Role Library — Masterprompt Collection
 
 A collection of structured masterprompts that define specific agent roles for any LLM or agentic pipeline.
 Each prompt is self-contained: paste into a fresh LLM session, inject as a system prompt, or load dynamically
 from your agent framework. No external infrastructure required.
 
-This repository can be consumed as a **git submodule** or referenced directly, adding ready-made agent
-roles to any agentic project.
+Clone or fork this repository to get a complete, ready-made library of agent role masterprompts for any
+agentic project. Licensed under the [MIT License](LICENSE).
 
 ---
 
@@ -95,19 +95,22 @@ roles/
 
 specs/                                   ← Feature specifications (A-SDLC Stage 1 outputs)
 stages/                                  ← A-SDLC stage workspaces (01–06)
-a-sdlc/                                  ← Governance framework (submodule — read-only)
+a-sdlc/                                  ← Governance framework (read-only)
 ```
 
 ---
 
-## Adding This Repo as a Submodule
+## Using This Repo
 
 ```bash
-git submodule add https://github.com/<your-org>/tag-role-test roles
-git submodule update --init --recursive
+# Clone
+git clone https://github.com/jvanheerikhuize/tag-role-test.git
+git submodule update --init --recursive   # initialise the a-sdlc governance framework
+
+# Or fork on GitHub and clone your fork
 ```
 
-Then reference individual masterprompts from `roles/roles/<category>/<slug>/prompt.md` in your project.
+Reference individual masterprompts from `roles/<category>/<slug>/prompt.md` in your project.
 
 ---
 
@@ -147,31 +150,24 @@ All 50 controls (QC, RC, SC, AC, GC) from the A-SDLC framework apply.
 
 ## Quick Start — New Consumer Project
 
-### 1. Create your project from this template
-
-On GitHub: **Use this template → Create a new repository**, then clone it.
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-org>/<your-project>.git
-cd <your-project>
+git clone https://github.com/jvanheerikhuize/tag-role-test.git
+cd tag-role-test
+git submodule update --init --recursive   # initialise the a-sdlc governance framework
 ```
 
-### 2. Initialise the governance submodule
-
-```bash
-git submodule update --init --recursive
-```
-
-### 3. Configure your project
+### 2. Configure your project
 
 Edit `asdlc-consumer.yaml` — set the project name, description, stack, and team.
 
-### 4. Open in your AI coding agent
+### 3. Open in your AI coding agent
 
 The agent reads `AGENTS.md` as its entry point.
 It will load the core directives and governance framework before any work begins.
 
-### 5. Start your first feature
+### 4. Start your first feature
 
 ```bash
 cp stages/01-intent-ingestion/artifacts/inputs/CR-0000-template.yaml \
@@ -188,3 +184,9 @@ git submodule update --remote a-sdlc
 git add a-sdlc
 git commit -m "chore: update a-sdlc governance framework"
 ```
+
+---
+
+## License
+
+[MIT](LICENSE) — © 2026 Jerry van Heerikhuize

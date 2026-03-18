@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for considering a contribution to this template.
+Thank you for considering a contribution. This project is open source and licensed under the [MIT License](LICENSE).
 
 ## What Lives Here vs. the Governance Repo
 

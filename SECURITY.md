@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository is a **project template**. It contains no application code, no credentials, and no runtime services. The attack surface is limited to:
+This is a **public, open-source repository** (MIT License). It contains no application code, no credentials, and no runtime services. The attack surface is limited to:
 
 - Template files copied into sibling projects
 - The `a-sdlc/` governance submodule (maintained separately at [jvanheerikhuize/a-sdlc](https://github.com/jvanheerikhuize/a-sdlc))

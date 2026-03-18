@@ -6,12 +6,12 @@
 # =============================================================================
 
 project:
-  id: "A-SDLC-AGENTROLE-DEFINITIONS-MODULE"              # Unique project identifier (e.g. PRJ-0001)
-  name: "A-SDLC-AGENTROLE-DEFINITIONS-MODULE"            # Human-readable project name
+  id: "AGENTROLE-LIBRARY"                                # Unique project identifier (e.g. PRJ-0001)
+  name: "Agent Role Library"                             # Human-readable project name
   description: |
-    Module repository of structured agent-role masterprompts. Each prompt is self-contained
+    Public library of structured agent-role masterprompts. Each prompt is self-contained
     and assigns a specific role to any LLM (game master, code reviewer, psychologist, etc.).
-    Consumed as a git submodule or direct reference in agentic projects.
+    Clone or fork to integrate ready-made agent roles into any agentic project.
   status: active                   # active | paused | archived
 
   # ── Team ──────────────────────────────────────────────────────────────────
@@ -47,7 +47,7 @@ project:
 governance:
   framework: a-sdlc
   framework_version: "1.0"
-  framework_path: a-sdlc/         # Relative path to submodule
+  framework_path: a-sdlc/         # Relative path to governance framework
   framework_repo: https://github.com/jvanheerikhuize/a-sdlc
 
   # Controls to skip (requires justification — subject to audit)
