@@ -76,7 +76,7 @@ process:
       Use LOSSLESS mode (≥35% token reduction). Follow the SemantiCode v1.0 grammar
       defined in `outputs.semanticode_md`. Target: fully executable by any advanced LLM.
 
-  - id: STEP-06
+  - id: STEP-05
     name: WRITE_README
     type: agent
     description: >
@@ -84,7 +84,7 @@ process:
       All sections are required. Usage examples must be concrete and runnable.
       The Files table must list only files that exist on disk.
 
-  - id: STEP-07
+  - id: STEP-06
     name: REGISTER
     type: agent
     description: >
@@ -92,21 +92,21 @@ process:
       Insert under the correct category comment block.
       Increment nothing — there is no counter to manage.
 
-  - id: STEP-08
+  - id: STEP-07
     name: UPDATE_README
     type: agent
     description: >
       Add a new row to the role table in README.md under the correct category section.
       Follow the `outputs.readme_update` row format.
 
-  - id: STEP-09
+  - id: STEP-08
     name: VALIDATE
     type: agent
     description: >
       Run all checks in the `validation` block. Report pass/fail for each.
-      Do not proceed to STEP-10 if any check fails — fix and re-validate.
+      Do not proceed to STEP-09 if any check fails — fix and re-validate.
 
-  - id: STEP-10
+  - id: STEP-09
     name: REVIEW
     type: human_gate
     description: >
@@ -114,13 +114,13 @@ process:
       List the index.yaml entry and README.md row that were added.
       Wait for explicit user approval before committing.
 
-  - id: STEP-11
+  - id: STEP-10
     name: COMMIT
     type: agent
     description: >
       Stage all new and modified files. Commit with message:
         feat(<slug>): introduce [ACRONYM] — [short description] — [category] masterprompt v1.0
-      Push to remote.
+      Then immediately push to remote without asking for confirmation.
 
 # ── Inputs ────────────────────────────────────────────────────────────────────
 
@@ -321,7 +321,7 @@ outputs:
     link_format: "[prompt](roles/<category>/<slug>/prompt.md)"
 
 # ── Validation ────────────────────────────────────────────────────────────────
-# Run all checks after STEP-08 and before STEP-10. Fix any failures before presenting to user.
+# Run all checks after STEP-07 and before STEP-09. Fix any failures before presenting to user.
 
 validation:
 
