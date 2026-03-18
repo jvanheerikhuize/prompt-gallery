@@ -92,25 +92,16 @@ roles/
 └── utility/
     └── ascii-cartographer/              ← A.T.L.A.S. v1.0
         └── prompt.md
-
-specs/                                   ← Feature specifications (A-SDLC Stage 1 outputs)
-stages/                                  ← A-SDLC stage workspaces (01–06)
-a-sdlc/                                  ← Governance framework (read-only)
 ```
 
 ---
 
-## Using This Repo
+## Getting Started
 
 ```bash
-# Clone
 git clone https://github.com/jvanheerikhuize/tag-role-test.git
-git submodule update --init --recursive   # initialise the a-sdlc governance framework
-
-# Or fork on GitHub and clone your fork
+cd tag-role-test
 ```
-
-Reference individual masterprompts from `roles/<category>/<slug>/prompt.md` in your project.
 
 ---
 
@@ -119,65 +110,13 @@ Reference individual masterprompts from `roles/<category>/<slug>/prompt.md` in y
 1. Create a directory: `roles/<category>/<slug>/`
 2. Add `prompt.md` (and an optional `prompt-compressed.md` for token-heavy prompts)
 3. Add an entry to `roles/registry.yaml`
-4. Open a change request via the A-SDLC intake process (see [Governance](#governance) below)
-
----
-
-## Governance
-
-This project is built using the [A-SDLC framework](https://github.com/jvanheerikhuize/a-sdlc) — an Agentic Software
-Development Life Cycle defining how software is built, tested, and released when AI agents work
-alongside human developers. Compliant with DORA and the EU AI Act out of the box.
-
-### The Six Lifecycle Stages
-
-| Stage | Name | Purpose |
-|-------|------|---------|
-| 1 | Intent Ingestion | Capture and structure requirements into a Feature Spec |
-| 2 | System Design | Architecture, threat modelling, and technical specification |
-| 3 | Coding & Implementation | Implementation with quality gates, security scans, and PR review |
-| 4 | Testing & Documentation | Verification, documentation, and risk threshold evaluation |
-| 5 | Deployment & Release | Production promotion with approval gates and rollback plan |
-| 6 | Observability & Maintenance | Continuous monitoring — feeds back into the lifecycle |
-
-All 50 controls (QC, RC, SC, AC, GC) from the A-SDLC framework apply.
-
-- Framework docs: `a-sdlc/README.md`
-- Agent operating instructions: `a-sdlc/AGENTS.md`
-- Control registry: `a-sdlc/controls/registry.yaml`
-
----
-
-## Quick Start — New Consumer Project
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/jvanheerikhuize/tag-role-test.git
-cd tag-role-test
-git submodule update --init --recursive   # initialise the a-sdlc governance framework
-```
-
-### 2. Configure your project
-
-Edit `asdlc-consumer.yaml` — set the project name, description, stack, and team.
-
-### 3. Open in your AI coding agent
-
-The agent reads `AGENTS.md` as its entry point.
-It will load the core directives and governance framework before any work begins.
-
-### 4. Start your first feature
-
-```bash
-cp stages/01-intent-ingestion/artifacts/inputs/CR-0000-template.yaml \
-   stages/01-intent-ingestion/artifacts/inputs/CR-0001-my-feature.yaml
-# Fill in the change request, then hand it to the agent
-```
 
 ---
 
 ## Keeping Governance Current
+
+This project tracks the [A-SDLC governance framework](https://github.com/jvanheerikhuize/a-sdlc) as a git
+submodule. To pull in the latest framework updates:
 
 ```bash
 git submodule update --remote a-sdlc
