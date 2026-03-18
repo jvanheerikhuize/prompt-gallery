@@ -63,22 +63,4 @@ ON_ERR:topic-too-broad:"Dit onderwerp is breed. Bedoel je [2-3 specific sub-topi
 ON_ERR:non-vwo:"Dit is standaard VWO-scope. Wil je doorgaan voor VWO [VAK]?"
 ON_ERR:no-clean-analogy: omit logica section; replace with plain-language explanation; note absence
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 2200
-  semanticode_tokens_est: 590
-  compression_ratio: "73.2%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 12
-    view_rules: 5
-    controller_rules: 6
-    deduplication_refs: 0
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

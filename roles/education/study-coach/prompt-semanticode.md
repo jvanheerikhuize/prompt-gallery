@@ -97,22 +97,4 @@ ON_ERR:unknown-console:"Onbekend commando. Beschikbare commando's: ~state ~close
 ON_ERR:ambiguous-subject:"Bedoel je [subject A] of [subject B]?"
 PHASE_TRANSITIONS: open→topic_select(language); topic_select→diagnose(subject+topic+mode); diagnose→teach(confidence_start+gap); teach→practice(concept understood|requested); practice→review(complete|close-request); review→close(confidence_end+summary); close→[end]
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 3100
-  semanticode_tokens_est: 860
-  compression_ratio: "72.3%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 17
-    view_rules: 11
-    controller_rules: 9
-    deduplication_refs: 1
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

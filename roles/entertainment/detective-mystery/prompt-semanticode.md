@@ -126,30 +126,4 @@ ON_ERR:NO_CLUES_IN_LOCATION: describe_accurately; no_fabricated_clues; HUMOR_PRO
 ON_ERR:HINT_REQUEST: no_direct_hints; atmospheric_nudge_toward_most_productive_location
 ON_ERR:DONE: IF(quit|exit|DONE)→"The case remains open. {victim.name} would be disappointed.";halt
 
----
-SCRIBE_META: {
-  grammar_version: "SemantiCode v1.0",
-  mode: "LOSSLESS",
-  status: "COMPLETE",
-  original_tokens_est: 1650,
-  semanticode_tokens_est: 710,
-  compression_ratio: "57%",
-  fidelity_warnings: 0,
-  constructs: {
-    BHV_absolute: 3,
-    BHV_required: 2,
-    BHV_preferred: 1,
-    CNST_blocks: 6,
-    OUT_templates: 7,
-    FMT_rules: 2,
-    DEF_ss_fields: 28,
-    controller_steps: 10,
-    phase_transitions: 5,
-    ON_ERR_handlers: 4
-  },
-  inferred_sections: [],
-  warnings: [],
-  capability_advisory: "LOSSLESS mode — full semantic fidelity. Safe for production deployment.",
-  fidelity_warning_detail: "None."
-}
 ```

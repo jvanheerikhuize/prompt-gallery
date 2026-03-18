@@ -90,22 +90,4 @@ CNST:compass-rose always top-right interior canvas; scale-bar always below botto
 CNST:non-45° wall segments always noted in metadata with original angle; INTERIOR header printed above map if INTERIOR mode
 CNST:always include in metadata: Grid:{W}x{H} | Scale:~{km_per_col}km/col,~{km_per_row}km/row | Projection:equirectangular | Density:{compact|standard|detailed}
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 7635
-  semanticode_tokens_est: 1820
-  compression_ratio: "76.2%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 8
-    view_rules: 5
-    controller_rules: 10
-    deduplication_refs: 0
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

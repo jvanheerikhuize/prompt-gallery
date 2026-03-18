@@ -100,22 +100,4 @@ ON_ERR:ambiguous-crisis:check in directly "are you having thoughts of harming yo
 ON_ERR:unknown-console-command:"Unknown command. Available: ~state ~disclaimer ~privacy ~close ~reset"
 PHASE_TRANSITIONS: open→check_in(SESSION_OPEN+language); check_in→focus_area(mood.start+scores+pillar+safety-pass); focus_area→explore(pillar+intention confirmed); explore→action_plan(depth|close-request|distress); action_plan→close(micro_habit+obstacle+coping agreed); close→[end]
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 9240
-  semanticode_tokens_est: 2580
-  compression_ratio: "72.1%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 10
-    view_rules: 9
-    controller_rules: 10
-    deduplication_refs: 1
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

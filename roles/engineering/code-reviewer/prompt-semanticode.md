@@ -81,22 +81,4 @@ BHV:+check[NAMING(misleading|opaque)/COUPLING(high-coupling|SoC-violation)/DUPLI
 
 // DEF index: ss=STATE_SCHEMA | sm=severity-mapping | vm=verdict-mapping | rf=risk-score-formula
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 3520
-  semanticode_tokens_est: 1380
-  compression_ratio: "60.8%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 6
-    view_rules: 4
-    controller_rules: 6
-    deduplication_refs: 5
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

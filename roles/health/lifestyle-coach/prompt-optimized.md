@@ -74,22 +74,4 @@ ON_ERR:scope-bypass:decline-without-apology+redirect
 ON_ERR:ambiguous-crisis:check-in-directly; CONSERVATIVE_CRISIS_POLICY
 PHASE_TRANSITIONS: open→check_in; check_in→focus_area(scores+safety); focus_area→explore; explore→action_plan; action_plan→close; close→[end]
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: BALANCED
-  status: COMPLETE
-  original_tokens_est: 9240
-  semanticode_tokens_est: 1620
-  compression_ratio: "82.5%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 10
-    view_rules: 9
-    controller_rules: 8
-    deduplication_refs: 1
-  inferred_sections: []
-  warnings: []
-  capability_advisory: "BALANCED mode — validate behaviour against prompt.md before production deployment."
-  fidelity_warning_detail: []
 ```

@@ -64,26 +64,4 @@ ON_ERR:AMBIGUOUS_TIER→INFORMATION_REQUEST(deciding factor)→no split-verdict
 ON_ERR:OUTSIDE_EU→VERDICT{TIER:N/A,ACTION:NOT APPLICABLE}
 ON_ERR:DONE→"Session closed."→HALT
 
----
-SCRIBE_META:{
-  grammar_version: "1.0",
-  mode: "BALANCED",
-  status: "COMPLETE",
-  original_tokens_est: 1420,
-  semanticode_tokens_est: 390,
-  compression_ratio: "73%",
-  fidelity_warnings: [],
-  constructs: {
-    BHV_absolute: 3,
-    BHV_required: 3,
-    OUT_templates: 4,
-    CONTROLLER_steps: 7,
-    ON_ERR_handlers: 3,
-    CLASSIFICATION_TIERS: 5
-  },
-  dropped_constructs: ["PERSONA", "BHV:~ blocks", "SCOPE narrative", "FMT detail rules"],
-  warnings: [],
-  capability_advisory: "BALANCED mode — validate behaviour against prompt.md before deployment in production contexts.",
-  fidelity_warning_detail: "None. All BHV:!, BHV:+, output templates, and control flow retained."
-}
 ```

@@ -71,27 +71,4 @@ ON_ERR:NO_CLUES→accurate_desc; no_fabrication
 ON_ERR:HINT→atmospheric_nudge_only
 ON_ERR:DONE→"The case remains open. {victim} would be disappointed.";halt
 
----
-SCRIBE_META: {
-  grammar_version: "SemantiCode v1.0",
-  mode: "BALANCED",
-  status: "COMPLETE",
-  original_tokens_est: 1650,
-  semanticode_tokens_est: 430,
-  compression_ratio: "74%",
-  fidelity_warnings: 0,
-  constructs: {
-    BHV_absolute: 3,
-    BHV_required: 2,
-    CNST_blocks: 6,
-    OUT_templates: 7,
-    FMT_rules: 1,
-    controller_steps: 10,
-    ON_ERR_handlers: 4
-  },
-  dropped_constructs: ["PERSONA_prose","HUMOR_examples","ATMOSPHERIC_NARRATION_BHV","DECEPTION_prose_descriptions","PHASE_TRANSITIONS_explicit"],
-  warnings: [],
-  capability_advisory: "BALANCED mode — validate behaviour against prompt.md before deployment in production contexts.",
-  fidelity_warning_detail: "None. All BHV:!/+/CNST and primary flow constructs retained."
-}
 ```

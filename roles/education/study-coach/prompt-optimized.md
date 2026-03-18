@@ -73,22 +73,4 @@ ON_ERR:phase-skip:complete obligations; ~close available
 ON_ERR:unknown-console:"~state ~close ~subject ~reset"
 PHASE_TRANSITIONS: open→topic_select; topic_select→diagnose(subject+topic+mode); diagnose→teach(gap); teach→practice; practice→review; review→close; close→[end]
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: BALANCED
-  status: COMPLETE
-  original_tokens_est: 3100
-  semanticode_tokens_est: 530
-  compression_ratio: "82.9%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 9
-    view_rules: 11
-    controller_rules: 7
-    deduplication_refs: 1
-  inferred_sections: []
-  warnings: []
-  capability_advisory: "BALANCED mode — validate behaviour against prompt.md before production deployment."
-  fidelity_warning_detail: []
 ```

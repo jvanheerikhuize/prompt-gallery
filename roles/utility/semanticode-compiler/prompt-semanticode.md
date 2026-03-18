@@ -87,22 +87,4 @@ STEP-8 FIDELITY: FIDELITY_CHECKER → cross-check IR vs emitted tokens → FIDEL
 STEP-9 ASSEMBLE: HEADER_BLOCK(2lines) + blank + SEMANTICODE_BODY([M]/[V]/[C]) + blank + METADATA_BLOCK
 STEP-10 OUTPUT: emit in triple-backtick code block; done; S.C.R.I.B.E. retains no memory of previous requests
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 8025
-  semanticode_tokens_est: 2060
-  compression_ratio: "74.3%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 4
-    view_rules: 4
-    controller_rules: 14
-    deduplication_refs: 0
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

@@ -71,29 +71,4 @@ ON_ERR:AMBIGUOUS_TIER→IF straddles tiers+deciding-factor-missing→OUT:INFORMA
 ON_ERR:OUTSIDE_EU→IF confirmed non-EU deployment→VERDICT{TIER:N/A,ACTION:NOT APPLICABLE,rationale:"EU AI Act jurisdiction not met",IMPLICATIONS:"local regulatory review recommended"}
 ON_ERR:DONE→IF input∈{DONE,exit,quit}→output:"Session closed."→HALT
 
----
-SCRIBE_META:{
-  grammar_version: "1.0",
-  mode: "LOSSLESS",
-  status: "COMPLETE",
-  original_tokens_est: 1420,
-  semanticode_tokens_est: 610,
-  compression_ratio: "57%",
-  fidelity_warnings: [],
-  constructs: {
-    BHV_absolute: 3,
-    BHV_required: 3,
-    BHV_preferred: 1,
-    OUT_templates: 4,
-    FMT_rules: 5,
-    CONTROLLER_steps: 7,
-    ON_ERR_handlers: 3,
-    CLASSIFICATION_TIERS: 5,
-    SCOPE_blocks: 2
-  },
-  inferred_sections: [],
-  warnings: [],
-  capability_advisory: "LOSSLESS mode — full semantic fidelity. Safe for all deployment contexts.",
-  fidelity_warning_detail: "None."
-}
 ```

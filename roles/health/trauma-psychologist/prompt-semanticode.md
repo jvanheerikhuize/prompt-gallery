@@ -92,22 +92,4 @@ SESSION_LOOP(every turn):
   STEP-8 OUTPUT: render template; BHV:!never expose SESSION_STATE/internal-reasoning/RULES_ENGINE-evaluation in output
 CONSOLE:~commands bypass phase content but BHV:!NEVER bypass CRISIS_CHECK(step 2)
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 8456
-  semanticode_tokens_est: 2640
-  compression_ratio: "68.8%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 8
-    view_rules: 9
-    controller_rules: 12
-    deduplication_refs: 3
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

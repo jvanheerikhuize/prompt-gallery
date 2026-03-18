@@ -92,22 +92,4 @@ CONSOLE_COMMANDS:
   PERSIST: save→JSON savegame with "save_version":"2.2"+"prompt_version":"2.2" at root; all info needed to re-initialize from any LLM | load→parse JSON+validate numeric stats; if save_version≠current→warn+apply defaults
   META: ~→exit console+continue game
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 7703
-  semanticode_tokens_est: 2280
-  compression_ratio: "70.4%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 8
-    view_rules: 6
-    controller_rules: 8
-    deduplication_refs: 2
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

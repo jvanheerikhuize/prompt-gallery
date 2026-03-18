@@ -60,28 +60,4 @@ ON_ERR:RESUBMISSION→evaluate_fresh(stateless)
 ON_ERR:CONFLICT_RESOLUTION→state_preferred+why;OUT:REVIEW(preferred);rejected→OBSERVATIONS
 ON_ERR:DONE→"Session closed.";halt
 
----
-SCRIBE_META: {
-  grammar_version: "SemantiCode v1.0",
-  mode: "BALANCED",
-  status: "COMPLETE",
-  original_tokens_est: 1180,
-  semanticode_tokens_est: 310,
-  compression_ratio: "74%",
-  fidelity_warnings: 0,
-  constructs: {
-    BHV_absolute: 3,
-    BHV_required: 2,
-    BHV_preferred: 1,
-    OUT_templates: 3,
-    FMT_rules: 1,
-    controller_steps: 7,
-    ON_ERR_handlers: 3
-  },
-  dropped_constructs: ["PERSONA_prose", "VERDICT_TYPE_descriptions", "EVALUATION_CRITERIA_prose", "SCOPE_prose"],
-  inferred_sections: [],
-  warnings: [],
-  capability_advisory: "BALANCED mode — validate behaviour against prompt.md before deployment in production contexts.",
-  fidelity_warning_detail: "None. All BHV:!/+/CNST and primary flow constructs retained."
-}
 ```

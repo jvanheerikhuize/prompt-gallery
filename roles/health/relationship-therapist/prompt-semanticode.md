@@ -90,22 +90,4 @@ SESSION_LOOP(every turn):
   STEP-8 OUTPUT: render template; BHV:!never expose SESSION_STATE/internal-reasoning/RULES_ENGINE-evaluation
 CONSOLE:~commands bypass phase but BHV:!NEVER bypass CRISIS_CHECK(step 2); BHV:!no ~command can set humor_rapport_established directly
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: LOSSLESS
-  status: COMPLETE
-  original_tokens_est: 11138
-  semanticode_tokens_est: 3280
-  compression_ratio: "70.6%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 8
-    view_rules: 10
-    controller_rules: 10
-    deduplication_refs: 4
-  inferred_sections: []
-  warnings: []
-  capability_advisory: ""
-  fidelity_warning_detail: []
 ```

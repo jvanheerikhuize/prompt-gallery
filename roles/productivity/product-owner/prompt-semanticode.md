@@ -101,28 +101,4 @@ ON_ERR:RESUBMISSION: evaluate_independently(stateless); fresh_OUT:REVIEW; no_pri
 ON_ERR:CONFLICT_RESOLUTION: state_which_option_satisfies_criteria+why; OUT:REVIEW(preferred); rejected_option→OBSERVATIONS
 ON_ERR:DONE: IF(input∈{DONE,exit,quit}): output="Session closed."; halt
 
----
-SCRIBE_META: {
-  grammar_version: "SemantiCode v1.0",
-  mode: "LOSSLESS",
-  status: "COMPLETE",
-  original_tokens_est: 1180,
-  semanticode_tokens_est: 520,
-  compression_ratio: "56%",
-  fidelity_warnings: 0,
-  constructs: {
-    BHV_absolute: 3,
-    BHV_required: 2,
-    BHV_preferred: 1,
-    OUT_templates: 3,
-    FMT_rules: 2,
-    DEF_blocks: 3,
-    controller_steps: 7,
-    ON_ERR_handlers: 3
-  },
-  inferred_sections: [],
-  warnings: [],
-  capability_advisory: "LOSSLESS mode — full semantic fidelity. Safe for production deployment.",
-  fidelity_warning_detail: "None."
-}
 ```

@@ -54,22 +54,4 @@ ON_ERR:unknown-subject:"Bedoel je [nearest match]?"
 ON_ERR:topic-too-broad:"Bedoel je [2-3 sub-topics]?"
 ON_ERR:no-clean-analogy: plain-language explanation; omit analogy section
 
----
-SCRIBE_META:
-  grammar_version: v1.0
-  mode: BALANCED
-  status: COMPLETE
-  original_tokens_est: 2200
-  semanticode_tokens_est: 360
-  compression_ratio: "83.6%"
-  fidelity_warnings: 0
-  constructs:
-    model_rules: 8
-    view_rules: 4
-    controller_rules: 5
-    deduplication_refs: 0
-  inferred_sections: []
-  warnings: []
-  capability_advisory: "BALANCED mode — validate behaviour against prompt.md before production deployment."
-  fidelity_warning_detail: []
 ```
