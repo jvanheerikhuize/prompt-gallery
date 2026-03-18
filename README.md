@@ -175,7 +175,7 @@ The fastest way is to run the guided ingestion script from the repo root:
 ./src/ingest.sh
 ```
 
-This launches an AI coding agent that reads [`src/ingest.yaml`](src/ingest.yaml) and walks you through the full process, pausing at two human checkpoints — once to collect your inputs, and once for a final review before committing.
+The script walks you through all inputs interactively in the terminal — one field at a time — then hands off to Claude for the generation steps (STEP-02 onward), pausing again at STEP-09 for a final review before committing. Collected inputs are saved to `.ingest-session.yaml` in the repo root.
 
 ### What you'll be asked
 
@@ -204,13 +204,7 @@ feat(<slug>): introduce [ACRONYM] — [short description] — [category] masterp
 
 ### Without Claude Code
 
-If you don't have the `claude` CLI installed, paste the following into any AI coding agent (Cursor, Copilot, etc.):
-
-```
-Read src/ingest.yaml and execute the role ingestion process from STEP-01.
-Guide me through each step, pause at COLLECT and REVIEW, and do not
-proceed until I confirm.
-```
+If the `claude` CLI is not installed, the script still completes STEP-01 and saves `.ingest-session.yaml`. It then prints (and copies to clipboard) a handoff prompt you can paste into any AI coding agent (Cursor, Copilot, etc.) to continue from STEP-02 with the pre-collected data.
 
 ---
 

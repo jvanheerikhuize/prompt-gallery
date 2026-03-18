@@ -10,15 +10,12 @@
 version: "1.0"
 
 # ── Invoke ────────────────────────────────────────────────────────────────────
-# To start role ingestion, run from the repository root:
+# Run from the repository root:
 #
 #   ./src/ingest.sh
 #
-# Or paste the following into any AI coding agent manually:
-#
-#   Read src/ingest.yaml and execute the role ingestion process from STEP-01.
-#   Guide me through each step, pause at COLLECT and REVIEW, and do not
-#   proceed until I confirm.
+# The script collects STEP-01 inputs interactively in the CLI, saves them to
+# .ingest-session.yaml, then hands off to Claude for STEP-02 onward.
 # =============================================================================
 
 # ── Process ───────────────────────────────────────────────────────────────────
