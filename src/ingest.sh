@@ -58,7 +58,7 @@ if command -v claude &>/dev/null; then
   echo "Starting role ingestion with Claude Code..."
   echo ""
   cd "$REPO_ROOT"
-  exec claude --print "$PROMPT"
+  exec claude "$PROMPT"
 else
   echo "Claude Code (claude) not found."
   echo ""
