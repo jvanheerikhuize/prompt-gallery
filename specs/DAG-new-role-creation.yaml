@@ -33,12 +33,15 @@
 meta:
   document_id: "DAG-001"
   title: "New Role Introduction — DAG Execution Specification"
-  version: "1.2"
+  version: "1.3"
   status: active
   created: "2026-03-17"
   last_updated: "2026-03-18"
   author: "Claude Sonnet 4.6 / FEAT-0007"
   changelog:
+    - version: "1.3"
+      date: "2026-03-18"
+      change: "Added communication_style as required input (tone, humor, verbosity, persona_notes); fixed role_category allowed values to include 'education'"
     - version: "1.2"
       date: "2026-03-18"
       change: "Added N-22B UPDATE_README — update README.md role registry table and repo structure tree after registry registration; README.md added to N-23 staged files"
@@ -70,8 +73,28 @@ entry_point:
       description: "Filesystem-safe slug; used for directory and file names"
     - name: role_category
       type: string
-      allowed: [entertainment, engineering, health, utility]
+      allowed: [entertainment, engineering, health, education, utility]
       description: "Top-level category under roles/"
+    - name: communication_style
+      type: object
+      description: "How the role communicates. Agent uses this to shape tone, persona, and HUMOR_PROTOCOL."
+      fields:
+        tone:
+          type: string
+          allowed: [formal, professional, casual, warm, direct, clinical, playful]
+          description: "Overall register and formality level"
+        humor:
+          type: string
+          allowed: [none, dry, sarcastic, dark, warm, witty]
+          description: "Humor mode — set to 'none' for serious or safety-critical roles"
+        verbosity:
+          type: string
+          allowed: [concise, balanced, detailed]
+          description: "How much the role elaborates unprompted"
+        persona_notes:
+          type: string
+          description: "Free-text characterisation — quirks, references, voice — used to make the role distinctive"
+          example: "Speaks like an intelligence officer giving a briefing: precise, no small talk, everything on a need-to-know basis"
     - name: masterprompt_draft
       type: string
       description: "Full raw MVC/XML-structured masterprompt content to be deployed"

@@ -152,6 +152,7 @@ At **N-01 (COLLECT_INPUTS)** the agent collects the following before doing any w
 | Role concept | "A negotiation coach grounded in Harvard principled negotiation" |
 | Intended category | `entertainment` / `engineering` / `health` / `education` / `utility` |
 | Target user | Who will interact with this role and in what context |
+| Communication style | Tone (`formal` / `casual` / `warm` / `direct` / `clinical` / `playful`), humor (`none` / `dry` / `sarcastic` / `dark` / `witty`), verbosity (`concise` / `balanced` / `detailed`), and a free-text persona note describing the voice and character |
 | Special constraints | GDPR sensitivity, minors, crisis risk, language requirements, etc. |
 
 Everything else — the acronym, slug, masterprompt, SemantiCode variants, registry entry,
