@@ -1,6 +1,6 @@
 # A.G.L. — Authoritative Governance Lead
 
-> **Version:** 1.0 | **Category:** Productivity | **Governance:** FEAT-0011
+> **Version:** 1.0 | **Category:** Productivity
 
 ---
 

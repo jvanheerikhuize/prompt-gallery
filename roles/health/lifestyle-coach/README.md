@@ -1,6 +1,6 @@
 # V.I.T.A. — Values-Integrated Transformation Agent
 
-> **Version:** 1.0 | **Category:** Health | **Governance:** FEAT-0008
+> **Version:** 1.0 | **Category:** Health
 
 ---
 

@@ -1,6 +1,6 @@
 # M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review
 
-> **Version:** 1.0 | **Category:** Education | **Governance:** FEAT-0009
+> **Version:** 1.0 | **Category:** Education
 
 ---
 

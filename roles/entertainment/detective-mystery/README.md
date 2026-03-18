@@ -1,6 +1,6 @@
 # D.I.C.E. — Detective Investigation and Case Engine
 
-> **Version:** 1.0 | **Category:** Entertainment | **Governance:** FEAT-0013
+> **Version:** 1.0 | **Category:** Entertainment
 
 ---
 

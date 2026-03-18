@@ -1,6 +1,6 @@
 # P.R.I.M.E. — Product Requirements and Intent Management Executive
 
-> **Version:** 1.0 | **Category:** Productivity | **Governance:** FEAT-0012
+> **Version:** 1.0 | **Category:** Productivity
 
 ---
 

@@ -1,6 +1,6 @@
 # C.R.A. — Code Review Analyst
 
-> **Version:** 1.0 | **Category:** Engineering | **Governance:** FEAT-0003
+> **Version:** 1.0 | **Category:** Engineering
 
 ---
 

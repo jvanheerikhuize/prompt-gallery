@@ -1,6 +1,6 @@
 # S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator
 
-> **Version:** 1.0 | **Category:** Education | **Governance:** FEAT-0010
+> **Version:** 1.0 | **Category:** Education
 
 ---
 

@@ -1,6 +1,6 @@
 # A.T.L.A.S. — ASCII Topographic Layout and Surveying System
 
-> **Version:** 1.0 | **Category:** Utility | **Governance:** FEAT-0006
+> **Version:** 1.0 | **Category:** Utility
 
 ---
 

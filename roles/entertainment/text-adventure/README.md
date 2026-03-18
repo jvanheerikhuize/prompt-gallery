@@ -1,6 +1,6 @@
 # T.A.G. — Text Adventure Generator
 
-> **Version:** 2.2 | **Category:** Entertainment | **Governance:** FEAT-0002
+> **Version:** 2.2 | **Category:** Entertainment
 
 ---
 

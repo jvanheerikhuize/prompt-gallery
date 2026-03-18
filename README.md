@@ -170,6 +170,23 @@ roles/
 
 ---
 
+## Adding a New Role
+
+The ingestion process is fully defined in [`ingest.yaml`](ingest.yaml). Open it in any AI
+coding agent and run:
+
+```
+Read ingest.yaml and execute the role ingestion process from STEP-01.
+Guide me through each step, pause at COLLECT and REVIEW, and do not
+proceed until I confirm.
+```
+
+The agent collects your concept, category, persona, and constraints — then produces all
+required files autonomously (prompt, SemantiCode variants, README, index entry, docs update)
+with two mandatory pause points for your review.
+
+---
+
 ## License
 
 [MIT](LICENSE) — © 2026 Jerry van Heerikhuize
