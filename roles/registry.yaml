@@ -559,3 +559,53 @@ roles:
       created: "2026-03-18"
       last_updated: "2026-03-18"
       implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0011 Stage 3"
+
+  - id: prime
+    name: "P.R.I.M.E. — Product Requirements and Intent Management Executive"
+    slug: product-owner
+    category: productivity
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/productivity/product-owner/prompt.md
+      variant: roles/productivity/product-owner/prompt-optimized.md
+      semanticode: roles/productivity/product-owner/prompt-semanticode.md
+
+    description: >
+      A stateless Product Owner role for agentic SDLC pipelines and development teams.
+      Given a feature specification or change request, issues a structured REVIEW block
+      (APPROVED / REJECTED / NEEDS_CLARIFICATION) with verdict, rationale against four
+      evaluation criteria (completeness, consistency, scope clarity, business value), and
+      a named open-items list. Enforces the Stage 1 exit gate (A-SDLC RC-02). Refuses
+      approval for incomplete, self-contradictory, or problem-free specifications.
+      Urgency and seniority are not criteria. A companion to A.G.L. in the productivity
+      category — A.G.L. classifies AI risk; P.R.I.M.E. approves intent and scope.
+
+    tags:
+      - productivity
+      - product-owner
+      - governance
+      - spec-review
+      - stateless
+      - single-task
+      - asdlc
+      - rc-02
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true      # Outputs "Ready." on session start without user input
+
+    governance:
+      feat_id: FEAT-0012
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: internal
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-18"
+      last_updated: "2026-03-18"
+      implementation: "Agent-assisted — Claude Sonnet 4.6 / FEAT-0012 Stage 3"

@@ -48,6 +48,7 @@ The canonical role list lives in [`roles/registry.yaml`](roles/registry.yaml).
 | Role | Prompt | Variant | Description |
 |------|--------|---------|-------------|
 | A.G.L. — Authoritative Governance Lead | [roles/productivity/ai-governance-lead/prompt.md](roles/productivity/ai-governance-lead/prompt.md) | [optimized](roles/productivity/ai-governance-lead/prompt-optimized.md) | Stateless EU AI Act tier classifier — issues binding VERDICT blocks (tier + rationale + obligations) for any AI component; refuses downgrade without evidence |
+| P.R.I.M.E. — Product Requirements and Intent Management Executive | [roles/productivity/product-owner/prompt.md](roles/productivity/product-owner/prompt.md) | [optimized](roles/productivity/product-owner/prompt-optimized.md) | Stateless Product Owner role — reviews feature specs and change requests, issues APPROVED / REJECTED / NEEDS_CLARIFICATION verdicts, enforces Stage 1 exit gate |
 
 ### Utility
 
@@ -122,7 +123,9 @@ roles/
 │       └── prompt.md
 │
 └── productivity/
-    └── ai-governance-lead/              ← A.G.L. v1.0
+    ├── ai-governance-lead/              ← A.G.L. v1.0
+    │   └── prompt.md
+    └── product-owner/                   ← P.R.I.M.E. v1.0
         └── prompt.md
 ```
 

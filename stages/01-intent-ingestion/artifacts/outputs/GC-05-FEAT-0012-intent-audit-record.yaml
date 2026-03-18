@@ -1,0 +1,34 @@
+# =============================================================================
+# GC-05 — Intent Audit Record
+# FEAT-0012 / P.R.I.M.E. — Product Requirements and Intent Management Executive
+# =============================================================================
+
+record_id: "GC-05-FEAT-0012"
+feat_id: "FEAT-0012"
+cr_id: "CR-0012"
+date: "2026-03-18"
+action: intent-ingested
+agent: "Claude Sonnet 4.6 / DAG-001 N-07"
+
+summary: |
+  Intent ingestion complete for FEAT-0012 — P.R.I.M.E., the Product Requirements and
+  Intent Management Executive. P.R.I.M.E. is a stateless, structured Product Owner role
+  for use in agentic SDLC pipelines and by developers. It reviews feature specifications
+  and change requests, issues structured REVIEW verdicts (APPROVED / REJECTED /
+  NEEDS_CLARIFICATION), and enforces the Stage 1 exit gate (A-SDLC RC-02). Stateless;
+  no PII in scope; internal data classification.
+
+classifications:
+  risk_tier: low
+  ai_tier: minimal
+  data_classification: internal
+  gdpr_special_category: false
+
+rationale_summary: |
+  Low risk: P.R.I.M.E. produces advisory governance verdicts; it holds no execution
+  authority. Minimal AI tier: LLM-powered review tool with human-in-the-loop; no Annex III
+  category applies. Internal data: input is proprietary feature specification content;
+  no personal or special-category data in scope.
+
+category: productivity
+role_slug: product-owner
