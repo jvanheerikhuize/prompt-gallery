@@ -129,9 +129,57 @@ cd tag-role-test
 
 ## Adding a New Role
 
-1. Create a directory: `roles/<category>/<slug>/`
-2. Add `prompt.md` (and an optional `prompt-compressed.md` for token-heavy prompts)
-3. Add an entry to `roles/registry.yaml`
+New roles are introduced through a deterministic, agent-executed pipeline defined in
+[`specs/DAG-new-role-creation.yaml`](specs/DAG-new-role-creation.yaml).
+Open that file in any AI coding agent (Claude Code, Cursor, Copilot, etc.) and use the
+prompt below. The agent reads the DAG and guides you step by step — it will not proceed
+past human-approval gates without your explicit sign-off.
+
+### Invoke the pipeline
+
+```
+Read specs/DAG-new-role-creation.yaml and execute the New Role Introduction pipeline
+from node N-00. Guide me through each stage in order, pause at every human_gate, and
+do not proceed until I approve.
+```
+
+### What the agent will ask you
+
+At **N-01 (COLLECT_INPUTS)** the agent collects the following before doing any work:
+
+| Input | Example |
+|-------|---------|
+| Role concept | "A negotiation coach grounded in Harvard principled negotiation" |
+| Intended category | `entertainment` / `engineering` / `health` / `education` / `utility` |
+| Target user | Who will interact with this role and in what context |
+| Special constraints | GDPR sensitivity, minors, crisis risk, language requirements, etc. |
+
+Everything else — the acronym, slug, masterprompt, SemantiCode variants, registry entry,
+README update, commits, and push — is produced by the agent.
+
+### Human gates
+
+The pipeline has three mandatory pause points where you review and approve before work continues:
+
+| Gate | Node | What you review |
+|------|------|-----------------|
+| Stage 1 approval | N-08 | Feature spec — scope, risk tier, constraints |
+| Stage 2 approval | N-11 | System design and threat model |
+| Stage 4 approval | N-21 | Test results and documentation completeness |
+| Stage 5 acknowledgement | N-26 | Deployed files and commit confirmation |
+
+### Pipeline output
+
+A completed run produces:
+
+- `roles/<category>/<slug>/prompt.md` — canonical masterprompt
+- `roles/<category>/<slug>/prompt-semanticode.md` — LOSSLESS SemantiCode variant
+- `roles/<category>/<slug>/prompt-optimized.md` — BALANCED SemantiCode variant
+- `roles/registry.yaml` — updated with the new role entry
+- `README.md` — role table and structure tree updated
+- `specs/FEAT-XXXX-<slug>.yaml` — full governance record
+
+See [`specs/DAG-new-role-creation.yaml`](specs/DAG-new-role-creation.yaml) for the complete node-by-node specification.
 
 ---
 
