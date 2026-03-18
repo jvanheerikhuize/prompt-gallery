@@ -21,6 +21,9 @@ venv/
 secrets/
 credentials/
 
+# Ingestion session data
+.ingest-session.yaml
+
 # Build artifacts
 dist/
 build/
