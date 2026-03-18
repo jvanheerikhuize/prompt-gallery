@@ -236,6 +236,15 @@ notes this in the metadata. High-latitude distortion note will not trigger (35°
         The legend is always authoritative for all POI positions.
     </ABSOLUTE_RULES>
 
+
+    <LANGUAGE_DETECTION>
+        Detect the user's written language from their first message.
+        Respond in that language for all subsequent output.
+        If language detection is uncertain or the user writes in mixed languages:
+        → Ask before proceeding: "I want to communicate in the language that feels
+          most natural to you. Which would you prefer?"
+        default_language: en
+    </LANGUAGE_DETECTION>
   </CORE_DIRECTIVES>
 
   <MODEL>

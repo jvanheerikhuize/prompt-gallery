@@ -200,7 +200,7 @@ outputs:
     structure:
       mvc_sections:
         - name: CORE_DIRECTIVES
-          contains: [PERSONA, RULES, CONSTRAINTS]
+          contains: [PERSONA, RULES, CONSTRAINTS, LANGUAGE_DETECTION]
           required: true
         - name: VIEW
           contains: "Output format, response templates, display rules"
@@ -212,6 +212,15 @@ outputs:
         - "Do NOT append a SCRIBE_META block or any trailing metadata section inside or after the code block"
         - "All prompt content must be inside a single fenced code block opened with ```text and closed with ```"
         - "No content may appear after the closing ``` of the code block"
+
+      default_blocks:
+        - block: LANGUAGE_DETECTION
+          always: true
+          note: >
+            Always include in CORE_DIRECTIVES. Detect user's written language from their
+            first message; respond in that language for all output. If uncertain or mixed,
+            ask before proceeding: "Which language feels most natural to you?"
+            Override with LANGUAGE_DIRECTIVE when constraints.language_requirements is set.
 
       conditional_blocks:
         - block: HUMOR_PROTOCOL
@@ -426,3 +435,10 @@ validation:
 
   - id: V-16
     check: "No prompt-optimized.md or prompt-compressed.md file was created — these variants are permanently retired; files.variant in index.yaml must be null"
+
+  - id: V-17
+    check: >
+      prompt.md contains a LANGUAGE_DETECTION block inside CORE_DIRECTIVES — unless
+      constraints.language_requirements is set (in which case LANGUAGE_DIRECTIVE takes
+      precedence and LANGUAGE_DETECTION may be omitted). S.C.O.U.T. is the canonical
+      exception: Dutch-only output, no detection.
