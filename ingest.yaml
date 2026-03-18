@@ -216,6 +216,11 @@ outputs:
         - name: CONTROLLER
           contains: "Session lifecycle, state machine, command parsing, error handling"
           required: true
+      prohibitions:
+        - "Do NOT append a SCRIBE_META block or any trailing metadata section inside or after the code block"
+        - "All prompt content must be inside a single fenced code block opened with ```text and closed with ```"
+        - "No content may appear after the closing ``` of the code block"
+
       conditional_blocks:
         - block: HUMOR_PROTOCOL
           when: "persona.humor != none"
@@ -265,6 +270,11 @@ outputs:
       // Grammar: [M]model [V]view [C]ctrl | BHV:+must !prohibit ~prefer | CNST:constraint | OUT:type:fmt | IF cond:THEN act:ELSE act | ON_ERR:cond:resp | GATE:cond:pass|fail | DEF:<tag>:<v> REF:<tag>
       ...
       ```
+    prohibitions:
+      - "Do NOT append a SCRIBE_META block, --- separator, or any trailing metadata inside or after the code block"
+      - "All SemantiCode content must be inside a single fenced code block opened with ``` and closed with ```"
+      - "No content may appear after the closing ``` of the code block"
+
     grammar_reference:
       sections: "[M] model  [V] view  [C] ctrl"
       behaviour: "BHV:+must  BHV:!prohibit  BHV:~prefer"
@@ -308,6 +318,10 @@ outputs:
       // Grammar: [M]model [V]view [C]ctrl | BHV:+must !prohibit ~prefer | ...
       ...
       ```
+    prohibitions:
+      - "Do NOT append a SCRIBE_META block, --- separator, or any trailing metadata inside or after the code block"
+      - "All SemantiCode content must be inside a single fenced code block opened with ``` and closed with ```"
+      - "No content may appear after the closing ``` of the code block"
 
   role_readme:
     path: "roles/<category>/<slug>/README.md"
@@ -445,3 +459,12 @@ validation:
 
   - id: V-12
     check: "index.yaml entry description matches the first paragraph of the role README.md Overview section"
+
+  - id: V-13
+    check: "No SCRIBE_META block appears anywhere in any produced file — prompt.md, prompt-semanticode.md, or prompt-optimized.md"
+
+  - id: V-14
+    check: "prompt.md contains exactly one fenced code block opened with ```text and closed with ``` — all prompt XML is inside it, nothing after the closing ```"
+
+  - id: V-15
+    check: "prompt-semanticode.md and prompt-optimized.md each contain exactly one fenced code block opened with ``` and closed with ``` — all SemantiCode content is inside it, nothing after the closing ```"
