@@ -35,17 +35,17 @@ Each role in this library is:
 
 | Role | What it does |
 |------|-------------|
-| [**T.A.G.**](roles/entertainment/text-adventure/prompt.md) — Text Adventure Generator | A fully stateful game master for text-based RPGs. Drop in any setting and T.A.G. runs the world: inventory, NPCs, quests, consequences — all tracked across the session. |
-| [**H.E.I.S.T.**](roles/entertainment/heist-master/prompt.md) — High-stakes Extraction and Infiltration Strategy Tactician | Plan and execute a heist in three phases: recon the target, build your crew, then run the job turn by turn. Every session ends in Clean, Dirty, or Burned. |
-| [**D.I.C.E.**](roles/entertainment/detective-mystery/prompt.md) — Detective Investigation and Case Engine | A murder mystery game master that generates a fresh, locked case for every session — suspects, motives, clues, red herrings — and plays every NPC. Accuse wisely. |
+| [**T.A.G.**](roles/entertainment/tag/prompt.md) — Text Adventure Generator | A fully stateful game master for text-based RPGs. Drop in any setting and T.A.G. runs the world: inventory, NPCs, quests, consequences — all tracked across the session. |
+| [**H.E.I.S.T.**](roles/entertainment/heist/prompt.md) — High-stakes Extraction and Infiltration Strategy Tactician | Plan and execute a heist in three phases: recon the target, build your crew, then run the job turn by turn. Every session ends in Clean, Dirty, or Burned. |
+| [**D.I.C.E.**](roles/entertainment/dice/prompt.md) — Detective Investigation and Case Engine | A murder mystery game master that generates a fresh, locked case for every session — suspects, motives, clues, red herrings — and plays every NPC. Accuse wisely. |
 
 ### 🛠️ Engineering
 
 | Role | What it does |
 |------|-------------|
-| [**C.R.A.**](roles/engineering/code-reviewer/prompt.md) — Code Review Analyst | Paste a diff and get a structured, scored review covering security (OWASP, CWE), correctness, performance, and maintainability. Issues a clear verdict: merge or not. |
-| [**F.O.R.G.E.**](roles/engineering/full-stack-developer/prompt.md) — Full-stack Operations and Repository Guidance Engineer | A senior full-stack and DevOps engineer that guides work from feature branch through implementation to pull request. Enforces branch-first, PR-always discipline. Spans frontend, backend, infra, and IaC. |
-| [**Q.A.V.E.**](roles/engineering/qa-engineer/prompt.md) — Quality Assurance and Verification Engineer | Submit a ticket, spec, diff, or test scenario and receive the right QA artefact — test plan, defect report, risk assessment, or coverage analysis — with severity labels and a binding verdict. |
+| [**C.R.A.**](roles/engineering/cra/prompt.md) — Code Review Analyst | Paste a diff and get a structured, scored review covering security (OWASP, CWE), correctness, performance, and maintainability. Issues a clear verdict: merge or not. |
+| [**F.O.R.G.E.**](roles/engineering/forge/prompt.md) — Full-stack Operations and Repository Guidance Engineer | A senior full-stack and DevOps engineer that guides work from feature branch through implementation to pull request. Enforces branch-first, PR-always discipline. Spans frontend, backend, infra, and IaC. |
+| [**Q.A.V.E.**](roles/engineering/qave/prompt.md) — Quality Assurance and Verification Engineer | Submit a ticket, spec, diff, or test scenario and receive the right QA artefact — test plan, defect report, risk assessment, or coverage analysis — with severity labels and a binding verdict. |
 
 ### 🩺 Health
 
@@ -53,32 +53,32 @@ Each role in this library is:
 
 | Role | What it does |
 |------|-------------|
-| [**P.S.Y.**](roles/health/trauma-psychologist/prompt.md) — Trauma-Specialised Psychologist | A grounded, safe companion for psychoeducation and emotional stabilisation. Based on the SAMHSA trauma-informed care framework. Provides Phase 1 support only — grounding, psychoeducation, and crisis referral. |
-| [**F.R.A.N.K.**](roles/health/relationship-therapist/prompt.md) — Forthright Relationship Analyst Navigating Knots | A relationship coach grounded in attachment theory, EFT, and Gottman research. Helps you think through patterns, dynamics, and next steps — with carefully calibrated dry wit and no sugarcoating. |
-| [**V.I.T.A.**](roles/health/lifestyle-coach/prompt.md) — Values-Integrated Transformation Agent | A lifestyle coaching companion covering food, movement, and mental health. Runs structured sessions using Motivational Interviewing and CBT. Each session ends with one concrete micro-habit commitment. |
-| [**P.A.P.A.**](roles/health/co-parenting-advisor/prompt.md) — Parental Advice and Perspective Agent | A parenting companion for divorced dads co-parenting a teenage son. Gives you the words to say and explains what's going on for both of you — your reactions and your son's. Built around the week-on/week-off Wednesday-switch rhythm. ⚠️ See safety notes |
+| [**P.S.Y.**](roles/health/psy/prompt.md) — Trauma-Specialised Psychologist | A grounded, safe companion for psychoeducation and emotional stabilisation. Based on the SAMHSA trauma-informed care framework. Provides Phase 1 support only — grounding, psychoeducation, and crisis referral. |
+| [**F.R.A.N.K.**](roles/health/frank/prompt.md) — Forthright Relationship Analyst Navigating Knots | A relationship coach grounded in attachment theory, EFT, and Gottman research. Helps you think through patterns, dynamics, and next steps — with carefully calibrated dry wit and no sugarcoating. |
+| [**V.I.T.A.**](roles/health/vita/prompt.md) — Values-Integrated Transformation Agent | A lifestyle coaching companion covering food, movement, and mental health. Runs structured sessions using Motivational Interviewing and CBT. Each session ends with one concrete micro-habit commitment. |
+| [**P.A.P.A.**](roles/health/papa/prompt.md) — Parental Advice and Perspective Agent | A parenting companion for divorced dads co-parenting a teenage son. Gives you the words to say and explains what's going on for both of you — your reactions and your son's. Built around the week-on/week-off Wednesday-switch rhythm. ⚠️ See safety notes |
 
 ### 📚 Education
 
 | Role | What it does |
 |------|-------------|
-| [**A.G.O.R.A.**](roles/education/philosopher/prompt.md) — Autonomous Guide for Open-minded Reasoning and Asking | A philosophical inquiry companion for curious minds of all ages. Ask it anything — free will, identity, ethics, existence — and it asks back. Socratic, multilingual, and gently absurdist. ⚠️ See safety notes |
-| [**M.E.N.T.O.R.**](roles/education/study-coach/prompt.md) — Methodical Educational Navigator for Teaching, Outcomes, and Review | A Socratic study coach for secondary school students (Dutch, VWO). Asks before telling, diagnoses misconceptions at the root, and runs focused exam prep sessions. Never gives away answers. |
-| [**S.C.O.U.T.**](roles/education/curriculum-scout/prompt.md) — Strategic Curriculum Overview and Understanding Translator | A curriculum briefing tool for parents. Give it a subject and topic and it returns exactly what your child needs to master — including the most common mistakes and a sharp diagnostic question. Dutch output. |
+| [**A.G.O.R.A.**](roles/education/agora/prompt.md) — Autonomous Guide for Open-minded Reasoning and Asking | A philosophical inquiry companion for curious minds of all ages. Ask it anything — free will, identity, ethics, existence — and it asks back. Socratic, multilingual, and gently absurdist. ⚠️ See safety notes |
+| [**M.E.N.T.O.R.**](roles/education/mentor/prompt.md) — Methodical Educational Navigator for Teaching, Outcomes, and Review | A Socratic study coach for secondary school students (Dutch, VWO). Asks before telling, diagnoses misconceptions at the root, and runs focused exam prep sessions. Never gives away answers. |
+| [**S.C.O.U.T.**](roles/education/scout/prompt.md) — Strategic Curriculum Overview and Understanding Translator | A curriculum briefing tool for parents. Give it a subject and topic and it returns exactly what your child needs to master — including the most common mistakes and a sharp diagnostic question. Dutch output. |
 
 ### ⚡ Productivity
 
 | Role | What it does |
 |------|-------------|
-| [**A.G.L.**](roles/productivity/ai-governance-lead/prompt.md) — Authoritative Governance Lead | An EU AI Act classifier. Describe an AI component and receive a binding tier verdict with the specific articles, obligations, and escalation conditions that apply. Terse, professional, non-negotiable. |
-| [**P.R.I.M.E.**](roles/productivity/product-owner/prompt.md) — Product Requirements and Intent Management Executive | A Product Owner that reviews feature specs and change requests. Returns Approved, Rejected, or Needs Clarification with a rationale against four criteria. Urgency is not a criterion. |
+| [**A.G.L.**](roles/productivity/agl/prompt.md) — Authoritative Governance Lead | An EU AI Act classifier. Describe an AI component and receive a binding tier verdict with the specific articles, obligations, and escalation conditions that apply. Terse, professional, non-negotiable. |
+| [**P.R.I.M.E.**](roles/productivity/prime/prompt.md) — Product Requirements and Intent Management Executive | A Product Owner that reviews feature specs and change requests. Returns Approved, Rejected, or Needs Clarification with a rationale against four criteria. Urgency is not a criterion. |
 
 ### 🔧 Utility
 
 | Role | What it does |
 |------|-------------|
-| [**A.T.L.A.S.**](roles/utility/ascii-cartographer/prompt.md) — ASCII Topographic Layout and Surveying System | Give it coordinates or a location name and it draws a proportionally accurate ASCII map — complete with compass, scale bar, and legend. Supports interior floor plans too. |
-| [**S.C.R.I.B.E.**](roles/utility/semanticode-compiler/prompt.md) — Semantic Compression and Reasoning-Informed Brevity Encoder | Compresses any structured AI prompt into a token-efficient SemantiCode stream. Three compression modes. Full semantic fidelity. Used to generate the SemantiCode variants in this library. |
+| [**A.T.L.A.S.**](roles/utility/atlas/prompt.md) — ASCII Topographic Layout and Surveying System | Give it coordinates or a location name and it draws a proportionally accurate ASCII map — complete with compass, scale bar, and legend. Supports interior floor plans too. |
+| [**S.C.R.I.B.E.**](roles/utility/scribe/prompt.md) — Semantic Compression and Reasoning-Informed Brevity Encoder | Compresses any structured AI prompt into a token-efficient SemantiCode stream. Three compression modes. Full semantic fidelity. Used to generate the SemantiCode variants in this library. |
 
 ---
 
@@ -101,7 +101,7 @@ Each role is a plain text file — load it as a system prompt:
 ```python
 import anthropic, pathlib
 
-system_prompt = pathlib.Path("roles/entertainment/heist-master/prompt.md").read_text()
+system_prompt = pathlib.Path("roles/entertainment/heist/prompt.md").read_text()
 
 client = anthropic.Anthropic()
 response = client.messages.create(
