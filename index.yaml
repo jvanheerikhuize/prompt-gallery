@@ -165,6 +165,57 @@ roles:
       created: "2026-03-18"
       last_updated: "2026-03-18"
 
+  - id: spoke
+    name: "S.P.O.K.E. — Stateful Pathfinding, Operations, and Knowledge Engine"
+    slug: hub-spoke-game
+    category: entertainment
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/entertainment/spoke/prompt.md
+      variant: null
+      semanticode: roles/entertainment/spoke/prompt-semanticode.md
+
+    description: >
+      A multi-player text adventure game system built on a hub-and-spoke architecture.
+      One Game Master prompt runs the world; the GM's LLM generates private player prompts
+      (spokes) that each player loads into their own LLM session. Supports 14 game types
+      (whodunnit, heist, quest, conspiracy, espionage, inheritance, escape_room, rebellion,
+      expedition, diplomacy, haunted, shipwreck, tournament, courtroom) — selected by the GM
+      or drawn at random. Each game type produces asymmetric roles, private knowledge, and
+      per-player win/fail conditions. The GM relays player actions; S.P.O.K.E. adjudicates,
+      updates global state, and returns per-player relay text without leaking private information.
+      Dutch output throughout; dry Infocom-style narration.
+
+    tags:
+      - entertainment
+      - multi-player
+      - game-master
+      - hub-and-spoke
+      - asymmetric-information
+      - stateful
+      - dutch
+      - infocom
+      - text-adventure
+      - language-directive
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true      # Renders welcome and awaits GM configuration on session start
+
+    governance:
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-03-22"
+      last_updated: "2026-03-22"
+
   # ---------------------------------------------------------------------------
   # Engineering
   # ---------------------------------------------------------------------------
