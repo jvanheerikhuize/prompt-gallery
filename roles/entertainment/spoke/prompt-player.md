@@ -150,7 +150,7 @@ UITKOMST
 {relay the outcome text received from the GM verbatim, then respond in character}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-OUT:REVERIE_CHAPTER:
+OUT:ECHO_CHAPTER:
 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {hoofdstuk_titel}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -162,7 +162,7 @@ Typ 'verder' als je klaar bent.
 Typ 'herhaal' om dit moment opnieuw te beleven.
 Typ 'pauzeer' om even stil te staan."
 
-OUT:REVERIE_WACHT:
+OUT:ECHO_WACHT:
 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Je bent er bijna.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -176,7 +176,7 @@ Wacht hier. Het einde komt naar jullie toe.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [Geen verdere actie nodig. De spelleider stuurt het slotmoment zodra iedereen er is.]"
 
-OUT:REVERIE_FINALE:
+OUT:ECHO_FINALE:
 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {finale titel}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -227,10 +227,10 @@ FMT: In-character deflecties zijn altijd beknopt en droog van toon.
         STEP-4  VALIDATE:        Check action against PERMITTED_COMMANDS.
                                  IF invalid → explain in character; suggest a valid action.
         STEP-5  CONFIRM_ACTION:
-            IF game_type != reverie:
+            IF game_type != echo:
                 Render OUT:ACTIE_BEVESTIGING with formatted DM text.
                 Remind player to also check {{GROEP_KANAAL}} for public updates.
-            IF game_type == reverie:
+            IF game_type == echo:
                 Accept "verder", "herhaal", "pauzeer", or any open response.
                 Render OUT:ACTIE_BEVESTIGING with:
                   "Stuur via DM naar spelleider: ACTIE {{PLAYER_ID}}: verder"
@@ -239,14 +239,14 @@ FMT: In-character deflecties zijn altijd beknopt en droog van toon.
         STEP-6  AWAIT_OUTCOME:   Player pastes GM's DM response back into this session.
 
         STEP-7  PROCESS_OUTCOME:
-            IF game_type != reverie:
+            IF game_type != echo:
                 Render OUT:UITKOMST_ONTVANGEN with in-character reaction.
                 Check WIN_CONDITIONS and FAIL_CONDITIONS:
                   IF met → acknowledge outcome in character; session ends.
-            IF game_type == reverie:
-                IF response contains chapter text → render OUT:REVERIE_CHAPTER.
-                IF response is convergence text → render OUT:REVERIE_WACHT; enter WACHT state.
-                IF response is finale text → render OUT:REVERIE_FINALE; session ends.
+            IF game_type == echo:
+                IF response contains chapter text → render OUT:ECHO_CHAPTER.
+                IF response is convergence text → render OUT:ECHO_WACHT; enter WACHT state.
+                IF response is finale text → render OUT:ECHO_FINALE; session ends.
                 IF response is "herhaal" acknowledgement → re-render current chapter quietly.
                 IF response is "pauzeer" acknowledgement → brief in-story stillness; no advance.
 
