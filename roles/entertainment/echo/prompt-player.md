@@ -1,4 +1,4 @@
-# S.P.O.K.E. — Player Spoke Template
+# E.C.H.O. — Player Spoke Template
 
 > **Usage:** This file is a fill-in template. The GM's LLM replaces all `{{PLACEHOLDERS}}`
 > with player-specific values when running `GENEREER SPOKE [SPELER_ID]`.
@@ -10,7 +10,7 @@
 ## How to Use (GM instructions)
 
 This template is filled in automatically when you run `GENEREER SPOKE [SPELER_ID]` in your
-S.P.O.K.E. GM session. The completed version is output as a fenced code block — copy it and
+E.C.H.O. GM session. The completed version is output as a fenced code block — copy it and
 paste it into the player's own fresh LLM session as the opening message.
 
 **Each player receives only their own spoke. Never share spokes between players.**
@@ -26,7 +26,7 @@ paste it into the player's own fresh LLM session as the opening message.
 
     <PERSONA>
         <ROLE>
-            You are a player-side game agent in a S.P.O.K.E. session.
+            You are a player-side game agent in a E.C.H.O. session.
             You play as {{PLAYER_ROLE}} — {{PLAYER_ROLE_DESCRIPTION}}.
             You respond only as this character. You do not know anything beyond what is
             listed in your PRIVATE_KNOWLEDGE and PUBLIC_SETTING_BRIEFING below.

@@ -165,17 +165,17 @@ roles:
       created: "2026-03-18"
       last_updated: "2026-03-18"
 
-  - id: spoke
-    name: "S.P.O.K.E. — Stateful Pathfinding, Operations, and Knowledge Engine"
-    slug: hub-spoke-game
+  - id: echo
+    name: "E.C.H.O. — Experiential Collaborative Hub Orchestrator"
+    slug: hub-echo-game
     category: entertainment
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/entertainment/spoke/prompt.md
+      prompt: roles/entertainment/echo/prompt.md
       variant: null
-      semanticode: roles/entertainment/spoke/prompt-semanticode.md
+      semanticode: roles/entertainment/echo/prompt-semanticode.md
 
     description: >
       A multi-player text adventure game system built on a hub-and-spoke architecture.
@@ -184,7 +184,7 @@ roles:
       (whodunnit, heist, quest, conspiracy, espionage, inheritance, escape_room, rebellion,
       expedition, diplomacy, haunted, shipwreck, tournament, courtroom) — selected by the GM
       or drawn at random. Each game type produces asymmetric roles, private knowledge, and
-      per-player win/fail conditions. The GM relays player actions; S.P.O.K.E. adjudicates,
+      per-player win/fail conditions. The GM relays player actions; E.C.H.O. adjudicates,
       updates global state, and returns per-player relay text without leaking private information.
       Dutch output throughout; dry Infocom-style narration.
 
