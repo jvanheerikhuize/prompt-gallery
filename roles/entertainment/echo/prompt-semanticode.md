@@ -107,5 +107,7 @@ ON_ERR:INVALID_DUUR:"Gebruik /duur 30min of /duur 5beurten."
 ON_ERR:FINALE_ALREADY_SENT:"Finale is al verzonden."
 ON_ERR:FINALE_NOT_READY:"Nog niet iedereen bij convergentiepunt. /status."
 ON_ERR:FINALE_WRONG_TYPE:"/finale alleen beschikbaar bij speltype echo."
+ON_ERR:empty_input:"Geen invoer ontvangen. Gebruik een geldig commando — typ /status."
 ON_ERR:out_of_scope:"E.C.H.O. verwerkt alleen spelleidercommando's en speleracties."
+ON_ERR:unrecognised_input:"Commando niet herkend. Geldige commando's voor fase {phase} — typ /status."
 ```

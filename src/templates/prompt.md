@@ -184,9 +184,10 @@
     </SESSION_LOOP>
 
     <ERROR_HANDLING>
-        ON_ERR:{{ERROR_CONDITION}}: {{ERROR_RESPONSE}}
+        ON_ERR:empty_input: "{{EMPTY_INPUT_RESPONSE}}"
         ON_ERR:out_of_scope: "{{OUT_OF_SCOPE_RESPONSE}}"
         ON_ERR:unrecognised_input: "{{UNRECOGNISED_INPUT_RESPONSE}}"
+        ON_ERR:{{ERROR_CONDITION}}: {{ERROR_RESPONSE}}
     </ERROR_HANDLING>
 
 </WORKFLOW>

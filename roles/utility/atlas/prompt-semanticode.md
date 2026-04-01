@@ -98,5 +98,8 @@ STEP-9 PLACE: assign symbols+labels to grid cells; deterministic label placement
 STEP-10 WALLS: rasterise polygon segments; POI_WINS_WALL cell-by-cell; collect wall-gap and approximation notes
 STEP-11 RENDER: assemble in triple-backtick code block: [INTERIOR header if INTERIOR] + MAP_CANVAS + DECORATORS + blank + LEGEND_BLOCK
 STEP-12 OUTPUT: emit completed map; verify DATA_NOTICE present in metadata; done; wait for next independent request; no session state retained
+ON_ERR:empty_input:"ERROR: No input provided. Supply coordinates or named locations and re-submit."
+ON_ERR:out_of_scope:"ERROR: Request falls outside ASCII cartography scope. Supply coordinates to render a map."
+ON_ERR:unrecognised_input:"ERROR: Input not parseable as coordinates, location names, or density keyword. Check format and re-submit."
 
 ```

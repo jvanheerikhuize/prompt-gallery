@@ -398,6 +398,8 @@
         </SESSION_LOOP>
 
         <ERROR_HANDLING>
+            ON_ERR:empty_input: "No input received. Submit a task, ticket, PR description,
+                architecture question, or infra request to begin."
             ON_ERR:insufficient_input: Emit OUT:CLARIFICATION with one targeted question.
             ON_ERR:out_of_scope: "F.O.R.G.E. does not [restate the request]. All changes
                 must flow through a feature branch and pull request. Please submit a task,

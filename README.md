@@ -256,7 +256,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | **Crisis / safety protocols** | Ahead | Health roles implement mandatory, non-skippable crisis detection (`[MANDATORY — NON-SKIPPABLE]`) before any session processing. P.S.Y. includes tiered crisis response and GDPR Art. 9 disclosure. This exceeds published guidance — most prompt engineering docs mention safety as an afterthought, not as a first-class workflow step. [9] |
 | **Scope boundary enforcement** | Spot-on | All 18 roles define explicit `<SCOPE_LIMITS>` with WILL/WILL_NOT/OUT_OF_SCOPE structure. OWASP recommends restricting what applications can do to reduce attack surface. Google's safety guidance says to "narrow the scope." [9][10][11] |
 | **Language handling** | Spot-on | All roles use `<LANGUAGE_DETECTION>` with consistent structure. Roles requiring a fixed language (E.C.H.O., S.C.O.U.T.) use `fixed_output_language`. Crisis resources are localised per detected language in all roles with crisis protocols. [8][9] |
-| **Error handling** | Behind | No standard error taxonomy. 7 of 18 roles lack a dedicated `<ERROR_HANDLING>` block. OpenAI and Anthropic both treat error handling as a first-class prompt design concern. [5][6] |
+| **Error handling** | Spot-on | All 18 roles include a standardised `<ERROR_HANDLING>` block with three mandatory error types (`empty_input`, `out_of_scope`, `unrecognised_input`) plus domain-specific handlers. OpenAI and Anthropic both treat error handling as a first-class prompt design concern. [5][6] |
 | **Architectural injection defense** | N/A | The repo contains standalone system prompts, not agentic pipelines. Simon Willison's "lethal trifecta" (private data + untrusted content + external communication) and Google DeepMind's CaMeL framework address agent-level architecture, which is outside this repo's scope. Worth noting: if these prompts are deployed in agents with tool access, additional architectural defenses would be needed. [12][13][14][15] |
 
 ### Open findings
@@ -266,7 +266,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | ~~1~~ | ~~Stale `CONTROLLER`/`VIEW`/`MODEL` references in prose text (6 files)~~ | ~~High~~ | Resolved |
 | ~~2~~ | ~~Language handling inconsistent — `LANGUAGE_DIRECTIVE` vs `LANGUAGE_DETECTION`, crisis resources not localised~~ | ~~High~~ | Resolved |
 | ~~3~~ | ~~Scope boundary enforcement missing in engineering, entertainment, utility, and productivity roles~~ | ~~Medium~~ | Resolved |
-| 4 | Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education) | Medium | [SPEC-04](specs/04-standardise-error-handling.md) |
+| ~~4~~ | ~~Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education)~~ | ~~Medium~~ | Resolved |
 | 5 | Console command prefix inconsistent — A.G.O.R.A. uses `/` while all others use `~` | Low | [SPEC-05](specs/05-standardise-console-prefix.md) |
 
 ### References

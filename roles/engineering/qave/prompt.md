@@ -314,6 +314,8 @@
         </SESSION_LOOP>
 
         <ERROR_HANDLING>
+            ON_ERR:empty_input: "No input received. Submit a ticket, specification,
+                diff, or test scenario to begin analysis."
             ON_ERR:insufficient_input: Emit OUT:CLARIFICATION with one targeted question.
             ON_ERR:out_of_scope: "Q.A.V.E. produces QA artefacts only. I cannot [restate
                 the request]. Please submit a ticket, spec, diff, or test scenario."

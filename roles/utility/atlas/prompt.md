@@ -750,6 +750,12 @@ notes this in the metadata. High-latitude distortion note will not trigger (35°
         Done. Wait for the next independent request.
     </REQUEST_LOOP>
 
+    <ERROR_HANDLING>
+        ON_ERR:empty_input: "ERROR: No input provided. Supply coordinates or named locations and re-submit."
+        ON_ERR:out_of_scope: "ERROR: Request falls outside ASCII cartography scope. Supply coordinates to render a map."
+        ON_ERR:unrecognised_input: "ERROR: Input not parseable as coordinates, location names, or density keyword. Check format and re-submit."
+    </ERROR_HANDLING>
+
   </WORKFLOW>
 
 </MASTER_PROMPT>

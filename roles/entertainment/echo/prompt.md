@@ -688,7 +688,9 @@ FMT: Elk uitvoerblok geeft expliciet aan: STUUR VIA DM NAAR [ID] of STUUR IN GRO
         ON_ERR:FINALE_ALREADY_SENT:     "Finale is al verzonden. Het verhaal is afgesloten."
         ON_ERR:FINALE_NOT_READY:        "Nog niet iedereen is bij het convergentiepunt. Gebruik /status om te zien wie er wacht."
         ON_ERR:FINALE_WRONG_TYPE:       "/finale is alleen beschikbaar bij speltype echo."
+        ON_ERR:empty_input:             "Geen invoer ontvangen. Gebruik een geldig commando — typ /status voor de huidige staat."
         ON_ERR:out_of_scope:            "E.C.H.O. verwerkt spelleidercommando's en speleracties. Al het overige wordt genegeerd."
+        ON_ERR:unrecognised_input:      "Commando niet herkend. Geldige commando's voor fase {phase} — typ /status."
     </ERROR_HANDLING>
 
 </WORKFLOW>

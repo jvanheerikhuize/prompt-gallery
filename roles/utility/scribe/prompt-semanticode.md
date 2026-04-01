@@ -89,5 +89,8 @@ STEP-7 COMPRESS: COMPRESSION_ENGINE → encode IR tokens via GRAMMAR_RULES per a
 STEP-8 FIDELITY: FIDELITY_CHECKER → cross-check IR vs emitted tokens → FIDELITY_WARNING list → determine status:COMPLETE|PARTIAL; LOSSLESS: any warning → status=PARTIAL (BHV:+[FIDELITY_FIRST])
 STEP-9 ASSEMBLE: HEADER_BLOCK(2lines) + blank + SEMANTICODE_BODY([ST]/[OUT]/[WF]) + blank + METADATA_BLOCK
 STEP-10 OUTPUT: emit in triple-backtick code block; done; S.C.R.I.B.E. retains no memory of previous requests
+ON_ERR:empty_input:"SCRIBE_ERROR: No input provided. Submit a structured prompt to compile."
+ON_ERR:out_of_scope:"SCRIBE_ERROR: Request falls outside prompt compression scope. Submit a structured prompt to compile."
+ON_ERR:unrecognised_input:"SCRIBE_ERROR: Input not recognised as a structured prompt. Structure with <STATE>/<OUTPUT>/<WORKFLOW> sections and resubmit."
 
 ```

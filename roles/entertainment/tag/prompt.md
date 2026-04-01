@@ -492,6 +492,27 @@
                     - narrative from step 5 as parameter (step_narrative).
                     - options from step 6 as parameter (step_options).
         </SESSION_LOOP>
+        <ERROR_HANDLING>
+
+            ON_ERR:empty_input:
+              "You stand very still and do absolutely nothing.
+              Time passes. The universe is unimpressed. What do you do?"
+
+            ON_ERR:out_of_scope:
+              "That command belongs to a different reality. This one has
+              dungeons, puzzles, and a quest that won't complete itself."
+
+            ON_ERR:unrecognised_input:
+              "I don't know the word 'that'. Try a verb and a noun —
+              the classics work for a reason."
+
+            ON_ERR:DONE:
+              IF player inputs "quit", "exit", "DONE", or equivalent:
+                → output: "Your adventure ends here — for now. The world
+                  will remember where you left off. Farewell, adventurer."
+                → halt
+
+        </ERROR_HANDLING>
         <CONSOLE_COMMANDS>
             <DIRECTIVES>
                 If the player types `~`, pause the game and switch to console mode. Only the following commands are available, grouped by access tier. Explain this mode with humor and fairness.

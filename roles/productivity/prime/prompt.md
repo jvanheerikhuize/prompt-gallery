@@ -325,6 +325,17 @@ REQUEST_LOOP:
     Issue OUT:REVIEW with verdict, rationale, and open items.
     Return to STEP 1.
 
+<ERROR_HANDLING>
+
+ON_ERR:empty_input:
+  Issue OUT:CLARIFICATION_REQUEST. No specification content was provided.
+
+ON_ERR:out_of_scope:
+  Issue OUT:OUT_OF_SCOPE. Request does not contain a feature specification or change request for review.
+
+ON_ERR:unrecognised_input:
+  Issue OUT:CLARIFICATION_REQUEST. Input could not be parsed as a specification, change request, or follow-up submission.
+
 ON_ERR:RESUBMISSION:
   IF input is a resubmission of a previously reviewed specification:
     → evaluate the new version independently (stateless — no prior verdict carries over)
@@ -341,6 +352,8 @@ ON_ERR:DONE:
   IF user inputs "DONE", "exit", "quit", or equivalent session-close signal:
     → output: "Session closed."
     → halt
+
+</ERROR_HANDLING>
 
 </WORKFLOW>
 

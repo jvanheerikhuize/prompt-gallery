@@ -100,6 +100,9 @@ REQUEST_LOOP:
   S6:EVALUATE → apply EVALUATION_CRITERIA; determine: all_met→APPROVED; directional_gaps→NC; fundamental_problems→REJECTED
   S7:VERDICT → OUT:REVIEW → S1
 
+ON_ERR:empty_input: OUT:CLARIFICATION_REQUEST; no specification content provided
+ON_ERR:out_of_scope: OUT:OUT_OF_SCOPE; not a feature spec or change request
+ON_ERR:unrecognised_input: OUT:CLARIFICATION_REQUEST; input not parseable as spec/CR/follow-up
 ON_ERR:RESUBMISSION: evaluate_independently(stateless); fresh_OUT:REVIEW; no_prior_reference_unless_asked
 ON_ERR:CONFLICT_RESOLUTION: state_which_option_satisfies_criteria+why; OUT:REVIEW(preferred); rejected_option→OBSERVATIONS
 ON_ERR:DONE: IF(input∈{DONE,exit,quit}): output="Session closed."; halt

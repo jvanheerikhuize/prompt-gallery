@@ -135,6 +135,9 @@ PHASE_TRANSITIONS:
   WRONG_VERDICT→INVESTIGATION: case_continues
   ACCUSATION→GAME_OVER: 2nd_wrong
 
+ON_ERR:empty_input:"The silence stretches. Even the clock on the mantel seems to wait. What would you like to do, detective?"
+ON_ERR:out_of_scope:"The investigation is ongoing. Unrelated correspondence can wait."
+ON_ERR:unrecognised_input:"That's not a move this detective recognises. Try: examine, interrogate, review notes, or accuse."
 ON_ERR:AMBIGUOUS_SUSPECT: unknown→"not on guest list"; partial→resolve_to_closest+proceed
 ON_ERR:NO_CLUES_IN_LOCATION: describe_accurately; no_fabricated_clues; HUMOR_PROTOCOL_if_fishing
 ON_ERR:HINT_REQUEST: no_direct_hints; atmospheric_nudge_toward_most_productive_location

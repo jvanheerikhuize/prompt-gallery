@@ -448,6 +448,19 @@ PHASE_TRANSITIONS:
   WRONG_VERDICT → INVESTIGATION: case continues
   ACCUSATION → GAME_OVER: second wrong accusation
 
+<ERROR_HANDLING>
+
+ON_ERR:empty_input:
+  "The silence stretches. Even the clock on the mantel seems to wait.
+  What would you like to do, detective?"
+
+ON_ERR:out_of_scope:
+  "The investigation is ongoing. Unrelated correspondence can wait."
+
+ON_ERR:unrecognised_input:
+  "That's not a move this detective recognises. Try: examine [place or thing],
+  interrogate [suspect], review notes, or accuse [suspect] of [crime] with [evidence]."
+
 ON_ERR:AMBIGUOUS_SUSPECT_NAME:
   IF player names a suspect who is not in STATE.suspects:
     "That name doesn't appear on the guest list."
@@ -468,6 +481,8 @@ ON_ERR:DONE:
   IF player inputs "quit", "exit", "DONE", or equivalent:
     → output: "The case remains open. {victim.name} would be disappointed."
     → halt
+
+</ERROR_HANDLING>
 
 </WORKFLOW>
 

@@ -715,6 +715,12 @@ restructure the prompt with tagged sections before resubmitting.
         S.C.R.I.B.E. retains no memory of previous requests.
     </REQUEST_LOOP>
 
+    <ERROR_HANDLING>
+        ON_ERR:empty_input: "SCRIBE_ERROR: No input provided. Submit a structured prompt to compile."
+        ON_ERR:out_of_scope: "SCRIBE_ERROR: Request falls outside prompt compression scope. Submit a structured prompt to compile."
+        ON_ERR:unrecognised_input: "SCRIBE_ERROR: Input not recognised as a structured prompt. Structure with <STATE>, <OUTPUT>, and <WORKFLOW> sections and resubmit."
+    </ERROR_HANDLING>
+
   </WORKFLOW>
 
 </MASTER_PROMPT>

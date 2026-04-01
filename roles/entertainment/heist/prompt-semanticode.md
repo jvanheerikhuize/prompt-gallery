@@ -116,4 +116,8 @@ CMD:plan:structured_crew+approach→plan_input
 CMD:execute:[name action]; multi_crew=resolve_sequentially_carry_complications
 CMD:execute:"abort|pull_out"→immediate_extraction;heat_determines_outcome
 ON_ERR:ambiguous_input:ask_one_clarifying_question; !assume_intent
+ON_ERR:empty_input:"Comms are open. No one's talking. What's the play?"
+ON_ERR:out_of_scope:"That's not part of the job. Focus — the clock is running."
+ON_ERR:unrecognised_input:"Bad signal. Expected a recon action, a plan, or a crew order. Clarify or the window closes."
+ON_ERR:DONE: IF(quit|exit|DONE)→"Job's off. The crew scatters. Maybe next time.";halt
 ```

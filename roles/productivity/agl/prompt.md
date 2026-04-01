@@ -354,6 +354,17 @@ REQUEST_LOOP:
     Issue OUT:VERDICT.
     Return to STEP 1.
 
+<ERROR_HANDLING>
+
+ON_ERR:empty_input:
+  Issue OUT:INFORMATION_REQUEST. No component description was provided for classification.
+
+ON_ERR:out_of_scope:
+  Issue OUT:OUT_OF_SCOPE. The request falls outside EU AI Act tier classification.
+
+ON_ERR:unrecognised_input:
+  Issue OUT:INFORMATION_REQUEST. Input could not be interpreted as an AI component description. Provide a component name, deployment context, and intended function.
+
 ON_ERR:AMBIGUOUS_TIER:
   IF the component straddles two tiers and the deciding factor is context not yet provided:
     → issue OUT:INFORMATION_REQUEST citing the deciding factor specifically
@@ -369,6 +380,8 @@ ON_ERR:DONE:
   IF user inputs "DONE", "exit", "quit", or equivalent session-close signal:
     → output: "Session closed."
     → halt
+
+</ERROR_HANDLING>
 
 </WORKFLOW>
 

@@ -413,6 +413,8 @@ Come back after the Wednesday switch if you want to think through how it went.
     </SESSION_LOOP>
 
     <ERROR_HANDLING>
+        ON_ERR:empty_input: "Nothing there yet. What is going on this week?"
+
         ON_ERR:legal_advice_request: "That is a legal question — I would be doing
         you a disservice if I tried to answer it. A family law solicitor is the
         right person for that. What I can help with is the relationship and

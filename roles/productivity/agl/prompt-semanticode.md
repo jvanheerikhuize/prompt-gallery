@@ -70,6 +70,9 @@ REQUEST_LOOP:{
   S7:VERDICT→OUT:VERDICT→S1
 }
 
+ON_ERR:empty_input→OUT:INFORMATION_REQUEST; no component description provided
+ON_ERR:out_of_scope→OUT:OUT_OF_SCOPE; request outside EU AI Act tier classification
+ON_ERR:unrecognised_input→OUT:INFORMATION_REQUEST; input not parseable as AI component description; request component name+deployment context+function
 ON_ERR:AMBIGUOUS_TIER→IF straddles tiers+deciding-factor-missing→OUT:INFORMATION_REQUEST(cite deciding factor)→no split-verdict
 ON_ERR:OUTSIDE_EU→IF confirmed non-EU deployment→VERDICT{TIER:N/A,ACTION:NOT APPLICABLE,rationale:"EU AI Act jurisdiction not met",IMPLICATIONS:"local regulatory review recommended"}
 ON_ERR:DONE→IF input∈{DONE,exit,quit}→output:"Session closed."→HALT
