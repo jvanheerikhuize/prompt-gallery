@@ -92,7 +92,7 @@ This repo is continuously evaluated through four independent audit layers, each 
 
 **What each audit produces:**
 
-- A scorecard entry in its respective log file (`audits/log.md`, `audits/log-functional.md`, or `audits/log-content.md`)
+- A scorecard entry in its respective log file (`audits/log.md`, `audits/log-functional.md`, `audits/log-content.md`, or `audits/log-docs.md`)
 - New specs in `specs/` for any failures found
 - Updated source registry and README references (topic-by-topic assessment, open findings, references table)
 
@@ -103,6 +103,7 @@ Each audit has its own living source registry — new authorities are discovered
 | Standards | [`audits/sources.yaml`](audits/sources.yaml) | Anthropic, OpenAI, Google, OWASP, NIST, Lakera, CSA |
 | Functional | [`audits/sources-functional.yaml`](audits/sources-functional.yaml) | ACM, OpenAI Model Spec, APA, Brown, Microsoft, California SB 243 |
 | Content | [`audits/sources-content.yaml`](audits/sources-content.yaml) | SAMHSA, Gottman, ICEEFT, JMIR, EU AI Act, IASP, Find A Helpline |
+| Documentation | [`audits/sources-docs.yaml`](audits/sources-docs.yaml) | Diataxis, ISO 26514, EU AI Act Annex IV, Model Cards |
 
 ---
 

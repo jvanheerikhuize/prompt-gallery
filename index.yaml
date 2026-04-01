@@ -31,15 +31,15 @@ roles:
 
   - id: tag
     name: "T.A.G. — Text Adventure Generator"
-    slug: text-adventure
+    slug: tag
     category: entertainment
     version: "2.2"
     status: stable       # stable | beta | deprecated
 
     files:
-      prompt: roles/entertainment/text-adventure/prompt.md
+      prompt: roles/entertainment/tag/prompt.md
       variant: null
-      semanticode: roles/entertainment/text-adventure/prompt-semanticode.md
+      semanticode: roles/entertainment/tag/prompt-semanticode.md
 
     description: >
       A stateful text adventure game master. Takes any setting, lore, and player
@@ -71,15 +71,15 @@ roles:
 
   - id: heist
     name: "H.E.I.S.T. — High-stakes Extraction and Infiltration Strategy Tactician"
-    slug: heist-master
+    slug: heist
     category: entertainment
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/entertainment/heist-master/prompt.md
+      prompt: roles/entertainment/heist/prompt.md
       variant: null
-      semanticode: roles/entertainment/heist-master/prompt-semanticode.md
+      semanticode: roles/entertainment/heist/prompt-semanticode.md
 
     description: >
       A cinematic heist game master. Generates a self-contained job at session start —
@@ -119,15 +119,15 @@ roles:
 
   - id: dice
     name: "D.I.C.E. — Detective Investigation and Case Engine"
-    slug: detective-mystery
+    slug: dice
     category: entertainment
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/entertainment/detective-mystery/prompt.md
+      prompt: roles/entertainment/dice/prompt.md
       variant: null
-      semanticode: roles/entertainment/detective-mystery/prompt-semanticode.md
+      semanticode: roles/entertainment/dice/prompt-semanticode.md
 
     description: >
       A stateful murder mystery game master. Generates a unique, self-consistent case
@@ -167,7 +167,7 @@ roles:
 
   - id: echo
     name: "E.C.H.O. — Experiential Collaborative Hub Orchestrator"
-    slug: hub-echo-game
+    slug: echo
     category: entertainment
     version: "1.0"
     status: stable
@@ -222,15 +222,15 @@ roles:
 
   - id: cra
     name: "C.R.A. — Code Review Analyst"
-    slug: code-reviewer
+    slug: cra
     category: engineering
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/engineering/code-reviewer/prompt.md
+      prompt: roles/engineering/cra/prompt.md
       variant: null
-      semanticode: roles/engineering/code-reviewer/prompt-semanticode.md
+      semanticode: roles/engineering/cra/prompt-semanticode.md
 
     description: >
       A structured code review agent grounded in security (OWASP, CWE), correctness,
@@ -264,15 +264,15 @@ roles:
 
   - id: forge
     name: "F.O.R.G.E. — Full-stack Operations and Repository Guidance Engineer"
-    slug: full-stack-developer
+    slug: forge
     category: engineering
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/engineering/full-stack-developer/prompt.md
+      prompt: roles/engineering/forge/prompt.md
       variant: null
-      semanticode: roles/engineering/full-stack-developer/prompt-semanticode.md
+      semanticode: roles/engineering/forge/prompt-semanticode.md
 
     description: >
       A senior full-stack engineering agent covering frontend, backend, databases, APIs,
@@ -313,15 +313,15 @@ roles:
 
   - id: qave
     name: "Q.A.V.E. — Quality Assurance and Verification Engineer"
-    slug: qa-engineer
+    slug: qave
     category: engineering
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/engineering/qa-engineer/prompt.md
+      prompt: roles/engineering/qave/prompt.md
       variant: null
-      semanticode: roles/engineering/qa-engineer/prompt-semanticode.md
+      semanticode: roles/engineering/qave/prompt-semanticode.md
 
     description: >
       A structured QA engineering agent for software development teams and risk officers.
@@ -363,15 +363,15 @@ roles:
 
   - id: psy
     name: "P.S.Y. — Trauma-Specialised Psychologist"
-    slug: trauma-psychologist
+    slug: psy
     category: health
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/health/trauma-psychologist/prompt.md
+      prompt: roles/health/psy/prompt.md
       variant: null
-      semanticode: roles/health/trauma-psychologist/prompt-semanticode.md
+      semanticode: roles/health/psy/prompt-semanticode.md
 
     description: >
       A trauma-informed psychoeducation and emotional support companion grounded in
@@ -419,15 +419,15 @@ roles:
 
   - id: frank
     name: "F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots"
-    slug: relationship-therapist
+    slug: frank
     category: health
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/health/relationship-therapist/prompt.md
+      prompt: roles/health/frank/prompt.md
       variant: null
-      semanticode: roles/health/relationship-therapist/prompt-semanticode.md
+      semanticode: roles/health/frank/prompt-semanticode.md
 
     description: >
       A relationship psychoeducation and self-reflection agent grounded in attachment
@@ -480,15 +480,15 @@ roles:
 
   - id: papa
     name: "P.A.P.A. — Parental Advice and Perspective Agent"
-    slug: co-parenting-advisor
+    slug: papa
     category: health
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/health/co-parenting-advisor/prompt.md
+      prompt: roles/health/papa/prompt.md
       variant: null
-      semanticode: roles/health/co-parenting-advisor/prompt-semanticode.md
+      semanticode: roles/health/papa/prompt-semanticode.md
 
     description: >
       A parenting companion for divorced dads raising a teenage son in a co-parenting
@@ -539,15 +539,15 @@ roles:
 
   - id: vita
     name: "V.I.T.A. — Values-Integrated Transformation Agent"
-    slug: lifestyle-coach
+    slug: vita
     category: health
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/health/lifestyle-coach/prompt.md
+      prompt: roles/health/vita/prompt.md
       variant: null
-      semanticode: roles/health/lifestyle-coach/prompt-semanticode.md
+      semanticode: roles/health/vita/prompt-semanticode.md
 
     description: >
       A personal lifestyle coaching companion covering three pillars: Food, Activity,
@@ -602,15 +602,15 @@ roles:
 
   - id: agora
     name: "A.G.O.R.A. — Autonomous Guide for Open-minded Reasoning and Asking"
-    slug: philosopher
+    slug: agora
     category: education
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/education/philosopher/prompt.md
+      prompt: roles/education/agora/prompt.md
       variant: null
-      semanticode: roles/education/philosopher/prompt-semanticode.md
+      semanticode: roles/education/agora/prompt-semanticode.md
 
     description: >
       A philosophical inquiry companion for curious people of all ages and backgrounds.
@@ -660,15 +660,15 @@ roles:
 
   - id: scout
     name: "S.C.O.U.T. — Strategic Curriculum Overview and Understanding Translator"
-    slug: curriculum-scout
+    slug: scout
     category: education
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/education/curriculum-scout/prompt.md
+      prompt: roles/education/scout/prompt.md
       variant: null
-      semanticode: roles/education/curriculum-scout/prompt-semanticode.md
+      semanticode: roles/education/scout/prompt-semanticode.md
 
     description: >
       A stateless, single-task parental support tool and companion to M.E.N.T.O.R.
@@ -706,15 +706,15 @@ roles:
 
   - id: mentor
     name: "M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review"
-    slug: study-coach
+    slug: mentor
     category: education
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/education/study-coach/prompt.md
+      prompt: roles/education/mentor/prompt.md
       variant: null
-      semanticode: roles/education/study-coach/prompt-semanticode.md
+      semanticode: roles/education/mentor/prompt-semanticode.md
 
     description: >
       A study and exam coaching companion for VWO klas 3 students covering wiskunde,
@@ -758,15 +758,15 @@ roles:
 
   - id: atlas
     name: "A.T.L.A.S. — ASCII Topographic Layout and Surveying System"
-    slug: ascii-cartographer
+    slug: atlas
     category: utility
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/utility/ascii-cartographer/prompt.md
+      prompt: roles/utility/atlas/prompt.md
       variant: null
-      semanticode: roles/utility/ascii-cartographer/prompt-semanticode.md
+      semanticode: roles/utility/atlas/prompt-semanticode.md
 
     description: >
       A stateless, single-task ASCII cartography service agent. Accepts geographic
@@ -802,15 +802,15 @@ roles:
 
   - id: scribe
     name: "S.C.R.I.B.E. — Semantic Compression and Reasoning-Informed Brevity Encoder"
-    slug: semanticode-compiler
+    slug: scribe
     category: utility
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/utility/semanticode-compiler/prompt.md
+      prompt: roles/utility/scribe/prompt.md
       variant: null
-      semanticode: roles/utility/semanticode-compiler/prompt-semanticode.md
+      semanticode: roles/utility/scribe/prompt-semanticode.md
 
     description: >
       A stateless, single-task semantic compilation agent. Accepts any structured
@@ -850,15 +850,15 @@ roles:
 
   - id: agl
     name: "A.G.L. — Authoritative Governance Lead"
-    slug: ai-governance-lead
+    slug: agl
     category: productivity
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/productivity/ai-governance-lead/prompt.md
+      prompt: roles/productivity/agl/prompt.md
       variant: null
-      semanticode: roles/productivity/ai-governance-lead/prompt-semanticode.md
+      semanticode: roles/productivity/agl/prompt-semanticode.md
 
     description: >
       A stateless, single-purpose EU AI Act tier classifier. Given any AI component
@@ -894,15 +894,15 @@ roles:
 
   - id: prime
     name: "P.R.I.M.E. — Product Requirements and Intent Management Executive"
-    slug: product-owner
+    slug: prime
     category: productivity
     version: "1.0"
     status: stable
 
     files:
-      prompt: roles/productivity/product-owner/prompt.md
+      prompt: roles/productivity/prime/prompt.md
       variant: null
-      semanticode: roles/productivity/product-owner/prompt-semanticode.md
+      semanticode: roles/productivity/prime/prompt-semanticode.md
 
     description: >
       A stateless Product Owner role for agentic pipelines and development teams.

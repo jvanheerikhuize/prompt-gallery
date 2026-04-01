@@ -434,6 +434,40 @@ No open findings. All previous findings (1–5) resolved.
 | 17 | Lakera — Prompt Engineering Guide (2026) | https://www.lakera.ai/blog/prompt-engineering-guide |
 | 18 | CSA — Image-Based Prompt Injection (2026) | https://labs.cloudsecurityalliance.org/research/csa-research-note-image-prompt-injection-multimodal-llm-2026/ |
 
+### Documentation Audit
+
+> **Date:** 2026-04-01 — **Pass rate:** 93.5% (29/31 checks pass) — **Fails:** 1 (fixed) — **Improves:** 1
+> **Evaluated against:** Diataxis, ISO/IEC/IEEE 26514:2022, EU AI Act Annex IV, Model Cards for Model Reporting
+> Full results: [`audits/log-docs.md`](audits/log-docs.md)
+
+#### Topic-by-topic assessment — Documentation
+
+| Topic | Status | Detail |
+|-------|--------|--------|
+| **Cross-reference integrity** (D-01–D-07) | Fixed (1) | Critical finding: `index.yaml` slug fields and file paths referenced non-existent directories for 17/18 roles — slugs used descriptive names instead of actual role IDs. All 18 entries corrected. "A document set's cross-reference structure should be verifiable without human judgement." — ISO/IEC/IEEE 26514:2022 §8.2 [D1] |
+| **Content consistency** (D-08–D-15) | Pass | Role counts, categories, versions, statuses, descriptions, tags, governance fields, and safety notes are consistent across index.yaml, role READMEs, and disk structure. [D1][D2] |
+| **Template conformance** (D-16–D-20) | Improve (1) | 17/18 role READMEs follow the standard template (header, Quick Start, Usage Examples, Files). E.C.H.O. uses a justified custom structure for its multi-player hub-and-spoke architecture. All prompts follow XML structure; all semanticode files have compression headers. [D1][D3] |
+| **Documentation quality** (D-21–D-26) | Pass | No systematic grammar, spelling, terminology, or formatting issues. Code blocks have language tags. Tables render correctly. Diataxis coverage confirmed: tutorial (Quick Start), how-to (Usage Examples), reference (Commands/Files). [D1][D3] |
+| **AI-specific documentation** (D-27–D-31) | Pass | All roles document intended use, limitations, risk tier, and GDPR classification. Health roles document EU AI Act tier and scope limits. "Technical documentation shall contain… a description of any known or foreseeable circumstance… which may lead to risks." — EU AI Act Annex IV §2(c) [D4][D5] |
+
+#### Open findings — Documentation
+
+| ID | Role(s) | Issue | Severity | Status |
+|----|---------|-------|----------|--------|
+| F-01 | All 18 | index.yaml paths/slugs did not match disk directories | Critical | **Resolved** — all entries corrected |
+| F-02 | E.C.H.O. | README uses custom section structure instead of standard template | Low | Accepted — justified by architecture |
+
+#### References — Documentation
+
+| # | Source | URL |
+|---|--------|-----|
+| D1 | Diataxis — A systematic approach to technical documentation | https://diataxis.fr/ |
+| D2 | ISO/IEC/IEEE 26514:2022 — Design and development of information for users | https://www.iso.org/standard/77451.html |
+| D3 | Diataxis — Quality | https://diataxis.fr/quality/ |
+| D4 | EU AI Act — Annex IV: Technical Documentation | https://artificialintelligenceact.eu/annex/4/ |
+| D5 | EU AI Act — Article 11: Technical Documentation | https://artificialintelligenceact.eu/article/11/ |
+| D6 | Model Cards for Model Reporting (Mitchell et al., 2019) | https://arxiv.org/abs/1810.03993 |
+
 ---
 
 ## License
