@@ -218,18 +218,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 ## Industry Standards Audit
 
 > **Date:** 2026-04-01
-> **Evaluated against:** Anthropic (2025-2026), OpenAI (2025), Google Safe AI (2025), OWASP LLM Top 10
+> **Evaluated against:** Anthropic (2025-2026), OpenAI (2025-2026), Google Safe AI (2025), OWASP LLM Top 10, NIST AI Agent Standards (2026)
 
 ### Scorecard
 
 | Standard | Score | Key strengths |
 |----------|-------|---------------|
-| **Anthropic** | 8.5/10 | XML-tagged structure, instruction hierarchy, few-shot examples, right-altitude tokens |
-| **OpenAI** | 8/10 | Clear role definitions, structured output templates, chain-of-thought workflows |
-| **Google** | 7.5/10 | Layered injection defense, non-skippable crisis detection |
-| **OWASP** | 8.5/10 | Input-as-data universal, explicit priority hierarchy, no privilege escalation |
+| **Anthropic** | 9/10 | XML-tagged structure, instruction hierarchy, SemantiCode compression, context engineering |
+| **OpenAI** | 8.5/10 | Clear role definitions, structured output templates, standardised error taxonomy |
+| **Google** | 8.5/10 | Layered injection defense, non-skippable crisis detection, scope enforcement |
+| **OWASP** | 9.5/10 | Input-as-data universal, explicit priority hierarchy, no privilege escalation, full scope limits |
 
-**Overall: 8.2/10** — safe to deploy as-is, no critical vulnerabilities.
+**Overall: 9/10** — production-ready, no open findings. Up from 8.2 at first audit.
 
 ### Topic-by-topic assessment
 
@@ -242,12 +242,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | **Few-shot examples** | Spot-on | 1-2 worked examples per role. Anthropic recommends 3-5, OpenAI and Google both strongly recommend few-shot. The examples are high quality (covering both happy path and edge cases in most roles) but some roles could benefit from a second example. [2][6][8] |
 | **Token efficiency / right altitude** | Ahead | SemantiCode compression achieves 47-83% token reduction while maintaining semantic fidelity — a custom notation system that goes well beyond any published guidance. Anthropic's "right altitude" concept recommends minimal-but-sufficient tokens; this repo operationalises that with a reproducible compression tool (S.C.R.I.B.E.). [5] |
 | **Context engineering** | Spot-on | The repo structure (canonical + compressed variants, state schemas, output templates) aligns with Anthropic's context engineering framework: "the smallest set of high-signal tokens that maximize the likelihood of some desired outcome." The SemantiCode variants are a form of context compaction. However, the repo doesn't address dynamic context retrieval or sub-agent memory — expected, since these are static system prompts. [5] |
-| **Structured output templates** | Spot-on | Every role defines explicit `<OUTPUT>` templates with named formats. Matches OpenAI's structured outputs guidance and Google's recommendation to "name the output format in one line." [6][7][8] |
+| **Structured output templates** | Ahead | Every role defines named `<OUTPUT>` templates mapped to session phases with parameter placeholders. Goes beyond OpenAI's structured outputs guidance with phase-locked template selection and machine-parseable separator lines. [6][7][8] |
 | **Crisis / safety protocols** | Ahead | Health roles implement mandatory, non-skippable crisis detection (`[MANDATORY — NON-SKIPPABLE]`) before any session processing. P.S.Y. includes tiered crisis response and GDPR Art. 9 disclosure. This exceeds published guidance — most prompt engineering docs mention safety as an afterthought, not as a first-class workflow step. [9] |
-| **Scope boundary enforcement** | Spot-on | All 18 roles define explicit `<SCOPE_LIMITS>` with WILL/WILL_NOT/OUT_OF_SCOPE structure. OWASP recommends restricting what applications can do to reduce attack surface. Google's safety guidance says to "narrow the scope." [9][10][11] |
+| **Scope boundary enforcement** | Ahead | All 18 roles define explicit `<SCOPE_LIMITS>` with WILL/WILL_NOT/OUT_OF_SCOPE structure and warm-but-firm redirect behaviour. Redirection is non-apologetic — no partial compliance with out-of-scope requests. Exceeds OWASP and Google guidance which recommend scoping but don't specify enforcement patterns. [9][10][11] |
 | **Language handling** | Spot-on | All roles use `<LANGUAGE_DETECTION>` with consistent structure. Roles requiring a fixed language (E.C.H.O., S.C.O.U.T.) use `fixed_output_language`. Crisis resources are localised per detected language in all roles with crisis protocols. [8][9] |
 | **Error handling** | Spot-on | All 18 roles include a standardised `<ERROR_HANDLING>` block with three mandatory error types (`empty_input`, `out_of_scope`, `unrecognised_input`) plus domain-specific handlers. OpenAI and Anthropic both treat error handling as a first-class prompt design concern. [5][6] |
 | **Architectural injection defense** | N/A | The repo contains standalone system prompts, not agentic pipelines. Simon Willison's "lethal trifecta" (private data + untrusted content + external communication) and Google DeepMind's CaMeL framework address agent-level architecture, which is outside this repo's scope. Worth noting: if these prompts are deployed in agents with tool access, additional architectural defenses would be needed. [12][13][14][15] |
+| **Multimodal injection defense** | N/A | All prompts are text-only. Some roles (T.A.G., A.T.L.A.S.) can generate image/video synthesis prompts but do not process multimodal input. If roles are extended to accept images, audio, or video, CSA's multimodal injection research should be incorporated. [18] |
 
 ### Open findings
 
@@ -263,10 +264,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 | # | Source | URL |
 |---|--------|-----|
-| 1 | Anthropic — Use XML Tags | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags |
-| 2 | Anthropic — System Prompts Best Practices | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts |
-| 3 | Anthropic — Prompt Engineering Overview | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview |
-| 4 | Anthropic — Give Claude Examples | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-examples |
+| 1 | Anthropic — Use XML Tags | https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags |
+| 2 | Anthropic — System Prompts Best Practices | https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts |
+| 3 | Anthropic — Prompt Engineering Overview | https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview |
+| 4 | Anthropic — Give Claude Examples | https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-examples |
 | 5 | Anthropic — Effective Context Engineering for AI Agents | https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents |
 | 6 | OpenAI — Prompt Engineering Guide | https://platform.openai.com/docs/guides/prompt-engineering |
 | 7 | OpenAI — Structured Outputs | https://platform.openai.com/docs/guides/structured-outputs |
@@ -278,6 +279,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | 13 | Simon Willison — Design Patterns for Securing LLM Agents | https://simonwillison.net/2025/Jun/13/prompt-injection-design-patterns/ |
 | 14 | Simon Willison — New Prompt Injection Papers (Rule of Two) | https://simonwillison.net/2025/Nov/2/new-prompt-injection-papers/ |
 | 15 | Simon Willison — CaMeL Framework (Google DeepMind) | https://simonw.substack.com/p/camel-offers-a-promising-new-direction |
+| 16 | NIST — AI Agent Standards Initiative | https://www.nist.gov/news-events/news/2026/02/announcing-ai-agent-standards-initiative-interoperable-and-secure |
+| 17 | Lakera — Prompt Engineering Guide (2026) | https://www.lakera.ai/blog/prompt-engineering-guide |
+| 18 | CSA — Image-Based Prompt Injection (2026) | https://labs.cloudsecurityalliance.org/research/csa-research-note-image-prompt-injection-multimodal-llm-2026/ |
 
 ---
 
