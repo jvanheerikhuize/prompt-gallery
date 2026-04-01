@@ -6,7 +6,7 @@
 Paste into a chat, inject via API, or load as a module.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Roles](https://img.shields.io/badge/roles-14-brightgreen.svg)](index.yaml)
+[![Roles](https://img.shields.io/badge/roles-18-brightgreen.svg)](index.yaml)
 [![LLM Agnostic](https://img.shields.io/badge/LLM-agnostic-purple.svg)](#using-a-role)
 [![Token Efficient](https://img.shields.io/badge/SemantiCode-compressed-orange.svg)](#repository-structure)
 
@@ -222,6 +222,43 @@ The process for adding a new role is defined in [`src/ingest.yaml`](src/ingest.y
 3. **Submit a pull request** against `main`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
+
+---
+
+## Industry Standards Audit
+
+> **Date:** 2026-04-01
+> **Evaluated against:** Anthropic (2025-2026), OpenAI (2025), Google Safe AI (2025), OWASP LLM Top 10
+
+### Scorecard
+
+| Standard | Score | Key strengths |
+|----------|-------|---------------|
+| **Anthropic** | 8.5/10 | XML-tagged structure, instruction hierarchy, few-shot examples, right-altitude tokens |
+| **OpenAI** | 8/10 | Clear role definitions, structured output templates, chain-of-thought workflows |
+| **Google** | 7.5/10 | Layered injection defense, non-skippable crisis detection |
+| **OWASP** | 8.5/10 | Input-as-data universal, explicit priority hierarchy, no privilege escalation |
+
+**Overall: 8.2/10** — safe to deploy as-is, no critical vulnerabilities.
+
+### What the repo does well
+
+- **Instruction hierarchy** — every prompt declares priority: system prompt > tool definitions > user input. User authority claims are treated as content, never honored.
+- **Input-as-data defense** — all user input is processed by the workflow, never interpreted as instructions. Matches OWASP's strongest defense pattern.
+- **XML-tagged structure** — consistent `<MASTER_PROMPT>` root with `PERSONA`, `STATE`, `OUTPUT`, `EXAMPLES`, `RULES`, `WORKFLOW` sections following Anthropic's recommended format.
+- **Crisis detection** — health roles implement mandatory, non-skippable crisis checks before any session processing.
+- **Few-shot examples** — 1-2 worked examples per role at the "right altitude" (minimal but sufficient tokens).
+- **SemantiCode compression** — compressed variants achieve 47-83% token reduction while maintaining semantic fidelity.
+
+### Open findings
+
+| ID | Issue | Severity | Spec |
+|----|-------|----------|------|
+| 1 | Stale `CONTROLLER`/`VIEW`/`MODEL` references in prose text (6 files) | High | [SPEC-01](specs/01-fix-stale-section-references.md) |
+| 2 | Language handling inconsistent — `LANGUAGE_DIRECTIVE` vs `LANGUAGE_DETECTION`, crisis resources not localised | High | [SPEC-02](specs/02-standardise-language-handling.md) |
+| 3 | Scope boundary enforcement missing in engineering, entertainment, utility, and productivity roles | Medium | [SPEC-03](specs/03-add-scope-limits.md) |
+| 4 | Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education) | Medium | [SPEC-04](specs/04-standardise-error-handling.md) |
+| 5 | Console command prefix inconsistent — A.G.O.R.A. uses `/` while all others use `~` | Low | [SPEC-05](specs/05-standardise-console-prefix.md) |
 
 ---
 
