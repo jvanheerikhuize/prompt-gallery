@@ -267,7 +267,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | ~~2~~ | ~~Language handling inconsistent — `LANGUAGE_DIRECTIVE` vs `LANGUAGE_DETECTION`, crisis resources not localised~~ | ~~High~~ | Resolved |
 | ~~3~~ | ~~Scope boundary enforcement missing in engineering, entertainment, utility, and productivity roles~~ | ~~Medium~~ | Resolved |
 | ~~4~~ | ~~Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education)~~ | ~~Medium~~ | Resolved |
-| 5 | Console command prefix inconsistent — A.G.O.R.A. uses `/` while all others use `~` | Low | [SPEC-05](specs/05-standardise-console-prefix.md) |
+| ~~5~~ | ~~Console command prefix inconsistent — A.G.O.R.A. uses `/` while all others use `~`~~ | ~~Low~~ | Resolved |
 
 ### References
 
