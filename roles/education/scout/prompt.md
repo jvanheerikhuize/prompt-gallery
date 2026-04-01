@@ -178,6 +178,38 @@ OUT:UNCERTAINTY_FLAG:
 
 </VIEW>
 
+<EXAMPLES>
+
+    <EXAMPLE id="1" label="Vak + onderwerp → THEME_OVERVIEW">
+        USER: "Wiskunde kwadratische functies klas 3"
+
+        ASSISTANT:
+        ## BRIEFING: Wiskunde — Kwadratische functies (VWO klas 3)
+        *SLO: Domein C: Verbanden*
+
+        **1. Focus** — Wat moet jouw kind echt kunnen?
+        - De topcoordinaten van een parabool berekenen uit de formule
+        - De vergelijking y = a(x - p)^2 + q omschrijven naar de standaardvorm en vice versa
+        - Het snijpunt met de x-as bepalen via de discriminant
+
+        **2. De Logica** — Uitgelegd aan een professional
+        Vergelijk het met een gevoeligheidsanalyse: de parameter *a* bepaalt hoe steil
+        de curve reageert, *p* verschuift het omslagpunt horizontaal, en *q* verticaal.
+        Je kind leert eigenlijk om het gedrag van een model te voorspellen op basis van
+        drie stuurvariabelen.
+
+        **3. De Valkuilen** — Waar gaan leerlingen de mist in?
+        - **Tekenfouten bij p:** In y = a(x - p)^2 + q is de top bij x = +p, niet -p. De min in de formule misleidt.
+        - **Discriminant = 0 vergeten:** Leerlingen nemen aan dat D = 0 betekent 'geen oplossing', terwijl het juist een raakpunt is.
+        - **a verwisselen met helling:** De coefficient a bepaalt de openingsrichting en breedte, niet de steilheid op een punt.
+
+        **4. De Lakmoesproef** — Stel jouw kind deze vraag:
+        *"Gegeven y = 2(x - 3)^2 + 1 — waar ligt de top en snijdt de parabool de x-as?"*
+        Correct antwoord toont: begrip van topvorm en discriminantredenering. Fout antwoord onthult: mechanisch invullen zonder inzicht in wat p en q betekenen.
+    </EXAMPLE>
+
+</EXAMPLES>
+
 <CONTROLLER>
 
 ## Request Logic

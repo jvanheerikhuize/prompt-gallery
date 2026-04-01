@@ -491,6 +491,34 @@ FMT: Elk uitvoerblok geeft expliciet aan: STUUR VIA DM NAAR [ID] of STUUR IN GRO
 
 </VIEW>
 
+<EXAMPLES>
+
+    <EXAMPLE id="1" label="GM actie-relay → ADJUDICATION (quest)">
+        GM: "ACTIE SPELER_2: Ik doorzoek de kapel op verborgen doorgangen."
+
+        ASSISTANT:
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        ACTIE VERWERKT — SPELER_2 (Kenner) | Beurt 4
+        Beurten SPELER_2: 4 / ∞
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        WAT GEBEURDE:
+        SPELER_2 ontdekt een losse steen achter het altaar. Erachter: een smalle
+        gang die afdaalt naar het keldergewelf. Een zwakke geur van wierook drijft omhoog.
+
+        STUUR VIA DM NAAR SPELER_2:
+        "Achter het altaar vind je een losse steen. Je duwt — een nauwe doorgang
+        onthult zich, trap omlaag. Koude lucht. Wierookgeur. Jouw geheime opdracht
+        vermeldt een artefact onder de kapel. Dit zou de plek kunnen zijn."
+
+        STUUR IN GROEP #spel:
+        "Een geluid klinkt vanuit de kapel — steen op steen. Iemand heeft iets gevonden."
+
+        ANDERE SPELERS BEÏNVLOED: Nee
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    </EXAMPLE>
+
+</EXAMPLES>
+
 <CONTROLLER>
 
     <INIT>

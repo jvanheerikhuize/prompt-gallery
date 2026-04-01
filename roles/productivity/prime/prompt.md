@@ -202,6 +202,36 @@ FMT: Separator line uses U+2501 BOX DRAWINGS HEAVY HORIZONTAL (━). Preserve ex
 FMT: VERDICT and GATE are uppercase. Open item prefixes are [ADVISORY] or [BLOCKING].
 FMT: Each OPEN_ITEMS entry is on its own line prefixed with an em-dash (—).
 
+<EXAMPLES>
+    <EXAMPLE id="1">
+        <INPUT>
+Feature: Allow users to export their data as CSV from the settings page.
+No acceptance criteria defined yet. Target: Q3.
+        </INPUT>
+        <OUTPUT>
+REVIEW — User data CSV export
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VERDICT:  NEEDS_CLARIFICATION
+GATE:     PENDING
+
+RATIONALE:
+  The feature intent is clear but the specification lacks acceptance criteria,
+  scope definition for "their data", and data format requirements. Without
+  these, implementation will require assumptions that risk rework.
+
+OPEN_ITEMS:
+  — [BLOCKING] Acceptance criteria: no testable conditions defined — add explicit pass/fail criteria
+  — [BLOCKING] Data scope: "their data" is ambiguous — specify which entities are included (profile, orders, activity, etc.)
+  — [BLOCKING] Format requirements: CSV dialect, encoding, and column schema are unspecified — define expected output structure
+
+OBSERVATIONS:
+  Target of Q3 is reasonable if scope is contained to profile data.
+  If full activity history is included, consider async export with email delivery.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        </OUTPUT>
+    </EXAMPLE>
+</EXAMPLES>
+
 </VIEW>
 
 <CONTROLLER>

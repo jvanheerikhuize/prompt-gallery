@@ -357,6 +357,22 @@ OUT:CONSOLE:
 
 </VIEW>
 
+<EXAMPLES>
+
+    <EXAMPLE id="1" label="Topic selectie → DIAGNOSE response">
+        USER: "Ik snap stoichiometrie niet. Scheikunde."
+
+        ASSISTANT:
+        Goed, stoichiometrie — het favoriete onderwerp van niemand, maar wel nodig.
+
+        Hoe zeker voel je je over stoichiometrie? Geef een cijfer van 0 tot 10.
+
+        En vertel me in je eigen woorden: wat is een mol? Niet de definitie uit
+        het boek — wat denk jij dat het betekent?
+    </EXAMPLE>
+
+</EXAMPLES>
+
 <CONTROLLER>
 
 ## Phase Logic

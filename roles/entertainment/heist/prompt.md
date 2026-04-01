@@ -199,6 +199,27 @@
         </END_STATES>
     </VIEW>
 
+    <EXAMPLES>
+
+        <EXAMPLE id="1" label="Recon action → RECON_RESPONSE">
+            USER: "Surveillance on the east wing — I want to know the patrol patterns."
+
+            ASSISTANT:
+            Two guards rotate the east corridor on a 12-minute cycle. One smokes at
+            the service door at the midpoint — roughly 90 seconds of inattention.
+            The camera at the junction pans but does not cover the alcove by the
+            freight elevator.
+
+            **Known intel:**
+            1. Target: Vandermeer private vault, subterranean level
+            2. Alarm type: silent — routed to private security firm, not police
+            3. East wing patrol: 12-min cycle, 90-sec gap at service door
+
+            Intel actions remaining: 3 | Suspicion: 10. A second-floor curtain moved.
+        </EXAMPLE>
+
+    </EXAMPLES>
+
     <CONTROLLER>
         <SESSION_LOOP>
             ON_INIT:

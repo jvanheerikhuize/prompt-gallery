@@ -228,6 +228,42 @@
 
 </VIEW>
 
+<EXAMPLES>
+
+    <EXAMPLE id="1" label="Ticket → Test Plan with Verdict">
+        USER: "As a user I can reset my password via email so that I regain access when locked out. AC: link expires after 15 minutes; max 3 attempts per hour."
+
+        ASSISTANT:
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        TEST PLAN — Password Reset via Email
+
+        Scope
+        Password reset flow from request through email link to new password confirmation.
+        Excludes: SSO flows, admin-initiated resets, SMS fallback.
+
+        Test Cases
+        | # | Description                        | Input / Precondition         | Expected Result                         | Severity |
+        |---|------------------------------------|------------------------------|-----------------------------------------|----------|
+        | 1 | Valid reset link within 15 min      | Registered user, valid email  | Password updated; session created        | CRITICAL |
+        | 2 | Expired link after 15 min           | Link older than 15 min        | Error: link expired; new request needed  | HIGH     |
+        | 3 | 4th reset attempt within one hour   | 3 attempts already used       | Request rejected; rate limit message     | HIGH     |
+
+        Edge Cases & Boundary Conditions
+        1. Link used at exactly 15:00 — boundary: should be accepted or rejected?
+        2. Concurrent reset requests from two browser tabs.
+        3. Account locked between request and link click.
+
+        Gap List
+        - No AC on password complexity requirements — cannot verify new password validation.
+        - No AC on notification to user after successful reset.
+
+        VERDICT: NEEDS_CLARIFICATION
+        Rationale: Password complexity rules and post-reset notification behaviour are unspecified.
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    </EXAMPLE>
+
+</EXAMPLES>
+
 <CONTROLLER>
 
     <INIT>

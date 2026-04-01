@@ -427,6 +427,47 @@ restructure the prompt with tagged sections before resubmitting.
 
   </VIEW>
 
+  <EXAMPLES>
+
+      <EXAMPLE id="1" label="Tiny prompt → SemantiCode output (LOSSLESS)">
+          USER:
+          "<MODEL>
+            <PERSONA>You are ARIA — a friendly customer service agent for AcmeCorp.</PERSONA>
+            <RULES>Always greet the user by name. Never discuss competitors.</RULES>
+          </MODEL>
+          <VIEW><OUTPUT>Respond in plain English. Keep replies under 3 sentences.</OUTPUT></VIEW>
+          <CONTROLLER><FLOW>If the user asks for a refund, direct them to refunds@acmecorp.com.</FLOW></CONTROLLER>"
+
+          ASSISTANT:
+          ```
+          [SCRIBE v1.0 | mode:LOSSLESS | sections:[M]@L1,[V]@L7,[C]@L10]
+          // Grammar: [M]model [V]view [C]ctrl | BHV:+must !prohibit ~prefer | CNST:constraint | OUT:type:fmt | IF cond:THEN act:ELSE act | ON_ERR:cond:resp | GATE:cond:pass|fail | DEF:<tag>:<v> REF:<tag> | // annotation(annotated-mode)
+
+          [M]
+          ROLE:customer service agent — AcmeCorp
+          NAME:ARIA
+          PERSONA:friendly, helpful
+          BHV:+greet user by name
+          BHV:!discuss competitors
+
+          [V]
+          OUT:plain English; ≤3 sentences
+
+          [C]
+          IF user requests refund:THEN direct to refunds@acmecorp.com
+
+          ---
+          SCRIBE_META:
+            grammar_version: v1.0
+            mode: LOSSLESS
+            status: COMPLETE
+            compression_ratio: "42.1%"
+            fidelity_warnings: 0
+          ```
+      </EXAMPLE>
+
+  </EXAMPLES>
+
   <RULES_ENGINE>
 
     <VALIDATION_ENGINE>

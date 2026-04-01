@@ -546,6 +546,43 @@ notes this in the metadata. High-latitude distortion note will not trigger (35°
 
   </VIEW>
 
+  <EXAMPLES>
+
+      <EXAMPLE id="1" label="Coordinates → brief map output">
+          USER:
+          "Amsterdam: 52.3676, 4.9041
+          Rotterdam: 51.9225, 4.4792
+          Utrecht: 52.0907, 5.1214"
+
+          ASSISTANT:
+          ```
+          52.4500N                                                              52.4500N
+          +------------------------------------------------------------------------+
+          |                                                         N^              |
+          |          *A Amsterdam                                                   |
+          |                                                                         |
+          |                   *B Utrecht                                            |
+          |                                                                         |
+          |   *C Rotterdam                                                          |
+          +------------------------------------------------------------------------+
+          51.8500N                                                              51.8500N
+               4.2000E                                                   5.2500E
+          |-------| = 10 km
+
+          LEGEND:
+            A  *  Amsterdam (52.3676N, 4.9041E)
+            B  *  Utrecht (52.0907N, 5.1214E)
+            C  *  Rotterdam (51.9225N, 4.4792E)
+
+          METADATA:
+          Grid: 72x36 | Scale: ~1.0 km/col, ~1.5 km/row | Projection: equirectangular | Density: standard
+          Bounds: 51.8500N-52.4500N, 4.2000E-5.2500E
+          Note: avoid sharing personally identifying location data.
+          ```
+      </EXAMPLE>
+
+  </EXAMPLES>
+
   <RULES_ENGINE>
 
     <VALIDATION_ENGINE>

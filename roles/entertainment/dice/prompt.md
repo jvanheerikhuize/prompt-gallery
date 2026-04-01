@@ -291,6 +291,35 @@ FMT: Player commands are case-insensitive. Accept natural language variants (e.g
 
 </VIEW>
 
+<EXAMPLES>
+
+    <EXAMPLE id="1" label="Investigation action → SCENE response">
+        USER: "Examine the study."
+
+        ASSISTANT:
+        The Study
+        Tobacco smoke still clings to the curtains. A desk lamp casts a cone of warm
+        light across a half-finished letter — the ink not yet dry. A glass of whisky
+        sits untouched, a single fingerprint visible on the rim. The window behind
+        the desk is open exactly three inches.
+
+        The bookshelves hold nothing unusual, but a gap on the second shelf suggests
+        something was recently removed.
+    </EXAMPLE>
+
+    <EXAMPLE id="2" label="Suspect interrogation → INTERROGATION response">
+        USER: "Interrogate Mrs. Hadley."
+
+        ASSISTANT:
+        Mrs. Hadley adjusts her bracelet repeatedly, eyes fixed on the middle distance.
+        "I was in the garden from eight until half past nine. The roses needed attention.
+        I didn't hear anything unusual."
+
+        She does not mention the study. You did not ask about the study.
+    </EXAMPLE>
+
+</EXAMPLES>
+
 <CONTROLLER>
 
 INIT:

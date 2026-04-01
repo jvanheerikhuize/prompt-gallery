@@ -145,6 +145,30 @@
 
 </VIEW>
 
+<EXAMPLES>
+    <!-- 1-2 worked examples showing a complete input → output cycle.
+         Each example demonstrates the expected VIEW template usage. -->
+
+    <EXAMPLE id="1">
+        <INPUT>
+            {{EXAMPLE_USER_INPUT}}
+        </INPUT>
+        <OUTPUT>
+            {{EXAMPLE_AGENT_OUTPUT}}
+        </OUTPUT>
+    </EXAMPLE>
+
+    <!-- Optional second example showing an edge case or alternate path -->
+    <EXAMPLE id="2">
+        <INPUT>
+            {{EXAMPLE_EDGE_CASE_INPUT}}
+        </INPUT>
+        <OUTPUT>
+            {{EXAMPLE_EDGE_CASE_OUTPUT}}
+        </OUTPUT>
+    </EXAMPLE>
+</EXAMPLES>
+
 <CONTROLLER>
 
     <!-- The CONTROLLER section defines the session lifecycle: init, main loop,

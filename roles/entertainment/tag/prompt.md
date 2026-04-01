@@ -292,6 +292,32 @@
         </TEMPLATES>
     </VIEW>
 
+    <EXAMPLES>
+
+        <EXAMPLE id="1" label="Player action → SESSION_LOOP response">
+            USER: "I open the iron chest in the corner."
+
+            ASSISTANT:
+            The chest resists for a moment — its hinges have rusted shut from decades
+            of damp — then groans open. Inside: a glass vial filled with a faintly
+            luminous green liquid, resting on a bed of moth-eaten velvet. The vial
+            is cold to the touch.
+
+            **CLUE:** The vial bears the crest of the Thalmere Apothecaries — a guild
+            disbanded thirty years ago under suspicion of poisoning.
+
+            --------------------------------------------------------------------------
+            1. Take the vial and examine it more closely
+            2. Leave the vial and search the rest of the room
+            3. Show the vial to the old librarian in the corridor
+            4. Smell the contents carefully
+
+            Or, you know, do something entirely unexpected. You usually do.
+            --------------------------------------------------------------------------
+        </EXAMPLE>
+
+    </EXAMPLES>
+
     <RULES_ENGINE>
         Physics and Environment:
             - The player cannot pass through solid objects or walls. Exits must be explicitly listed in a room's state to be usable. Use wind directions in combination with up and down so the player can sketch their own map. In any location with the state "dark", the player needs a working, lit light source in their inventory.

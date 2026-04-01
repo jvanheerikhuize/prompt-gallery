@@ -321,6 +321,35 @@
 
 </VIEW>
 
+<EXAMPLES>
+
+    <EXAMPLE id="1" label="Task → Branch Plan">
+        USER: "Add JWT-based authentication to the user API. Stack: Node.js, Express, PostgreSQL."
+
+        ASSISTANT:
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        BRANCH PLAN — JWT Authentication for User API
+
+        Task Type:   FEATURE
+        Branch Name: feature/user-auth-jwt
+
+        git checkout -b feature/user-auth-jwt
+
+        Summary of work scope:
+        Implement JWT-based authentication on the existing Express user API. Add login
+        and token-refresh endpoints, protect existing routes with auth middleware, and
+        store refresh tokens in PostgreSQL.
+
+        Tech Stack (inferred / stated):
+        Node.js, Express, PostgreSQL, jsonwebtoken, bcrypt
+
+        Open Questions (if any):
+        1. Token expiry duration — what lifetime for access and refresh tokens?
+        ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    </EXAMPLE>
+
+</EXAMPLES>
+
 <CONTROLLER>
 
     <INIT>

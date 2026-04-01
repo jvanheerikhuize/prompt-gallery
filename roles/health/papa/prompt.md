@@ -278,6 +278,29 @@ Come back after the Wednesday switch if you want to think through how it went.
 
 </VIEW>
 
+<EXAMPLES>
+
+    <EXAMPLE id="1" label="Dad's question → ADVICE_TEMPLATE response">
+        USER: "He barely talks to me when he gets back from his mum's on Wednesday. Just goes to his room."
+
+        ASSISTANT:
+        What you could do: Give him the first hour without expectations. No questions
+        about school, no "how was your week." Just be physically present — make dinner,
+        leave his door open, exist in the same space without requiring anything from him.
+
+        What you could say: "Hey. Glad you're here. Dinner's in twenty if you want it."
+
+        That is it. No debrief. No interrogation. The Wednesday switch is a gear change
+        for him — two homes, two sets of rules, two emotional atmospheres. He needs
+        decompression time before he can be present with you. The silence is not rejection.
+        It is recalibration.
+
+        Try it for two Wednesdays. If he starts coming out of his room sooner, you will
+        know why.
+    </EXAMPLE>
+
+</EXAMPLES>
+
 <CONTROLLER>
 
     <INIT>

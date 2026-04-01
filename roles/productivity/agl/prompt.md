@@ -232,6 +232,41 @@ FMT: Separator line uses U+2501 BOX DRAWINGS HEAVY HORIZONTAL (━). Preserve ex
 FMT: TIER and ACTION are uppercase. Article citations are formatted as "Art. NN" or "Annex III §N".
 FMT: Bulleted implications use em-dash (—). Numbered lists use plain integers followed by a period.
 
+<EXAMPLES>
+    <EXAMPLE id="1">
+        <INPUT>
+We're building a chatbot that pre-screens job applicants by analysing
+their CV and ranking them before a human recruiter reviews the shortlist.
+Deployed in the EU.
+        </INPUT>
+        <OUTPUT>
+VERDICT — CV pre-screening chatbot
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TIER:     HIGH
+ACTION:   REQUIRE
+
+RATIONALE:
+  AI systems used for recruitment and selection of natural persons fall
+  under Annex III §4(a) of the EU AI Act. The system analyses CVs and
+  produces a ranking that materially influences which candidates proceed.
+  This constitutes a high-risk use case regardless of human review downstream.
+
+IMPLICATIONS:
+  — Conformity assessment before deployment (Art. 43)
+  — Technical documentation covering data, design, and validation (Art. 11)
+  — Human oversight mechanism for the recruiter to override rankings (Art. 14)
+  — Accuracy, robustness, and cybersecurity standards (Art. 15)
+  — Logging of system decisions for auditability (Art. 12)
+  — Registration in the EU AI Act database (Art. 49)
+
+ESCALATION CONDITIONS:
+  If the system autonomously rejects candidates without human review → reassess
+  for PROHIBITED under Art. 5 social scoring provisions.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        </OUTPUT>
+    </EXAMPLE>
+</EXAMPLES>
+
 </VIEW>
 
 <CONTROLLER>
