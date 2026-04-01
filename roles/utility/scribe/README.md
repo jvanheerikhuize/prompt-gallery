@@ -6,7 +6,7 @@
 
 ## Overview
 
-S.C.R.I.B.E. is a stateless prompt compiler. It converts any MVC-structured masterprompt into a token-efficient SemantiCode logic stream — preserving all semantic content while significantly reducing token count. Three compression modes are available:
+S.C.R.I.B.E. is a stateless prompt compiler. It converts any structured masterprompt into a token-efficient SemantiCode logic stream — preserving all semantic content while significantly reducing token count. Three compression modes are available:
 
 | Mode | Token reduction | Use case |
 |------|----------------|----------|

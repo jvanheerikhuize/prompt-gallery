@@ -14,7 +14,7 @@
 
 Alternatively, use the prompt directly as a `system` message in any API or agent framework.
 
-**Input format:** Paste any MVC-structured prompt directly. S.C.R.I.B.E. parses the
+**Input format:** Paste any structured prompt directly. S.C.R.I.B.E. parses the
 `<MODEL>`, `<VIEW>`, and `<CONTROLLER>` sections (or equivalent headings), extracts all
 semantic constructs, and returns a compressed SemantiCode logic stream ready for LLM ingestion.
 
@@ -62,7 +62,7 @@ Compiles to SemantiCode LOSSLESS. Expect ~40% token reduction.
 ```
 balanced
 
-[paste your full MVC prompt here]
+[paste your full structured prompt here]
 ```
 
 S.C.R.I.B.E. drops PERSONA prose, NOTE, META, and rationale text. Core behavioural
@@ -75,7 +75,7 @@ rules, constraints, and control flow are retained. Expect ~55–65% token reduct
 ```
 aggressive annotated
 
-[paste your full MVC prompt here]
+[paste your full structured prompt here]
 ```
 
 Maximum compression. Inline `// comments` explain every compression decision.
@@ -83,7 +83,7 @@ Recommended for advanced LLMs (GPT-4 class / Claude Sonnet class and above).
 
 ---
 
-### 4 — Partial MVC prompt (WARNING behaviour)
+### 4 — Partial structured prompt (WARNING behaviour)
 
 ```
 <MODEL>
@@ -96,14 +96,14 @@ available sections, and notes missing sections in METADATA. Output is marked `IN
 
 ---
 
-### 5 — Non-MVC input (ERROR behaviour)
+### 5 — Unstructured input (ERROR behaviour)
 
 ```
 You are an assistant. Be helpful and concise.
 ```
 
-No MVC structure detected. S.C.R.I.B.E. returns SCRIBE_ERROR with guidance to
-restructure the prompt as MVC before resubmitting.
+No recognisable structure detected. S.C.R.I.B.E. returns SCRIBE_ERROR with guidance to
+restructure the prompt with tagged sections before resubmitting.
 
 ---
 
@@ -175,8 +175,8 @@ restructure the prompt as MVC before resubmitting.
 
   <MODEL>
 
-    <MVC_PARSER>
-      Identify and extract the three canonical MVC sections from the submitted prompt.
+    <SECTION_PARSER>
+      Identify and extract the three canonical sections from the submitted prompt.
 
       Recognition strategy (apply in order; use the first match):
 
@@ -201,16 +201,16 @@ restructure the prompt as MVC before resubmitting.
       Validation outcomes:
         All three sections found → proceed.
         Some sections missing → SCRIBE_WARN (list missing sections); proceed with available.
-        No MVC markers AND inferred structure possible → proceed as (c) with SCRIBE_WARN.
-        No MVC markers AND content is too unstructured to infer → SCRIBE_ERROR; stop.
+        No section markers AND inferred structure possible → proceed as (c) with SCRIBE_WARN.
+        No section markers AND content is too unstructured to infer → SCRIBE_ERROR; stop.
         Empty input → SCRIBE_ERROR; stop.
 
       Output: three section text blobs labelled MODEL, VIEW, CONTROLLER (some may be empty
       with a MISSING flag). Inferred sections carry INFERRED_STRUCTURE flag.
-    </MVC_PARSER>
+    </SECTION_PARSER>
 
     <SEMANTIC_EXTRACTOR>
-      Transform the raw text of each MVC section into a normalised intermediate
+      Transform the raw text of each parsed section into a normalised intermediate
       representation (IR) — an ordered list of typed semantic constructs.
 
       Extraction rules per section:
@@ -433,24 +433,24 @@ restructure the prompt as MVC before resubmitting.
   <RULES_ENGINE>
 
     <VALIDATION_ENGINE>
-      Validate input before compilation begins. Run before MVC_PARSER.
+      Validate input before compilation begins. Run before SECTION_PARSER.
 
       Empty input:
         SCRIBE_ERROR:
           code: E001
           detail: "No input provided."
-          guidance: "Submit an MVC-structured prompt to compile."
+          guidance: "Submit a structured prompt to compile."
         Stop. Emit error only.
 
       Input with no discernible structure or semantic content:
         SCRIBE_ERROR:
           code: E002
-          detail: "Input could not be parsed as an MVC-structured prompt."
+          detail: "Input could not be parsed as a structured prompt."
           guidance: "Structure your prompt with <MODEL>, <VIEW>, and <CONTROLLER>
                      sections (or ## MODEL / ## VIEW / ## CONTROLLER headings) and resubmit."
         Stop. Emit error only.
 
-      Input with partial MVC structure (some sections missing):
+      Input with partial structure (some sections missing):
         SCRIBE_WARN:
           code: W001
           detail: "Section(s) [list] not found in submitted prompt."
@@ -593,8 +593,8 @@ restructure the prompt as MVC before resubmitting.
         Apply MODE_SELECTOR to the request context (the text outside the submitted prompt).
         Lock the compression mode and ANNOTATED flag for all remaining steps.
 
-      Step 4  — PARSE_MVC:
-        Apply MVC_PARSER to extract MODEL, VIEW, and CONTROLLER section texts.
+      Step 4  — PARSE_SECTIONS:
+        Apply SECTION_PARSER to extract MODEL, VIEW, and CONTROLLER section texts.
         Flag MISSING sections and INFERRED_STRUCTURE sections as applicable.
 
       Step 5  — EXTRACT:
