@@ -82,9 +82,11 @@ Self-Improvement (RSI) process.
 **How to run an audit:**
 
 1. Open an AI coding agent at the repo root.
-2. Paste the contents of [`src/audit.md`](src/audit.md).
-3. The agent runs the full loop: discover sources, audit prompts, update
-   the scorecard, generate specs for any gaps.
+2. Paste the contents of the audit prompt you want to run:
+   - [`src/audit.md`](src/audit.md) — standards and security compliance
+   - [`src/audit-functional.md`](src/audit-functional.md) — functional readiness
+3. The agent runs the full loop: audit prompts, update the scorecard,
+   generate specs for any gaps.
 
 **What it produces:**
 

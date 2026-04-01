@@ -146,7 +146,8 @@ for role in catalog["roles"]:
 index.yaml              ← Start here — the full role catalog
 src/
 ├── ingest.md           ← Paste into an AI agent to add a new role
-├── audit.md            ← Paste into an AI agent to run an RSI audit
+├── audit.md            ← RSI audit: standards and security compliance
+├── audit-functional.md ← RSI audit: functional readiness
 └── templates/
     ├── prompt.md       ← Canonical prompt template
     ├── prompt-semanticode.md  ← SemantiCode template
