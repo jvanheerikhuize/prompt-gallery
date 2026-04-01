@@ -390,9 +390,9 @@ _ok "Session saved to .ingest-session.yaml"
 
 # ── Hand off to Claude for STEP-02 onward ────────────────────────────────────
 
-HANDOFF="Read src/ingest.yaml and execute the role ingestion process starting at STEP-02.
-STEP-01 is complete. All collected inputs are in .ingest-session.yaml — use them directly; do not ask the user for anything already captured there.
-Pause at STEP-09 (REVIEW) and wait for explicit approval before committing."
+HANDOFF="Read src/ingest.md and execute the role ingestion process starting at Step 1 (DESIGN).
+Step 0 (COLLECT) is complete. All collected inputs are in .ingest-session.yaml — use them directly; do not ask the user for anything already captured there.
+Pause at Step 8 (REVIEW) and wait for explicit approval before committing."
 
 _blank
 

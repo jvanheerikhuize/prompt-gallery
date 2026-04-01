@@ -145,8 +145,9 @@ for role in catalog["roles"]:
 ```
 index.yaml              ← Start here — the full role catalog
 src/
-├── ingest.sh           ← Run this to add a new role
-├── ingest.yaml         ← Ingestion process definition (agent-executable)
+├── ingest.md           ← Paste into an AI agent to add a new role
+├── ingest.sh           ← Optional: collects inputs in the terminal, then hands off
+├── audit.md            ← Paste into an AI agent to run an RSI audit
 └── templates/
     ├── prompt.md       ← Canonical prompt template
     ├── prompt-semanticode.md  ← SemantiCode template
@@ -172,13 +173,12 @@ Each role directory contains:
 
 ## Creating a new role
 
-The fastest way is to run the guided ingestion script from the repo root:
+Paste [`src/ingest.md`](src/ingest.md) into any AI coding agent (Claude Code, Cursor, Copilot) at the repo root. The agent walks you through the full process — from concept to committed role.
 
 ```bash
+# Or use the optional shell helper to collect inputs in the terminal first:
 ./src/ingest.sh
 ```
-
-The script walks you through all inputs interactively in the terminal — one field at a time — then hands off to Claude for the generation steps (STEP-02 onward), pausing again at STEP-09 for a final review before committing. Collected inputs are saved to `.ingest-session.yaml` in the repo root.
 
 ### What you'll be asked
 
@@ -202,12 +202,8 @@ Persona options: tone (`formal` `casual` `warm` `direct` `clinical` `playful`), 
 
 After the REVIEW checkpoint the agent stages all files and commits with the message:
 ```
-feat(<slug>): introduce [ACRONYM] — [short description] — [category] masterprompt v1.0
+feat(<slug>): introduce [ACRONYM] — [short description] — [category] masterprompt v1.1
 ```
-
-### Without Claude Code
-
-If the `claude` CLI is not installed, the script still completes STEP-01 and saves `.ingest-session.yaml`. It then prints (and copies to clipboard) a handoff prompt you can paste into any AI coding agent (Cursor, Copilot, etc.) to continue from STEP-02 with the pre-collected data.
 
 ---
 
@@ -215,10 +211,10 @@ If the `claude` CLI is not installed, the script still completes STEP-01 and sav
 
 New roles, improvements to existing ones, bug reports, ideas — all welcome.
 
-The process for adding a new role is defined in [`src/ingest.yaml`](src/ingest.yaml) and is designed to be run with an AI coding agent. The short version:
+The process for adding a new role is defined in [`src/ingest.md`](src/ingest.md) and is designed to be run with an AI coding agent. The short version:
 
 1. **Open an issue** to share your concept and get early feedback.
-2. **Fork the repo** and run `./src/ingest.sh` — the agent walks you through every step.
+2. **Fork the repo** and paste `src/ingest.md` into your AI coding agent — it walks you through every step.
 3. **Submit a pull request** against `main`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.

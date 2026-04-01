@@ -1,6 +1,6 @@
 # {{ACRONYM}} — {{FULL_NAME}}
 
-> **Version:** 1.0 | **Category:** {{CATEGORY_TITLE}}
+> **Version:** 1.1 | **Category:** {{CATEGORY_TITLE}}
 
 ---
 

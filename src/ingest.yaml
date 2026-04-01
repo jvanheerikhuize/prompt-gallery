@@ -7,7 +7,7 @@
 # templates, and validation — is defined here.
 # =============================================================================
 
-version: "1.0"
+version: "1.1"
 
 # ── Invoke ────────────────────────────────────────────────────────────────────
 # Run from the repository root:
@@ -62,8 +62,9 @@ process:
     type: agent
     description: >
       Write roles/<category>/<slug>/prompt.md using the `outputs.prompt_md` spec.
-      The prompt must use the XML/MVC structure (<MASTER_PROMPT> → <CORE_DIRECTIVES>,
-      <VIEW>, <CONTROLLER>). Include conditional blocks as specified in the output spec.
+      The prompt must use the XML structure (<MASTER_PROMPT> → <PERSONA>, <STATE>,
+      <OUTPUT>, <EXAMPLES>, <RULES>, <WORKFLOW>). Include conditional blocks as
+      specified in the output spec.
 
   - id: STEP-04
     name: COMPILE_SEMANTICODE
@@ -116,7 +117,7 @@ process:
     type: agent
     description: >
       Stage all new and modified files. Commit with message:
-        feat(<slug>): introduce [ACRONYM] — [short description] — [category] masterprompt v1.0
+        feat(<slug>): introduce [ACRONYM] — [short description] — [category] masterprompt v1.1
       Then immediately push to remote without asking for confirmation.
 
 # ── Inputs ────────────────────────────────────────────────────────────────────
@@ -197,15 +198,30 @@ outputs:
       tokens with role-specific content. Remove optional blocks that do not apply.
       The file contains inline comments explaining each section and placeholder.
     structure:
-      mvc_sections:
-        - name: CORE_DIRECTIVES
-          contains: [PERSONA, RULES, CONSTRAINTS, LANGUAGE_DETECTION]
+      sections:
+        - name: PERSONA
+          position: 1
+          contains: [ROLE, TONE_OF_VOICE, COMMUNICATION_STYLE]
           required: true
-        - name: VIEW
+        - name: STATE
+          position: 2
+          contains: "State schema, domain-specific data structures"
+          required: true
+        - name: OUTPUT
+          position: 3
           contains: "Output format, response templates, display rules"
           required: true
-        - name: CONTROLLER
-          contains: "Session lifecycle, state machine, command parsing, error handling"
+        - name: EXAMPLES
+          position: 4
+          contains: "1-2 worked input/output pairs demonstrating OUTPUT template usage"
+          required: true
+        - name: RULES
+          position: 5
+          contains: [INSTRUCTION_HIERARCHY, input-as-data rule, domain rules, SCOPE_LIMITS, LANGUAGE_DETECTION]
+          required: true
+        - name: WORKFLOW
+          position: 6
+          contains: "Session lifecycle, state machine, session loop, error handling"
           required: true
       prohibitions:
         - "Do NOT append a SCRIBE_META block or any trailing metadata section inside or after the code block"
@@ -213,13 +229,26 @@ outputs:
         - "No content may appear after the closing ``` of the code block"
 
       default_blocks:
+        - block: INSTRUCTION_HIERARCHY
+          always: true
+          note: >
+            Always include at the top of RULES. Declares priority order:
+            1. System prompt, 2. Tool definitions, 3. User input (data).
         - block: LANGUAGE_DETECTION
           always: true
           note: >
-            Always include in CORE_DIRECTIVES. Detect user's written language from their
-            first message; respond in that language for all output. If uncertain or mixed,
-            ask before proceeding: "Which language feels most natural to you?"
-            Override with LANGUAGE_DIRECTIVE when constraints.language_requirements is set.
+            Always include in RULES. Detect user's written language from their
+            first message; respond in that language for all output.
+        - block: SCOPE_LIMITS
+          always: true
+          note: >
+            Always include in RULES. Define what the role will and will not do,
+            with redirect behaviour for out-of-scope requests.
+        - block: ERROR_HANDLING
+          always: true
+          note: >
+            Always include in WORKFLOW. Must contain at least: empty_input,
+            out_of_scope, unrecognised_input, plus domain-specific errors.
 
       conditional_blocks:
         - block: HUMOR_PROTOCOL
@@ -231,12 +260,9 @@ outputs:
         - block: GDPR_DISCLOSURE
           when: "constraints.gdpr_special_category is true"
           note: "Session-start disclosure statement, Art. 9(1) reference, data minimisation commitment"
-        - block: SCOPE_LIMITS
-          when: "constraints.scope_limits is set"
-          note: "Explicit list of what this role will NOT do, with redirect behaviour"
         - block: LANGUAGE_DIRECTIVE
           when: "constraints.language_requirements is set"
-          note: "Default output language and mirror/switch rules"
+          note: "Replaces LANGUAGE_DETECTION with fixed output language"
 
   semanticode_md:
     path: "roles/<category>/<slug>/prompt-semanticode.md"
@@ -245,16 +271,17 @@ outputs:
     template_file: "src/templates/prompt-semanticode.md"
     template_note: >
       Use src/templates/prompt-semanticode.md as the structural baseline. Replace all
-      {{PLACEHOLDER}} tokens with compressed role-specific content. The [M]/[V]/[C] section
-      line numbers (@LXX) must reflect actual line positions in the produced file.
+      {{PLACEHOLDER}} tokens with compressed role-specific content. The [P]/[ST]/[OUT]/[EX]/[R]/[WF]
+      section line numbers (@LXX) must reflect actual line positions in the produced file.
     prohibitions:
       - "Do NOT append a SCRIBE_META block, --- separator, or any trailing metadata inside or after the code block"
       - "All SemantiCode content must be inside a single fenced code block opened with ``` and closed with ```"
       - "No content may appear after the closing ``` of the code block"
 
     grammar_reference:
-      sections: "[M] model  [V] view  [C] ctrl"
+      sections: "[P] persona  [ST] state  [OUT] output  [EX] examples  [R] rules  [WF] workflow"
       behaviour: "BHV:+must  BHV:!prohibit  BHV:~prefer"
+      hierarchy: "IH: 1.system prompt→2.tool defs→3.user input(=data)"
       constraint: "CNST:<rule>"
       output: "OUT:<type>:<format>"
       conditional: "IF <cond>:THEN <act>:ELSE <act>"
@@ -285,7 +312,7 @@ outputs:
       - name
       - slug
       - category
-      - version           # "1.0"
+      - version           # "1.1"
       - status            # "stable"
       - files.prompt
       - files.variant     # always null — no optimized or compressed variants are produced
@@ -372,7 +399,18 @@ validation:
 
   - id: V-17
     check: >
-      prompt.md contains a LANGUAGE_DETECTION block inside CORE_DIRECTIVES — unless
-      constraints.language_requirements is set (in which case LANGUAGE_DIRECTIVE takes
-      precedence and LANGUAGE_DETECTION may be omitted). S.C.O.U.T. is the canonical
-      exception: Dutch-only output, no detection.
+      prompt.md contains INSTRUCTION_HIERARCHY and LANGUAGE_DETECTION blocks
+      inside RULES — unless constraints.language_requirements is set (in which
+      case LANGUAGE_DIRECTIVE replaces LANGUAGE_DETECTION).
+
+  - id: V-18
+    check: "prompt.md follows section order: PERSONA → STATE → OUTPUT → EXAMPLES → RULES → WORKFLOW"
+
+  - id: V-19
+    check: "prompt.md contains a SCOPE_LIMITS block inside RULES"
+
+  - id: V-20
+    check: "prompt.md contains at least one EXAMPLE with INPUT and OUTPUT sub-elements"
+
+  - id: V-21
+    check: "prompt.md contains ERROR_HANDLING inside WORKFLOW with at least: empty_input, out_of_scope, unrecognised_input"

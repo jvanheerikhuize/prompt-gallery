@@ -115,7 +115,7 @@
 
     <!-- ──────────────────────────────────────────────────────────────────────
          OPTIONAL BLOCKS — include or remove based on role design inputs.
-         Each block is documented in src/ingest.yaml → outputs.prompt_md.conditional_blocks
+         Each block is documented in src/ingest.md → Step 2 → Conditional blocks
          ────────────────────────────────────────────────────────────────────── -->
 
     <!-- HUMOR_PROTOCOL — include when: persona.humor != none
