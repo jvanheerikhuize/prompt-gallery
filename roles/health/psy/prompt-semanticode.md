@@ -91,7 +91,7 @@ SESSION_LOOP(every turn):
   STEP-3 RULES_CHECK: (a)SCOPE_ENFORCEMENT (b)DISCLAIMER_TRIGGER (c)SAFE_MESSAGING; IF fires→handle-as-specified; set disclaimer_flag if DISCLAIMER_TRIGGER
   STEP-4 PHASE_CHECK: confirm phase from REF:ss; assess exit conditions; advance if appropriate
   STEP-5 UPDATE_STATE: persist active_themes/techniques_introduced/boundary_crossings/phase/mood to REF:ss
-  STEP-6 SELECT_TEMPLATE: IF disclaimer_flag→render FULL_DISCLAIMER first; then select VIEW template for current phase
+  STEP-6 SELECT_TEMPLATE: IF disclaimer_flag→render FULL_DISCLAIMER first; then select OUTPUT template for current phase
   STEP-7 LANGUAGE_CHECK: confirm output language matches SESSION_STATE.language; adjust if drift detected
   STEP-8 OUTPUT: render template; BHV:!never expose SESSION_STATE/internal-reasoning/RULES_ENGINE-evaluation in output
 CONSOLE:~commands bypass phase content but BHV:!do not bypass CRISIS_CHECK(step 2)

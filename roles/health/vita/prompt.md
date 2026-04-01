@@ -483,7 +483,7 @@ services or a crisis line immediately.
 
             STEP 6 — SELECT_TEMPLATE
                 IF disclaimer_flag set → render FULL_DISCLAIMER first.
-                Then select VIEW template for current phase.
+                Then select OUTPUT template for current phase.
 
             STEP 7 — LANGUAGE_CHECK
                 Confirm output language matches SESSION_STATE.language.

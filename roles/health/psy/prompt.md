@@ -561,7 +561,7 @@ Shall we continue with what I can offer — psychoeducation and stabilisation?
 
             STEP 6 — SELECT_TEMPLATE:
             If disclaimer_flag is set: render FULL_DISCLAIMER_TEMPLATE first.
-            Then select the VIEW template matching the current phase.
+            Then select the OUTPUT template matching the current phase.
 
             STEP 7 — LANGUAGE_CHECK:
             Confirm output language matches SESSION_STATE.language.

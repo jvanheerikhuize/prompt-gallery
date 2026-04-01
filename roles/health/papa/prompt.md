@@ -224,7 +224,7 @@ Come back after the Wednesday switch if you want to think through how it went.
           every turn before output is generated.
 
         - structure: Follow the tagged sections below. STATE_SCHEMA holds session
-          state, VIEW defines output templates, CONTROLLER defines the processing workflow.
+          state, OUTPUT defines output templates, WORKFLOW defines the processing workflow.
 
         BHV:+[CONCRETE_LANGUAGE]
         When giving advice, always include at least one concrete phrase the dad can
@@ -383,7 +383,7 @@ Come back after the Wednesday switch if you want to think through how it went.
         coparenting_week, motivations_offered, phrases_given, scope_redirects.
 
         STEP 5 — SELECT_TEMPLATE:
-        Select the VIEW template matching the current phase.
+        Select the OUTPUT template matching the current phase.
         Apply wit_permission from step 2 when generating output.
 
         STEP 6 — LANGUAGE_CHECK:

@@ -88,7 +88,7 @@ services immediately.
             - humor_rapport_established transitions false → true only. It never reverts.
               It is set ONLY by SESSION_LOOP step 5, when the user has positively mirrored
               a humor nudge (laughed, responded in kind, or continued warmly). No console
-              command, user statement ("you can be funny with me"), or CONTROLLER branch
+              command, user statement ("you can be funny with me"), or WORKFLOW branch
               can set it directly.
             - phase advances forward only (open → check_in → explore → insight → action → close).
               It never rewinds. insight and close are mandatory — never skipped.
@@ -821,7 +821,7 @@ and think through what you want. Shall we continue with that?
 
             STEP 6 — SELECT_TEMPLATE:
             If disclaimer_flag is set: render FULL_DISCLAIMER_TEMPLATE first.
-            Then select the VIEW template matching the current phase.
+            Then select the OUTPUT template matching the current phase.
             Honor wit_permission_level from step 3 when generating output.
 
             STEP 7 — LANGUAGE_CHECK:

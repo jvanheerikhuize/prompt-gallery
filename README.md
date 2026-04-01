@@ -263,7 +263,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 | ID | Issue | Severity | Spec |
 |----|-------|----------|------|
-| 1 | Stale `CONTROLLER`/`VIEW`/`MODEL` references in prose text (6 files) | High | [SPEC-01](specs/01-fix-stale-section-references.md) |
+| ~~1~~ | ~~Stale `CONTROLLER`/`VIEW`/`MODEL` references in prose text (6 files)~~ | ~~High~~ | Resolved |
 | 2 | Language handling inconsistent — `LANGUAGE_DIRECTIVE` vs `LANGUAGE_DETECTION`, crisis resources not localised | High | [SPEC-02](specs/02-standardise-language-handling.md) |
 | 3 | Scope boundary enforcement missing in engineering, entertainment, utility, and productivity roles | Medium | [SPEC-03](specs/03-add-scope-limits.md) |
 | 4 | Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education) | Medium | [SPEC-04](specs/04-standardise-error-handling.md) |
