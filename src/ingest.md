@@ -30,8 +30,8 @@ answer before moving to the next field. Do not bundle multiple fields.
 | 1 | `concept` | What the role does — primary function and purpose | *"A negotiation coach grounded in Harvard principled negotiation"* |
 | 2 | `category` | Which category this role belongs to | `entertainment` · `engineering` · `health` · `education` · `utility` · `productivity` |
 | 3 | `target_user` | Who will use this role, and in what context | *"Product managers preparing for vendor negotiation sessions"* |
-| 4 | `persona.tone` | Tone of voice | `formal` · `casual` · `warm` · `direct` · `clinical` · `playful` |
-| 5 | `persona.humor` | Humor style | `none` · `dry` · `sarcastic` · `dark` · `witty` |
+| 4 | `persona.tone` | Tone of voice (select one or more) | `formal` · `casual` · `warm` · `direct` · `clinical` · `playful` · `empathetic` · `authoritative` · `encouraging` · `neutral` · `conversational` · `provocative` · `reassuring` · `matter-of-fact` · `inspirational` · `sardonic` |
+| 5 | `persona.humor` | Humor style (select one or more) | `none` · `dry` · `sarcastic` · `dark` · `witty` · `self-deprecating` · `absurdist` · `deadpan` · `observational` · `ironic` · `whimsical` · `pun-heavy` |
 | 6 | `persona.verbosity` | Response length | `concise` · `balanced` · `detailed` |
 | 7 | `persona.voice` | Character and speaking style — what makes this persona distinctive | *"Measured and precise — speaks like a seasoned mediator, never reactive"* |
 
