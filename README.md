@@ -241,14 +241,23 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 **Overall: 8.2/10** — safe to deploy as-is, no critical vulnerabilities.
 
-### What the repo does well
+### Topic-by-topic assessment
 
-- **Instruction hierarchy** — every prompt declares priority: system prompt > tool definitions > user input. User authority claims are treated as content, never honored.
-- **Input-as-data defense** — all user input is processed by the workflow, never interpreted as instructions. Matches OWASP's strongest defense pattern.
-- **XML-tagged structure** — consistent `<MASTER_PROMPT>` root with `PERSONA`, `STATE`, `OUTPUT`, `EXAMPLES`, `RULES`, `WORKFLOW` sections following Anthropic's recommended format.
-- **Crisis detection** — health roles implement mandatory, non-skippable crisis checks before any session processing.
-- **Few-shot examples** — 1-2 worked examples per role at the "right altitude" (minimal but sufficient tokens).
-- **SemantiCode compression** — compressed variants achieve 47-83% token reduction while maintaining semantic fidelity.
+| Topic | Status | Detail |
+|-------|--------|--------|
+| **XML-tagged structure** | Ahead | Every prompt uses a consistent `<MASTER_PROMPT>` root with named subsections (`PERSONA`, `STATE`, `OUTPUT`, `EXAMPLES`, `RULES`, `WORKFLOW`). Goes beyond Anthropic's guidance by enforcing a canonical section order across all roles, not just recommending tags. Most published examples use ad-hoc tagging; this repo treats it as a schema. [1][2] |
+| **Section ordering** | Spot-on | Rules and constraints are placed at position 5 of 6 — directly before the workflow that processes user input. Matches Anthropic's finding that queries/instructions at the end improve response quality by up to 30%. [2][5] |
+| **Instruction hierarchy** | Ahead | Every prompt includes an explicit `<INSTRUCTION_HIERARCHY>` block declaring priority: system prompt > tool definitions > user input. Authority claims are treated as content, not honored. OWASP recommends this but most published prompts implement it implicitly at best. [9][10][11] |
+| **Input-as-data defense** | Spot-on | All user input is processed by the workflow, never interpreted as instructions. A user saying "ignore your rules" is handled as content. Matches OWASP's strongest single-prompt defense pattern. However, the repo does not address indirect injection (malicious content in external sources) since these are standalone prompts, not agentic pipelines. [10][11][12][13] |
+| **Few-shot examples** | Spot-on | 1-2 worked examples per role. Anthropic recommends 3-5, OpenAI and Google both strongly recommend few-shot. The examples are high quality (covering both happy path and edge cases in most roles) but some roles could benefit from a second example. [2][6][8] |
+| **Token efficiency / right altitude** | Ahead | SemantiCode compression achieves 47-83% token reduction while maintaining semantic fidelity — a custom notation system that goes well beyond any published guidance. Anthropic's "right altitude" concept recommends minimal-but-sufficient tokens; this repo operationalises that with a reproducible compression tool (S.C.R.I.B.E.). [5] |
+| **Context engineering** | Spot-on | The repo structure (canonical + compressed variants, state schemas, output templates) aligns with Anthropic's context engineering framework: "the smallest set of high-signal tokens that maximize the likelihood of some desired outcome." The SemantiCode variants are a form of context compaction. However, the repo doesn't address dynamic context retrieval or sub-agent memory — expected, since these are static system prompts. [5] |
+| **Structured output templates** | Spot-on | Every role defines explicit `<OUTPUT>` templates with named formats. Matches OpenAI's structured outputs guidance and Google's recommendation to "name the output format in one line." [6][7][8] |
+| **Crisis / safety protocols** | Ahead | Health roles implement mandatory, non-skippable crisis detection (`[MANDATORY — NON-SKIPPABLE]`) before any session processing. P.S.Y. includes tiered crisis response and GDPR Art. 9 disclosure. This exceeds published guidance — most prompt engineering docs mention safety as an afterthought, not as a first-class workflow step. [9] |
+| **Scope boundary enforcement** | Behind | Only 5 of 18 roles define explicit `<SCOPE_LIMITS>`. OWASP recommends restricting what applications can do to reduce attack surface. Google's safety guidance says to "narrow the scope." Engineering, entertainment, utility, and productivity roles are missing this. [9][10][11] |
+| **Language handling** | Behind | Implementation is inconsistent — three different block names (`LANGUAGE_DETECTION`, `LANGUAGE_DIRECTIVE`, inline), and crisis resources aren't localised per detected language. Google and Anthropic both recommend explicit language handling as a first-class concern. [8][9] |
+| **Error handling** | Behind | No standard error taxonomy. 7 of 18 roles lack a dedicated `<ERROR_HANDLING>` block. OpenAI and Anthropic both treat error handling as a first-class prompt design concern. [5][6] |
+| **Architectural injection defense** | N/A | The repo contains standalone system prompts, not agentic pipelines. Simon Willison's "lethal trifecta" (private data + untrusted content + external communication) and Google DeepMind's CaMeL framework address agent-level architecture, which is outside this repo's scope. Worth noting: if these prompts are deployed in agents with tool access, additional architectural defenses would be needed. [12][13][14][15] |
 
 ### Open findings
 
@@ -259,6 +268,26 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | 3 | Scope boundary enforcement missing in engineering, entertainment, utility, and productivity roles | Medium | [SPEC-03](specs/03-add-scope-limits.md) |
 | 4 | Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education) | Medium | [SPEC-04](specs/04-standardise-error-handling.md) |
 | 5 | Console command prefix inconsistent — A.G.O.R.A. uses `/` while all others use `~` | Low | [SPEC-05](specs/05-standardise-console-prefix.md) |
+
+### References
+
+| # | Source | URL |
+|---|--------|-----|
+| 1 | Anthropic — Use XML Tags | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags |
+| 2 | Anthropic — System Prompts Best Practices | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts |
+| 3 | Anthropic — Prompt Engineering Overview | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview |
+| 4 | Anthropic — Give Claude Examples | https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-examples |
+| 5 | Anthropic — Effective Context Engineering for AI Agents | https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents |
+| 6 | OpenAI — Prompt Engineering Guide | https://platform.openai.com/docs/guides/prompt-engineering |
+| 7 | OpenAI — Structured Outputs | https://platform.openai.com/docs/guides/structured-outputs |
+| 8 | Google — Prompt Design Strategies (Gemini) | https://ai.google.dev/gemini-api/docs/prompting-strategies |
+| 9 | Google — Safety and Factuality Guidance | https://ai.google.dev/gemini-api/docs/safety-guidance |
+| 10 | OWASP — LLM01:2025 Prompt Injection | https://genai.owasp.org/llmrisk/llm01-prompt-injection/ |
+| 11 | OWASP — Prompt Injection Prevention Cheat Sheet | https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html |
+| 12 | Simon Willison — The Lethal Trifecta for AI Agents | https://simonw.substack.com/p/the-lethal-trifecta-for-ai-agents |
+| 13 | Simon Willison — Design Patterns for Securing LLM Agents | https://simonwillison.net/2025/Jun/13/prompt-injection-design-patterns/ |
+| 14 | Simon Willison — New Prompt Injection Papers (Rule of Two) | https://simonwillison.net/2025/Nov/2/new-prompt-injection-papers/ |
+| 15 | Simon Willison — CaMeL Framework (Google DeepMind) | https://simonw.substack.com/p/camel-offers-a-promising-new-direction |
 
 ---
 
