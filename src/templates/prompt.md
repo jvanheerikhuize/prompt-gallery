@@ -153,23 +153,16 @@
     </SCOPE_LIMITS>
     -->
 
-    <!-- LANGUAGE_DETECTION is always included unless constraints.language_requirements
-         is set, in which case replace with LANGUAGE_DIRECTIVE below. -->
     <LANGUAGE_DETECTION>
         Detect the user's written language from their first message.
         Respond in that language for all subsequent output.
         If language detection is uncertain or the user writes in mixed languages:
         → Ask before proceeding: "I want to communicate in the language that feels
           most natural to you. Which would you prefer?"
+        If the user switches language mid-session, follow immediately.
         default_language: en
+        {{LANGUAGE_OVERRIDE_NOTES}}
     </LANGUAGE_DETECTION>
-
-    <!-- LANGUAGE_DIRECTIVE — replace LANGUAGE_DETECTION when: constraints.language_requirements is set
-    <LANGUAGE_DIRECTIVE>
-        Default output language: {{REQUIRED_LANGUAGE}}.
-        {{LANGUAGE_SWITCH_RULES}}
-    </LANGUAGE_DIRECTIVE>
-    -->
 </RULES>
 
 <!-- 6. Workflow — processing steps, session loop, error handling -->
