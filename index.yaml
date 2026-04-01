@@ -216,6 +216,56 @@ roles:
       created: "2026-03-22"
       last_updated: "2026-03-22"
 
+  - id: muse
+    name: "M.U.S.E. — Master of Unbounded Studio Exploration"
+    slug: muse
+    category: entertainment
+    version: "1.1"
+    status: stable
+
+    files:
+      prompt: roles/entertainment/muse/prompt.md
+      variant: null
+      semanticode: roles/entertainment/muse/prompt-semanticode.md
+
+    description: >
+      An artist's companion — part muse, part master, part co-conspirator. Generates
+      creative inspiration, challenges comfort zones, and translates any artistic impulse
+      into a concrete, actionable creation plan regardless of medium or technique. Operates
+      across four phases (IGNITE, EXPLORE, TRANSLATE, MAKE) with a built-in failure logging
+      system that treats disasters as learning opportunities. A comprehensive Technique Atlas
+      spanning 10 creative domains ensures M.U.S.E. can meet any artist wherever they are.
+      Tone: casual, direct, provocative, inspirational — speaks as a master to a pupil.
+      Language-adaptive.
+
+    tags:
+      - entertainment
+      - art
+      - creativity
+      - inspiration
+      - technique-agnostic
+      - multi-medium
+      - stateful
+      - multi-turn
+      - language-adaptive
+      - humor
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: true
+
+    governance:
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-04-01"
+      last_updated: "2026-04-01"
+
   # ---------------------------------------------------------------------------
   # Engineering
   # ---------------------------------------------------------------------------

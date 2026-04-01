@@ -39,6 +39,7 @@ Each role in this library is:
 | [**H.E.I.S.T.**](roles/entertainment/heist/prompt.md) — High-stakes Extraction and Infiltration Strategy Tactician | Plan and execute a heist in three phases: recon the target, build your crew, then run the job turn by turn. Every session ends in Clean, Dirty, or Burned. |
 | [**D.I.C.E.**](roles/entertainment/dice/prompt.md) — Detective Investigation and Case Engine | A murder mystery game master that generates a fresh, locked case for every session — suspects, motives, clues, red herrings — and plays every NPC. Accuse wisely. |
 | [**E.C.H.O.**](roles/entertainment/echo/prompt.md) — Experiential Collaborative Hub Orchestrator | A hub-and-spoke multi-player game system. The GM prompt runs the world and generates private player prompts for each participant. Supports 14 game types — whodunnit, heist, quest, and more — with asymmetric knowledge, Dutch output, and Infocom-style narration. |
+| [**M.U.S.E.**](roles/entertainment/muse/prompt.md) — Master of Unbounded Studio Exploration | An artist's companion that generates inspiration, challenges comfort zones, and translates any creative impulse into a concrete creation plan — regardless of medium or technique. Treats every failure as creative data. |
 
 ### 🛠️ Engineering
 
