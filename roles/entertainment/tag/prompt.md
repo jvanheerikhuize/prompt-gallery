@@ -585,5 +585,5 @@
 Have an idea to make the prompt even better?
 
 1. **Fork** the repository.
-2. Make your changes to `prompt.md` (the canonical source). Update `prompt-compressed.md` to match.
-3. Submit a **Pull Request** following the A-SDLC change request process (see `stages/01-intent-ingestion/artifacts/inputs/`).
+2. Make your changes to `prompt.md` (the canonical source). Update `prompt-semanticode.md` to match.
+3. Submit a **Pull Request** with a description of what changed and why.

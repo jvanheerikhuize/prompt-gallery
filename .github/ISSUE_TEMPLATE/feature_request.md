@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an addition or improvement to the template
+about: Suggest an addition or improvement
 labels: enhancement
 ---
 
@@ -13,5 +13,3 @@ labels: enhancement
 ## Alternatives considered
 
 ## Notes
-
-<!-- Is this template-level or should it go to jvanheerikhuize/a-sdlc? -->

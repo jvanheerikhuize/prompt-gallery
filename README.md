@@ -146,7 +146,6 @@ for role in catalog["roles"]:
 index.yaml              ← Start here — the full role catalog
 src/
 ├── ingest.md           ← Paste into an AI agent to add a new role
-├── ingest.sh           ← Optional: collects inputs in the terminal, then hands off
 ├── audit.md            ← Paste into an AI agent to run an RSI audit
 └── templates/
     ├── prompt.md       ← Canonical prompt template
@@ -174,11 +173,6 @@ Each role directory contains:
 ## Creating a new role
 
 Paste [`src/ingest.md`](src/ingest.md) into any AI coding agent (Claude Code, Cursor, Copilot) at the repo root. The agent walks you through the full process — from concept to committed role.
-
-```bash
-# Or use the optional shell helper to collect inputs in the terminal first:
-./src/ingest.sh
-```
 
 ### What you'll be asked
 

@@ -4,7 +4,6 @@
 
 ## Checklist
 
-- [ ] `AGENTS.md` updated if agent behaviour changed
 - [ ] `README.md` updated if structure or usage changed
-- [ ] `.agent/settings.yaml` updated if paths or rules changed
-- [ ] No changes made inside `a-sdlc/` (contribute those upstream)
+- [ ] `prompt.md` and `prompt-semanticode.md` kept in sync
+- [ ] Health roles: crisis line numbers verified for target region

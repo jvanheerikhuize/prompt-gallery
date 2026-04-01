@@ -36,7 +36,7 @@ Spotted something unclear, outdated, or missing? Documentation PRs are just as v
 
 ## Adding a new role
 
-The process for adding a role is defined in [`src/ingest.yaml`](src/ingest.yaml) and is designed to be run with an AI coding agent (Claude Code, Cursor, Copilot, etc.). Role file templates live in [`src/templates/`](src/templates/) — the agent uses these as a structural baseline and fills in the placeholders.
+The process for adding a role is defined in [`src/ingest.md`](src/ingest.md) and is designed to be run with an AI coding agent (Claude Code, Cursor, Copilot, etc.). Role file templates live in [`src/templates/`](src/templates/) — the agent uses these as a structural baseline and fills in the placeholders.
 
 **Step 1 — Open an issue first**
 
@@ -50,15 +50,7 @@ Early feedback saves rework later.
 
 **Step 2 — Fork and run ingestion**
 
-Once the concept is aligned, fork the repo and run:
-
-```bash
-./src/ingest.sh
-```
-
-This launches a guided session with Claude Code. The agent reads `ingest.yaml`, walks you through each step, and pauses at the two human gates (COLLECT and REVIEW) for your input. It produces all required files: `prompt.md`, `prompt-semanticode.md`, `README.md`, and the `index.yaml` entry.
-
-If you prefer a different agent (Cursor, Copilot, etc.), run `./src/ingest.sh --dry-run` to print the prompt and paste it manually.
+Once the concept is aligned, fork the repo and paste the contents of [`src/ingest.md`](src/ingest.md) into any AI coding agent. The agent walks you through each step and pauses at the two human gates (COLLECT and REVIEW) for your input. It produces all required files: `prompt.md`, `prompt-semanticode.md`, `README.md`, and the `index.yaml` entry.
 
 **Step 3 — Open a pull request**
 
@@ -74,7 +66,7 @@ Submit your PR against `main`. Fill in the template with:
 - **One concern per PR** — a new role, a prompt fix, or a docs update. Not all three at once.
 - **Test your prompt** — paste it into at least one LLM and verify it behaves as intended before submitting.
 - **Keep `prompt.md` and `prompt-semanticode.md` in sync** — if you change the canonical prompt, update the SemantiCode variant too.
-- **No SCRIBE_META blocks** — do not add metadata sections to prompt files. See [`src/ingest.yaml`](src/ingest.yaml) validation rules V-13 through V-16.
+- **No SCRIBE_META blocks** — do not add metadata sections to prompt files. See [`src/ingest.md`](src/ingest.md) validation rules V-13 through V-16.
 - **Health and sensitive roles** — if your role touches mental health, crisis risk, minors, or GDPR Art. 9 data, follow the safety notes pattern in existing health roles.
 
 ---

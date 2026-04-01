@@ -8,23 +8,8 @@ Thumbs.db
 *.swp
 *.swo
 
-# Python (for a-sdlc scripts)
-__pycache__/
-*.pyc
-*.pyo
-.venv/
-venv/
-
 # Secrets — never commit
 *.env
 .env*
 secrets/
 credentials/
-
-# Ingestion session data
-.ingest-session.yaml
-
-# Build artifacts
-dist/
-build/
-*.egg-info/

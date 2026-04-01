@@ -281,8 +281,3 @@ Push to remote.
   Follow its structure exactly.
 - Read at least 2 existing roles in the same category for tone and structure
   reference before writing.
-- If the user provides a `.ingest-session.yaml` file (from `src/ingest.sh`),
-  skip Step 0 — all inputs are already collected. Start at Step 1.
-- The shell script `src/ingest.sh` is an optional convenience for collecting
-  inputs in a terminal. It produces `.ingest-session.yaml` and hands off to
-  this process at Step 1.
