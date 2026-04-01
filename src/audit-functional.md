@@ -4,7 +4,10 @@
 > (Claude Code, Cursor, Copilot) at the repo root. The agent will run the
 > full functional audit loop and produce all required outputs.
 >
-> **Companion to:** `src/audit.md` (non-functional / standards audit)
+> **Part of the audit triad:**
+> - `src/audit.md` — Standards audit (non-functional: structure, security, compliance)
+> - `src/audit-functional.md` — **Functional audit** (does it work as designed)
+> - `src/audit-content.md` — Content audit (is the content good)
 
 ---
 
@@ -22,7 +25,59 @@ Execute the following steps in order. Do not skip any step.
 
 ---
 
-### Step 0: READ — load the repo state
+### Step 0: DISCOVER — update the source registry
+
+Read `audits/sources-functional.yaml`. This is the living registry of
+authoritative sources used to evaluate functional readiness.
+
+#### 0a. Verify existing sources
+
+For each source in the registry:
+
+1. Fetch the URL and confirm it returns HTTP 200.
+2. Check if the content has been updated since `last_verified` (look for
+   version numbers, dates, changelogs).
+3. Confirm the source still covers the topics it's tagged with.
+
+If a URL is dead or redirected:
+- Update the URL if the content moved to a new location.
+- Set `tier: archived` if the content is gone. Add `retired` (today's date)
+  and `reason` fields.
+
+Update `last_verified` to today for every source that passes verification.
+
+#### 0b. Search for new authorities
+
+Run these web searches and evaluate results for new sources:
+
+```
+"conversational AI" state management design patterns {current year}
+LLM "multi-turn" dialogue flow session management {current year}
+AI mental health crisis detection chatbot safety {current year}
+prompt compression semantic preservation fidelity {current year}
+safeguarding minors AI chatbot guidelines {current year}
+"few-shot examples" evaluation coverage LLM {current year}
+```
+
+A candidate qualifies as a new source if it meets ALL of:
+- **Authoritative** — published by a major AI lab, safety org, health org,
+  regulatory body, or recognised academic institution.
+- **Specific** — contains concrete, actionable guidance for functional
+  prompt design (session flows, state, crisis, compression, etc.).
+- **Recent** — published or substantively updated within the last 12 months.
+- **Novel** — covers a topic or angle not already represented in the registry.
+
+Add qualifying sources to `audits/sources-functional.yaml`.
+
+#### 0c. Check for new audit topics
+
+If a new or existing source introduces guidance on a topic not in the audit
+checklist below, add the topic. The checklist is not fixed — it grows with
+the field.
+
+---
+
+### Step 0b: READ — load the repo state
 
 Read:
 - `src/templates/prompt.md` (base template — defines the structural contract)
@@ -96,6 +151,20 @@ Create or update the file `audits/log-functional.md` with:
 
 ---
 
+### Step 2b: REPORT — update README
+
+Update the Functional Audit section in `README.md`:
+
+1. Update the **date** and pass rate in the blockquote header.
+2. Update the **Topic-by-topic assessment** table with the pass/warn/fail
+   summary for each functional topic, including citation numbers matching
+   the References table.
+3. Update the **Open findings** table — remove findings that have been
+   resolved, add new ones with spec links.
+4. Update the **References** table to match `audits/sources-functional.yaml`.
+
+---
+
 ### Step 3: SPEC — generate improvement specs for failures
 
 For each **fail** finding (not warns — those are tracked but not blocking):
@@ -114,6 +183,7 @@ If there are no fails, skip this step.
 ### Step 4: Summary
 
 Print a concise summary of:
+- Source registry changes (added/retired/updated sources)
 - Overall functional readiness (pass rate, critical gaps)
 - Roles with the most issues
 - Specs created (if any)

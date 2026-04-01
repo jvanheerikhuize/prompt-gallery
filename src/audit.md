@@ -3,6 +3,11 @@
 > **Usage:** Copy this file's content and paste it into an AI coding agent
 > (Claude Code, Cursor, Copilot) at the repo root. The agent will run the
 > full audit loop and produce all required outputs.
+>
+> **Part of the audit triad:**
+> - `src/audit.md` — **Standards audit** (non-functional: structure, security, compliance)
+> - `src/audit-functional.md` — Functional audit (does it work as designed)
+> - `src/audit-content.md` — Content audit (is the content good)
 
 ---
 

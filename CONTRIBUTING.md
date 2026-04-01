@@ -71,33 +71,37 @@ Submit your PR against `main`. Fill in the template with:
 
 ---
 
-## Industry standards audit (RSI loop)
+## Audit triad
 
-This repo is continuously evaluated against published prompt engineering
-standards from Anthropic, OpenAI, Google, and OWASP using a Recursive
-Self-Improvement (RSI) process.
+This repo is continuously evaluated through three independent audit layers, each with its own scope and checklist. All audits follow the same pattern: read prompts, evaluate against a checklist, produce a scorecard, and generate specs for failures.
 
 **Cadence:** quarterly (January, April, July, October).
+
+| Layer | File | What it evaluates |
+|-------|------|-------------------|
+| **Standards** | [`src/audit.md`](src/audit.md) | Structure, security, compliance against Anthropic/OpenAI/Google/OWASP guidance |
+| **Functional** | [`src/audit-functional.md`](src/audit-functional.md) | Workflow mechanics — session flows, state coverage, template mapping, command handling |
+| **Content** | [`src/audit-content.md`](src/audit-content.md) | Domain accuracy, persona coherence, example realism, tone calibration, evidence base |
 
 **How to run an audit:**
 
 1. Open an AI coding agent at the repo root.
-2. Paste the contents of the audit prompt you want to run:
-   - [`src/audit.md`](src/audit.md) — standards and security compliance
-   - [`src/audit-functional.md`](src/audit-functional.md) — functional readiness
-3. The agent runs the full loop: audit prompts, update the scorecard,
-   generate specs for any gaps.
+2. Paste the contents of the audit prompt you want to run.
+3. The agent runs the full loop: evaluate prompts, update the scorecard, generate specs for any gaps.
 
-**What it produces:**
+**What each audit produces:**
 
-- Updated source registry (`audits/sources.yaml`)
-- Updated README scorecard with behind/spot-on/ahead per topic
-- New specs in `specs/` for anything that falls behind
-- An entry in `audits/log.md` tracking improvement over time
+- A scorecard entry in its respective log file (`audits/log.md`, `audits/log-functional.md`, or `audits/log-content.md`)
+- New specs in `specs/` for any failures found
+- Updated source registry and README references (topic-by-topic assessment, open findings, references table)
 
-The source registry is a living document — new authorities are discovered
-and added during every audit cycle. See [`audits/sources.yaml`](audits/sources.yaml)
-for the current list.
+Each audit has its own living source registry — new authorities are discovered and added during every audit cycle:
+
+| Audit | Source registry | Sources |
+|-------|---------------|---------|
+| Standards | [`audits/sources.yaml`](audits/sources.yaml) | Anthropic, OpenAI, Google, OWASP, NIST, Lakera, CSA |
+| Functional | [`audits/sources-functional.yaml`](audits/sources-functional.yaml) | ACM, OpenAI Model Spec, APA, Brown, Microsoft, California SB 243 |
+| Content | [`audits/sources-content.yaml`](audits/sources-content.yaml) | SAMHSA, Gottman, ICEEFT, JMIR, EU AI Act, IASP, Find A Helpline |
 
 ---
 

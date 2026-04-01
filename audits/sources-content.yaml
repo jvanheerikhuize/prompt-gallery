@@ -1,0 +1,138 @@
+# audits/sources-content.yaml — Source Registry for Content Quality Audit
+# This file is updated during Step 0 (DISCOVER) of every content audit cycle.
+#
+# Schema:
+#   id:            unique slug identifier
+#   name:          human-readable source name
+#   url:           canonical URL to check
+#   tier:          primary | secondary | archived
+#   topics:        list of content checklist topics this source covers
+#   added:         date the source was added to the registry (YYYY-MM-DD)
+#   last_verified: date the URL and content were last confirmed current (YYYY-MM-DD)
+#   retired:       (optional) date the source was archived (YYYY-MM-DD)
+#   reason:        (optional) why the source was archived
+
+sources:
+  # ──── Tier 1: Primary — check every audit ────────────────────────────
+
+  - id: samhsa-trauma-informed-care
+    name: "SAMHSA — Concept of Trauma and Guidance for a Trauma-Informed Approach"
+    url: "https://library.samhsa.gov/product/samhsas-concept-trauma-and-guidance-trauma-informed-approach/sma14-4884"
+    tier: primary
+    topics: [domain-accuracy, technique-evidence-base]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: gottman-effectiveness-research
+    name: "Gottman Institute — Effectiveness of Gottman Method Research"
+    url: "https://www.gottman.com/about/research/effectiveness-of-gottman-method/"
+    tier: primary
+    topics: [domain-accuracy, technique-evidence-base]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: iceeft-eft-research
+    name: "ICEEFT — Emotionally Focused Therapy Research"
+    url: "https://iceeft.com/eft-research-3/"
+    tier: primary
+    topics: [domain-accuracy, technique-evidence-base]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: jmir-ai-motivational-interviewing
+    name: "JMIR — Scoping Review of AI Systems Delivering Motivational Interviewing"
+    url: "https://www.jmir.org/2025/1/e78417"
+    tier: primary
+    topics: [domain-accuracy, technique-evidence-base, tone-calibration]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: eu-ai-act-timeline
+    name: "EU AI Act — Implementation Timeline"
+    url: "https://artificialintelligenceact.eu/implementation-timeline/"
+    tier: primary
+    topics: [domain-accuracy, staleness-risk]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: findahelpline
+    name: "Find A Helpline — International Crisis Hotline Directory"
+    url: "https://findahelpline.com/"
+    tier: primary
+    topics: [crisis-resource-currency]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: iasp-crisis-centres
+    name: "IASP — International Association for Suicide Prevention Crisis Centres"
+    url: "https://www.iasp.info/crisis-centres-helplines/"
+    tier: primary
+    topics: [crisis-resource-currency]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: culturally-responsive-ai-chatbots
+    name: "ScienceDirect — Culturally Responsive AI Chatbots: Framework to Field Evidence"
+    url: "https://www.sciencedirect.com/science/article/pii/S2949882125001082"
+    tier: primary
+    topics: [cultural-sensitivity, persona-coherence]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: apa-health-advisory-content
+    name: "APA — Health Advisory: AI Chatbots and Wellness Apps for Mental Health"
+    url: "https://www.apa.org/topics/artificial-intelligence-machine-learning/health-advisory-chatbots-wellness-apps"
+    tier: primary
+    topics: [tone-calibration, domain-accuracy, crisis-resource-currency]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  # ──── Tier 2: Secondary — check for new publications ─────────────────
+
+  - id: frontiers-socratic-ai
+    name: "Frontiers — Socratic Wisdom in the Age of AI"
+    url: "https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2025.1528603/full"
+    tier: secondary
+    topics: [technique-evidence-base, domain-accuracy]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: arxiv-socraticai-tutoring
+    name: "SocraticAI — Transforming LLMs into Guided CS Tutors"
+    url: "https://arxiv.org/abs/2512.03501"
+    tier: secondary
+    topics: [technique-evidence-base, instructional-clarity]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: emily-short-writing-if
+    name: "Emily Short — Writing Interactive Fiction"
+    url: "https://emshort.blog/how-to-play/writing-if/"
+    tier: secondary
+    topics: [domain-accuracy, competitive-value]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: gamedeveloper-writing-if
+    name: "Gamedeveloper — Writing Interactive Fiction in Six Steps"
+    url: "https://www.gamedeveloper.com/design/writing-interactive-fiction-in-six-steps"
+    tier: secondary
+    topics: [domain-accuracy, example-realism]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: uxmatters-cultural-diversity
+    name: "UXmatters — Designing AI for Cultural Diversity"
+    url: "https://www.uxmatters.com/mt/archives/2025/04/designing-ai-for-cultural-diversity.php"
+    tier: secondary
+    topics: [cultural-sensitivity, target-user-fit]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: openai-model-spec-content
+    name: "OpenAI — Model Spec (2025)"
+    url: "https://model-spec.openai.com/2025-12-18.html"
+    tier: secondary
+    topics: [tone-calibration, instructional-clarity]
+    added: 2026-04-01
+    last_verified: 2026-04-01

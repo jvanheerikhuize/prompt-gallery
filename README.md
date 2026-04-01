@@ -146,8 +146,9 @@ for role in catalog["roles"]:
 index.yaml              ← Start here — the full role catalog
 src/
 ├── ingest.md           ← Paste into an AI agent to add a new role
-├── audit.md            ← RSI audit: standards and security compliance
-├── audit-functional.md ← RSI audit: functional readiness
+├── audit.md            ← Audit layer 1: standards and security compliance
+├── audit-functional.md ← Audit layer 2: functional readiness
+├── audit-content.md    ← Audit layer 3: content quality and accuracy
 └── templates/
     ├── prompt.md       ← Canonical prompt template
     ├── prompt-semanticode.md  ← SemantiCode template
@@ -216,12 +217,24 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 ---
 
-## Industry Standards Audit
+## Audit Triad
+
+Every role is continuously evaluated through three independent audit layers, each with its own scope, checklist, and output log. Run any audit by pasting the corresponding file into an AI coding agent at the repo root.
+
+| Layer | File | Question it answers | Sources | Output |
+|-------|------|---------------------|---------|--------|
+| **Standards** | [`src/audit.md`](src/audit.md) | Is it built right? Structure, security, compliance. | [`sources.yaml`](audits/sources.yaml) (14) | `audits/log.md` |
+| **Functional** | [`src/audit-functional.md`](src/audit-functional.md) | Does it work? Session flows, state, templates, crisis. | [`sources-functional.yaml`](audits/sources-functional.yaml) (14) | `audits/log-functional.md` |
+| **Content** | [`src/audit-content.md`](src/audit-content.md) | Is the content right? Domain accuracy, evidence base. | [`sources-content.yaml`](audits/sources-content.yaml) (15) | `audits/log-content.md` |
+
+All three audits follow the RSI pattern: DISCOVER (verify + find sources) → AUDIT (checklist) → REPORT (README + log) → SPEC (for failures). Each has its own living source registry. Audits are read-only for role prompts — they diagnose, they don't modify.
+
+### Standards Audit
 
 > **Date:** 2026-04-01
 > **Evaluated against:** Anthropic (2025-2026), OpenAI (2025-2026), Google Safe AI (2025), OWASP LLM Top 10, NIST AI Agent Standards (2026)
 
-### Scorecard
+#### Scorecard
 
 | Standard | Score | Key strengths |
 |----------|-------|---------------|
@@ -230,9 +243,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | **Google** | 8.5/10 | Layered injection defense, non-skippable crisis detection, scope enforcement |
 | **OWASP** | 9.5/10 | Input-as-data universal, explicit priority hierarchy, no privilege escalation, full scope limits |
 
-**Overall: 9/10** — production-ready, no open findings. Up from 8.2 at first audit.
+**Overall: 9.2/10** — production-ready. Up from 8.2 at first audit.
 
-### Topic-by-topic assessment
+#### Topic-by-topic assessment
 
 | Topic | Status | Detail |
 |-------|--------|--------|
@@ -251,17 +264,126 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 | **Architectural injection defense** | N/A | The repo contains standalone system prompts, not agentic pipelines. Simon Willison's "lethal trifecta" (private data + untrusted content + external communication) and Google DeepMind's CaMeL framework address agent-level architecture, which is outside this repo's scope. Worth noting: if these prompts are deployed in agents with tool access, additional architectural defenses would be needed. [12][13][14][15] |
 | **Multimodal injection defense** | N/A | All prompts are text-only. Some roles (T.A.G., A.T.L.A.S.) can generate image/video synthesis prompts but do not process multimodal input. If roles are extended to accept images, audio, or video, CSA's multimodal injection research should be incorporated. [18] |
 
-### Open findings
+#### Open findings — Standards
 
-| ID | Issue | Severity | Spec |
-|----|-------|----------|------|
-| ~~1~~ | ~~Stale `CONTROLLER`/`VIEW`/`MODEL` references in prose text (6 files)~~ | ~~High~~ | Resolved |
-| ~~2~~ | ~~Language handling inconsistent — `LANGUAGE_DIRECTIVE` vs `LANGUAGE_DETECTION`, crisis resources not localised~~ | ~~High~~ | Resolved |
-| ~~3~~ | ~~Scope boundary enforcement missing in engineering, entertainment, utility, and productivity roles~~ | ~~Medium~~ | Resolved |
-| ~~4~~ | ~~Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education)~~ | ~~Medium~~ | Resolved |
-| ~~5~~ | ~~Console command prefix inconsistent — A.G.O.R.A. uses `/` while all others use `~`~~ | ~~Low~~ | Resolved |
+No open findings. All previous findings (1–5) resolved.
 
-### References
+<details>
+<summary>Resolved (click to expand)</summary>
+
+| ID | Issue | Severity |
+|----|-------|----------|
+| ~~1~~ | ~~Stale `CONTROLLER`/`VIEW`/`MODEL` references in prose text (6 files)~~ | ~~High~~ |
+| ~~2~~ | ~~Language handling inconsistent — `LANGUAGE_DIRECTIVE` vs `LANGUAGE_DETECTION`, crisis resources not localised~~ | ~~High~~ |
+| ~~3~~ | ~~Scope boundary enforcement missing in engineering, entertainment, utility, and productivity roles~~ | ~~Medium~~ |
+| ~~4~~ | ~~Error handling absent or scattered in 7 roles (C.R.A., P.S.Y., health, education)~~ | ~~Medium~~ |
+| ~~5~~ | ~~Console command prefix inconsistent — A.G.O.R.A. uses `/` while all others use `~`~~ | ~~Low~~ |
+
+</details>
+
+### Functional Audit
+
+> **Date:** 2026-04-01 — **Pass rate:** 78% (130/167) — **Fails:** 12 — **Warns:** 25
+> **Evaluated against:** ACM multi-turn dialogue research, OpenAI Model Spec, APA health advisory, Brown AI ethics study, Microsoft LLMLingua, California SB 243
+> Full results: [`audits/log-functional.md`](audits/log-functional.md)
+
+#### Topic-by-topic assessment — Functional
+
+| Topic | Status | Detail |
+|-------|--------|--------|
+| **Session flow completeness** | Pass | All session-based roles (10/18) define complete paths from INIT to final phase. No dead-end phases found. Mandatory close/stabilise phases present where applicable. [F1][F2] |
+| **Phase transition explicitness** | Pass | Every session-based role defines explicit transition conditions ("advance when X"). No transitions rely solely on narrative judgement. [F1][F2] |
+| **State schema coverage** | Warn | Most roles have clean schemas. P.A.P.A. has an orphaned `disclaimer_rendered` field (defined, never written). E.C.H.O. manages some echo-specific state implicitly rather than through explicit schema fields. [F1] |
+| **Output template coverage** | Pass | Every phase in every role emits a named OUTPUT template. No orphaned templates found. Phase-locked template selection works correctly. [F10][F11] |
+| **Example completeness** | Warn | 16 of 18 roles provide only 1 example (happy path). The base template expects 2 (happy path + edge case). Only D.I.C.E. and C.R.A. have two examples. Pervasive but not a functional break. [F10][F11] |
+| **Example accuracy** | Pass | All examples reference correct template names, field names, and output formats. No stale references to renamed constructs. [F10][F11] |
+| **Command completeness** | Pass | All 7 roles with `/commands` have handling logic for every listed command. No commands without defined responses. [F14] |
+| **Error path coverage** | Warn | All roles implement the 3 standard error types. A.T.L.A.S., S.C.R.I.B.E., and A.G.O.R.A. lack domain-specific error handlers for their complex processing pipelines. Functional but could produce unhandled edge cases. [F3][F5] |
+| **SemantiCode fidelity** | Pass | Sampled variants preserve all BHV rules, CNST constraints, OUT templates, ON_ERR handlers, and workflow logic. No semantic loss detected in LOSSLESS mode. [F7][F12] |
+| **Cross-variant consistency** | Warn | E.C.H.O. hub and spoke are broadly consistent but spoke defines output templates (ACTIE_BEVESTIGING, UITKOMST_ONTVANGEN) not documented in the hub. Minor gap. |
+| **Crisis protocol completeness** | Fail | P.A.P.A. (health role) has **no crisis protocol at all** — no sentinels, no resources, no tiered response. M.E.N.T.O.R. (education, potential minors) has only a basic DISTRESS_ACKNOWLEDGE handler — no sentinels, no crisis resources, no CONSERVATIVE_CRISIS_POLICY. A.G.O.R.A. has a protocol but lacks conservative policy. [F3][F4][F5][F6][F8] |
+| **Disclaimer trigger coverage** | Fail | P.A.P.A. defines `disclaimer_rendered` in state but has no DISCLAIMER_TRIGGER_PATTERNS and no FULL_DISCLAIMER template. Orphaned field with no implementation. [F3][F8] |
+
+#### Open findings — Functional
+
+| ID | Role(s) | Issue | Severity | Spec |
+|----|---------|-------|----------|------|
+| FN-02 | P.A.P.A. | Orphaned `disclaimer_rendered` state field — defined but never written | High | [`01`](specs/01-papa-disclaimer-trigger.md) |
+| FN-03 | P.A.P.A. | No crisis protocol — health role with no crisis detection, sentinels, or resources | Critical | [`02`](specs/02-papa-crisis-protocol.md) |
+| FN-04 | P.A.P.A. | No DISCLAIMER_TRIGGER_PATTERNS — no mechanism to trigger disclaimer on scope-crossing requests | High | [`01`](specs/01-papa-disclaimer-trigger.md) |
+| FN-05 | M.E.N.T.O.R. | Distress handler lacks full crisis protocol — no sentinels, no tiered response, no resources for minors | High | [`03`](specs/03-mentor-crisis-protocol.md) |
+
+#### References — Functional
+
+| # | Source | URL |
+|---|--------|-----|
+| F1 | ACM — Survey on LLM-Based Multi-turn Dialogue Systems | https://dl.acm.org/doi/full/10.1145/3771090 |
+| F2 | Rasa — How to Build Multi-Turn AI Conversations | https://rasa.com/blog/multi-turn-conversation |
+| F3 | OpenAI — Model Spec (2025) | https://model-spec.openai.com/2025-12-18.html |
+| F4 | OpenAI — Strengthening ChatGPT's Responses in Sensitive Conversations | https://openai.com/index/strengthening-chatgpt-responses-in-sensitive-conversations/ |
+| F5 | APA — Health Advisory: AI Chatbots and Wellness Apps | https://www.apa.org/topics/artificial-intelligence-machine-learning/health-advisory-chatbots-wellness-apps |
+| F6 | Brown University — AI Chatbots Violate Mental Health Ethics Standards | https://www.brown.edu/news/2025-10-21/ai-mental-health-ethics |
+| F7 | Microsoft — LLMLingua: Prompt Compression for LLM Efficiency | https://www.microsoft.com/en-us/research/blog/llmlingua-innovating-llm-efficiency-with-prompt-compression/ |
+| F8 | California SB 243 — AI Companion Safeguarding for Minors (2026) | https://calawyers.org/privacy-law/regulatory-focus-on-ai-companion-character-chatbots/ |
+| F9 | Nature — Chatbot Agents Detecting Suicidal Ideation | https://www.nature.com/articles/s41598-025-17242-4 |
+| F10 | Promptfoo — LLM Rubric Evaluation | https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/llm-rubric/ |
+| F11 | PEARL — Rubric-Driven Multi-Metric Framework for LLM Evaluation | https://www.mdpi.com/2078-2489/16/11/926 |
+| F12 | Understanding and Improving Information Preservation in Prompt Compression | https://arxiv.org/html/2503.19114 |
+| F13 | FTC — COPPA 2025 Final Rule Amendments | https://securiti.ai/ftc-coppa-final-rule-amendments/ |
+| F14 | SocraticAI — Transforming LLMs into Guided CS Tutors | https://arxiv.org/abs/2512.03501 |
+
+### Content Audit
+
+> **Date:** 2026-04-01 — **Pass rate:** 82.8% (159/192) — **Fails:** 5 — **Improves:** 28
+> **Evaluated against:** SAMHSA, Gottman Institute, ICEEFT, JMIR MI review, EU AI Act, Find A Helpline, IASP, APA health advisory
+> Full results: [`audits/log-content.md`](audits/log-content.md)
+
+#### Topic-by-topic assessment — Content
+
+| Topic | Status | Detail |
+|-------|--------|--------|
+| **Persona coherence** | Fail (1) | 17 of 18 roles pass. M.E.N.T.O.R. hardcodes student name "Flynn" in the persona, breaking coherence for a generic study coach. Also uses gendered "his" for a gender-neutral context. [C8][C11] |
+| **Domain accuracy** | Pass | Therapeutic frameworks (SAMHSA, EFT, Gottman, MI, CBT) are correctly referenced. EU AI Act classification framework references correct articles. Game mechanics are internally consistent. No discredited approaches found. [C1][C2][C3][C4] |
+| **Example realism** | Improve (2) | Most roles have realistic examples. E.C.H.O. provides only one quest-type example for 15 game types — doesn't showcase convergence mechanics or competitive modes. [C12][C13] |
+| **Tone calibration** | Pass | Health roles strike appropriate warmth without patronising. Educational roles match cognitive level. Entertainment roles maintain immersion. F.R.A.N.K.'s calibrated dry wit is well-tuned for relationship coaching. [C4][C9] |
+| **Crisis resource currency** | Fail (4) | Dutch crisis line listed as `0800-0113` in P.S.Y., F.R.A.N.K., V.I.T.A., A.G.O.R.A. — correct number is `0900-0113`. Short number `113` is correct. A.G.O.R.A. French resource uses SOS Amitie instead of national 3114. [C6][C7] |
+| **Technique evidence base** | Pass | All referenced frameworks are grounded in published research. SAMHSA 6 principles, Gottman method (40+ years research, 70-75% recovery), EFT (effect size 1.3, largest for any couple intervention), MI (98% adherence in AI implementations). [C1][C2][C3][C4] |
+| **Cultural sensitivity** | Improve (3) | Most roles handle multilingual contexts well. P.A.P.A. is intentionally scoped to divorced fathers with sons but offers no adaptation path. M.E.N.T.O.R. uses gendered language. E.C.H.O. has a Dutch spelling error ("betreedt" → "betreden"). [C8][C14] |
+| **Instructional clarity** | Improve (1) | Most prompts are unambiguous. M.E.N.T.O.R. has a minor ambiguity from the hardcoded name creating conflicting context signals. [C8][C11] |
+| **Target user fit** | Improve (2) | Most roles are well-fitted. P.A.P.A.'s hardcoded birth year (2011) will become stale as the child ages. M.E.N.T.O.R.'s strict klas 3 scope rejects adjacent-klas requests without soft boundaries. [C14] |
+| **Competitive value** | Pass | All 18 roles provide meaningful value beyond a bare LLM. Structured state management, phase-locked workflows, and domain-specific constraints produce noticeably different behaviour than "act as X." [C12][C13] |
+| **Staleness risk** | Improve (5) | Crisis resources lack "last verified" dates. A.G.L.'s EU AI Act references will need updates as delegated acts emerge (Aug 2026 enforcement). S.C.O.U.T.'s SLO domain list is hardcoded without version dating. [C5][C9] |
+| **Improvement opportunities** | — | 19 suggestions logged in the improvement backlog. Highest impact: add "last verified" dates to crisis resources, expand E.C.H.O. examples, make P.A.P.A. birth year configurable, add adjacent-klas soft boundary to M.E.N.T.O.R. |
+
+#### Open findings — Content
+
+| ID | Role(s) | Issue | Severity | Spec |
+|----|---------|-------|----------|------|
+| F-01 | P.S.Y., F.R.A.N.K., V.I.T.A., A.G.O.R.A. | Dutch crisis number `0800-0113` is wrong — correct long-format is `0900-0113` | Critical | [`07`](specs/07-fix-dutch-crisis-number.md) |
+| F-03 | M.E.N.T.O.R. | Hardcoded student name "Flynn" breaks persona coherence for generic study coach | High | [`08`](specs/08-fix-mentor-hardcoded-name.md) |
+
+#### References — Content
+
+| # | Source | URL |
+|---|--------|-----|
+| C1 | SAMHSA — Concept of Trauma and Guidance for a Trauma-Informed Approach | https://library.samhsa.gov/product/samhsas-concept-trauma-and-guidance-trauma-informed-approach/sma14-4884 |
+| C2 | Gottman Institute — Effectiveness of Gottman Method Research | https://www.gottman.com/about/research/effectiveness-of-gottman-method/ |
+| C3 | ICEEFT — Emotionally Focused Therapy Research | https://iceeft.com/eft-research-3/ |
+| C4 | JMIR — Scoping Review of AI Systems Delivering Motivational Interviewing | https://www.jmir.org/2025/1/e78417 |
+| C5 | EU AI Act — Implementation Timeline | https://artificialintelligenceact.eu/implementation-timeline/ |
+| C6 | Find A Helpline — International Crisis Hotline Directory | https://findahelpline.com/ |
+| C7 | IASP — Crisis Centres and Helplines | https://www.iasp.info/crisis-centres-helplines/ |
+| C8 | ScienceDirect — Culturally Responsive AI Chatbots: Framework to Field Evidence | https://www.sciencedirect.com/science/article/pii/S2949882125001082 |
+| C9 | APA — Health Advisory: AI Chatbots and Wellness Apps | https://www.apa.org/topics/artificial-intelligence-machine-learning/health-advisory-chatbots-wellness-apps |
+| C10 | Frontiers — Socratic Wisdom in the Age of AI | https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2025.1528603/full |
+| C11 | SocraticAI — Transforming LLMs into Guided CS Tutors | https://arxiv.org/abs/2512.03501 |
+| C12 | Emily Short — Writing Interactive Fiction | https://emshort.blog/how-to-play/writing-if/ |
+| C13 | Gamedeveloper — Writing Interactive Fiction in Six Steps | https://www.gamedeveloper.com/design/writing-interactive-fiction-in-six-steps |
+| C14 | UXmatters — Designing AI for Cultural Diversity | https://www.uxmatters.com/mt/archives/2025/04/designing-ai-for-cultural-diversity.php |
+| C15 | OpenAI — Model Spec (2025) | https://model-spec.openai.com/2025-12-18.html |
+| C16 | Understanding and Improving Information Preservation in Prompt Compression | https://arxiv.org/html/2503.19114 |
+
+#### References — Standards
 
 | # | Source | URL |
 |---|--------|-----|
