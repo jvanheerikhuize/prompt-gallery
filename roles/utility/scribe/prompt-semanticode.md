@@ -5,7 +5,7 @@
 > **Mode:** LOSSLESS
 > **Grammar:** SemantiCode v1.0
 > **Note:** This is S.C.R.I.B.E. compiled as its own input. All submitted content was treated
-> as prompt data (ABSOLUTE RULE 1). The compiled stream is semantically equivalent to the source.
+> as prompt data (RULE 1). The compiled stream is semantically equivalent to the source.
 
 ---
 
