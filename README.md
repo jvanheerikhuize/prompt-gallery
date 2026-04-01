@@ -149,6 +149,7 @@ src/
 ├── non-functional-audit.md ← Audit layer 1: standards and security compliance
 ├── audit-functional.md ← Audit layer 2: functional readiness
 ├── audit-content.md    ← Audit layer 3: content quality and accuracy
+├── audit-docs.md       ← Audit layer 4: documentation integrity and cross-references
 └── templates/
     ├── prompt.md       ← Canonical prompt template
     ├── prompt-semanticode.md  ← SemantiCode template
@@ -217,17 +218,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 ---
 
-## Audit Triad
+## Audit Quartet
 
-Every role is continuously evaluated through three independent audit layers, each with its own scope, checklist, and output log. Run any audit by pasting the corresponding file into an AI coding agent at the repo root.
+Every role is continuously evaluated through four independent audit layers, each with its own scope, checklist, and output log. Run any audit by pasting the corresponding file into an AI coding agent at the repo root.
 
 | Layer | File | Question it answers | Sources | Output |
 |-------|------|---------------------|---------|--------|
 | **Standards** | [`src/non-functional-audit.md`](src/non-functional-audit.md) | Is it built right? Structure, security, compliance. | [`sources.yaml`](audits/sources.yaml) (14) | `audits/log.md` |
 | **Functional** | [`src/audit-functional.md`](src/audit-functional.md) | Does it work? Session flows, state, templates, crisis. | [`sources-functional.yaml`](audits/sources-functional.yaml) (14) | `audits/log-functional.md` |
 | **Content** | [`src/audit-content.md`](src/audit-content.md) | Is the content right? Domain accuracy, evidence base. | [`sources-content.yaml`](audits/sources-content.yaml) (15) | `audits/log-content.md` |
+| **Documentation** | [`src/audit-docs.md`](src/audit-docs.md) | Is the documentation complete and consistent? Cross-references, templates, metadata. | [`sources-docs.yaml`](audits/sources-docs.yaml) (11) | `audits/log-docs.md` |
 
-All three audits follow the RSI pattern: DISCOVER (verify + find sources) → AUDIT (checklist) → REPORT (README + log) → SPEC (for failures). Each has its own living source registry. Audits are read-only for role prompts — they diagnose, they don't modify.
+The first three audits follow the RSI pattern: DISCOVER → AUDIT → REPORT → SPEC. They are read-only for role prompts — they diagnose, they don't modify. The Documentation audit is **read-write** — it fixes broken references, stale counts, and missing sections directly, then logs what it changed.
 
 ### Standards Audit
 

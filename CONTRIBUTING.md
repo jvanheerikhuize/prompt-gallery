@@ -73,7 +73,7 @@ Submit your PR against `main`. Fill in the template with:
 
 ## Audit triad
 
-This repo is continuously evaluated through three independent audit layers, each with its own scope and checklist. All audits follow the same pattern: read prompts, evaluate against a checklist, produce a scorecard, and generate specs for failures.
+This repo is continuously evaluated through four independent audit layers, each with its own scope and checklist. The first three follow the RSI pattern (read-only for prompts); the fourth is read-write for documentation.
 
 **Cadence:** quarterly (January, April, July, October).
 
@@ -82,6 +82,7 @@ This repo is continuously evaluated through three independent audit layers, each
 | **Standards** | [`src/non-functional-audit.md`](src/non-functional-audit.md) | Structure, security, compliance against Anthropic/OpenAI/Google/OWASP guidance |
 | **Functional** | [`src/audit-functional.md`](src/audit-functional.md) | Workflow mechanics — session flows, state coverage, template mapping, command handling |
 | **Content** | [`src/audit-content.md`](src/audit-content.md) | Domain accuracy, persona coherence, example realism, tone calibration, evidence base |
+| **Documentation** | [`src/audit-docs.md`](src/audit-docs.md) | Cross-reference integrity, template conformance, metadata completeness, documentation quality |
 
 **How to run an audit:**
 

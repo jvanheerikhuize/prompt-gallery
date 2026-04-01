@@ -4,10 +4,11 @@
 > (Claude Code, Cursor, Copilot) at the repo root. The agent will run the
 > full audit loop and produce all required outputs.
 >
-> **Part of the audit triad:**
+> **Part of the audit quartet:**
 > - `src/non-functional-audit.md` — **Standards audit** (non-functional: structure, security, compliance)
 > - `src/audit-functional.md` — Functional audit (does it work as designed)
 > - `src/audit-content.md` — Content audit (is the content good)
+> - `src/audit-docs.md` — Documentation audit (is the documentation complete, consistent, and correct)
 
 ---
 
