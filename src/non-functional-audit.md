@@ -5,7 +5,7 @@
 > full audit loop and produce all required outputs.
 >
 > **Part of the audit triad:**
-> - `src/audit.md` — **Standards audit** (non-functional: structure, security, compliance)
+> - `src/non-functional-audit.md` — **Standards audit** (non-functional: structure, security, compliance)
 > - `src/audit-functional.md` — Functional audit (does it work as designed)
 > - `src/audit-content.md` — Content audit (is the content good)
 

@@ -79,7 +79,7 @@ This repo is continuously evaluated through three independent audit layers, each
 
 | Layer | File | What it evaluates |
 |-------|------|-------------------|
-| **Standards** | [`src/audit.md`](src/audit.md) | Structure, security, compliance against Anthropic/OpenAI/Google/OWASP guidance |
+| **Standards** | [`src/non-functional-audit.md`](src/non-functional-audit.md) | Structure, security, compliance against Anthropic/OpenAI/Google/OWASP guidance |
 | **Functional** | [`src/audit-functional.md`](src/audit-functional.md) | Workflow mechanics — session flows, state coverage, template mapping, command handling |
 | **Content** | [`src/audit-content.md`](src/audit-content.md) | Domain accuracy, persona coherence, example realism, tone calibration, evidence base |
 

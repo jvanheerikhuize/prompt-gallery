@@ -5,7 +5,7 @@
 > full content audit loop and produce all required outputs.
 >
 > **Part of the audit triad:**
-> - `src/audit.md` — Standards audit (non-functional: structure, security, compliance)
+> - `src/non-functional-audit.md` — Standards audit (non-functional: structure, security, compliance)
 > - `src/audit-functional.md` — Functional audit (does it work as designed)
 > - `src/audit-content.md` — **Content audit** (is the content good)
 
@@ -19,7 +19,7 @@ complete system prompt designed to be pasted into a chat or injected via API.
 
 This audit evaluates whether the **content** within each prompt is accurate,
 effective, and well-crafted — not whether the structure follows standards
-(that's `audit.md`) or whether the workflow mechanics function correctly
+(that's `non-functional-audit.md`) or whether the workflow mechanics function correctly
 (that's `audit-functional.md`). The focus is: is the content right?
 
 Execute the following steps in order. Do not skip any step.

@@ -37,12 +37,14 @@
 | S-03 | Each section has a single responsibility — no mixed concerns | Software engineering: separation of concerns applies to prompts too | Gallery separates state from rules, output templates from workflow |
 | S-04 | All content is inside a single fenced code block | Gallery convention — prevents rendering artifacts and ensures clean copy-paste | All 18 roles follow this pattern |
 | S-05 | No trailing content after the closing code fence | Gallery convention — trailing content confuses some LLMs about instruction boundaries | Enforced by V-14 |
+| S-06 | Internal cross-references (`→ see:`, `REF:`) resolve to actual section names in the prompt | Consistency: dangling references confuse the LLM and reduce instruction following | T.A.G., P.S.Y., and other complex roles use `→ see:` for intra-prompt navigation |
 
 ### Audit test
 
 > Parse the prompt structure. Verify section order matches S-02. Check that no section
 > contains content that belongs in another section (e.g., workflow logic in RULES, output
-> templates in PERSONA).
+> templates in PERSONA). For S-06, extract all `→ see:` and `REF:` targets and verify
+> each resolves to a named section, sub-section, or rule block in the prompt.
 
 ---
 
@@ -129,12 +131,16 @@
 | W-04 | Error responses are helpful — not just "I can't do that" | UX: good error messages guide the user toward valid input | Gallery error handlers include redirect suggestions |
 | W-05 | Workflow references state fields and output templates by name — not inline | Traceability: named references are auditable | Gallery workflows reference STATE.field and OUT:template_name |
 | W-06 | Phase progression is explicit (forward-only, conditional, or free) | State management: implicit phase logic causes regression | Health roles enforce forward-only; games allow conditional |
+| W-07 | Roles with slash commands define all commands in a COMMANDS section with access tiers (read / mutate / persist). Command capabilities must not exceed SCOPE_LIMITS. | Consistency: undocumented commands cause unpredictable behaviour; tier separation prevents unintended state mutation | 9/18 roles define COMMANDS with tiered access (e.g., `/gamestate` = read, `/save` = persist) |
 
 ### Audit test
 
 > Verify W-01 through W-03 by checking for required sections. For W-05, grep workflow for
 > state field references and output template references — flag any inline formatting that
 > should use a named template. For W-06, check that phase transition rules are explicit.
+> For W-07, list all `/command` entries and verify: (a) each has an access tier, (b) mutate
+> and persist commands are not available when SCOPE_LIMITS says "will NOT modify", (c) no
+> command duplicates functionality of another command.
 
 ---
 
@@ -200,16 +206,16 @@ Each check scores 0 (fail) or 1 (pass). Sections are weighted:
 | Section | Weight | Checks | Max score |
 |---------|--------|--------|-----------|
 | 1. Identity & Persona | 10% | 5 | 5 |
-| 2. Structure | 10% | 5 | 5 |
+| 2. Structure | 10% | 6 | 6 |
 | 3. State Management | 10% | 5 | 5 |
 | 4. Output Design | 10% | 5 | 5 |
 | 5. Examples | 10% | 4 | 4 |
 | 6. Rules & Constraints | 15% | 7 | 7 |
-| 7. Workflow Design | 10% | 6 | 6 |
+| 7. Workflow Design | 10% | 7 | 7 |
 | 8. Safety & Compliance | 15% | 7 | 7 |
 | 9. Token Efficiency | 5% | 4 | 4 |
 | 10. Documentation | 5% | 5 | 5 |
-| **Total** | **100%** | **53** | **53** |
+| **Total** | **100%** | **55** | **55** |
 
 **Rating thresholds:**
 

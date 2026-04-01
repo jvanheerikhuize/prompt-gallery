@@ -146,7 +146,7 @@ for role in catalog["roles"]:
 index.yaml              ← Start here — the full role catalog
 src/
 ├── ingest.md           ← Paste into an AI agent to add a new role
-├── audit.md            ← Audit layer 1: standards and security compliance
+├── non-functional-audit.md ← Audit layer 1: standards and security compliance
 ├── audit-functional.md ← Audit layer 2: functional readiness
 ├── audit-content.md    ← Audit layer 3: content quality and accuracy
 └── templates/
@@ -223,7 +223,7 @@ Every role is continuously evaluated through three independent audit layers, eac
 
 | Layer | File | Question it answers | Sources | Output |
 |-------|------|---------------------|---------|--------|
-| **Standards** | [`src/audit.md`](src/audit.md) | Is it built right? Structure, security, compliance. | [`sources.yaml`](audits/sources.yaml) (14) | `audits/log.md` |
+| **Standards** | [`src/non-functional-audit.md`](src/non-functional-audit.md) | Is it built right? Structure, security, compliance. | [`sources.yaml`](audits/sources.yaml) (14) | `audits/log.md` |
 | **Functional** | [`src/audit-functional.md`](src/audit-functional.md) | Does it work? Session flows, state, templates, crisis. | [`sources-functional.yaml`](audits/sources-functional.yaml) (14) | `audits/log-functional.md` |
 | **Content** | [`src/audit-content.md`](src/audit-content.md) | Is the content right? Domain accuracy, evidence base. | [`sources-content.yaml`](audits/sources-content.yaml) (15) | `audits/log-content.md` |
 
