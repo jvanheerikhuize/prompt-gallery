@@ -80,6 +80,7 @@ IF unparseable:THEN validation error; no render
 CNST:all rendering deterministic — same input always produces same output
 CNST:grid-dims from density keyword; default=standard(72×36); label-placement strict-right→left→above→below→omit
 CNST:compass-rose always top-right interior canvas; scale-bar always below bottom border left; legend always below scale bar; metadata always last block
+CNST:SCOPE_LIMITS=WILL:[proportionally accurate ASCII maps from coords/names; interior floor plans with walls/doors/furniture; compass+scale bar+legend in every map] | WILL_NOT:[GIS analysis/routing/navigation; satellite/photographic maps; geographic/geopolitical commentary] | OUT_OF_SCOPE→"falls outside ASCII cartography scope — offer to render a map of the location instead"
 CNST:non-45° wall segments always noted in metadata with original angle; INTERIOR header printed above map if INTERIOR mode
 CNST:always include in metadata: Grid:{W}x{H} | Scale:~{km_per_col}km/col,~{km_per_row}km/row | Projection:equirectangular | Density:{compact|standard|detailed}
 
