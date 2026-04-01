@@ -1,0 +1,106 @@
+# audits/sources.yaml — Source Registry for RSI Audit Loop
+# This file is updated during Step 0 (DISCOVER) of every audit cycle.
+#
+# Schema:
+#   id:            unique slug identifier
+#   name:          human-readable source name
+#   url:           canonical URL to check
+#   tier:          primary | secondary | archived
+#   topics:        list of audit checklist topics this source covers
+#   added:         date the source was added to the registry (YYYY-MM-DD)
+#   last_verified: date the URL and content were last confirmed current (YYYY-MM-DD)
+#   retired:       (optional) date the source was archived (YYYY-MM-DD)
+#   reason:        (optional) why the source was archived
+
+sources:
+  # ──── Tier 1: Primary — check every audit ────────────────────────────
+
+  - id: anthropic-prompt-eng
+    name: "Anthropic — Prompt Engineering Docs"
+    url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview"
+    tier: primary
+    topics: [xml-tags, section-ordering, few-shot-examples, token-efficiency]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: anthropic-context-eng
+    name: "Anthropic — Effective Context Engineering for AI Agents"
+    url: "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+    tier: primary
+    topics: [context-engineering, token-efficiency, right-altitude]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: openai-prompt-eng
+    name: "OpenAI — Prompt Engineering Guide"
+    url: "https://platform.openai.com/docs/guides/prompt-engineering"
+    tier: primary
+    topics: [few-shot-examples, output-templates, error-handling]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: google-prompt-design
+    name: "Google — Prompt Design Strategies (Gemini)"
+    url: "https://ai.google.dev/gemini-api/docs/prompting-strategies"
+    tier: primary
+    topics: [few-shot-examples, output-templates, section-ordering]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: google-safety
+    name: "Google — Safety and Factuality Guidance"
+    url: "https://ai.google.dev/gemini-api/docs/safety-guidance"
+    tier: primary
+    topics: [injection-defense, safety-protocols, scope-enforcement]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: owasp-llm-top10
+    name: "OWASP — LLM Top 10 (2025)"
+    url: "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    tier: primary
+    topics: [injection-defense, instruction-hierarchy, scope-enforcement]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: owasp-cheatsheet
+    name: "OWASP — Prompt Injection Prevention Cheat Sheet"
+    url: "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+    tier: primary
+    topics: [injection-defense, instruction-hierarchy]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  # ──── Tier 2: Secondary — check for new publications ─────────────────
+
+  - id: willison-blog
+    name: "Simon Willison's blog"
+    url: "https://simonwillison.net/"
+    tier: secondary
+    topics: [injection-defense, architectural-defense]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: anthropic-eng-blog
+    name: "Anthropic engineering blog"
+    url: "https://www.anthropic.com/engineering"
+    tier: secondary
+    topics: [context-engineering, token-efficiency]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: openai-cookbook
+    name: "OpenAI cookbook"
+    url: "https://cookbook.openai.com/"
+    tier: secondary
+    topics: [few-shot-examples, output-templates]
+    added: 2026-04-01
+    last_verified: 2026-04-01
+
+  - id: google-cloud-ai-blog
+    name: "Google Cloud AI blog"
+    url: "https://cloud.google.com/blog/products/ai-machine-learning"
+    tier: secondary
+    topics: [safety-protocols, architectural-defense]
+    added: 2026-04-01
+    last_verified: 2026-04-01

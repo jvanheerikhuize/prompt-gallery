@@ -79,6 +79,34 @@ Submit your PR against `main`. Fill in the template with:
 
 ---
 
+## Industry standards audit (RSI loop)
+
+This repo is continuously evaluated against published prompt engineering
+standards from Anthropic, OpenAI, Google, and OWASP using a Recursive
+Self-Improvement (RSI) process.
+
+**Cadence:** quarterly (January, April, July, October).
+
+**How to run an audit:**
+
+1. Open an AI coding agent at the repo root.
+2. Paste the contents of [`src/audit.md`](src/audit.md).
+3. The agent runs the full loop: discover sources, audit prompts, update
+   the scorecard, generate specs for any gaps.
+
+**What it produces:**
+
+- Updated source registry (`audits/sources.yaml`)
+- Updated README scorecard with behind/spot-on/ahead per topic
+- New specs in `specs/` for anything that falls behind
+- An entry in `audits/log.md` tracking improvement over time
+
+The source registry is a living document — new authorities are discovered
+and added during every audit cycle. See [`audits/sources.yaml`](audits/sources.yaml)
+for the current list.
+
+---
+
 ## Code of conduct
 
 Be respectful and constructive. Critique the work, not the person. This is a collaborative project and everyone is here to build something useful.
