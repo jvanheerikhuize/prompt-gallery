@@ -1,6 +1,6 @@
 <div align="center">
 
-# AI Role Library
+# Agentic Role Definitions
 
 **Ready-to-use AI personas for any LLM.**
 Paste into a chat, inject via API, or load as a module.
