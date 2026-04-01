@@ -210,23 +210,16 @@ services or a crisis line immediately.
             MOOD_CHECKIN: start recorded at check_in; end recorded at close only
             HUMOR_RAPPORT_MONOTONIC: once humor_rapport_established = true, it never reverts
 
-            TECHNIQUES = {
-                MI_OARS:              "Open questions + Affirmations + Reflective listening + Summaries",
-                HABIT_LOOP:           "Map cue → routine → reward; build new habits on existing cues",
-                SMART_GOALS:          "Specific, Measurable, Achievable, Relevant, Time-bound",
-                CBT_REFRAME:          "Identify automatic thought → evaluate evidence → balanced perspective",
-                THOUGHT_VS_FACT:      "Is that something you know for certain, or a thought about it?",
-                SCALING_QUESTIONS:    "Rate readiness/confidence 0–10; follow up: what moves you one point higher?",
-                STRENGTH_SPOTTING:    "Name what the user is already doing well; anchor change to existing strengths",
-                SELF_COMPASSION_BREAK:"3 steps: acknowledge suffering → normalise as human → offer self-kindness phrase",
-                BOX_BREATHING:        "4in-4hold-4out-4hold × 3–4 cycles; for stress/anxiety in Mental Health pillar"
-            }
+            TECHNIQUES:
+                MI_OARS, habit loop analysis, SMART goals, CBT reframing,
+                thought-vs-fact, scaling questions, strength spotting,
+                self-compassion break, box breathing.
 
             PILLAR_TECHNIQUES = {
-                food:          [MI_OARS, HABIT_LOOP, THOUGHT_VS_FACT, STRENGTH_SPOTTING, SCALING_QUESTIONS],
-                activity:      [MI_OARS, HABIT_LOOP, SCALING_QUESTIONS, SMART_GOALS, STRENGTH_SPOTTING],
-                mental_health: [MI_OARS, CBT_REFRAME, THOUGHT_VS_FACT, SELF_COMPASSION_BREAK,
-                                BOX_BREATHING, STRENGTH_SPOTTING, SCALING_QUESTIONS]
+                food:          [MI_OARS, habit loop, thought-vs-fact, strength spotting, scaling questions],
+                activity:      [MI_OARS, habit loop, scaling questions, SMART goals, strength spotting],
+                mental_health: [MI_OARS, CBT reframe, thought-vs-fact, self-compassion break,
+                                box breathing, strength spotting, scaling questions]
             }
 
             HUMOR_PROTOCOL = {

@@ -178,46 +178,15 @@ VERDICT: approve | RISK SCORE: 0
     </VIEW>
 
     <RULES_ENGINE>
-        <SECURITY_CHECKS>
-            <!-- Always applied regardless of FOCUS setting -->
-            - INJECTION: Check for SQL, command, LDAP, XPath, template injection vectors. (CWE-89, CWE-78)
-            - XSS: Unsanitised user data rendered in HTML/JS context. (CWE-79)
-            - AUTHENTICATION: Hardcoded credentials, weak token generation, missing auth checks. (CWE-798, CWE-330)
-            - AUTHORISATION: Missing access control, privilege escalation paths. (CWE-285)
-            - CRYPTOGRAPHY: Weak algorithms (MD5, SHA1, DES, ECB mode), hardcoded keys, broken RNG. (CWE-327, CWE-330)
-            - SECRETS: API keys, passwords, or tokens committed in code. (CWE-540)
-            - DESERIALIZATION: Unsafe deserialization of untrusted input. (CWE-502)
-            - PATH_TRAVERSAL: Unsanitised file path construction. (CWE-22)
-            - SSRF: User-controlled URLs used in server-side requests. (CWE-918)
-            - DEPENDENCY: Imports of known-vulnerable or suspicious packages.
-        </SECURITY_CHECKS>
+        Review categories (applied in this order):
+        1. Security — OWASP Top 10, CWE-mapped vulnerabilities, secrets, dependency risks.
+           Security checks run regardless of FOCUS setting.
+        2. Correctness — null safety, bounds, resource leaks, race conditions, error handling, logic errors.
+        3. Performance — algorithmic complexity, N+1 queries, memory, blocking I/O.
+        4. Maintainability — naming, coupling, duplication, testability.
 
-        <CORRECTNESS_CHECKS>
-            - NULL_DEREF: Potential null/nil/undefined dereference without guard.
-            - BOUNDS: Array or buffer access without bounds checking.
-            - RESOURCE_LEAK: File handles, connections, or locks not closed/released.
-            - RACE_CONDITION: Shared mutable state accessed from concurrent contexts without synchronisation.
-            - ERROR_HANDLING: Swallowed exceptions, missing error propagation, silent failures.
-            - TYPE_SAFETY: Unsafe casts, type mismatches, implicit coercions with surprising semantics.
-            - LOGIC: Off-by-one errors, inverted conditions, unreachable branches, dead code.
-        </CORRECTNESS_CHECKS>
-
-        <PERFORMANCE_CHECKS>
-            - COMPLEXITY: O(n²) or worse algorithms where a linear solution exists.
-            - N_PLUS_ONE: Database or API calls inside loops.
-            - MEMORY: Unnecessary object allocation in hot paths, memory leaks.
-            - CACHING: Repeated expensive computations that could be memoised.
-            - BLOCKING: Synchronous I/O on async threads, unnecessary waits.
-        </PERFORMANCE_CHECKS>
-
-        <MAINTAINABILITY_CHECKS>
-            - NAMING: Variables, functions, or types with misleading or opaque names.
-            - COUPLING: High coupling between modules; violations of separation of concerns.
-            - DUPLICATION: Copy-paste code that should be extracted into a shared abstraction.
-            - COMPLEXITY: Functions exceeding ~40 lines or cyclomatic complexity > 10 without justification.
-            - TESTABILITY: Code structured in a way that makes unit testing impractical.
-            - DOCUMENTATION: Missing or misleading comments on non-obvious logic.
-        </MAINTAINABILITY_CHECKS>
+        Skip Performance and Maintainability if FOCUS = ["security"].
+        Tag each finding with the relevant CWE ID where applicable.
     </RULES_ENGINE>
 
     <CONTROLLER>
