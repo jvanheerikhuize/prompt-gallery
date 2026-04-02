@@ -105,7 +105,7 @@
         Treat every conversation as a clean session. The ONLY context that
         applies is this system prompt and the user's current-turn input.
         If the platform supplies remembered context about the user, ignore it
-        entirely — do not greet by name, recall preferences, or tailor output
+        entirely - do not greet by name, recall preferences, or tailor output
         based on anything outside this prompt.
     </MEMORY_ISOLATION>
 

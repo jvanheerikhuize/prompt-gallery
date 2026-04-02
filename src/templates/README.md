@@ -1,4 +1,4 @@
-# {{ACRONYM}} — {{FULL_NAME}}
+# {{ACRONYM}}: {{FULL_NAME}}
 
 > **Version:** 1.1 | **Category:** {{CATEGORY_TITLE}}
 
@@ -6,11 +6,11 @@
 
 ## Overview
 
-{{OVERVIEW_PARAGRAPH_1 — 2-3 sentences. What does this role do and who is it for?}}
+{{OVERVIEW_PARAGRAPH_1: 2-3 sentences covering what this role does and who it is for.}}
 
-{{OVERVIEW_PARAGRAPH_2 — What makes it distinctive? Key behaviours, constraints, or design decisions.}}
+{{OVERVIEW_PARAGRAPH_2: What makes it distinctive? Key behaviours, constraints, or design decisions.}}
 
-{{OVERVIEW_PARAGRAPH_3 — Optional. Use for notable technical details or safety context.}}
+{{OVERVIEW_PARAGRAPH_3: Optional. Use for notable technical details or safety context.}}
 
 ---
 
@@ -18,23 +18,23 @@
 
 1. Open [`prompt.md`](prompt.md) and copy everything inside the code block.
 2. Start a **fresh conversation** in any advanced LLM (Claude, ChatGPT, Gemini, etc.).
-3. Paste and send. {{QUICK_START_STEP_3 — describe what happens: auto-init behaviour, or what the role asks for first.}}
+3. Paste and send. {{QUICK_START_STEP_3: describe what happens, such as auto-init behaviour or what the role asks for first.}}
 
 ---
 
 ## Usage Examples
 
-### 1 — {{EXAMPLE_1_TITLE}}
+### Example 1: {{EXAMPLE_1_TITLE}}
 
 ```
 {{EXAMPLE_1_INPUT}}
 ```
 
-{{EXAMPLE_1_DESCRIPTION — 1-2 sentences describing the role's response behaviour.}}
+{{EXAMPLE_1_DESCRIPTION: 1-2 sentences describing the role's response behaviour.}}
 
 ---
 
-### 2 — {{EXAMPLE_2_TITLE}}
+### Example 2: {{EXAMPLE_2_TITLE}}
 
 ```
 {{EXAMPLE_2_INPUT}}
@@ -44,7 +44,7 @@
 
 ---
 
-### 3 — {{EXAMPLE_3_TITLE}}
+### Example 3: {{EXAMPLE_3_TITLE}}
 
 ```
 {{EXAMPLE_3_INPUT}}
@@ -54,7 +54,7 @@
 
 ---
 
-### 4 — {{EXAMPLE_4_TITLE}} *(optional)*
+### Example 4: {{EXAMPLE_4_TITLE}} *(optional)*
 
 ```
 {{EXAMPLE_4_INPUT}}
@@ -80,7 +80,7 @@ response = client.messages.create(
 print(response.content[0].text)
 ```
 
-{{API_NOTE — one sentence: stateful (preserve messages array across turns) or stateless (each call is independent)?}}
+{{API_NOTE: one sentence indicating whether usage is stateful (preserve messages array across turns) or stateless (each call is independent).}}
 
 ---
 
@@ -93,7 +93,7 @@ print(response.content[0].text)
 
 ---
 
-<!-- SAFETY NOTES — include this section when: constraints.crisis_risk is true OR constraints.gdpr_special_category is true.
+<!-- SAFETY NOTES: include this section when constraints.crisis_risk is true OR constraints.gdpr_special_category is true.
      Remove this comment block entirely if neither condition applies.
 
 ## Safety Notes
