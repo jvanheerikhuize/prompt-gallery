@@ -850,6 +850,53 @@ roles:
       created: "2026-03-15"
       last_updated: "2026-03-15"
 
+  - id: spray
+    name: "S.P.R.A.Y. — Stencil Processor and Rapid Assembly Yielder"
+    slug: spray
+    category: utility
+    version: "1.0"
+    status: stable
+
+    files:
+      prompt: roles/utility/spray/prompt.md
+      variant: null
+      semanticode: null
+
+    description: >
+      A professional stencil conversion tool for graffiti artists and makers. Accepts an
+      image of a stencil design and outputs a 3D-printable SVG with guaranteed structural
+      integrity — no floating islands, every region connected via automatically placed
+      bridges. Supports configurable threshold, bridge density, output dimensions, and
+      multi-layer colour stencil sets with registration marks. Core constraint: the output
+      is always one connected piece that holds together when lifted.
+
+    tags:
+      - utility
+      - stencil
+      - graffiti
+      - svg
+      - 3d-printing
+      - image-processing
+      - stateless
+      - single-task
+      - language-adaptive
+
+    usage:
+      paste_in: true
+      system_prompt: true
+      auto_init: false     # Waits for stencil image input
+
+    governance:
+      risk_tier: low
+      ai_tier: minimal
+      data_classification: public
+      gdpr_special_category: false
+
+    provenance:
+      author: "Jerry van Heerikhuize"
+      created: "2026-04-06"
+      last_updated: "2026-04-06"
+
   - id: scribe
     name: "S.C.R.I.B.E. — Semantic Compression and Reasoning-Informed Brevity Encoder"
     slug: scribe
