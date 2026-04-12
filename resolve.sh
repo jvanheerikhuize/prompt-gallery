@@ -5,6 +5,18 @@
 
 set -euo pipefail
 
+# Fail fast if required tools are missing (bash 4+ for associative arrays, awk).
+for dep in awk; do
+    if ! command -v "$dep" >/dev/null 2>&1; then
+        echo "Error: required dependency '$dep' not found in PATH" >&2
+        exit 127
+    fi
+done
+if (( BASH_VERSINFO[0] < 4 )); then
+    echo "Error: bash 4+ required (found $BASH_VERSION)" >&2
+    exit 127
+fi
+
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
 INDEX="$BASE_DIR/index.yaml"
 
@@ -66,6 +78,15 @@ fi
 if [[ ! -f "$INDEX" ]]; then
     echo "Error: index.yaml not found at $INDEX" >&2
     exit 1
+fi
+if [[ ! -r "$INDEX" ]]; then
+    echo "Error: index.yaml not readable at $INDEX" >&2
+    exit 1
+fi
+# Minimal sanity check: file must declare a top-level `roles:` section.
+if ! grep -qE '^roles:' "$INDEX"; then
+    echo "Error: index.yaml is malformed (no 'roles:' section at $INDEX)" >&2
+    exit 65
 fi
 
 # =============================================================================

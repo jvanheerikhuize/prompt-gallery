@@ -68,6 +68,49 @@ Submit your PR against `main`. Fill in the template with:
 - **Test your prompt** -- paste it into at least one LLM and verify it behaves as intended before submitting.
 - **Keep `prompt.md` and `prompt-semanticode.md` in sync** -- if you change the canonical prompt, update the SemantiCode variant too.
 - **Health and sensitive roles** -- if your role touches mental health, crisis risk, minors, or GDPR Art. 9 data, follow the safety notes pattern in existing health roles.
+- **Run `scripts/validate-index.sh`** before submitting. Fix any reported mismatches.
+
+---
+
+## Role quality standards
+
+Every contributed role should meet the following bar before merge.
+
+### Structural requirements
+
+- **Self-contained.** The prompt works when pasted into a fresh chat session with no prior context and no external tooling.
+- **LLM-agnostic.** Tested against at least two of: Claude, ChatGPT, Gemini. Note any model-specific behavior in the role README.
+- **Deterministic lifecycle.** The prompt defines explicit phases or states (OPEN → ... → CLOSE) rather than relying on the model to improvise structure.
+- **Token efficient.** Prompts should justify their length. Aim for < 6k tokens for `prompt.md`; use `prompt-semanticode.md` for the compressed variant. Cut anything that does not change observable behavior.
+- **Indexed.** Every role has an entry in `index.yaml` with accurate `files`, `tags`, `governance`, and `provenance` blocks.
+
+### Cross-LLM compatibility
+
+- Avoid provider-specific features (Claude XML tags, OpenAI tool schemas) in the canonical prompt. Use plain Markdown and natural-language directives.
+- If behavior diverges across models, document the divergence in the role README under a "Known model differences" section.
+
+### Safety review checklist (health, education, minors, GDPR Art. 9)
+
+Required for any role tagged `health`, any role with `minors_involved: true`, or any role where `gdpr_special_category` is `true` or `conditional`.
+
+- [ ] **Crisis detection protocol** defined, or an explicit note that none is included and why (see P.A.P.A. for an acceptable no-detection rationale).
+- [ ] **Safe-messaging compliance** — prompt does not enable means, does not romanticize, surfaces resources when user is in distress. See WHO / Samaritans safe-messaging guidelines.
+- [ ] **Regional crisis resources** referenced via `config/crisis-resources.yaml`, not hardcoded. Deployer-facing safety note explains the splice.
+- [ ] **GDPR Art. 9 disclosure** shown at session open when special-category data is foreseeable.
+- [ ] **Scope limits** stated — what the role is NOT (e.g., "not a substitute for licensed care", "single-user perspective only").
+- [ ] **Age-appropriateness** — if minors may interact with the role, explicit language and topic guardrails.
+- [ ] **`safety_notes` block** present in `index.yaml` for the role, listing items the deployer must verify.
+
+### Governance metadata
+
+Set honestly based on the role's worst-case session, not the typical case:
+
+- `risk_tier` — `low` / `medium` / `high`
+- `ai_tier` (EU AI Act) — `minimal` / `limited` / `high` / `prohibited`
+- `data_classification` — `public` / `internal` / `confidential` / `restricted`
+- `gdpr_special_category` — `true` / `false` / `conditional` (with comment explaining the condition)
+
+Unsure? Run the spec through the `A.G.L.` role in this library for a tier classification.
 
 ---
 
