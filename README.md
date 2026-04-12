@@ -6,7 +6,7 @@
 Paste into a chat, inject via API, or load as a module.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Roles](https://img.shields.io/badge/roles-20-brightgreen.svg)](index.yaml)
+[![Roles](https://img.shields.io/badge/roles-25-brightgreen.svg)](index.yaml)
 [![LLM Agnostic](https://img.shields.io/badge/LLM-agnostic-purple.svg)](#using-a-role)
 [![Token Efficient](https://img.shields.io/badge/SemantiCode-compressed-orange.svg)](#repository-structure)
 
