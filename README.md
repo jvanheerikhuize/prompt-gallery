@@ -6,7 +6,7 @@
 Paste into a chat, inject via API, or load as a module.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Roles](https://img.shields.io/badge/roles-18-brightgreen.svg)](index.yaml)
+[![Roles](https://img.shields.io/badge/roles-20-brightgreen.svg)](index.yaml)
 [![LLM Agnostic](https://img.shields.io/badge/LLM-agnostic-purple.svg)](#using-a-role)
 [![Token Efficient](https://img.shields.io/badge/SemantiCode-compressed-orange.svg)](#repository-structure)
 
@@ -122,22 +122,84 @@ Works with any API that accepts a system prompt: Anthropic, OpenAI, Google, or y
 Add this library as a git submodule and load the full catalog at runtime:
 
 ```bash
-git submodule add https://github.com/jvanheerikhuize/tag-role-test.git roles-lib
+git submodule add https://github.com/jvanheerikhuize/agent-roledefinitions-submodule.git lib/roles
 git submodule update --init
 ```
 
-```python
-import yaml, pathlib
+`index.yaml` is the single entrypoint. It lists every role with file paths, metadata, tags, and usage flags. No scraping, no discovery logic required.
 
-base = pathlib.Path("roles-lib")
-catalog = yaml.safe_load((base / "index.yaml").read_text())
+See [Consuming as a Library](#consuming-as-a-library) for all integration methods, version pinning, and the resolver script.
 
-for role in catalog["roles"]:
-    path = base / role["files"]["prompt"]
-    print(f"{role['id']}: {path}")
+---
+
+## Consuming as a Library
+
+This repository is designed to be consumed by other repositories as a submodule or via direct fetch. The `index.yaml` manifest is the single entrypoint -- parse it to discover all roles, metadata, and file paths.
+
+### Git submodule (recommended)
+
+Pin to a version tag for reproducible builds:
+
+```bash
+git submodule add https://github.com/jvanheerikhuize/agent-roledefinitions-submodule.git lib/roles
+cd lib/roles && git checkout v1.0.0
+cd ../.. && git add . && git commit -m "add agent-roledefinitions-submodule v1.0.0"
 ```
 
-`index.yaml` is the single entrypoint. It lists every role with file paths, metadata, tags, and usage flags. No scraping, no discovery logic required.
+Update to a new version:
+
+```bash
+cd lib/roles && git fetch --tags && git checkout v1.1.0
+cd ../.. && git add lib/roles && git commit -m "bump roles to v1.1.0"
+```
+
+### Raw URL fetch (zero-install)
+
+Fetch `index.yaml` or individual prompts directly. The tag in the URL pins the version:
+
+```bash
+# Fetch the manifest
+curl -s https://raw.githubusercontent.com/jvanheerikhuize/agent-roledefinitions-submodule/v1.0.0/index.yaml
+
+# Fetch a specific prompt
+curl -s https://raw.githubusercontent.com/jvanheerikhuize/agent-roledefinitions-submodule/v1.0.0/roles/engineering/forge/prompt.md
+```
+
+Replace `v1.0.0` with `main` for the latest (unpinned) version.
+
+### GitHub Release archive
+
+Every tagged release includes downloadable `.tar.gz` and `.zip` archives. Useful for CI/CD pipelines:
+
+```bash
+curl -sL https://github.com/jvanheerikhuize/agent-roledefinitions-submodule/archive/refs/tags/v1.0.0.tar.gz | tar xz
+```
+
+### Resolver script
+
+A bash-native resolver is included at the repo root. It parses `index.yaml` with zero dependencies beyond standard POSIX tools:
+
+```bash
+./resolve.sh --list                   # List all role IDs
+./resolve.sh --id forge               # Print prompt to stdout
+./resolve.sh --id tag --semanticode   # Print compressed variant
+./resolve.sh --category entertainment # List roles in a category
+./resolve.sh --tag stateful           # List roles matching a tag
+```
+
+From a client repo using a submodule:
+
+```bash
+./lib/roles/resolve.sh --id forge
+```
+
+### Agent discoverability
+
+See [`AGENTS.md`](AGENTS.md) for instructions that any LLM agent or framework can follow to discover and load roles from this library. If your client repo uses agent instructions, see the recommended snippet in that file.
+
+### Version pinning
+
+All consumption methods pin via git tags. Tags are immutable -- once released, their content never changes. See [`VERSIONING.md`](VERSIONING.md) for the full versioning contract.
 
 ---
 

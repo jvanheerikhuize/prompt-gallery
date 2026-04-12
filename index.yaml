@@ -1,12 +1,12 @@
 # =============================================================================
-# Module Index — tag-role-library
+# Module Index — agent-roledefinitions-submodule
 # =============================================================================
 # Single entrypoint for consuming repositories.
 # Parse this file to discover all available roles and their prompt file paths.
 # =============================================================================
 
 module:
-  name: tag-role-library
+  name: agent-roledefinitions-submodule
   version: "1.0.0"
   description: >
     A library of structured LLM agent masterprompts. Each role is self-contained
@@ -15,7 +15,7 @@ module:
     infrastructure required.
   license: MIT
   author: "Jerry van Heerikhuize"
-  repository: https://github.com/jvanheerikhuize/tag-role-test
+  repository: https://github.com/jvanheerikhuize/agent-roledefinitions-submodule
 
 # Prompt files available per role.
 # - prompt:      Canonical full-length prompt. Most readable; uncompressed.
