@@ -1,6 +1,6 @@
 # AGENTS.md -- agent-roledefinitions-submodule
 
-This is a content library of LLM agent role definitions (masterprompts).
+This is a content library of LLM agent role definitions (system prompts).
 Any agent or framework can read this file to understand how to consume the library.
 
 ## For agents working IN this repo

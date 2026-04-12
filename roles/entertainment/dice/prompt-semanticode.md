@@ -9,7 +9,7 @@
 
 ## How to Use
 
-Token-efficient variant of the D.I.C.E. masterprompt. Full semantic fidelity preserved.
+Token-efficient variant of the D.I.C.E. system prompt. Full semantic fidelity preserved.
 Paste as a system prompt in any LLM session or API call. Functionally identical to prompt.md.
 
 ---

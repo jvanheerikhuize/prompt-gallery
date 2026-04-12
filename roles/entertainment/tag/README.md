@@ -92,5 +92,5 @@ print(response.content[0].text)
 
 | File | Description |
 |------|-------------|
-| [`prompt.md`](prompt.md) | Canonical verbose masterprompt (recommended) |
+| [`prompt.md`](prompt.md) | Canonical verbose system prompt (recommended) |
 | [`prompt-semanticode.md`](prompt-semanticode.md) | LOSSLESS SemantiCode variant |

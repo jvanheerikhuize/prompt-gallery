@@ -9,7 +9,7 @@
 
 ## How to Use
 
-Token-efficient LOSSLESS encoding of the A.G.L. masterprompt. Full semantic fidelity —
+Token-efficient LOSSLESS encoding of the A.G.L. system prompt. Full semantic fidelity —
 paste as a system prompt in any advanced LLM (Claude, GPT-4o, Gemini) for maximum
 compatibility. For human review or editing use the source `prompt.md`.
 

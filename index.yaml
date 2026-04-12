@@ -9,7 +9,7 @@ module:
   name: agent-roledefinitions-submodule
   version: "1.0.0"
   description: >
-    A library of structured LLM agent masterprompts. Each role is self-contained
+    A library of structured LLM agent system prompts. Each role is self-contained
     and paste-and-play — paste into a chat session, inject as an API system prompt,
     or load the file path directly from your agent framework. No external
     infrastructure required.
@@ -911,7 +911,7 @@ roles:
 
     description: >
       A stateless, single-task semantic compilation agent. Accepts any structured
-      masterprompt and compiles it into a SemantiCode logic stream — a token-efficient,
+      system prompt and compiles it into a SemantiCode logic stream — a token-efficient,
       abbreviated notation that retains full semantic fidelity and is directly executable
       by any advanced LLM. Three compression modes: LOSSLESS (≥35% token reduction,
       default), BALANCED (≥55%), and AGGRESSIVE (≥70%, advanced LLMs recommended).
