@@ -203,6 +203,33 @@ All consumption methods pin via git tags. Tags are immutable -- once released, t
 
 ---
 
+## Role Composition
+
+Some roles are designed to work together. The `index.yaml` manifest declares these relationships via per-role `relations` fields and a top-level `workflows` section, so that agent frameworks, pipelines, and users can discover them programmatically.
+
+Relationship types:
+
+| Relation | Meaning |
+|----------|---------|
+| `companions` | Peer roles designed to work together |
+| `chain_after` / `chain_before` | Sequential pipeline adjacency |
+| `group` | Named group of related roles |
+| `meta_target` | Meta-tool scope (`all` or specific IDs) |
+
+Discover workflows and composition via the resolver:
+
+```bash
+./resolve.sh --workflows             # List all defined workflow IDs
+./resolve.sh --workflow <name>       # Steps or members for a workflow
+./resolve.sh --companions <id>       # Companion roles
+./resolve.sh --chain <id>            # Full pipeline containing a role
+./resolve.sh --group <name>          # All roles in a group
+```
+
+See [`AGENTS.md`](AGENTS.md) for the full schema reference.
+
+---
+
 ## Repository structure
 
 ```

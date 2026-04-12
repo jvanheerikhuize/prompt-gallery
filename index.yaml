@@ -69,6 +69,9 @@ roles:
       created: "2026-03-11"
       last_updated: "2026-03-14"
 
+    relations:
+      group: entertainment-gm
+
   - id: heist
     name: "H.E.I.S.T. — High-stakes Extraction and Infiltration Strategy Tactician"
     slug: heist
@@ -117,6 +120,9 @@ roles:
       created: "2026-03-18"
       last_updated: "2026-03-18"
 
+    relations:
+      group: entertainment-gm
+
   - id: dice
     name: "D.I.C.E. — Detective Investigation and Case Engine"
     slug: dice
@@ -164,6 +170,9 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-18"
       last_updated: "2026-03-18"
+
+    relations:
+      group: entertainment-gm
 
   - id: echo
     name: "E.C.H.O. — Experiential Collaborative Hub Orchestrator"
@@ -215,6 +224,9 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-22"
       last_updated: "2026-03-22"
+
+    relations:
+      group: entertainment-gm
 
   - id: muse
     name: "M.U.S.E. — Master of Unbounded Studio Exploration"
@@ -312,6 +324,10 @@ roles:
       created: "2026-03-14"
       last_updated: "2026-03-14"
 
+    relations:
+      chain_after: [forge]
+      chain_before: [qave]
+
   - id: forge
     name: "F.O.R.G.E. — Full-stack Operations and Repository Guidance Engineer"
     slug: forge
@@ -361,6 +377,9 @@ roles:
       created: "2026-03-18"
       last_updated: "2026-03-18"
 
+    relations:
+      chain_before: [cra]
+
   - id: qave
     name: "Q.A.V.E. — Quality Assurance and Verification Engineer"
     slug: qave
@@ -406,6 +425,9 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-18"
       last_updated: "2026-03-18"
+
+    relations:
+      chain_after: [cra]
 
   # ---------------------------------------------------------------------------
   # Health
@@ -466,6 +488,9 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-14"
       last_updated: "2026-03-14"
+
+    relations:
+      group: health-crisis-safety
 
   - id: frank
     name: "F.R.A.N.K. — Forthright Relationship Analyst Navigating Knots"
@@ -528,6 +553,9 @@ roles:
       created: "2026-03-14"
       last_updated: "2026-03-14"
 
+    relations:
+      group: health-crisis-safety
+
   - id: papa
     name: "P.A.P.A. — Parental Advice and Perspective Agent"
     slug: papa
@@ -587,6 +615,9 @@ roles:
       created: "2026-03-18"
       last_updated: "2026-03-18"
 
+    relations:
+      group: health-crisis-safety
+
   - id: vita
     name: "V.I.T.A. — Values-Integrated Transformation Agent"
     slug: vita
@@ -645,6 +676,9 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-17"
       last_updated: "2026-03-17"
+
+    relations:
+      group: health-crisis-safety
 
   # ---------------------------------------------------------------------------
   # Education
@@ -754,6 +788,9 @@ roles:
       created: "2026-03-18"
       last_updated: "2026-03-18"
 
+    relations:
+      companions: [mentor]
+
   - id: mentor
     name: "M.E.N.T.O.R. — Methodical Educational Navigator for Teaching, Outcomes, and Review"
     slug: mentor
@@ -801,6 +838,9 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-17"
       last_updated: "2026-03-17"
+
+    relations:
+      companions: [scout]
 
   # ---------------------------------------------------------------------------
   # Utility
@@ -941,6 +981,9 @@ roles:
       created: "2026-03-17"
       last_updated: "2026-03-17"
 
+    relations:
+      meta_target: all
+
   # ---------------------------------------------------------------------------
   # Productivity
   # ---------------------------------------------------------------------------
@@ -1031,3 +1074,54 @@ roles:
       author: "Jerry van Heerikhuize"
       created: "2026-03-18"
       last_updated: "2026-03-18"
+
+# =============================================================================
+# Workflows — named multi-role composition patterns
+# =============================================================================
+# Sequential workflows use `steps` (order matters).
+# Group workflows use `members` (order irrelevant) + optional `orchestrator`.
+# =============================================================================
+
+workflows:
+
+  engineering-pipeline:
+    name: "Engineering Pipeline"
+    description: >
+      Implementation to merge: code is written, the diff is reviewed,
+      then quality is validated. Each role's output feeds the next.
+    steps:
+      - forge
+      - cra
+      - qave
+
+  education-vwo:
+    name: "VWO Study Support"
+    description: >
+      Parent briefing followed by student coaching. The parent gets context
+      first; the student then runs a study session.
+    steps:
+      - scout
+      - mentor
+
+  entertainment-gm:
+    name: "Entertainment Game Masters"
+    description: >
+      Interchangeable game master roles. The orchestrator can coordinate
+      the others in a multi-player session.
+    members:
+      - tag
+      - heist
+      - dice
+      - echo
+    orchestrator: echo
+
+  health-crisis-safety:
+    name: "Health and Crisis Safety"
+    description: >
+      Health-adjacent roles sharing crisis detection infrastructure,
+      GDPR Art. 9 handling, and safe-messaging protocols.
+    members:
+      - psy
+      - frank
+      - papa
+      - vita

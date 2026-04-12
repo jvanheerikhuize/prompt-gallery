@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # resolve.sh -- Lightweight role resolver for agent-roledefinitions-submodule
 # Parses index.yaml using native bash/awk. Zero external dependencies.
-# Usage: ./resolve.sh --list | --id <id> | --category <cat> | --tag <tag>
+# Usage: ./resolve.sh --list | --id <id> | --category <cat> | --tag <tag> | ...
 
 set -euo pipefail
 
@@ -12,23 +12,24 @@ usage() {
     cat <<'EOF'
 Usage: resolve.sh [OPTIONS]
 
-Options:
+Role queries:
   --list                 List all role IDs
   --id <id>              Print the prompt content for a role by ID
   --id <id> --path       Print the prompt file path instead of content
   --id <id> --semanticode  Print the semanticode variant instead
   --category <category>  List role IDs in a category
   --tag <tag>            List role IDs matching a tag
+
+Composition queries:
+  --companions <id>      List companion role IDs for a role
+  --chain <id>           Print the full ordered pipeline containing a role
+  --group <name>         List all role IDs in a named group
+  --workflows            List all defined workflow IDs
+  --workflow <name>      Print steps or members for a named workflow
+
+General:
   --base-dir <path>      Override the base directory (default: script directory)
   --help                 Show this help message
-
-Examples:
-  ./resolve.sh --list
-  ./resolve.sh --id forge
-  ./resolve.sh --id tag --semanticode
-  ./resolve.sh --category entertainment
-  ./resolve.sh --tag stateful
-  ./resolve.sh --base-dir lib/roles --id forge
 EOF
     exit 0
 }
@@ -45,6 +46,11 @@ while [[ $# -gt 0 ]]; do
         --id)           ACTION="id"; TARGET="$2"; shift 2 ;;
         --category)     ACTION="category"; TARGET="$2"; shift 2 ;;
         --tag)          ACTION="tag"; TARGET="$2"; shift 2 ;;
+        --companions)   ACTION="companions"; TARGET="$2"; shift 2 ;;
+        --chain)        ACTION="chain"; TARGET="$2"; shift 2 ;;
+        --group)        ACTION="group"; TARGET="$2"; shift 2 ;;
+        --workflows)    ACTION="workflows"; shift ;;
+        --workflow)     ACTION="workflow"; TARGET="$2"; shift 2 ;;
         --base-dir)     BASE_DIR="$2"; INDEX="$BASE_DIR/index.yaml"; shift 2 ;;
         --semanticode)  VARIANT="semanticode"; shift ;;
         --path)         PATH_ONLY=true; shift ;;
@@ -62,36 +68,14 @@ if [[ ! -f "$INDEX" ]]; then
     exit 1
 fi
 
-# --- List all role IDs ---
+# =============================================================================
+# Role queries
+# =============================================================================
+
 list_ids() {
     awk '/^  - id:/ { gsub(/^  - id: */, ""); print }' "$INDEX"
 }
 
-# --- Get a field value for a specific role ID ---
-# Extracts the block for a given role ID and finds a field within it.
-get_role_field() {
-    local role_id="$1"
-    local field="$2"
-
-    awk -v id="$role_id" -v field="$field" '
-        /^  - id:/ {
-            current_id = $NF
-            in_block = (current_id == id)
-            next
-        }
-        in_block && $0 ~ "^      " field ": " {
-            val = $0
-            sub("^[ ]*" field ": *", "", val)
-            gsub(/"/, "", val)
-            print val
-            exit
-        }
-        # End of block: next role or end of file
-        in_block && /^  - id:/ { exit }
-    ' "$INDEX"
-}
-
-# --- Get prompt file path for a role ID ---
 get_prompt_path() {
     local role_id="$1"
     local variant="$2"
@@ -117,7 +101,6 @@ get_prompt_path() {
     ' "$INDEX"
 }
 
-# --- List role IDs matching a category ---
 list_by_category() {
     local category="$1"
 
@@ -135,7 +118,6 @@ list_by_category() {
     ' "$INDEX"
 }
 
-# --- List role IDs matching a tag ---
 list_by_tag() {
     local tag="$1"
 
@@ -162,7 +144,171 @@ list_by_tag() {
     ' "$INDEX"
 }
 
-# --- Execute ---
+# =============================================================================
+# Composition queries
+# =============================================================================
+
+# List companion IDs for a role
+list_companions() {
+    local role_id="$1"
+
+    awk -v id="$role_id" '
+        /^  - id:/ {
+            current_id = $NF
+            in_block = (current_id == id)
+            in_companions = 0
+            next
+        }
+        in_block && /^      companions:/ {
+            # Inline list: companions: [a, b]
+            if ($0 ~ /\[/) {
+                val = $0
+                sub(/.*\[/, "", val)
+                sub(/\].*/, "", val)
+                gsub(/,/, "\n", val)
+                gsub(/ /, "", val)
+                print val
+                exit
+            }
+            in_companions = 1
+            next
+        }
+        in_block && in_companions && /^        - / {
+            print $NF
+            next
+        }
+        in_block && in_companions && !/^        - / {
+            exit
+        }
+        in_block && /^  - id:/ { exit }
+    ' "$INDEX"
+}
+
+# Get chain_after list for a role
+get_chain_field() {
+    local role_id="$1"
+    local field="$2"
+
+    awk -v id="$role_id" -v field="$field" '
+        /^  - id:/ {
+            current_id = $NF
+            in_block = (current_id == id)
+            next
+        }
+        in_block && $0 ~ "^      " field ": " {
+            if ($0 ~ /\[/) {
+                val = $0
+                sub(/.*\[/, "", val)
+                sub(/\].*/, "", val)
+                gsub(/,/, "\n", val)
+                gsub(/ /, "", val)
+                print val
+            }
+            exit
+        }
+        in_block && /^  - id:/ { exit }
+    ' "$INDEX"
+}
+
+# Walk the chain containing a role, output in order
+walk_chain() {
+    local start_id="$1"
+    local -a chain=()
+    local -A visited=()
+    local current="$start_id"
+
+    # Walk backwards via chain_after to find the head
+    while true; do
+        visited["$current"]=1
+        local prev
+        prev=$(get_chain_field "$current" "chain_after")
+        if [[ -z "$prev" ]] || [[ -n "${visited[$prev]:-}" ]]; then
+            break
+        fi
+        current="$prev"
+    done
+
+    # Walk forwards via chain_before from the head
+    visited=()
+    while true; do
+        chain+=("$current")
+        visited["$current"]=1
+        local next_id
+        next_id=$(get_chain_field "$current" "chain_before")
+        if [[ -z "$next_id" ]] || [[ -n "${visited[$next_id]:-}" ]]; then
+            break
+        fi
+        current="$next_id"
+    done
+
+    printf '%s\n' "${chain[@]}"
+}
+
+# List all role IDs belonging to a named group
+list_by_group() {
+    local group_name="$1"
+
+    awk -v grp="$group_name" '
+        /^  - id:/ {
+            current_id = $NF
+            next
+        }
+        /^      group:/ {
+            g = $NF
+            if (g == grp) {
+                print current_id
+            }
+        }
+    ' "$INDEX"
+}
+
+# List all workflow IDs
+list_workflows() {
+    awk '
+        /^workflows:/ { in_workflows = 1; next }
+        in_workflows && /^  [a-z]/ && /:/ {
+            wf = $1
+            sub(/:$/, "", wf)
+            print wf
+        }
+        in_workflows && /^[a-z]/ && !/^  / { exit }
+    ' "$INDEX"
+}
+
+# List steps or members for a named workflow
+get_workflow() {
+    local wf_name="$1"
+
+    awk -v wf="$wf_name" '
+        /^workflows:/ { in_workflows = 1; next }
+        in_workflows && /^  [a-z]/ && /:/ {
+            current_wf = $1
+            sub(/:$/, "", current_wf)
+            in_block = (current_wf == wf)
+            in_list = 0
+            next
+        }
+        in_block && (/^    steps:/ || /^    members:/) {
+            in_list = 1
+            next
+        }
+        in_block && in_list && /^      - / {
+            print $NF
+            next
+        }
+        in_block && in_list && !/^      - / {
+            in_list = 0
+        }
+        # Next workflow or end
+        in_block && /^  [a-z]/ && /:/ { exit }
+        in_workflows && /^[a-z]/ && !/^  / { exit }
+    ' "$INDEX"
+}
+
+# =============================================================================
+# Execute
+# =============================================================================
+
 case "$ACTION" in
     list)
         list_ids
@@ -196,6 +342,46 @@ case "$ACTION" in
         results=$(list_by_tag "$TARGET")
         if [[ -z "$results" ]]; then
             echo "No roles found with tag '$TARGET'" >&2
+            exit 1
+        fi
+        echo "$results"
+        ;;
+    companions)
+        results=$(list_companions "$TARGET")
+        if [[ -z "$results" ]]; then
+            echo "No companions found for role '$TARGET'" >&2
+            exit 1
+        fi
+        echo "$results"
+        ;;
+    chain)
+        results=$(walk_chain "$TARGET")
+        if [[ -z "$results" ]]; then
+            echo "No chain found containing role '$TARGET'" >&2
+            exit 1
+        fi
+        echo "$results"
+        ;;
+    group)
+        results=$(list_by_group "$TARGET")
+        if [[ -z "$results" ]]; then
+            echo "No roles found in group '$TARGET'" >&2
+            exit 1
+        fi
+        echo "$results"
+        ;;
+    workflows)
+        results=$(list_workflows)
+        if [[ -z "$results" ]]; then
+            echo "No workflows defined" >&2
+            exit 1
+        fi
+        echo "$results"
+        ;;
+    workflow)
+        results=$(get_workflow "$TARGET")
+        if [[ -z "$results" ]]; then
+            echo "No workflow found with name '$TARGET'" >&2
             exit 1
         fi
         echo "$results"

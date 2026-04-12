@@ -7,8 +7,6 @@ Any agent or framework can read this file to understand how to consume the libra
 
 - `index.yaml` is the manifest. Every role is listed there with metadata and file paths.
 - Roles live under `roles/{category}/{slug}/prompt.md`.
-- To add a role, follow `src/ingest.md`.
-- To audit a role, use the audit prompts in `src/`.
 - Never modify `index.yaml` without also updating the corresponding role files.
 
 ## For agents CONSUMING this repo as a library
@@ -45,6 +43,29 @@ Parse `index.yaml` to discover roles. The file is the single entrypoint -- no di
 | `usage.auto_init` | Agent initialises itself without user input |
 | `status` | `stable`, `beta`, or `deprecated` |
 | `governance.risk_tier` | `low`, `medium`, or `high` |
+
+### Role composition
+
+Roles can declare relationships to other roles via the optional `relations` field in `index.yaml`. These are declarative hints for consumers -- this library does not enforce or orchestrate them.
+
+| Relation | Meaning |
+|----------|---------|
+| `companions` | Peer roles designed to work together (bidirectional by convention) |
+| `chain_after` / `chain_before` | Sequential pipeline adjacency (directional) |
+| `group` | Named group of related or interchangeable roles |
+| `meta_target` | Roles this meta-tool can operate on (`all` or list of IDs) |
+
+The `workflows` section in `index.yaml` defines named multi-role patterns. Sequential workflows have `steps` (order matters); group workflows have `members` (order irrelevant) with an optional `orchestrator`.
+
+#### Composition queries via the resolver
+
+```bash
+./resolve.sh --companions <id>       # List companion roles
+./resolve.sh --chain <id>            # Full ordered pipeline containing a role
+./resolve.sh --group <name>          # All roles in a named group
+./resolve.sh --workflows             # List all defined workflow IDs
+./resolve.sh --workflow <name>       # Steps or members for a named workflow
+```
 
 ### Recommended client AGENTS.md snippet
 
