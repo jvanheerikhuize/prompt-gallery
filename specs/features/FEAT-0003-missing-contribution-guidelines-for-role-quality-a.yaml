@@ -1,0 +1,39 @@
+metadata:
+  id: FEAT-0003
+  title: Missing contribution guidelines for role quality and safety standards
+  version: 1.0.0
+  status: draft
+  priority: medium
+  author: RSI Audit Agent
+  created_at: "2026-04-12"
+  updated_at: "2026-04-12"
+  tags:
+    - rsi-audit
+    - documentation
+    - documentation
+description:
+  summary: 'Automated audit finding: Missing contribution guidelines for role quality and safety standards'
+  problem_statement: '- While CONTRIBUTING.md exists, there are no clear guidelines for role quality standards, safety review processes, or testing requirements. Given the sensitive nature of health and education roles, this creates risk of inconsistent or potentially harmful role contributions.'
+  proposed_solution: '- Establish clear role quality criteria including safety review checklists for health/education roles, token efficiency standards, and cross-LLM compatibility requirements. Add mandatory review processes for sensitive role categories.'
+  out_of_scope:
+    - Changes unrelated to the identified findings
+  dependencies: []
+technical_requirements:
+  constraints: []
+  security: []
+acceptance_criteria:
+  - id: AC-001
+    given: The CONTRIBUTING.md file(s) exist in the repository
+    when: The changes from this spec are applied
+    then: Establish clear role quality criteria including safety review checklists for health/education roles, token efficiency standards, and cross-LLM compatibility requirements. Add mandatory review processes for sensitive role categories.
+technical_notes: 'Files affected: CONTRIBUTING.md, roles/education/, roles/health/'
+testing_requirements:
+  unit_tests: true
+  integration_tests: false
+  e2e_tests: false
+  performance_tests: false
+  test_scenarios:
+    - Verify the fix addresses the identified issue
+rollout:
+  rollout_strategy: manual
+  rollback_plan: Revert the changes introduced by this spec via git revert.
