@@ -48,6 +48,10 @@ Each role in this library is:
 | [**C.R.A.**](roles/engineering/cra/prompt.md): Code Review Analyst | Paste a diff and get a structured, scored review covering security (OWASP, CWE), correctness, performance, and maintainability. Issues a clear verdict: merge or not. |
 | [**F.O.R.G.E.**](roles/engineering/forge/prompt.md): Full-stack Operations and Repository Guidance Engineer | A senior full-stack and DevOps engineer that guides work from feature branch through implementation to pull request. Enforces branch-first, PR-always discipline. Spans frontend, backend, infra, and IaC. |
 | [**Q.A.V.E.**](roles/engineering/qave/prompt.md): Quality Assurance and Verification Engineer | Submit a ticket, spec, diff, or test scenario and receive the right QA artefact (test plan, defect report, risk assessment, or coverage analysis) with severity labels and a binding verdict. |
+| [**S.E.N.T.R.Y.**](roles/engineering/sentry/prompt.md): Security Evaluation & Network Threat Response Yield | Adversarial security auditor for the RSI audit pipeline. Thinks like an attacker — traces untrusted input through code, hunts injection vectors, broken auth, leaked credentials, and dependency risks that SAST tools miss. Returns structured JSON findings. |
+| [**P.R.O.B.E.**](roles/engineering/probe/prompt.md): Precision Review Of Bugs & Edge-cases | Analytical code quality auditor for the RSI audit pipeline. Traces logic paths to find bugs, race conditions, error handling gaps, cross-file interaction failures, and resource management issues. Returns structured JSON findings. |
+| [**G.U.I.D.E.**](roles/engineering/guide/prompt.md): Guided Understanding & Inclusive Documentation Evaluator | Empathetic documentation auditor for the RSI audit pipeline. Evaluates a codebase from a new contributor's perspective — identifying onboarding gaps, stale docs, missing guides, and undocumented configuration. Returns structured JSON findings. |
+| [**S.P.A.R.K.**](roles/engineering/spark/prompt.md): Strategic Proposals for Advancement & Reimagined Knowledge | Creative innovation analyst for the RSI audit pipeline. Identifies high-value improvements, modernisation opportunities, and developer experience enhancements grounded in web research and current industry trends. Returns structured JSON proposals with effort estimates. |
 
 ### 🩺 Health
 
@@ -74,6 +78,7 @@ Each role in this library is:
 |------|-------------|
 | [**A.G.L.**](roles/productivity/agl/prompt.md): Authoritative Governance Lead | An EU AI Act classifier. Describe an AI component and receive a binding tier verdict with the specific articles, obligations, and escalation conditions that apply. Terse, professional, non-negotiable. |
 | [**P.R.I.M.E.**](roles/productivity/prime/prompt.md): Product Requirements and Intent Management Executive | A Product Owner that reviews feature specs and change requests. Returns Approved, Rejected, or Needs Clarification with a rationale against four criteria. Urgency is not a criterion. |
+| [**R.S.I.**](roles/productivity/rsi/prompt.md): Recursive Self-Improvement Orchestrator | Meta-governance layer for the RSI audit pipeline. Merges and deduplicates findings from S.E.N.T.R.Y., P.R.O.B.E., G.U.I.D.E., and S.P.A.R.K., resolves conflicts, adjusts severity, and produces a single coherent audit report. The final quality gate. |
 
 ### 🔧 Utility
 
@@ -228,6 +233,23 @@ Discover workflows and composition via the resolver:
 
 See [`AGENTS.md`](AGENTS.md) for the full schema reference.
 
+### RSI Audit Pipeline
+
+The `rsi-audit-pipeline` workflow demonstrates a group-with-orchestrator pattern. Four specialist auditors run in parallel on a repository, then R.S.I. merges their findings:
+
+```
+S.E.N.T.R.Y. (security)    ──┐
+P.R.O.B.E.  (quality)      ──┤
+G.U.I.D.E.  (documentation) ──┼──→ R.S.I. (orchestrator) ──→ Final Report
+S.P.A.R.K.  (innovation)   ──┘
+```
+
+```bash
+./resolve.sh --workflow rsi-audit-pipeline   # List the four member roles
+./resolve.sh --group rsi-audit-pipeline      # All roles including orchestrator
+./resolve.sh --tag rsi-pipeline              # Same, via tag
+```
+
 ---
 
 ## Repository structure
@@ -239,10 +261,10 @@ AGENTS.md               ← LLM-agnostic agent discoverability
 VERSIONING.md           ← Semver contract and version pinning
 roles/
 ├── entertainment/      ← T.A.G., H.E.I.S.T., D.I.C.E., E.C.H.O., M.U.S.E.
-├── engineering/        ← C.R.A., F.O.R.G.E., Q.A.V.E.
+├── engineering/        ← C.R.A., F.O.R.G.E., Q.A.V.E., S.E.N.T.R.Y., P.R.O.B.E., G.U.I.D.E., S.P.A.R.K.
 ├── health/             ← P.S.Y., F.R.A.N.K., V.I.T.A., P.A.P.A.
 ├── education/          ← A.G.O.R.A., M.E.N.T.O.R., S.C.O.U.T.
-├── productivity/       ← A.G.L., P.R.I.M.E.
+├── productivity/       ← A.G.L., P.R.I.M.E., R.S.I.
 └── utility/            ← A.T.L.A.S., S.C.R.I.B.E., S.P.R.A.Y.
 ```
 
