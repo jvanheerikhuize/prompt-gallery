@@ -210,7 +210,6 @@ index.yaml              ← Single entrypoint: the full role catalog
 resolve.sh              ← Bash-native role resolver (zero dependencies)
 AGENTS.md               ← LLM-agnostic agent discoverability
 VERSIONING.md           ← Semver contract and version pinning
-specs/                  ← Role specifications and change proposals
 roles/
 ├── entertainment/      ← T.A.G., H.E.I.S.T., D.I.C.E., E.C.H.O., M.U.S.E.
 ├── engineering/        ← C.R.A., F.O.R.G.E., Q.A.V.E.
